@@ -1,0 +1,6 @@
+#!/bin/bash
+
+pdflatex ./freerange_vhdl_master.tex
+
+rm *.aux *.toc *.log *.out *.dvi
+
