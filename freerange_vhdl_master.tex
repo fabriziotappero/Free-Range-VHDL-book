@@ -1,0 +1,98 @@
+% Freerange VHDL
+% Authors: Bryan Mealy, Fabrizio Tappero
+% Date: May, 2011
+%
+% (C) 2011 B. Mealy, F. Tappero
+%
+% !TEX root = freerange_vhdl_master.tex
+%
+\documentclass[11pt,b5paper]{book}
+\usepackage{freerange_vhdl}
+
+% LINE SPACING
+\renewcommand{\baselinestretch}{1.2} % custom spacing
+%\renewcommand{\baselinestretch}{2} % double-line spacing
+
+%%%%%% DOCUMENT BEGIN %%%%%%
+\begin{document}
+
+	% front cover
+	\thispagestyle{empty}
+	\begin{textblock*}{174mm}(1mm,0mm)
+	%\textblockcolour{red}
+	\includegraphics[width=169mm]{pics/cover1.png}% a full-page picture?
+	\end{textblock*}
+	\null\newpage % latex might neglect \newpage because the page is empty, 
+		      % to avoid this use \null\newpage
+
+	% blank page
+	\thispagestyle{empty}
+	\null\newpage
+
+	% front matter %
+	\thispagestyle{empty}
+	\begin{textblock*}{60mm}(85mm,90mm)
+	%\textblockcolour{red}
+	\noindent
+	{\sffamily\huge\bfseries Freerange VHDL}\\
+	\noindent
+	{\sffamily Bryan Mealy, Fabrizio Tappero}\\
+	{\color{dark-gray}\rule[5pt]{190pt}{4pt}}
+	\end{textblock*}
+	\null\newpage
+
+	% license page %
+	\thispagestyle{empty}
+	\include{license}
+
+	% blank page with note
+	\thispagestyle{empty}
+	\null
+	\vspace*{\fill}
+	\begin{center}This page intentionally left blank\end{center}
+	\vspace*{\fill}
+	\newpage
+
+	% blank page
+	\thispagestyle{empty}
+	\null\newpage
+
+	% table of contents page %
+	\setcounter{page}{5}
+	\renewcommand\contentsname{Table of Contents} % rename title
+	\pagenumbering{roman}
+	\tableofcontents
+	%\null\newpage
+
+	% Acknowledgments, from page i
+	\include{acknowledgments}
+
+	% blank page
+	\thispagestyle{empty}
+	\null\newpage
+
+	% Preface, from page ii
+	\include{introduction}
+
+	% from page 1 begins Chapter 1 %
+	\setcounter{page}{1}
+	\pagenumbering{arabic}
+	\include{chapter1}
+	\include{chapter2}
+	\include{chapter3}
+	\include{chapter4}
+	\include{chapter5}
+	\include{chapter6}
+	\include{chapter7}
+	\include{chapter8}
+	\include{chapter9}
+	\include{chapter10}
+	\include{chapter11}
+	\include{chapter12}
+	\include{appendix}
+	\include{authors}
+
+\end{document}
+%%%%%% DOCUMENT END  %%%%%%
+
+

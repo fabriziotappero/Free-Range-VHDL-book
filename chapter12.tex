@@ -1,0 +1,313 @@
+% Freerange VHDL
+% Authors: Bryan Mealy, Fabrizio Tappero
+% Date: May, 2011
+%
+% (C) 2011 B. Mealy, F. Tappero
+%
+% !TEX root = freerange_vhdl_master.tex
+%
+\chapter{Standard Digital Circuits in VHDL}
+As you know or as you will be finding out soon, even the most complex digital circuit is comprised of a relatively small set of standard digital circuits plus some associated control signals. This list of standard digital circuits is a mixed bag of combinatorial sequential devices such as MUXes, decoders, counters, comparators, registers, etc. The art of digital design using VHDL is centered around the proper selection and interfacing of these devices. The actual creation and testing of these devices is de-emphasized. 
+
+The most efficient approach to utilizing standard digital circuits using VHDL is to use existing code for these devices and modify them according to the needs of your particular design. This approach allows you to utilize your current knowledge of VHDL to quickly an efficiently design complex digital circuits. The following listings show a set of standard digital devices and the VHDL code used to describe them. The following circuits are represented in various sizes and widths. Note that the following circuit descriptions represent possible VHDL descriptions but are by no means the only descriptions. They do however provide starting points for you to modify them for your own design needs. 
+
+\section{RET D Flip-flop (Behavioral Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+--  D flip-flop: RET D flip-flop with single output
+--
+--  Required signals: 
+---------------------------------------------------
+--  CLK,D: in STD_LOGIC;
+--  Q: out STD_LOGIC;
+-------------------------------------------------------------------
+process (CLK,D) 
+begin
+   if (rising_edge(CLK)) then  
+      Q <= D;
+   end if;
+end process;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{FET D Flip-flop with Active-low Asynchronous Preset (Behavioral Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+--  D flip-flop: FET D flip-flop with asynchronous preset. The 
+--  preset input takes precedence over the synchronous input.
+--
+--  Required signals: 
+---------------------------------------------------
+--  CLK,D,S: in STD_LOGIC;
+--  Q: out STD_LOGIC;
+-------------------------------------------------------------------
+process (CLK,D,S) 
+begin
+   if (S = '0') then 
+      Q <= '1'; 
+   elsif (falling_edge(CLK)) then  
+      Q <= D;
+   end if;
+end process;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{8-Bit Register with Load Enable (Behavioral Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+--  Register: 8-bit Register with load enable. 
+--
+--  Required signals: 
+---------------------------------------------------
+--  CLK,LD: in STD_LOGIC;
+--  D_IN: in STD_LOGIC_VECTOR(7 downto 0);
+--  D_OUT: out STD_LOGIC_VECTOR(7 downto 0);
+-------------------------------------------------------------------
+process (CLK,LD) 
+begin
+   if (rising_edge(CLK)) then  
+      if (LD = '1') then   -- positive logic for LD
+         D_OUT <= D_IN;
+      end if;
+   end if;
+end process;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{Synchronous Up/Down Counter (Behavioral Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+-- Counter: synchronous up/down counter with asynchronous 
+-- reset and synchronous parallel load. 
+---------------------------------------------------
+entity COUNT_8B is
+   port ( RESET,CLK,LD,UP : in std_logic; 
+                      DIN : in std_logic_vector (7 downto 0); 
+                    COUNT : out std_logic_vector (7 downto 0)); 
+end COUNT_8B; 
+architecture my_count of COUNT_8B is 
+   signal  t_cnt : std_logic_vector(7 downto 0); 
+begin          
+   process (CLK, RESET) 
+   begin
+      if (RESET = '1') then    
+         t_cnt <= (others => '0');  -- clear
+      elsif (rising_edge(CLK)) then
+         if (LD = '1') then     t_cnt <= DIN;  -- load
+         else 
+            if (UP = '1') then  t_cnt <= t_cnt + 1; -- incr
+            else                t_cnt <= t_cnt - 1; -- decr
+            end if;
+         end if;
+      end if;
+   end process;
+   COUNT <= t_cnt; 
+end my_count;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{Shift Register with Synchronous Parallel Load (Behavioral Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+-- Shift Register: One direction shift register with synchronous 
+-- parallel load. 
+-- 
+-- Required signals: 
+---------------------------------------------------
+-- CLK, D_IN: in STD_LOGIC;
+-- P_LOAD: in STD_LOGIC;
+-- P_LOAD_DATA: in STD_LOGIC_VECTOR(7 downto 0);
+-- D_OUT: out STD_LOGIC; 
+-- 
+-- Required intermediate signals: 
+signal REG_TMP: STD_LOGIC_VECTOR(7 downto 0);
+-------------------------------------------------------------------- 
+process (CLK)
+begin
+   if (rising_edge(CLK)) then
+      if (P_LOAD = '1') then
+         REG_TMP <= P_LOAD_DATA;
+      else
+         REG_TMP <= REG_TMP(6 downto 0) & D_IN;
+      end if;
+   end if;
+   D_OUT <= REG_TMP(3);
+end process;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{8-Bit Comparator (Behavioral Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+-- Comparator: Implemented as a behavioral model. The outputs 
+-- include equals, less than, and greater than status.  
+-- 
+-- Required signals: 
+---------------------------------------------------
+-- CLK: in STD_LOGIC;
+-- A_IN, B_IN : in STD_LOGIC_VECTOR(7 downto 0);
+-- ALB, AGB, AEB : out STD_LOGIC
+-------------------------------------------------------------------
+process(CLK)
+begin
+   if ( A_IN < B_IN ) then ALB <= '1';
+   else ALB <= '0';
+   end if;
+    
+   if ( A_IN > B_IN ) then AGB <= '1';
+   else AGB <= '0';
+   end if;
+    
+   if ( A_IN = B_IN ) then AEB <= '1';
+   else AEB <= '0';
+   end if;    
+end process;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{BCD to 7-Segment Decoder (Dataflow Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+-- BCD to 7-Segment Decoder: Implemented as combinatorial circuit.  
+-- Outputs are active low; Hex outputs are included. The SSEG format
+-- is ABCDEFG (segA, segB etc.)
+--
+-- Required signals: 
+---------------------------------------------------
+-- BCD_IN : in STD_LOGIC_VECTOR(3 downto 0);
+-- SSEG : out STD_LOGIC_VECTOR(6 downto 0); 
+-------------------------------------------------------------------   
+with BCD_IN select
+   SSEG <= "0000001" when "0000",   -- 0
+           "1001111" when "0001",   -- 1
+           "0010010" when "0010",   -- 2
+           "0000110" when "0011",   -- 3
+           "1001100" when "0100",   -- 4
+           "0100100" when "0101",   -- 5
+           "0100000" when "0110",   -- 6
+           "0001111" when "0111",   -- 7
+           "0000000" when "1000",   -- 8
+           "0000100" when "1001",   -- 9
+           "0001000" when "1010",   -- A
+           "1100000" when "1011",   -- b
+           "0110001" when "1100",   -- C
+           "1000010" when "1101",   -- d
+           "0110000" when "1110",   -- E
+           "0111000" when "1111",   -- F
+           "1111111" when others;   -- turn off all LEDs
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{4:1 Multiplexer (Behavioral Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+-- A 4:1 multiplexer implemented as behavioral model using case
+-- statement. 
+--
+-- Required signals: 
+---------------------------------------------------
+-- SEL: in STD_LOGIC_VECTOR(1 downto 0);
+-- A, B, C, D:in STD_LOGIC;
+-- MUX_OUT: out STD_LOGIC;
+----------------------------------------------------------------------
+process (SEL, A, B, C, D)
+begin
+   case SEL is
+      when "00" => MUX_OUT <= A;
+      when "01" => MUX_OUT <= B;
+      when "10" => MUX_OUT <= C;
+      when "11" => MUX_OUT <= D;
+      when others => (others => '0');
+   end case;
+end process;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{4:1 Multiplexer (Dataflow Model)}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+-- A 4:1 multiplexer implemented as dataflow model using a
+-- selective signal assignment statement. 
+--
+-- Required signals: 
+---------------------------------------------------
+-- SEL: in STD_LOGIC_VECTOR(1 downto 0);
+-- A, B, C, D:in STD_LOGIC;
+-- MUX_OUT: out STD_LOGIC;
+----------------------------------------------------------------------
+with SEL select
+   MUX_OUT <= A when "00", 
+              B when "01", 
+              C when "10", 
+              D when "11", 
+              (others => '0') when others;
+--
+\end{lstlisting}
+\end{minipage}
+
+\section{Decoder}
+\noindent
+\begin{minipage}{1\linewidth}
+\begin{lstlisting}
+-------------------------------------------------------------------
+-- Decoder: 3:8 decoder with active high outputs implemented as
+-- combinatorial circuit with selective signal assignment statement
+--
+-- Required signals: 
+---------------------------------------------------
+-- D_IN: in STD_LOGIC_VECTOR(2 downto 0); 
+-- FOUT: out STD_LOGIC_VECTOR(7 downto 0); 
+-------------------------------------------------------------------
+with D_IN select
+   F_OUT <= "00000001" when "000",
+            "00000010" when "001",
+            "00000100" when "010",
+            "00001000" when "011",
+            "00010000" when "100",
+            "00100000" when "101",
+            "01000000" when "110",
+            "10000000" when "111",
+            "00000000" when others;
+--
+\end{lstlisting}
+\end{minipage}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
