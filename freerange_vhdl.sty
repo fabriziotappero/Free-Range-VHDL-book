@@ -9,7 +9,9 @@
 \usepackage[australian]{babel}
 \usepackage{graphicx}
 \usepackage{framed}
-\usepackage[width=13cm, left=2cm, top=2.5cm , bottom= 2cm ]{geometry} 
+%\usepackage[width=13cm, left=2cm, top=2.5cm , bottom= 2cm ]{geometry} % paper version
+\usepackage[width=15.7cm, left=0.5cm, top=1.1cm , bottom= 0.8cm ]{geometry} % ipad/tablet version
+
 
 % add DRAFT writing for each page
 \usepackage{draftwatermark}
@@ -18,7 +20,7 @@
 
 \usepackage{boxedminipage}
 \usepackage[utf8]{inputenc}
-%\usepackage[usenames,dvipsnames]{xcolor}
+
 \usepackage[dvipsnames]{xcolor}
 \usepackage[absolute]{textpos}
 \textblockorigin{0mm}{0mm}
@@ -49,8 +51,8 @@
 \hypersetup{
 pdfauthor = {Bryan Mealy, Fabrizio Tappero},
 pdftitle = {Freerange vhdl},
-pdfsubject = {develop embedded systems},
-pdfkeywords = {computer, language, vhdl, verilog},
+pdfsubject = {vhdl book},
+pdfkeywords = {computer, language, vhdl, verilog, fpga, cpld, },
 pdfcreator = {Latex and Linux},
 pdfproducer = {Latex},
 pdfnewwindow=true,      % links in new window
@@ -153,7 +155,7 @@ urlcolor=darkgray}      % external links
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \usepackage{calc}
-\fancyheadoffset[LE,RO]{\marginparsep+\marginparwidth-3.0mm} % OFFSET HEADER
+\fancyheadoffset[LE,RO]{\marginparsep+\marginparwidth-8.0mm} % OFFSET HEADER. offset page number
 \renewcommand{\chaptermark}[1]{\markboth{\color{pageheading-gray}{\small\chaptername\  %change page heading size here
 \thechapter:\ #1}}{}}
 \renewcommand{\sectionmark}[1]{\markright{\color{pageheading-gray}{\small\thesection\ #1}}} %change page heading size here

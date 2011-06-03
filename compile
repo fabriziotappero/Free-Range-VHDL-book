@@ -2,5 +2,7 @@
 
 pdflatex ./freerange_vhdl_master.tex
 
+pdflatex ./freerange_vhdl_master.tex
+
 rm *.aux *.toc *.log *.out *.dvi
 
