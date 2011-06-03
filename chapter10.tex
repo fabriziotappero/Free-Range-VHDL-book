@@ -164,25 +164,33 @@ type std_ulogic is ( 'U', -- uninitialised
 \end{lstlisting}
 
 The \texttt{std\_ulogic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in listing \ref{ulogic_type}, this book only deals with '0', '1', 'Z', and '-'. The 'Z' if generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high impedance state, the signal is not driven from that source and is effectively removed from the circuit. And finally, since the characters used in the \texttt{std\_ulogic} type are part of the definition, they must be used as listed. Mind the the use of lower-case letters will generate an error. 
-
-
-
-
-
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
-\vspace{10pt}
+%\vspace{10pt}
 \noindent
 \textbf{EXAMPLE 26.}
 Design a clock divider circuit that reduces the frequency of the input signal by a factor of 64. The circuit has two inputs as shown in the diagram. The div\_en input allows the clk signal to be divided when asserted and the sclk output will exhibit a frequency 1/64 that of the clk signal. When div\_en is not asserted, the sclk output remains low. Frequency division resets when the div\_en signal is reasserted.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-    \centering
-	\includegraphics[width=5.2cm]{do/ex26.png}
+\begin{minipage}[t]{0.4\linewidth}
+\vspace{10pt}
+\begin{flushright}
+\begin{tikzpicture}
+[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+% BOX
+\draw (20,5) rectangle (35,20) node[midway]{$clk\_div$};
+% INPUTS
+\small
+\node (b) at (0,-2) {}; % this is to extend the pink area
+\node (b) at (20,22.5) {}; % this is to extend the pink area
+\node (a) at (20,2.5) {}; % this is the reference point
+\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{clk};
+\draw [latex-] ($(a)+(0,5)$) -- ++(-10,0) node[above]{div\_en};
+% OUTPUTS
+\draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{sclk};
+\end{tikzpicture}
+\end{flushright}
 \end{minipage}
 \end{leftbar}
-
 \noindent
 \textbf{SOLUTION.} As usual for more complex concepts and circuits, there are a seemingly infinite number of solutions. A solution that uses several of the concepts discussed in this section is presented in listing \ref{ex26_code}. Some of the more important issues in this solution are listed below.
 
