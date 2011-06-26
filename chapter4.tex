@@ -4,7 +4,7 @@
 %
 % (C) 2011 B. Mealy, F. Tappero
 %
-% !TEX root = freerange_vhdl_master.tex
+% !TEX root = master.tex
 %
 \chapter{VHDL Programming Paradigm}
 The previous chapter introduced the idea of the basic design units of VHDL: the entity and the architecture. Most of the time was spent describing the entity simply because there is so much less involved when compared to the architecture. Remember, the entity declaration is used to describe the interface of a circuit to the outside world. The architecture is used to describe how the circuit is intended to function.
@@ -115,7 +115,7 @@ The general form of a concurrent signal assignment statement is shown in Listing
 Write the VHDL code that implement a a three-input NAND gate. The three input signal are named A, B and C while the output signal name is F. 
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} It is good practice to always draw a diagram of the circuit you are designing. Furthermore, though we could draw a diagram showing the familiar symbol for the NAND gate, we will choose to keep the diagram general and take the black-box approach instead. Remember, the black box is a nice aid when it comes to writing the entity declaration. The solution to example 1 is provided in Listing \ref{example_1}.
+\textbf{SOLUTION.} It is good practise to always draw a diagram of the circuit you are designing. Furthermore, though we could draw a diagram showing the familiar symbol for the NAND gate, we will choose to keep the diagram general and take the black-box approach instead. Remember, the black box is a nice aid when it comes to writing the entity declaration. The solution to example 1 is provided in Listing \ref{example_1}.
 
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}[numbers=left,label=example_1, caption=Solution of example 1.]
@@ -164,7 +164,7 @@ This example contains a few new ideas that are worth further clarification.
 \begin{my_list}
 \item There are header files and library files that must be included in your VHDL code in order for your code to correctly compile. These few lines of code are listed at the top of the code in Listing \ref{example_1}. The listed lines are more than is needed for this example but they will be required in later examples. To save space, these lines will sometimes be omitted in some of the coming examples.
 \item This example highlights the use of several logic operators. The logic operators available in VHDL are AND, OR, NAND, NOR, XOR, and XNOR. The NOT operator is technically speaking not a logic operator but is available too. Moreover, these logic operators are considered binary operators in that they operate on the two values appearing on the left and right side of the operator. The NOT operator is a unary operator and for that, it only operates on the value appearing to the right of the operator.
-\item Two architectures have been provided in this solution; they are both associated with the same entity. This is fair common practice in complex circuits but is not overly useful in most VHDL design.
+\item Two architectures have been provided in this solution; they are both associated with the same entity. This is fair common practise in complex circuits but is not overly useful in most VHDL design.
 \end{my_list}
 Example 1 demonstrates the use of the concurrent signal assignment (CSA) statement in a working VHDL program (refer to line 13 and 18 of Listing \ref{example_1}). But since there is only one CSA statement, the concept of concurrency is not readily apparent. The idea behind any concurrent statement in VHDL is that the output is changed any time one of the input signals changes. In other words, the output F is re-evaluated any time a signal on the input expression changes. This is a key concept in truly understanding the VHDL (so you may want to read that sentence a few more times). The idea of concurrency is more clearly demonstrated in the example 2.
 
@@ -393,7 +393,7 @@ begin
 end f3_4;
 \end{lstlisting}
 
-One thing to notice about the solution shown in Listing \ref{example_5} is the use of the \texttt{when others} clause as the final entry in the selected signal assignment statement. In actuality, the middle clause \texttt{'0' when '0'} could be removed from the solution without changing the meaning of the statement. In general, it is considered good VHDL programming practice to include all the expected cases in the selected signal assignment statement followed by the \texttt{when others} clause.
+One thing to notice about the solution shown in Listing \ref{example_5} is the use of the \texttt{when others} clause as the final entry in the selected signal assignment statement. In actuality, the middle clause \texttt{'0' when '0'} could be removed from the solution without changing the meaning of the statement. In general, it is considered good VHDL programming practise to include all the expected cases in the selected signal assignment statement followed by the \texttt{when others} clause.
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 6.}

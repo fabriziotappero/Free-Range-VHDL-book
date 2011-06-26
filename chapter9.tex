@@ -4,7 +4,7 @@
 %
 % (C) 2011 B. Mealy, F. Tappero
 %
-% !TEX root = freerange_vhdl_master.tex
+% !TEX root = master.tex
 %
 \chapter{Registers and Register Transfer Level}
 The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straight-forward concepts in VHDL. A register is VHDL is simply a vector version of a D flip-flop in which all operations on the flip-flops occur simultaneously. The "register transfer level", or RTL, is a flavor of design that is primarily concern with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "datapath" designs which requires the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the datapath. In these cases, the proper sequencing of data transfers is controlled by a FSM. 

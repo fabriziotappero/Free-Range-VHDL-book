@@ -1,8 +1,12 @@
 #!/bin/bash
 
-pdflatex ./freerange_vhdl_master.tex
+pdflatex ./master.tex
 
-pdflatex ./freerange_vhdl_master.tex
+pdflatex ./master.tex
+
+cp master.pdf freerange_vhdl.pdf
+
+rm master.pdf
 
 rm *.aux *.toc *.log *.out *.dvi
 
