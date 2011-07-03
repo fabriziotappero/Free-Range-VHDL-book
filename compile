@@ -1,12 +1,10 @@
 #!/bin/bash
 
+# compile twice and rename
 pdflatex ./master.tex
-
 pdflatex ./master.tex
-
 cp master.pdf freerange_vhdl.pdf
-
 rm master.pdf
 
+# remove auxiliary files
 rm *.aux *.toc *.log *.out *.dvi
-

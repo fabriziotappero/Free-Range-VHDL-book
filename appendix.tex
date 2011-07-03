@@ -40,12 +40,17 @@ constant       &  is        &  package  &  sll       &              \\
 \label{vhdl_ref_words}
 \end{table}
 
+% blank page
+\null\newpage
+\thispagestyle{empty}
+\mbox{}
+
 \chapter{Appendix B: Standard VHDL Packages}
-After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the standardization of this language. 
+After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardisation of the language. 
 
-After three main language standardization steps that took place in 1987, 1993 and in 2002, VHDL now includes a large set of packages that, once included in your code, give to the user the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
+After three main language standardisation steps that took place in 1987, 1993 and in 2002, VHDL now includes a large set of packages that, once included in your code, give to the user the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
 
-The main VHDL language packages that you will probably need to use in your career as an engineer can be easily included in your code by using the following statements:
+The main VHDL language library packages that you will probably need to use in your career as an engineer can be included in your code by using the following statements:
 
 \begin{verbatim}
 library IEEE;
@@ -59,7 +64,7 @@ use IEEE.math_real.all;
 use IEEE.math_complex.all;
 \end{verbatim}
 
-For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability of using the assignment operator \texttt{=} between two different data types. The following listing shows a simple coding example of some of the many advantages of using this libraries.
+For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability of using the assignment operator \texttt{=} between two different data types. The following listing shows a simple coding example of some of the many advantages of using these libraries.
 \newpage
 \clearpage
 
@@ -86,9 +91,9 @@ begin
    begin
      if CLR = '1' then 
         OUT1 <= '0';  
-     elsif rising_edge(CLK) then    -- std_logic_1164 gives "rising_edge()"
-        Y <= A + B + IN1;           -- std_logic_arith overloads the addition operator
-        X <= CONV_INTEGER(A);         -- std_logic_arith gives "CONV_INTEGER()"
+     elsif rising_edge(CLK) then -- std_logic_1164 gives "rising_edge()"
+        Y <= A + B + IN1;        -- std_logic_arith overloads the addition operator
+        X <= CONV_INTEGER(A);    -- std_logic_arith gives "CONV_INTEGER()"
         OUT1 <= IN1 AND IN2; 
      end if; 
    end process sync_proc; 
@@ -150,5 +155,4 @@ http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
 \includegraphics[width=169mm]{ref_cards/qr4.pdf}
 \end{textblock*}
 \null\newpage
-
 

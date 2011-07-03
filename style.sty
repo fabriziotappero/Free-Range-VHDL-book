@@ -8,8 +8,8 @@
 \usepackage[australian]{babel}
 \usepackage{graphicx}
 \usepackage{framed}
-%\usepackage[width=13cm, left=2cm, top=2.5cm , bottom= 2cm ]{geometry} % paper version
-\usepackage[width=15.7cm, left=0.5cm, top=1.1cm , bottom= 0.8cm ]{geometry} % ipad/tablet version
+\usepackage[width=13cm, left=2cm, top=2.5cm , bottom= 2cm ]{geometry} % paper version
+%\usepackage[width=15.7cm, left=0.5cm, top=1.1cm , bottom= 0.8cm ]{geometry} % ipad/tablet version
 
 
 % add DRAFT writing for each page
@@ -195,6 +195,22 @@ urlcolor=darkgray}      % external links
 
 % fix some Fancyhdr warnings
 \setlength{\headheight}{15pt}
+
+% make an empty page before a chapter begin
+\makeatletter 
+\def\cleardoublepage{\clearpage\if@twoside \ifodd\c@page\else 
+\hbox{} 
+%\vspace*{\fill} 
+%\begin{center} 
+%This page intentionally contains only this sentence. 
+%\end{center} 
+%\vspace{\fill} 
+\thispagestyle{empty} 
+\newpage 
+\if@twocolumn\hbox{}\newpage\fi\fi\fi} 
+\makeatother
+
+
 
 
 

@@ -168,7 +168,7 @@ The VHDL architecture is comprised of statements that describe the behaviour of 
 
 The main concurrent statement types in VHDL are the concurrent signal assignment statement, the conditional signal assignment statement, the selected signal assignment statement, and the process statement. The process statement is a concurrent statement which is comprised of exclusively sequential statements. The main types of sequential statements are the signal assignment statement, the  \texttt{if} statement, and the  \texttt{case} statement. The  \texttt{if} statement is a sequential version of conditional signal assignment statement while the  \texttt{case} statement is a sequential version of the selected signal assignment statement. The syntax of these statements and examples are given in the following table.
 
-Coding styles in VHDL fall under the category of dataflow, behavioral, and structural models. Exclusive use of process statements indicates a behavioral model. The use of concurrent, conditional, and selective signal assignment indicate the use of a dataflow model. VHDL code describing more complex digital circuits will generally contain both features of all of these types of modelling. 
+Coding styles in VHDL fall under the category of data-flow, behavioral, and structural models. Exclusive use of process statements indicates a behavioral model. The use of concurrent, conditional, and selective signal assignment indicate the use of a data-flow model. VHDL code describing more complex digital circuits will generally contain both features of all of these types of modelling. 
 
 Since you should make no effort whatsoever to memorise VHDL syntax, it is recommendable the use of a cheat sheet to be always kept next to you as you perform VHDL modelling. Developing a true understanding of VHDL is what is going to make you into a good hardware designer. The ability to memorise VHDL syntax proves almost nothing. 
 
@@ -193,7 +193,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 [x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
-\draw (20,5) rectangle (35,20) node[midway]{$D-FF$};
+\draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
 % INPUTS
 \small
 \node (b) at (0,-2) {}; % this is to extend the pink area
@@ -251,7 +251,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 [x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
-\draw (20,5) rectangle (35,20) node[midway]{$D-FF$};
+\draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
 % INPUTS
 \small
 \node (b) at (0,-2) {}; % this is to extend the pink area
@@ -310,7 +310,7 @@ Write the VHDL code that describes a \texttt{D} flip-flop shown on the right. Us
 [x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
-\draw (20,5) rectangle (35,20) node[midway]{$D-FF$};
+\draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
 % INPUTS
 \small
 \node (b) at (0,-2) {}; % this is to extend the pink area
@@ -368,7 +368,7 @@ Write the VHDL code that describes a T flip-flop shown on the right. Use a behav
 [x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
-\draw (20,5) rectangle (35,20) node[midway]{$D-FF$};
+\draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
 % INPUTS
 \small
 \node (b) at (0,-2) {}; % this is to extend the pink area
