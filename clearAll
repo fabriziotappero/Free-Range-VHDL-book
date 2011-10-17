@@ -1,8 +1,0 @@
-#!/bin/bash
-
-rm *.aux *.toc *.log *.out *.pdf *.dvi
-
-rm .*.xml ._* .DS_Store
-
-rm -R __MACOSX
-
