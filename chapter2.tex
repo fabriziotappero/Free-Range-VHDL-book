@@ -7,7 +7,7 @@
 % !TEX root = master.tex
 %
 \chapter{VHDL Invariants}
-There are several features of VHDL that you should know before moving forward. Although it is rarely a good idea for people to memorise anything, you should memorise the basic concepts presented in this section. This should help eliminate some of the drudgery involved in learning a new programming language amd lay the foundation that will enable you to create visually pleasing and good VHDL source code.
+There are several features of VHDL that you should know before moving forward. Although it is rarely a good idea for people to memorise anything, you should memorise the basic concepts presented in this section. This should help eliminate some of the drudgery involved in learning a new programming language and lay the foundation that will enable you to create visually pleasing and good VHDL source code.
 
 \section{Case Sensitivity}
 \textbf{VHDL is not case sensitive}. This means that the two statements shown in Listing \ref{case_sens} have the exact same meaning (don't worry about what the statement actually means though). Keep in mind that Listing \ref{case_sens} shows an example of VHDL case sensitivity and not good VHDL coding practises.
@@ -27,11 +27,11 @@ Comments in VHDL begin with the symbol ``\texttt{--}'' (two consecutive dashes).
 -- This type of comment is the best fake for block-style commenting.
 PS_reg <= NS_reg; -- Assign next_state value to present_state
 \end{lstlisting}
-Appropriate use of comments increases both the readability and the understandability of VHDL code. The general rule is to comment any line or section of code that may not be clear to a reader of your code besides yourself. The only inappropriate use of a comment is to state something that is patently obvious. It is hard to image code that has too few comments so don't be shy; use lots of comments. Research has shown that using lots of appropriate comments is actually a sign of high intelligence.
+Appropriate use of comments increases both the readability and the understandability of VHDL code. The general rule is to comment any line or section of code that may not be clear to a reader of your code besides yourself. The only inappropriate use of a comment is to state something that is patently obvious. It is hard to imagine code that has too few comments so don't be shy: use lots of comments. Research has shown that using lots of appropriate comments is actually a sign of high intelligence.
 
-\section{Parenthesis}
-VHDL is relatively lax on its requirement for using parentheses. Like other computer languages, there are a few precedence rules associated with the various operators in the VHDL language. Though it is possible to learn all these rules and write clever VHDL source code that will ensure the readers of your code are left scratching their heads, a better idea is to practise liberal use of parenthesis to ensure the human reader of your source code understands the purpose of the code. Once again, the two statements appearing in Listing \ref{parenthesis} have the same meaning. Note that extra white space has been added along with the parenthesis to make the lower statement clearer. 
-\begin{lstlisting}[label=parenthesis, caption=Example of parenthesis that can improve clarity.]
+\section{Parentheses}
+VHDL is relatively lax on its requirement for using parentheses. Like other computer languages, there are a few precedence rules associated with the various operators in the VHDL language. Though it is possible to learn all these rules and write clever VHDL source code that will ensure the readers of your code are left scratching their heads, a better idea is to practise liberal use of parentheses to ensure the human reader of your source code understands the purpose of the code. Once again, the two statements appearing in Listing \ref{parenthesis} have the same meaning. Note that extra white space has been added along with the parentheses to make the lower statement clearer. 
+\begin{lstlisting}[label=parenthesis, caption=Example of parentheses that can improve clarity.]
 if x = '0' and y = '0' or z = '1' then
 	blah; -- some useful statement
 	blah; -- some useful statement
@@ -60,7 +60,7 @@ In general, you should not worry too much about memorising code syntax as chance
 An identifier refers to the name given to various items in VHDL. Examples of identifiers in higher-level languages include variable names and function names. Examples of identifiers in VHDL include variable names, signal names, and port names (all of which will be discussed soon). Listed below are the hard and soft rules (i.e. you must follow them or you should follow them), regarding VHDL identifiers.
 
 \begin{my_list}
-\item Identifiers should be self-commenting. In other words, the text you apply to identifiers should provide information as to the use and purpose of the item the identifier represents.
+\item Identifiers should be self-describing. In other words, the text you apply to identifiers should provide information as to the use and purpose of the item the identifier represents.
 \item Identifiers can be as long as you want (contain many characters). Shorter names make for better reading code, but longer names present more information. It is up to the programmer to choose a reasonable identifier length.
 \item Identifiers can only contain a combination of letters (A-Z and a-z), digits (0-9), and the underscore character (``\_'').
 \item Identifiers must start with an alphabetic character.
@@ -68,7 +68,7 @@ An identifier refers to the name given to various items in VHDL. Examples of ide
 \item The best identifier for a function that calculates the position of the Earth is \textbf{CalcEarthPosition} or \textbf{calc\_earth\_position}. Try to be consistent.
 \item The best identifier for a variable that stores the age of your car is \textbf{AgeMyCar} or \textbf{age\_my\_car}. Again, try to be consistent.
 \end{my_list}
-Remember, intelligent choices for identifiers make your VHDL code more readable, understandable, and more impressive to coworkers, superiors, family, and friends. Few examples of both good and bad choices for identifier names appear in Listing \ref{valid_identif} and in Listing \ref{invalid_identif}.\\
+Remember, intelligent choices for identifiers make your VHDL code more readable, understandable, and more impressive to coworkers, superiors, family, and friends. A few examples of both good and bad choices for identifier names appear in Listing \ref{valid_identif} and in Listing \ref{invalid_identif}.\\
 \begin{minipage}[lt]{0.49\linewidth}
 \vspace{5pt}
 \begin{lstlisting}[label=valid_identif, caption=Valid identifies.]
@@ -120,15 +120,15 @@ until    use        variable    wait       while        with
 \end{lstlisting}
 
 \section{VHDL Coding Style}
-Coding style refers to the appearance of the VHDL source code. Obviously, the freedom provided by case insensitivity, indifference to white space, and lax rules on parenthesis creates a coding anarchy. The emphasis in coding style is therefore placed on readability. Unfortunately, the level of readability of any document, particularly coding text, is subjective. Writing VHDL code is similar to writing code in other computer languages such as C and Java where you have the ability to make the document more readable without changing the functioning of the code. This is primarily done by indenting certain portions of the program, using self-commenting identifiers, and provided proper comments when and where necessary.
+Coding style refers to the appearance of the VHDL source code. Obviously, the freedom provided by case insensitivity, indifference to white space, and lax rules on parentheses creates a coding anarchy. The emphasis in coding style is therefore placed on readability. Unfortunately, the level of readability of any document, particularly coding text, is subjective. Writing VHDL code is similar to writing code in other computer languages such as C and Java where you have the ability to make the document more readable without changing the functioning of the code. This is primarily done by indenting certain portions of the program, using self-describing identifiers, and provided proper comments when and where necessary.
 
-Instead of stating here a bunch of rules for you to follow as to how your code should look, you should instead strive to simply make your source code readable. Listed below are a few thoughts on what makes a readable source code.
+Instead of stating here a bunch of rules for you to follow as to how your code should look, you should instead strive to simply make your source code readable. Listed below are a few thoughts on what makes readable source code.
 
 \begin{my_list}
 \item Chances are that if your VHDL source code is readable to you, it will be readable to others who may need to peruse your document. These other people may include someone who is helping you get the code working properly, someone who is assigning a grade to your code, or someone who signs your paycheck at the end of the day. These are the people you want to please. These people are probably very busy and more than willing to make a superficial glance at your code. Nice looking code will slant such subjectivity in your favor.
 \item If in doubt, your VHDL source code should be modeled after some other VHDL document that you find organised and readable. Any code you look at that is written down somewhere is most likely written by someone with more VHDL experience than a beginner such as yourself. Emulate the good parts of their style while on the path to creating an even more readable style.
-\item Adopting a good coding style helps you write code without mistakes. As with other compilers you have experience with, you will find that the VHDL compiler does a great job at knowing a document has error but a marginal job at telling you where or what the error is. Using a consistent coding style enables you to find errors both before compilation and after the compiler has found an error.
-\item A properly formatted document explicitly presents information about your design that would not otherwise be readily apparent. This is particularly true when using proper indentation and enough comments.
+\item Adopting a good coding style helps you write code without mistakes. As with other compilers you have experience with, you will find that the VHDL compiler does a great job of knowing a document has an error but a marginal job at telling you where or what the error is. Using a consistent coding style enables you to find errors both before compilation and after the compiler has found an error.
+\item A properly formatted document explicitly presents information about your design that would not otherwise be readily apparent. This is particularly true when using proper indentation and sufficient comments.
 \end{my_list}
 \null\newpage
 \thispagestyle{empty}

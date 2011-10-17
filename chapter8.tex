@@ -169,7 +169,7 @@ end component;
 
 The process of mapping provides the interface requirements for the individual components in the design. This mapping step associates external connections from each of the components to signals in the next step upwards in the design hierarchy. Each of the signals associated with individual components maps to either an internal or external signal in the higher-level design. Each of the individual mappings includes a unique name for the particular instance as well as the name of the original entity. The actual mapping information follows the VHDL key words of \texttt{port map}. All of this information appears in the final solution shown in listing \ref{ex22_code_final}.
 
-One key point to note in the instantiation process is the inclusion of labels for all instantiated design units. Labels should always be used as part of design unit instantiation because the use of appropriate labels increases the understandability of your VHDL model. In other words, the proper choice of labels increases the self-commenting nature of your design and is considered good a VHDL programming approach.
+One key point to note in the instantiation process is the inclusion of labels for all instantiated design units. Labels should always be used as part of design unit instantiation because the use of appropriate labels increases the understandability of your VHDL model. In other words, the proper choice of labels increases the self-describing nature of your design and is considered good a VHDL programming approach.
 
 \begin{lstlisting}[label=ex22_code_final, caption=VHDL code for the top of the design hierarchy for the 3-bit comparator.]
 entity my_compare is
@@ -218,7 +218,7 @@ It is worthy to note that the solution shown in listing \ref{ex22_code_final} is
 
 The alternative approach to mapping is to use \texttt{implied mapping}. In this approach, connections between external signals from the design units are associated with signals in the design unit by order of their appearance in the mapping statement. This differs from direct mapping because only signals from the higher-level design appear in the mapping statement instead. The association between signals in the design units and the higher-level design are implied by the ordering of the signal as they appear in the component or entity declaration. This approach uses less space in the source code but requires signals to be placed in the proper order. An alternative but equivalent architecture for the previous example using implied mapping is shown in listing \ref{ex22_code_final_alt}. 
 
-\begin{lstlisting}[label=ex22_code_final_alt, caption=Alternative architecture for EXAMPLE 22 using implied mapping.]
+\begin{lstlisting}[label=ex22_code_final_alt, caption=Alternative architecture for Example 22 using implied mapping.]
 entity my_compare is
     Port ( A_IN   : in std_logic_vector(2 downto 0);
            B_IN   : in std_logic_vector(2 downto 0);
@@ -245,7 +245,7 @@ begin
 end ckt2;
 \end{lstlisting}
 
-Due to the fact that this design was relatively simple, it was possible to bypass one of the interesting issues that arises when using structural modelling. Often when dealing with structural designs, different levels of the design will contain the same signal name. The question arises as to whether the synthesizer is able to differentiate between the signal names across the hierarchy. VHDL synthesizers, like compilers for higher-level languages, are able to handle such instances. Signals with the same names are mapped according to the mapping presented in the component instantiation statement. Probably the most common occurrence of this is with clock signals. In this case, a component instantiation such as the one shown in listing \ref{ex22_code_same_sig} is both valid and commonly seen in designs containing a system clock. Name collision does not occur because the signal name on the left side of the $=>$ operator is understood to be internal to the component while the signal on the right side is understood to reside in the next level up in the hierarchy.  
+Due to the fact that this design was relatively simple, it was possible to bypass one of the interesting issues that arises when using structural modelling. Often when dealing with structural designs, different levels of the design will contain the same signal name. The question arises as to whether the synthesizer is able to differentiate between the signal names across the hierarchy. VHDL synthesizers, like compilers for higher-level languages, are able to handle such instances. Signals with the same names are mapped according to the mapping presented in the component instantiation statement. Probably the most common occurrence of this is with clock signals. In this case, a component instantiation such as the one shown in listing \ref{ex22_code_same_sig} is both valid and commonly seen in designs containing a system clock. Name collision does not occur because the signal name on the left-hand side of the $=>$ operator is understood to be internal to the component while the signal on the right-hand side is understood to reside in the next level up in the hierarchy.  
 
 \begin{lstlisting}[label=ex22_code_same_sig, caption=An example of the same signal name crossing hierarchical boundaries.]
 x5: some_component port map (CLK => CLK,
@@ -261,7 +261,7 @@ x5: some_component port map (CLK => CLK,
 
 \item VHDL structural model supports the reuse of design units. This includes units you have previously designed as well as the ability to use predefined module libraries.
 
-\item If you use one FPGA software development tool from one of the major FPGA players on the market, you will be able to use the already developed digital blocks once you declare them. In this case the entity declaration is not the one of listing \ref{ex22_code_ent} but instead a simple library inclusion in your VHDL code that looks like:
+\item If you use one FPGA software development tool from one of the major FPGA players in the market, you will be able to use the already developed digital blocks once you declare them. In this case the entity declaration is not the one of listing \ref{ex22_code_ent} but instead a simple library inclusion in your VHDL code that looks like:
 
 \hspace*{50pt}
 \texttt{library UNISIM;}\\

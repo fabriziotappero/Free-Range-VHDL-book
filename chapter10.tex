@@ -13,7 +13,7 @@ Many of the concepts presented so far have been implicitly presented in the cont
 In order to move into more sophisticated VHDL, a good place to start is with the definition of VHDL objects (e.g. data types). An object is an item in VHDL that has both a name (associated identifier) and a specific type. There are four types of objects and many different data types in VHDL. Up to this point, we have only used \texttt{signal} data objects and \texttt{std\_logic} data types. Two new data objects and several new data types are introduced and discussed in this section.
 
 \section{Types of Data Objects}
-There are four types of data objects in VHDL: signals, variables, constants, and files. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straight-forward to understand and use once the concepts of signals and variables are understood. File data objects are not discussed in this tutorial. 
+There are four types of data objects in VHDL: signals, variables, constants, and files. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects are not discussed in this tutorial. 
 
 Mind that VHDL is vast programming language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translate into an FPGA/CPLD bit-stream is called RTL VHDL and represent only a small subset of what is included in the current VHDL standard. The file  data objects is an example of data object that can not be implemented in a silicon device.
 
@@ -204,7 +204,7 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 \item The variable is declared inside of the process, after the process \texttt{begin} line.
 \end{my_list}
 
-\begin{lstlisting}[label=ex26_code, caption=Solution to EXAMPLE 26.]
+\begin{lstlisting}[label=ex26_code, caption=Solution to Example 26.]
 entity clk_div is
     Port (    clk : in std_logic;
            div_en : in std_logic;

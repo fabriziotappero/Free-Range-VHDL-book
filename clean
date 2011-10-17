@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#rm *.pdf
+
+rm *.aux *.toc *.log *.dvi
+
+rm .*.xml ._* .DS_Store
+
+rm -R __MACOSX
+
