@@ -1,4 +1,4 @@
-% Freerange VHDL
+% Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
 % Date: May, 2011
 %
@@ -18,9 +18,9 @@ As you will see in the next section, simple FSM designs are just a step beyond t
 	\label{fsm}
 \end{figure}
 
-A block diagram for a standard Moore-type FSM is shown in Fig.~\ref{fsm}. This diagram looks fairly typical but some different names are used for the some of the blocks in the design. The \texttt{Next State Decoder} is a block of combinatorial logic that uses the current external inputs and the current state to decide upon the next state of the FSM. In other words, the inputs to the \texttt{Next State Decoder} block are decoded to produce an output that represents the next state of the FSM. The circuitry in \texttt{Next State Decoder} is generally the excitation equations for the storage elements (flip-flops) in the \texttt{State Register} block. The next state becomes the present state of the FSM when the clock input to the state registers block becomes active. The state registers block is a storage element that stores the present state of the machine. The inputs to the \texttt{Output Decoder} are used to generate the desired external outputs. The inputs are decoder via combinatorial logic to produce the external outputs. Because the external outputs are only dependent upon the current state of the machine, this FSM is classified as a Moore-type FSM.
+A block diagram for a standard Moore-type FSM is shown in Fig.~\ref{fsm}. This diagram looks fairly typical but some different names are used for the some of the blocks in the design. The \texttt{Next State Decoder} is a block of combinatorial logic that uses the current external inputs and the current state to decide upon the next state of the FSM. In other words, the inputs to the \texttt{Next State Decoder} block are decoded to produce an output that represents the next state of the FSM. The circuitry in \texttt{Next State Decoder} is generally the excitation equations for the storage elements (flip-flops) in the \texttt{State Register} block. The next state becomes the present state of the FSM when the clock input to the state registers block becomes active. The state registers block is a storage element that stores the present state of the machine. The inputs to the \texttt{Output Decoder} are used to generate the desired external outputs. The inputs are decoded via combinatorial logic to produce the external outputs. Because the external outputs are only dependent upon the current state of the machine, this FSM is classified as a Moore-type FSM.
 
-The FSM model shown in Fig.~\ref{fsm} is probably the most common model for describing a Moore-type FSM and here, and that is most likely because as a learning exercise students are often asked to generate the combinatorial logic required to implement the \texttt{Next State Decoder} and the \texttt{Output Decoder}, however here we want to think about FSMs in the context of VHDL. The true power of VHDL starts to emerge in its dealings with FSMs. As you will see, the versatility of VHDL behavioral modelling removes the need for large paper designs of endless K-maps and endless combinatorial logic elements.
+The FSM model shown in Fig.~\ref{fsm} is probably the most common model for describing a Moore-type FSM. That is most likely because students are often asked to generate the combinatorial logic required to implement the \texttt{Next State Decoder} and the \texttt{Output Decoder}; however here we want to think about FSMs in the context of VHDL. The true power of VHDL starts to emerge in its dealings with FSMs. As you will see, the versatility of VHDL behavioral modeling removes the need for large paper designs of endless K-maps and endless combinatorial logic elements.
 
 \begin{figure}[t]
     \centering
@@ -31,7 +31,7 @@ The FSM model shown in Fig.~\ref{fsm} is probably the most common model for desc
 
 There are several different approaches used to model FSMs using VHDL. The many different possible approaches are a result of the general versatility of VHDL as a programming language. What we will describe in this section is probably the clearest approach for FSM implementation. A block diagram of the approach we will use in the implementation of FSMs is shown in Fig.~\ref{fsm_imp}.
 
-Although it does not look that much clearer, you will soon be finding the FSM model shown in Fig.~\ref{fsm_imp} to be a straightforward method to implement FSMs. The approach we will use divides the FSM into two VHDL processes. One process, referred to as the \texttt{Synchronous Process} which handles all the matters regarding clocking and other controls associated with the storage element. The other process, the \texttt{Combinatorial Process}, handles all the matters associated with the \texttt{Next State Decoder} and the \texttt{Output Decoder} of Fig.~\ref{fsm}. Note that the two blocks in Fig.~\ref{fsm} are both comprised of solely the combinatorial logic.
+Although it does not look that much clearer, you will soon be finding the FSM model shown in Fig.~\ref{fsm_imp} to be a straightforward method to implement FSMs. The approach we will use divides the FSM into two VHDL processes. One process, referred to as the \texttt{Synchronous Process} handles all the matters regarding clocking and other controls associated with the storage element. The other process, the \texttt{Combinatorial Process}, handles all the matters associated with the \texttt{Next State Decoder} and the \texttt{Output Decoder} of Fig.~\ref{fsm}. Note that the two blocks in Fig.~\ref{fsm} are both comprised of solely the combinatorial logic.
 
 
 There is some new lingo used in the description of signals used in Fig.~\ref{fsm_imp}; this description is outlined and described below: 
@@ -43,7 +43,7 @@ There is some new lingo used in the description of signals used in Fig.~\ref{fsm
 \item The \texttt{Present State} signals are used by the \texttt{Combinatorial Process} box for both next state decoding and output decoding. The diagram of Fig.~\ref{fsm_imp} also shows that the \texttt{Present State} variables can also be provided as outputs to the FSM but they are not required.
 \end{my_list}
 
-One final comment before we begin. Although there are many different methods that can be used to described FSMs using VHDL, two of the more common approaches are the dependent and independent PS/NS styles. This book only cover the dependent style because it is clearer than the independent PS/NS style. The model shown in Fig.~\ref{fsm_imp} is actually a model of the dependent PS/NS style of FSMs. Once you understand the VHDL modelling of the dependent PS/NS style of FSM, the understanding of the independent PS/NS style or any other style is relatively painless. More information on the other FSM coding styles is found in various VHDL texts or on the web.
+One final comment before we begin. Although there are many different methods that can be used to described FSMs using VHDL, two of the more common approaches are the dependent and independent PS/NS styles. This book only covers the dependent style because it is clearer than the independent PS/NS style. The model shown in Fig.~\ref{fsm_imp} is actually a model of the dependent PS/NS style of FSMs. Once you understand the VHDL modeling of the dependent PS/NS style of FSM, the understanding of the independent PS/NS style or any other style is relatively painless. More information on the other FSM coding styles is found in various VHDL texts or on the web.
 
 \section{VHDL Behavioral Representation of FSMs}
 
@@ -61,7 +61,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This problem represents a basic FSM implementation. It is somewhat instructive to show the black box diagram which as an aid in the writing the entity description. Starting FSM problems with the drawing of a black box diagram is always a healthy approach particularly when dealing with FSMs. Often times with FSM problems, it sometimes becomes challenging to discern the FSM inputs from the outputs. Drawing a diagram partially alleviates this problem. The black box diagram and the code for the solution of Example 18 is shown in listing \ref{exe_18_code}.
+\textbf{SOLUTION.} This problem represents a basic FSM implementation. It is somewhat instructive to show the black-box diagram which is an aid in writing the entity description. Starting FSM problems with the drawing of a black box diagram is always a healthy approach particularly when dealing with FSMs. Oftentimes with FSM problems, it becomes challenging to discern the FSM inputs from the outputs. Drawing a diagram partially alleviates this problem. The black box diagram and the code for the solution of Example 18 is shown in listing \ref{exe_18_code}.
 %\clearpage
 \begin{figure}[!h]
     \centering
@@ -105,7 +105,7 @@ begin
             end if; 
          when others => -- the catch-all condition
             Z1 <= '0';  -- arbitrary; it should never 
-            NS <= ST0;  --  make it to these two statement
+            NS <= ST0;  --  make it to these two statements
       end case; 
    end process comb_proc; 
 end fsm1;
@@ -114,19 +114,19 @@ end fsm1;
 And of course, this solution has many things worth noting in it. The more interesting things are listed below. 
 
 \begin{my_list}
-\item We have declared a special VHDL type named \texttt{state\_type} to represent the states in this FSM. This is an example of how enumeration types are used in VHDL. As with enumeration types in other higher-level computer languages, there are internal numerical representations for the listed state types but we only deal with the more expressive textual equivalent. In this case, the type we have created is called a \texttt{state\_type} and we have declared two variables of this type: PS and NS. The key thing to note here is that a \texttt{state\_type} is something we have created and is not a native VHDL type.
+\item We have declared a special VHDL type named \texttt{state\_type} to represent the states in this FSM. This is an example of how enumeration types are used in VHDL. As with enumeration types in other higher-level computer languages, there are internal numerical representations for the listed state types but we only deal with the more expressive symbolic equivalent. In this case, the type we have created is called a \texttt{state\_type} and we have declared two variables of this type: PS and NS. The key thing to note here is that a \texttt{state\_type} is something we have created and is not a native VHDL type.
 
 \item The synchronous process is equal in form and function to the simple D flip-flops we examined in the section about sequential circuits. The only difference is that we have substituted PS and NS for D and Q, respectively. Something to note here is that the storage element is associated with the PS signal only. Note that PS is not specified for every possible combination of inputs. 
 
-\item Even though this example is of the simplest FSM you could hope for, the code looks somewhat complicated. But if you examine it closely, you can see that everything is nicely compartmentalised in the solution. There are two processes; the synchronous process handles the asynchronous reset and the assignment of a new state upon the arrival of the system clock. The combinatorial process handles the outputs not handled in the synchronous process, the outputs and the generation of the next state of the FSM. 
+\item Even though this example is of the simplest FSM you could hope for, the code looks somewhat complicated. But if you examine it closely, you can see that everything is nicely compartmentalized in the solution. There are two processes; the synchronous process handles the asynchronous reset and the assignment of a new state upon the arrival of the system clock. Additionally, the combinatorial process handles the outputs not handled in the synchronous process, the outputs and the generation of the next state of the FSM. 
 
-\item Because the two processes operate concurrently, they can be considered as working in a lock-step manner. Changes to the NS signal that are generated in the combinatorial process forces an evaluation of the synchronous process. When the changes are actually instituted in the synchronous process on the next clock edge, the changes in the PS signal causes the combinatorial process to be evaluated. And so on and so forth. 
+\item Because the two processes operate concurrently, they can be considered as working in a lock-step manner. Changes to the NS signal that are generated in the combinatorial process force an evaluation of the synchronous process. When the changes are actually instituted in the synchronous process on the next clock edge, the changes in the PS signal causes the combinatorial process to be evaluated. And so on and so forth. 
 
-\item The case statement in the combinatorial process provides a \texttt{when} clause for each state of the FSM. This is the standard approach for the dependent PS/NS coding style. A \texttt{when others} clause has also been used. The signal assignments that are part this catch-all clause are arbitrary since the code should never actually make it there. This statement is provided for a sense of completeness and represents good VHDL coding practise. 
+\item The case statement in the combinatorial process provides a \texttt{when} clause for each state of the FSM. This is the standard approach for the dependent PS/NS coding style. A \texttt{when others} clause has also been used. The signal assignments that are part this catch-all clause are arbitrary since the code should never actually make it there. This statement is provided for a sense of completeness and represents good VHDL coding practice. 
 
 \item The Moore output is a function of only the present state. This is expressed by the fact that the assignment of the Z1 output is unconditionally evaluated in each when clause of the case statement in the combinatorial process. In other words, the Z1 variable is inside the \texttt{when} clause but outside of the \texttt{if} statement in the \texttt{when} clause. This is of course because the Moore outputs are only a function of the states and not the external inputs. Note that it is the external input that controls the \texttt{which} state the FSM transitions to from any given state. You will see later that Mealy outputs, due their general nature, are assigned inside the \texttt{if} statement.
 
-\item The Z1 output is pre-assigned as the first step in the combinatorial process. Pre-assigning it in this fashion prevents the unexpected latch generation for the Z1 signal. When dealing with FSMs, there is a natural tendency for the FSM designer to forget to specify an output for the Z1 variable in each of the states. Pre-assigning it prevents latches from being generated and can arguable clean up the source code. The pre-assignment make no difference to the VHDL code because if multiple assignments are made within the code, only the final assignment takes affect. In other words, only the final assignment is considered once the process terminates. 
+\item The Z1 output is pre-assigned as the first step in the combinatorial process. Pre-assigning it in this fashion prevents the unexpected latch generation for the Z1 signal. When dealing with FSMs, there is a natural tendency for the FSM designer to forget to specify an output for the Z1 variable in each of the states. Pre-assigning it prevents latches from being generated and can arguably clean up the source code. The pre-assignment makes no difference to the VHDL code because if multiple assignments are made within the code, only the final assignment takes effect. In other words, only the final assignment is considered once the process terminates. 
 \end{my_list}
 
 There is one final thing to note about Example 18. In an effort to keep the example simple, we disregarded the digital values of the state variables. This is indicated in the black-box diagram of listing \ref{exe_18_code} by the fact that the only output of the FSM is the signal Z1. This is reasonable in that it could be considered that only one output was required in order to control some other device or circuit. The state variable is represented internally and its precise representation is not important since the state variable is not provided as an output. 
@@ -173,7 +173,7 @@ begin
             end if; 
          when others => -- the catch-all condition
             Z1 <= '0';  -- arbitrary; it should never 
-            NS <= ST0;  --  make it to these two statement
+            NS <= ST0;  --  make it to these two statements
       end case; 
    end process comb_proc; 
  
@@ -267,9 +267,9 @@ As usual, there are a couple of fun things to point out about the solution for E
 
 
 \begin{my_list}
-\item The FSM has one Mealy-type output. The solution essentially treats this output as a Moore-type output in the first two \texttt{when} clauses of the \texttt{case} statement. In the final \texttt{when} clause, the Z2 output appears in both sections of the \texttt{if} statement. The fact that the Z2 output is different in the context of state ST2 that makes it a Mealy-type output and therefore a Mealy-type FSM. 
+\item The FSM has one Mealy-type output. The solution essentially treats this output as a Moore-type output in the first two \texttt{when} clauses of the \texttt{case} statement. In the final \texttt{when} clause, the Z2 output appears in both sections of the \texttt{if} statement. The fact the Z2 output is different in the context of state ST2 that makes it a Mealy-type output and therefore a Mealy-type FSM. 
 
-\item When faking the state variable outputs (keeping in mind that the actual state variables are represented with enumeration types), two signals are required since the state diagram contains more than two states (and less than five states). The solution opted to represent these outputs as a bundle which has the effect of slightly changing the form of the selected signal assignment statement appearing at the end of the architecture description. 
+\item When faking the state variable outputs (keeping in mind that the actual state variables are represented with enumeration types), two signals are required since the state diagram contains more than two states (and less than five states). The solution opted is to represent these outputs as a bundle which has the effect of slightly changing the form of the selected signal assignment statement appearing at the end of the architecture description. 
 \end{my_list}
 
 \begin{leftbar}
@@ -287,7 +287,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{leftbar}
 
 \noindent
-\textbf{SOLUTION.} The state diagram indicates that its implementation will contain four states, one external input, and two external outputs. This is a hybrid FSM in that the if contains both a Mealy and Moore-type output but in this case, the FSM would be considered a Mealy-type FSM. The black-box diagram and the actual solution for the solution is shown in listing \ref{exe_20_code}. 
+\textbf{SOLUTION.} The state diagram indicates that its implementation will contain four states, one external input and two external outputs. This is a hybrid FSM in that the if contains both a Mealy and Moore-type output but in this case, the FSM would be considered a Mealy-type FSM. The black-box diagram and the actual solution for the solution is shown in listing \ref{exe_20_code}. 
 \begin{figure}[!h]
     \centering
 	\includegraphics[width=5cm]{fsm/ex20_sol.png}
@@ -350,12 +350,14 @@ begin
 end fsm4;
 \end{lstlisting}
 
-If you haven't noticed by now, implementing FSMs using VHDL behavioral model is remarkable straightforward. In reality, I rarely code a FSM from scratch; I usually opt to grab some previous FSM I have coded and start from there. Keep in mind that real engineering is rarely based on a cookbook. For FSM problems, the engineering is in the testing and creation of the state diagram. Do not get too comfortable with behavioral modelling of FSMs; the real fun is actually generating a FSM that solves a given problem. 
+If you haven't noticed by now, implementing FSMs using the VHDL behavioral model is remarkably straightforward. In reality, I rarely code a FSM from scratch; I usually opt to grab some previous FSM I have coded and start from there. Keep in mind that real engineering is rarely based on a cookbook. For FSM problems, the engineering is in the testing and creation of the state diagram. Do not get too comfortable with behavioral modeling of FSMs; the real fun is actually generating a FSM that solves a given problem. 
 
 \section{One-Hot Encoding for FSMs}
-Truth told, there are many different methods that can be used to encode state variables\footnote{In this case, encoding refers to the act of assigning a unique pattern of  1's and 0's to each of the state in order to make them unambiguous from other states.}. If the exact form of the representation used is important to you, they you will need to take the necessary steps in order to control how the state variables are represented by the synthesizer. There are to approaches to control state variable representation. The first approach is to allow the synthesising tool to handle the details. Since every FSM we have seen up to this point has used enumeration types to represent the state variables, the synthesizer could choose to actually represent them by an encoding scheme of its own choosing. The reality is that the tools generally have an option to select the desired encoding scheme. The downside of this approach is that you are denied the learning experience associated with implementing the VHDL code that explicitly induces your desired encoding scheme. After all, you may have some special encoding scheme you need to use but is not supported by the development tools. The second approach to encoding the state variables is to specify them directly in VHDL. The approach of specifying the state variables in the VHDL code is presented in this section. 
+Truth told, there are many different methods that can be used to encode state variables\footnote{In this case, encoding refers to the act of assigning a unique pattern of  1's and 0's to each of the state in order to make them unambiguous from other states.}. If the exact form of the representation used is important to you, then you will need to take the necessary steps in order to control how the state variables are represented by the synthesizer. There are two approaches to control state variable representation. The first approach is to allow the synthesizing tool to handle the details. Since every FSM we have seen up to this point has used enumeration types to represent the state variables, the synthesizer could choose to actually represent them with an encoding scheme of its own choosing. The reality is that the tools generally have an option to select the desired encoding scheme. The downside of this approach is that you are denied the learning experience associated with implementing the VHDL code that explicitly induces your desired encoding scheme. After all, you may have some special encoding scheme you need to use but is not supported by the development tools. The second approach to encoding the state variables is to specify them directly in VHDL. The approach of specifying the state variables in the VHDL code is presented in this section. 
 
-The approach taken in the previous FSM examples was to pretend like we were using full encoding for the state variables of the FSM. The full encoding approach minimises the number of storage elements (flip-flops) used to store the state variables. The closed form equation describing the number of flip-flops required for a given FSM as a function of the number of states is shown in equation \ref{eq1}. The bracket-like symbols used in equation \ref{eq1} indicates a ceiling function\footnote{The ceiling function $y=\lceil x \rceil$ assigns $y$ to the smallest integer that is greater or equal to $x$.}. Note the nice comfortable binary relationship expressed by this equation so much so that full encoding is often referred to as binary encoding. 
+One-hot encoding uses one bit in the state register for each state of the FSM. For a one-hot encoding FSM with 16 states, 16 flip flops are required. However only four flip flops are required if the same FSM is implemented using a binary encoding. One-hot encoding simplifies the logic and the interconnections between overall logic. Despite looking quite wasteful in terms of employed logic, one-hot encoding often results in smaller and faster FSMs.
+
+The approach taken in the previous FSM examples was to pretend we were using full encoding for the state variables of the FSM. The full encoding approach minimizes the number of storage elements (flip-flops) used to store the state variables. The closed form equation describing the number of flip-flops required for a given FSM as a function of the number of states is shown in equation \ref{eq1}. The bracket-like symbols used in equation \ref{eq1} indicate a ceiling function\footnote{The ceiling function $y=\lceil x \rceil$ assigns $y$ to the smallest integer that is greater or equal to $x$.}. The binary nature expressed by this equation is so apparent that this encoding is often referred to as binary encoding.
 
 \begin{equation}\label{eq1}
  \#(flip\_flops) = \lceil \log_2(\#states) \rceil
@@ -369,7 +371,7 @@ For one-hot encoded FSMs, only one flip-flop is asserted at any given time. This
 
 The question naturally arises as to how VHDL can be used to implement one-hot encoded FSMs. If you want total control of the process, you will need to grab control away from the synthesizer. And since we are concerned with learning VHDL, we need to look at the process of explicitly encoding one-hot FSMs. 
 
-The modular approach we used to implement FSMs expedites the conversion process from using enumeration types to actually specifying how the state variables are represented. These changes required from our previous approach are limited to how the outputs are assigned to the state variables and how the state variables are forced to be represented by certain bit patterns. Modifications to the full encoded approach as thus limited to the entity declaration (you will need more variables to represent the states), the declaration of the state variables (you will need to explicitly declare the bit patterns associated with each state), and the assignment of the state variables to the outputs (in this case, we are actually not faking it like we were in other examples). 
+The modular approach we used to implement FSMs expedites the conversion process from using enumeration types to actually specifying how the state variables are represented. These changes required from our previous approach are limited to how the outputs are assigned to the state variables and how the state variables are forced to be represented by certain bit patterns. Modifications to the full encoded approach are thus limited to the entity declaration (you will need more variables to represent the states), the declaration of the state variables (you will need to explicitly declare the bit patterns associated with each state) and the assignment of the state variables to the outputs (in this case, we are actually not faking it like we were in other examples). 
 
 \begin{leftbar}
 \begin{minipage}[t]{0.5\textwidth}
@@ -386,9 +388,9 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The state diagram shows four states, one external input X, two external outputs Z1 and Z2 with the Z2 output being a Mealy output. This is a Mealy machine that indicates one-hot encoding should be used to encode the state variables. We will approach this solution in pieces, bits and pieces.
+\textbf{SOLUTION.} The state diagram shows four states, one external input X, two external outputs Z1 and Z2 with the Z2 output being a Mealy output. This is a Mealy machine that indicates one-hot encoding should be used to encode the state variables. We will approach the implementation of this FSM one piece at the time.
 
-listing \ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example 20 to a pseudo one-hot encoding. listing \ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in listing \ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesiser to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in listing \ref{exe_21_code_3} that default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in listing \ref{exe_21_code_4} 
+listing \ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example 20 to a pseudo one-hot encoding. Listing \ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in listing \ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesizer to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in listing \ref{exe_21_code_3} that the default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in listing \ref{exe_21_code_4} 
 
 \begin{lstlisting}[label=exe_21_code_1, caption=Modifications to convert Example 20 to one-hot encoding.]
 -- full encoded approach
@@ -407,11 +409,11 @@ end my_fsm4;
 \end{lstlisting}
 
 \begin{lstlisting}[label=exe_21_code_2, caption=Modifications to convert state variables to use one-hot encoding.]
--- the approach to for enumeration types   
+-- the approach for enumeration types   
 type state_type is (ST0,ST1,ST2,ST3); 
 signal PS,NS : state_type; 
 ----------------------------------------------------------------------
--- the approach used for explicitly specifying state bit patters
+-- the approach used for explicitly specifying state bit patterns
 type state_type is (ST0,ST1,ST2,ST3); 
 attribute ENUM_ENCODING: STRING; 
 attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
@@ -502,16 +504,16 @@ end fsm4_oh;
 \section{Important Points}
 
 \begin{my_list}
-\item Modelling FSMs from a state diagram is a straightforward process using VHDL behavioral modelling. The process is so straightforward that it is often considered cookie cutter. The real engineering involved in implementing FSM is in the generation of the state diagram that solved the problem at hand.
+\item Modeling FSMs from a state diagram is a straightforward process using VHDL behavioral modeling. The process is so straightforward that it is often considered cookie cutter. The real engineering involved in implementing FSM is in the generation of the state diagram that solved the problem at hand.
 
-\item Due to the general versatility of VHDL, there are many approaches that can be used to model FSMs using VHDL. The approach used in this tutorial details with only one of those styles but is generally considered the most straightforward of all styles. 
+\item Due to the general versatility of VHDL, there are many approaches that can be used to model FSMs using VHDL. The approach used here details only one of those styles but is generally considered the most straightforward of all styles. 
 
 \item The actual encoding of the FSM's state variables when enumeration types are used is left up to the synthesis tool. If a preferred method of variable encoding is desired, using the attribute approach detail in this section is a simple but viable alternative. 
 \end{my_list}
 
 \newpage
 \clearpage
-\section{Exercises: Behavioral Modelling of Finite State Machines}
+\section{Exercises: Behavioral Modeling of Finite State Machines}
 %%%%%% EXERCISE 1 %%%%%%
 \vspace{20pt}
 \noindent
@@ -575,7 +577,7 @@ end fsm;
 \noindent
 \begin{minipage}[t]{0.5\textwidth}
 \textbf{EXERCISE 2.}
-Write a VHDL behavioral model that could be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+Write a VHDL behavioral model that could be used to implement the state diagram as shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
 \vspace{0pt}\raggedright
@@ -652,7 +654,7 @@ end my_fsmx;
 \vspace{20pt}
 \noindent
 \begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 2.}
+\textbf{EXERCISE 4.}
 Write the VHDL behavioral model code that could be used to implement the state diagram on shown in the right.
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}

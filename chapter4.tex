@@ -1,4 +1,4 @@
-% Freerange VHDL
+% Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
 % Date: May, 2011
 %
@@ -9,9 +9,9 @@
 \chapter{VHDL Programming Paradigm}
 The previous chapter introduced the idea of the basic design units of VHDL: the entity and the architecture. Most of the time was spent describing the entity simply because there is so much less involved compared to the architecture. Remember, the entity declaration is used to describe the interface of a circuit to the outside world. The architecture is used to describe how the circuit is intended to function.
 
-Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realising this is massively important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is a not a good idea. 
+Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realizing this is massively important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is a not a good idea. 
 
-When viewed correctly, VHDL represents a completely different approach to programming while still having many similarities to other programming languages. The main similarity is that they both use a syntactical and rule-based language to describe something abstract. But, the difference is that they are describing two different things. Most programming languages are used to implement functionalities in a sequential manner, one instruction at a time. VHDL however describes hardware and so instructions are executed in a concurrent manner\footnote{In VHDL there are actually ways to obtain sequential execution as well.}, meaning that all instructions are executed at once. Realising this fact will help you to truly understand the VHDL programming paradigm and language.
+When viewed correctly, VHDL represents a completely different approach to programming while still having many similarities to other programming languages. The main similarity is that they both use a syntactical and rule-based language to describe something abstract. But, the difference is that they are describing two different things. Most programming languages are used to implement functionalities in a sequential manner, one instruction at a time. VHDL however describes hardware and so instructions are executed in a concurrent manner\footnote{In VHDL there are actually ways to obtain sequential execution as well.}, meaning that all instructions are executed at once. Realizing this fact will help you to truly understand the VHDL programming paradigm and language.
 
 \section{Concurrent Statements}
 At the heart of most programming languages are the statements that form a majority of the associated source code. These statements represent finite quantities of ``actions'' to be taken. A statement in an algorithmic programming language such as C or Java represents an action to be taken by the processor. Once the processor finishes one action, it moves onto the next action specified somewhere in the associated source code. This makes sense and is comfortable to us as humans because just like the processor, we are generally only capable of doing one thing at a time. This description lays the foundation for an algorithmic method where the processor does a great job of following a set of rules which are essentially the direction provided by the source code. When the rules are meaningful, the processor can do amazing things. 
@@ -72,7 +72,7 @@ end my_circuit_arc;
 
 Listing \ref{parallel_code} shows the code that implements the circuit shown in Figure \ref{concurrent_circuit}. This code shows four concurrent signal assignment statements. As seen before, the ``$<=$'' construct refers to the signal assignment operator. It is true that we cannot write these four statements at the same time but we can interpret these statements as actions that occur concurrently. Remember to keep in mind that the concept of concurrency is a key concept in VHDL. If you feel that the algorithmic style of thought is creeping into your soul, try to snap out of it quickly. The concurrent signal assignment is discussed in greater detail in the next section. 
 
-As a consequence of the concurrent nature of VHDL statements, the three chunks of code appearing below are 100\% equivalent to the code shown in Listing \ref{parallel_code}. Once again, since the statements are interpreted as occurring concurrently: the order that these statements appear in your VHDL source code makes no difference. Generally speaking, it would be a better idea to describe the circuit as shown in Listing \ref{parallel_code} since it somewhat reflects the natural organisation of statements.
+As a consequence of the concurrent nature of VHDL statements, the three chunks of code appearing below are 100\% equivalent to the code shown in Listing \ref{parallel_code}. Once again, since the statements are interpreted as occurring concurrently: the order that these statements appear in your VHDL source code makes no difference. Generally speaking, it would be a better idea to describe the circuit as shown in Listing \ref{parallel_code} since it somewhat reflects the natural organization of statements.
 
 \begin{lstlisting}[label=parallel_code_2, caption=Equivalent VHDL code for the circuit of Figure 4.1. ]
 C_out <= (not D_1) and B_2; 
@@ -98,7 +98,7 @@ Algorithmic programming languages always have some type of assignment operator. 
 
 With these new insights into VHDL, you should be able to understand the code of Listing \ref{parallel_code} and its relationship to its schematic shown in Figure \ref{concurrent_circuit}. The statement ``\texttt{\footnotesize G~$<=$A~AND~B;}'' indicates that the value of the signal named ``\texttt{\footnotesize G}'' represents an AND logic operation between the signals ``\texttt{\footnotesize A}'' and ``\texttt{\footnotesize B}''.
 
-There are four types of concurrent statements that are examined in this chapter. We have already briefly discussed the concurrent signal assignment statement which we will soon examine further and put it into the context of an actual circuit. The three other types of concurrent statements that are of immediate interest to us are the process statement, the conditional signal assignment, and the selected signal assignment.
+There are four types of concurrent statements that are examined in this chapter. We have already briefly discussed the concurrent signal assignment statement which we will soon examine further and put it into the context of an actual circuit. The three other types of concurrent statements that are of immediate interest to us are the process statement, the conditional signal assignment and the selected signal assignment.
 
 In essence, the four types of statements represent the tools that you will use to implement digital circuits in VHDL. You will soon be discovering the versatility of these statements. Unfortunately, this versatility effectively adds a fair amount of steepness to the learning curve. As you know from your experience in other programming languages, there are always multiple ways to do the same things. Stated differently, several seemingly different pieces of code can actually produce the same result. The same is true for VHDL code: several considerably different pieces of VHDL code can actually generate the exact same hardware. Keep this in mind when you look at any of the examples given in this tutorial. Any VHDL code used to solve a problem is more than likely one of many possible solutions to that problem. Some of the VHDL models in this tutorial are presented to show that something can be done a certain way, but that does not necessarily mean they can only be done in that way.
 
@@ -115,7 +115,7 @@ The general form of a concurrent signal assignment statement is shown in Listing
 Write the VHDL code that implements a three-input NAND gate. The three input signals are named A, B and C and the output signal name is F. 
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} It is good practise to always draw a diagram of the circuit you are designing. Furthermore, although we could draw a diagram showing the familiar symbol for the NAND gate, we will choose to keep the diagram general and take the black-box approach instead. Remember, the black box is a nice aid when it comes to writing the entity declaration. The solution to Example 1 is provided in Listing \ref{example_1}.
+\textbf{SOLUTION.} It is good practice to always draw a diagram of the circuit you are designing. Furthermore, although we could draw a diagram showing the familiar symbol for the NAND gate, we will choose to keep the diagram general and take the black-box approach instead. Remember, the black box is a nice aid when it comes to writing the entity declaration. The solution to Example 1 is provided in Listing \ref{example_1}.
 
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}[numbers=left,label=example_1, caption=Solution of Example 1.]
@@ -163,8 +163,8 @@ end exb_nand3;
 This example contains a few new ideas that are worth further clarification.
 \begin{my_list}
 \item There are header files and library files that must be included in your VHDL code in order for your code to correctly compile. These few lines of code are listed at the top of the code in Listing \ref{example_1}. The listed lines are more than what is needed for this example but they will be required in later examples. To save space, these lines will be omitted in some of the coming examples.
-\item This example highlights the use of several logic operators. The logic operators available in VHDL are AND, OR, NAND, NOR, XOR, and XNOR. The NOT operator is technically speaking not a logic operator but is also available. Moreover, these logic operators are considered to be binary operators in that they operate on the two values appearing on the left and right-hand side of the operator. The NOT operator is a unary operator and for that, it only operates on the value appearing to the right of the operator.
-\item Two architectures have been provided in this solution; they are both associated with the same entity. This is fairly common practise in complex circuits but is not overly useful in most VHDL design.
+\item This example highlights the use of several logic operators. The logic operators available in VHDL are AND, OR, NAND, NOR, XOR and XNOR. The NOT operator is technically speaking not a logic operator but is also available. Moreover, these logic operators are considered to be binary operators in that they operate on the two values appearing on the left and right-hand side of the operator. The NOT operator is a unary operator and for that, it only operates on the value appearing to the right of the operator.
+\item Two architectures have been provided in this solution; they are both associated with the same entity. This is fairly common practice in complex circuits but is not overly useful in most VHDL design.
 \end{my_list}
 Example 1 demonstrates the use of the concurrent signal assignment (CSA) statement in a working VHDL program (refer to line 13 and 18 of Listing \ref{example_1}). But since there is only one CSA statement, the concept of concurrency is not readily apparent. The idea behind any concurrent statement in VHDL is that the output is changed any time one of the input signals changes. In other words, the output F is re-evaluated any time a signal on the input expression changes. This is a key concept in truly understanding the VHDL, so you may want to read that sentence a few more times. The idea of concurrency is more clearly demonstrated in Example 2.
 
@@ -242,7 +242,7 @@ end f3_1;
 
 Despite the fact that the architectures \texttt{f3\_2 }and \texttt{f3\_1} of Listing \ref{example_2} and Listing \ref{example_2_bis} appear different, they are functionally equivalent. This is because all the statements are \textbf{concurrent signal assignment statements}. Even though the \texttt{f3\_1} architecture contains three CSAs, they are functionally equivalent to the CSA in \texttt{f3\_2} because each of the three statements is effectively executed concurrently.
 
-Although the approach of using intermediate signals is not mandatory for this example, their use brings up some good points. First, the use of intermediate signals is the norm for most VHDL models. The use of intermediate signals was optional in Listing \ref{example_2_bis} due to the fact that the example was modelling a relatively simple circuit. As circuits become more complex, there are many occasions in which intermediate signals must be used. Secondly, intermediate signals are something of a tool that you will often need to use in your VHDL models. The idea here is that you are trying to describe a digital circuit using a textual description language: you will often need to use intermediate signals in order to accomplish your goal of modelling the circuit. The use of intermediate signals allows you to more easily model digital circuits but does not make the generated hardware more complicated. The tendency in using VHDL is to think that since there is more text written on your page, the circuit you are describing and/or the resulting hardware is larger or more complex. This is simply not true. The main theme of VHDL is that you should use the VHDL tools at your disposal in order to model your circuits in the simplest way possible. Simple circuits have a higher probability of being understood and synthesized. But most importantly, a simple VHDL model is not related to the length of the actual VHDL code.
+Although the approach of using intermediate signals is not mandatory for this example, their use brings up some good points. First, the use of intermediate signals is the norm for most VHDL models. The use of intermediate signals was optional in Listing \ref{example_2_bis} due to the fact that the example was modeling a relatively simple circuit. As circuits become more complex, there are many occasions in which intermediate signals must be used. Secondly, intermediate signals are something of a tool that you will often need to use in your VHDL models. The idea here is that you are trying to describe a digital circuit using a textual description language: you will often need to use intermediate signals in order to accomplish your goal of modeling the circuit. The use of intermediate signals allows you to more easily model digital circuits but does not make the generated hardware more complicated. The tendency in using VHDL is to think that since there is more text written on your page, the circuit you are describing and/or the resulting hardware is larger or more complex. This is simply not true. The main theme of VHDL is that you should use the VHDL tools at your disposal in order to model your circuits in the simplest way possible. Simple circuits have a higher probability of being understood and synthesized. But most importantly, a simple VHDL model is not related to the length of the actual VHDL code.
 
 In Example 2 the conversion of the logic function to CSAs was relatively straightforward. The ease with which these functions can be implemented into VHDL code was almost trivial. Then again, the function in Example 2 was not overly complicated. As functions become more complicated (more inputs and outputs), an equation entry approach becomes tedious. Luckily, there are a few other types of concurrent construct that can ease its implementation.
 
@@ -393,7 +393,7 @@ begin
 end f3_4;
 \end{lstlisting}
 
-One thing to notice about the solution shown in Listing \ref{example_5} is the use of the \texttt{when others} clause as the final entry in the selected signal assignment statement. In reality, the middle clause \texttt{'0' when '0'} could be removed from the solution without changing the meaning of the statement. In general, it is considered good VHDL programming practise to include all the expected cases in the selected signal assignment statement followed by the \texttt{when others} clause.
+One thing to notice about the solution shown in Listing \ref{example_5} is the use of the \texttt{when others} clause as the final entry in the selected signal assignment statement. In reality, the middle clause \texttt{'0' when '0'} could be removed from the solution without changing the meaning of the statement. In general, it is considered good VHDL programming practice to include all the expected cases in the selected signal assignment statement followed by the \texttt{when others} clause.
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 6.}
@@ -426,7 +426,7 @@ end mux4t1_2;
 
 Once again, there are a few things of interest in the solution for Example 6 which are listed below.
 \begin{my_list}
-\item The VHDL code has several similarities to the solution of Example 5. The general appearance is the same. Both solutions are also much more pleasing to the eye than the one where the MUX was modelled using only concurrent signal assignment statements.
+\item The VHDL code has several similarities to the solution of Example 5. The general appearance is the same. Both solutions are also much more pleasing to the eye than the one where the MUX was modeled using only concurrent signal assignment statements.
 \item A \texttt{when others} clause is used again. In the case of Example 6, the output is assigned the constant value of \texttt{'0'} when the other listed conditions of the \textit{chooser\_expression} are not met.
 \item The circuit used in this example was a 4:1 MUX. In this case, each of the conditions of the \textit{chooser\_expression} is accounted for in the body of the selected signal assignment statement. However, this is not a requirement. The only requirement here is that the line containing the \texttt{when others} keywords appears in the final line of the statement.
 \end{my_list}
@@ -489,7 +489,7 @@ The only comment for the solution of Example 7 is that the vertical bar is used 
 
 Once again, the selected signal assignment statement is one form of a concurrent statement. This is verified by the fact that there is only one signal assignment statement in the body of the selected signal assignment statement. The selected signal assignment statement is evaluated each time there is a change in the \textit{chooser\_expression} listed in the first line of the selected signal assignment statement.
 
-The final comment regarding the selected signal assignment is similar to the final comment regarding selected signal assignment. You should recognise the general form of the selected signal assignment statement as being similar to the \textit{switch} statements in algorithmic programming languages such as C and Java. Once again, this relationship is examined in much more depth once we are ready to talk about sequential statements.
+The final comment regarding the selected signal assignment is similar to the final comment regarding selected signal assignment. You should recognize the general form of the selected signal assignment statement as being similar to the \textit{switch} statements in algorithmic programming languages such as C and Java. Once again, this relationship is examined in much more depth once we are ready to talk about sequential statements.
 
 \begin{leftbar}
 \noindent
@@ -528,13 +528,13 @@ So, now is not the time to learn about the process statement. We will do that ri
 
 \section{Summary} 
 \begin{my_list}
-\item The entity/architecture pair is the interface description and behaviour description of how a digital circuit operates.
-\item The main design consideration in VHDL modelling supports the fact that digital circuits operate in parallel. In other words, the various design units in a digital design process and store information independently of each other. This is the major difference between VHDL and higher-level computer programming languages.
+\item The entity/architecture pair is the interface description and behavior description of how a digital circuit operates.
+\item The main design consideration in VHDL modeling supports the fact that digital circuits operate in parallel. In other words, the various design units in a digital design process and store information independently of each other. This is the major difference between VHDL and higher-level computer programming languages.
 \item The major signal assignment types in VHDL are: concurrent signal assignment, conditional signal assignment, selected signal assignment and process statements. Each concurrent statement is interpreted as acting in parallel (concurrently) to other concurrent statements.
 \item The process statement is a concurrent statement that contains a series of statements which will be executed in a sequential manner, one after the other. A programmer uses a process statement when he wants to execute some commands in a sequential manner.
 \item The architecture body can contain any or all of the mentioned concurrent statements.
 \item Signals that are declared as outputs in the entity declaration cannot appear on the right-hand side of a signal assignment operator. This characteristic is prevented from being a problem by the declaration and use of intermediate signals. Intermediate signals are similar to signals declared in entities except that they contain no mode specifier. Intermediate signals are declared \textbf{inside} the architecture body just \textbf{before} the begin statement.
-\item Generally speaking, there are multiple approaches in modelling any given digital circuit. In other words, various types of concurrent statements can be used to describe the same circuit. The designer should strive for clarity in digital modelling and allow the VHDL synthesizer to sort out the details.
+\item Generally speaking, there are multiple approaches in modeling any given digital circuit. In other words, various types of concurrent statements can be used to describe the same circuit. The designer should strive for clarity in digital modeling and allow the VHDL synthesizer to sort out the details.
 \end{my_list}
 
 \section{Exercises}
@@ -563,10 +563,10 @@ c) $F(A,B,C,D) = \displaystyle\prod(3,2) $
 
 d) $F(A,B,C,D) = \displaystyle\sum(1,2) $
 
-\item Provide a VHDL model of an 8-input AND gate using concurrent, conditional, and selected signal assignment as well as a process statement.
-\item Provide a VHDL model of an 8-input OR gate using concurrent, conditional, and selected signal assignment as well as a process statement.
-\item Provide a VHDL model of an 8:1 MUX using conditional signal assignment, selected signal assignment, and two different process statements.
-\item Provide a VHDL model of a 3:8 decoder using conditional signal assignment, selected signal assignment, and a process statement; consider the decoder’s outputs to be active-high.
-\item Provide a VHDL model of a 3:8 decoder using conditional signal assignment, selected signal assignment, and a process statement; consider the decoder’s outputs to be active-low.
+\item Provide a VHDL model of an 8-input AND gate using concurrent, conditional and selected signal assignment as well as a process statement.
+\item Provide a VHDL model of an 8-input OR gate using concurrent, conditional and selected signal assignment as well as a process statement.
+\item Provide a VHDL model of an 8:1 MUX using conditional signal assignment, selected signal assignment and two different process statements.
+\item Provide a VHDL model of a 3:8 decoder using conditional signal assignment, selected signal assignment and a process statement; consider the decoder’s outputs to be active-high.
+\item Provide a VHDL model of a 3:8 decoder using conditional signal assignment, selected signal assignment and a process statement; consider the decoder’s outputs to be active-low.
 \end{my_num_list}
 

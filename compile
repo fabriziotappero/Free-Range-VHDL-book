@@ -3,7 +3,7 @@
 # compile twice and rename
 pdflatex ./master.tex
 pdflatex ./master.tex
-cp master.pdf freerange_vhdl.pdf
+cp master.pdf free_range_vhdl.pdf
 rm master.pdf
 
 # remove auxiliary files

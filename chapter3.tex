@@ -1,4 +1,4 @@
-% Freerange VHDL
+% Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
 % Date: May, 2011
 %
@@ -73,7 +73,7 @@ Listing \ref{entity_2} shows an example of a black box and the VHDL code used to
 \item A black-box diagram of the circuit is also provided. Once again, drawing some type of diagram helps with any VHDL code that you may be writing. Remember: do not be scared, draw a picture.
 \end{my_list}
 
-Hopefully, you are not finding these entity specifications too challenging. In fact, they are so straightforward, we will throw in one last twist before we leave the realm of VHDL entities. Most of the more meaningful circuits that you will be designing, analysing and testing have many similar and closely related inputs and outputs. These are commonly referred to as ``bus signals'' in computer lingo. Bus lines are made of more than one signal that differ in name by only a numeric character. In other words, each separate signal in the bus name contains the bus name plus a number to separate it from other signals in the bus. Individual bus signals are referred to as elements of the bus. As you would imagine, buses are often used in digital circuits. Unfortunately, the word bus also refers to established data transfer protocols. To disambiguate the word bus, we will be using the word ``bundle'' to refer to a set of similar signals and bus to refer to a protocol.
+Hopefully, you are not finding these entity specifications too challenging. In fact, they are so straightforward, we will throw in one last twist before we leave the realm of VHDL entities. Most of the more meaningful circuits that you will be designing, analyzing and testing have many similar and closely related inputs and outputs. These are commonly referred to as ``bus signals'' in computer lingo. Bus lines are made of more than one signal that differ in name by only a numeric character. In other words, each separate signal in the bus name contains the bus name plus a number to separate it from other signals in the bus. Individual bus signals are referred to as elements of the bus. As you would imagine, buses are often used in digital circuits. Unfortunately, the word bus also refers to established data transfer protocols. To disambiguate the word bus, we will be using the word ``bundle'' to refer to a set of similar signals and bus to refer to a protocol.
 
 Bundles are easily described in the VHDL entity. All that is needed is a new data type and a special notation to indicate when a signal is a bundle or not. A few examples are shown in Listing \ref{entity_3}. In these examples note that the mode remains the same but the type has changed. The \texttt{std\_logic} data type has now been replaced by the word \texttt{std\_logic\_vector} to indicate that each signal name contains more than one signal. There are ways to reference individual members of each bundle, but we will get to those details later.
 
@@ -121,16 +121,16 @@ port (  a_data : in     std_logic_vector(0 to 7);
 end mux4;
 \end{lstlisting}
 \end{minipage}
-The data type \texttt{std\_logic} and the data type \texttt{std\_logic\_vector} is what the IEEE has standardised for the representation of digital signals. Normally, you should consider that these data types assume the logic value \texttt{1} or the logic value \texttt{0}. However, as specified in the \texttt{std\_logic\_1164} package, the implementation of the \texttt{std\_logic} type (and the \texttt{std\_logic\_vector} type) is a little more generous and includes 9 different values, specifically: \texttt{0,1,U,X,Z,W,L,H,-}. 
+The data type \texttt{std\_logic} and the data type \texttt{std\_logic\_vector} is what the IEEE has standardized for the representation of digital signals. Normally, you should consider that these data types assume the logic value \texttt{1} or the logic value \texttt{0}. However, as specified in the \texttt{std\_logic\_1164} package, the implementation of the \texttt{std\_logic} type (and the \texttt{std\_logic\_vector} type) is a little more generous and includes 9 different values, specifically: \texttt{0,1,U,X,Z,W,L,H,-}. 
 
 The data type \texttt{std\_logic} becomes available to you soon after the declaration \texttt{library IEEE; use IEEE.std\_logic\_1164.all;} at the beginning of your code.
 
-The reason for all these values is the desire for modelling three-state drivers, pull-up and pull-down outputs, high impedance state and a few others types of inputs/outputs. For more details refer to the IEEE 1164 Standard\footnote{IEEE 1164 Standard \url{http://en.wikipedia.org/wiki/IEEE_1164}}.
+The reason for all these values is the desire for modeling three-state drivers, pull-up and pull-down outputs, high impedance state and a few others types of inputs/outputs. For more details refer to the IEEE 1164 Standard\footnote{IEEE 1164 Standard \url{http://en.wikipedia.org/wiki/IEEE_1164}}.
 
 Alternatively to the \texttt{std\_logic} data type, VHDL programmers sometimes use the much simpler data type \texttt{bit} which has only the logic values \texttt{1} and \texttt{0}.
 
 \section{VHDL Standard Libraries}
-The VHDL language as many other programming languages, has gone through a long and intense evolution. Among the most important standardisation steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the three main library packages as shown in lines 2$\sim$5 of listing \ref{main_vhdl_lib}.
+The VHDL language as many other programming languages, has gone through a long and intense evolution. Among the most important standardization steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the three main library packages as shown in lines 2$\sim$5 of listing \ref{main_vhdl_lib}.
 
 \begin{minipage}{0.98\linewidth}
 \begin{lstlisting}[numbers=left,label=main_vhdl_lib, caption=Typical inclusions of IEEE standard libraries.]
@@ -210,7 +210,7 @@ We will see later on in the book that any time we need a non-concurrent executio
 \item Signals described in the entity declaration include a \textit{mode} specifier and a \textit{type}. The mode specifier can be either an \textbf{in} or an \textbf{out} (or, as we will see later on, even an \textbf{inout}) while the type is either a \texttt{std\_logic} or \texttt{std\_logic\_vector}.
 \item The word \textit{bundle} is preferred over the word \textit{bus} when dealing with multiple signals that share a similar purpose. The word bus has other connotations that are not consistent with the bundle definition.
 \item Multiple signals that share a similar purpose should be declared as a bundle using a \texttt{std\_logic\_vector} type. Bundled signals such as these are always easier to work with in VHDL compared to scalar types such as \texttt{std\_logic}.
-\item The architecture describes what your circuit actually does and what its behaviour is. Several possible implementations (models) of the same behaviour are possible in VHDL. These are the \textbf{data-flow} model, the \textbf{behavioral} model, the \textbf{structural} model as well as any combination of them, generally called \textbf{hybrid} model.
+\item The architecture describes what your circuit actually does and what its behavior is. Several possible implementations (models) of the same behavior are possible in VHDL. These are the \textbf{data-flow} model, the \textbf{behavioral} model, the \textbf{structural} model as well as any combination of them, generally called \textbf{hybrid} model.
 \end{my_list}
 
 \section{Exercises}

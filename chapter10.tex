@@ -1,4 +1,4 @@
-% Freerange VHDL
+% Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
 % Date: May, 2011
 %
@@ -8,12 +8,12 @@
 %
 \chapter{Data Objects}
 
-Many of the concepts presented so far have been implicitly presented in the context of example problems. In this way, you have probably been able to generate quality VHDL code but were constrained to use the VHDL style presented in these examples. In this section, we will present some of the underlying details and theories that surround VHDL as a backdoor approach for presenting tools that will allow you to use VHDL for describing the behaviour of more complex digital circuits.
+Many of the concepts presented so far have been implicitly presented in the context of example problems. In this way, you have probably been able to generate quality VHDL code but were constrained to use the VHDL style presented in these examples. In this section, we will present some of the underlying details and theories that surround VHDL as a backdoor approach for presenting tools that will allow you to use VHDL for describing the behavior of more complex digital circuits.
 
 In order to move into more sophisticated VHDL, a good place to start is with the definition of VHDL objects (e.g. data types). An object is an item in VHDL that has both a name (associated identifier) and a specific type. There are four types of objects and many different data types in VHDL. Up to this point, we have only used \texttt{signal} data objects and \texttt{std\_logic} data types. Two new data objects and several new data types are introduced and discussed in this section.
 
 \section{Types of Data Objects}
-There are four types of data objects in VHDL: signals, variables, constants, and files. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects are not discussed in this tutorial. 
+There are four types of data objects in VHDL: signals, variables, constants and files. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects are not discussed in this tutorial. 
 
 Mind that VHDL is vast programming language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translate into an FPGA/CPLD bit-stream is called RTL VHDL and represent only a small subset of what is included in the current VHDL standard. The file  data objects is an example of data object that can not be implemented in a silicon device.
 
@@ -61,12 +61,12 @@ Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2 downto 0) := "
 &\texttt{{\bf constant} max\_cnt : integer := 12;} \\
 \hline
 \end{tabular}}
-\caption{Example declarations for signal, variable, and constant data objects.}
+\caption{Example declarations for signal, variable and constant data objects.}
 \label{vhdl_data_objs_ex}
 \end{table}
 
 \section{Variables and the Assignment Operator ``\texttt{:=}''}
-Although variables are similar to signals, variables are not as functional for the several reasons mentioned in this section. Variables can only be declared and used inside of processes, functions, and procedures (functions and procedures will not be discussed here). Implied in this statement is the sequential nature of variable assignment statements in that all statements appearing in the body of a process are sequential. One of the early mistakes made by VHDL programmers is attempting to use variables outside of processes.
+Although variables are similar to signals, variables are not as functional for the several reasons mentioned in this section. Variables can only be declared and used inside of processes, functions and procedures (functions and procedures will not be discussed here). Implied in this statement is the sequential nature of variable assignment statements in that all statements appearing in the body of a process are sequential. One of the early mistakes made by VHDL programmers is attempting to use variables outside of processes.
 
 The signal assignment operator, $<=$, was used to transfer the value of one signal to another with dealing with signal data objects. When working with variables, the assignment operator $:=$ is used to transfer the value of one variable data object to another. As you can see from Table \ref{vhdl_data_objs_ex}, the assignment operator is overloaded which allows it to be used to assign initial values to the three listed forms of data objects.
 
@@ -77,7 +77,7 @@ With relatively simple circuits, signal objects are generally sufficient. As you
 
 Variable assignment within processes is different. When a variable is assigned a value inside of a process, the assignment is immediate and the newly assigned value can be used immediately inside of the process. In other words, the variable assignment is not scheduled as it was for the signal. This is a giant difference and has massive ramifications in both the circuit simulation and synthesis realm. 
 
-Variables cannot always be modelled as wires in a circuit. They also have no concept of memory since they cannot store events. With all this in mind, you may wonder the appropriate place to use variables. The answer is variables should only be used as iteration counters in loops or as temporary values when executing an algorithm that performs some type of calculation. It is possible to use variables outside of these areas, but it should be avoided.
+Variables cannot always be modeled as wires in a circuit. They also have no concept of memory since they cannot store events. With all this in mind, you may wonder the appropriate place to use variables. The answer is variables should only be used as iteration counters in loops or as temporary values when executing an algorithm that performs some type of calculation. It is possible to use variables outside of these areas, but it should be avoided.
 
 Even though instructions inside a process are executed consecutively, this should not full you in thinking that a process environment is similar to a C-like piece of code. Remember that while C-like code lines require some tens of clock cycles each to be executed, VHDL instructions require very little ns to be executed, hence less than one clock cycle. The price to pay for this enormously fast execution time is that any signal assignment inside a process only takes place at the end of the process. It is therefore advisable that your processes are shorts and simples.
 
@@ -122,7 +122,7 @@ variable max_range : integer := 255;
 constant start_addr : integer:= 512;
 \end{lstlisting}
 
-Although it could be possible to use only basic integer declarations in your code, VHDL allows you to define you own integer types with their own personalised range constraints. These special types should be used where possible to make you code more readable. These type definitions use the \texttt{type} \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
+Although it could be possible to use only basic integer declarations in your code, VHDL allows you to define you own integer types with their own personalized range constraints. These special types should be used where possible to make you code more readable. These type definitions use the \texttt{type} \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
 \vspace{8pt}
 \begin{lstlisting}
 
@@ -165,7 +165,7 @@ type std_ulogic is ( 'U', -- uninitialised
                    );
 \end{lstlisting}
 
-The \texttt{std\_ulogic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in listing \ref{ulogic_type}, this book only deals with '0', '1', 'Z', and '-'. The 'Z' if generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high impedance state, the signal is not driven from that source and is effectively removed from the circuit. And finally, since the characters used in the \texttt{std\_ulogic} type are part of the definition, they must be used as listed. Mind the the use of lower-case letters will generate an error. 
+The \texttt{std\_ulogic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in listing \ref{ulogic_type}, this book only deals with '0', '1', 'Z' and '-'. The 'Z' if generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high impedance state, the signal is not driven from that source and is effectively removed from the circuit. And finally, since the characters used in the \texttt{std\_ulogic} type are part of the definition, they must be used as listed. Mind the the use of lower-case letters will generate an error. 
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
 %\vspace{10pt}

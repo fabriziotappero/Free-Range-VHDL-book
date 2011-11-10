@@ -1,4 +1,4 @@
-% Freerange VHDL
+% Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
 % Date: May, 2011
 %
@@ -7,16 +7,16 @@
 % !TEX root = master.tex
 %
 \chapter{Registers and Register Transfer Level}
-The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straightforward concepts in VHDL. A register is VHDL is simply a vector version of a D flip-flop in which all operations on the flip-flops occur simultaneously. The "register transfer level", or RTL, is a flavor of design that is primarily concern with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "datapath" designs which requires the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the datapath. In these cases, the proper sequencing of data transfers is controlled by a FSM. 
+The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straightforward concepts in VHDL. A register is VHDL is simply a vector version of a D flip-flop in which all operations on the flip-flops occur simultaneously. The "register transfer level", or RTL, is a flavor of design that is primarily concern with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "data-path" designs which requires the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the data-path. In these cases, the proper sequencing of data transfers is controlled by a FSM. 
 
-The study of RTL-level design is best accomplished in the context of a datapath design. The design of datapaths is best accomplished in the context of a digital circuit that has some purpose such as an arithmetic logic unit design. Both of these topics are beyond what needs to be mentioned here. The good news is that the simplicity of the registers makes for a quick introduction to the matter. Major circuit implementations are saved for some other time.
+The study of RTL-level design is best accomplished in the context of a data-path design. The design of data-paths is best accomplished in the context of a digital circuit that has some purpose such as an arithmetic logic unit design. Both of these topics are beyond what needs to be mentioned here. The good news is that the simplicity of the registers makes for a quick introduction to the matter. Major circuit implementations are saved for some other time.
 
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 23.}
-Use VHDL behavioural modelling to design the 8-bit register that has a synchronous active high parallel load signal LD. Consider the load of the register to be synchronised to rising edges of the clock. 
+Use VHDL behavioral modeling to design the 8-bit register that has a synchronous active high parallel load signal LD. Consider the load of the register to be synchronized to rising edges of the clock. 
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
 \vspace{0pt}\raggedright
@@ -31,7 +31,7 @@ Use VHDL behavioural modelling to design the 8-bit register that has a synchrono
 
 \item The code uses a bundle signal for both the input and output. The assignment of the bundles to other bundles is straightforward in VHDL as is shown in the code. In many cases, such as the one in this example, there is no need to use a bundle access operator in the VHDL model. 
 
-\item The assignment of the input to the output is based on characteristics of both the clock edge and the state of the LD signal. The approach taken in the VHDL model shown in listing \ref{ex23_code} is to provide a separate \texttt{if} clause for both the LD and CLK signals. Only one \texttt{if} statement could have been used by making both conditions associated with the single \texttt{if} clause but this is not considered good VHDL programming practise when dealing with synchronised elements. In other words, you should always strive to keep special conditions associated with the clocking signal separate from all other conditions associated with the action in question. Clock signals are somewhat special in the VHDL land; you should get into the habit of treating them gently. 
+\item The assignment of the input to the output is based on characteristics of both the clock edge and the state of the LD signal. The approach taken in the VHDL model shown in listing \ref{ex23_code} is to provide a separate \texttt{if} clause for both the LD and CLK signals. Only one \texttt{if} statement could have been used by making both conditions associated with the single \texttt{if} clause but this is not considered good VHDL programming practice when dealing with synchronized elements. In other words, you should always strive to keep special conditions associated with the clocking signal separate from all other conditions associated with the action in question. Clock signals are somewhat special in the VHDL land; you should get into the habit of treating them gently. 
 \end{my_list}
 
 \begin{lstlisting}[label=ex23_code, caption=Solution to Example 23.]
@@ -61,7 +61,7 @@ The circuit in the following example is slightly more complex than most of the e
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 24.}
-Use VHDL behavioral modelling to design the circuit shown on the right. Consider both the loading signals to be active high. Cconsider the circuit to be synchronised to the rising edge of the clock signal. 
+Use VHDL behavioral modeling to design the circuit shown on the right. Consider both the loading signals to be active high. Consider the circuit to be synchronized to the rising edge of the clock signal. 
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \vspace{0pt}\raggedright
@@ -74,7 +74,7 @@ Use VHDL behavioral modelling to design the circuit shown on the right. Consider
 \begin{my_list}
 \item There are three concurrent statements in this solution: two behavioral models and one data-flow model. 
 
-\item There is a separate process for each of the two registers. Although it would have been possible to represent both registers using one process, it would have been somewhat complicated and somewhat hard to understand. The better approach in VHDL is always to break tasks down into their logically separate functions and use the various VHDL modelling techniques as tools to keep the tasks separate and simple. The reality is that the synthesizer becomes your friend if you provide it with simple models. The quantity of VHDL code describing a certain design is immaterial; the complexity of any given model is determined by the most complex piece of code in the model. Simple is always better in VHDL.
+\item There is a separate process for each of the two registers. Although it would have been possible to represent both registers using one process, it would have been somewhat complicated and somewhat hard to understand. The better approach in VHDL is always to break tasks down into their logically separate functions and use the various VHDL modeling techniques as tools to keep the tasks separate and simple. The reality is that the synthesizer becomes your friend if you provide it with simple models. The quantity of VHDL code describing a certain design is immaterial; the complexity of any given model is determined by the most complex piece of code in the model. Simple is always better in VHDL.
 
 \item All of signal shown in the Example 24 have external linkage except for the output of the MUX. The MUX output is connected to the inputs of both registers. The final approach taken in this solution is typical in VHDL: many processes that communicate with each other through shared signals. In this example, there is only one shared signal but this is a fairly simple program. The same inter-process communication model is used in more complicated circuits.
 
@@ -124,7 +124,7 @@ end rtl_behavioral;
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 25.}
-Use VHDL structural modelling to design the circuit shown on the right. Consider both of the loading signals to be active high. Consider the circuit to be synchronised to the rising edge of the clock signal.
+Use VHDL structural modeling to design the circuit shown on the right. Consider both of the loading signals to be active high. Consider the circuit to be synchronized to the rising edge of the clock signal.
 \end{minipage}
 \begin{minipage}[t]{0.5\textwidth}
 \vspace{0pt}\raggedright
@@ -133,15 +133,15 @@ Use VHDL structural modelling to design the circuit shown on the right. Consider
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 25 is shown in listing \ref{ex25_code}. There is not too much interesting to note here. This is a more realistic example of a structural model compared to the example presented in the section on structural modelling. There are only a few new and wonderful things to note about this solution.
+\textbf{SOLUTION.} The solution to Example 25 is shown in listing \ref{ex25_code}. There is not too much interesting to note here. This is a more realistic example of a structural model compared to the example presented in the section on structural modeling. There are only a few new and wonderful things to note about this solution.
 
 \begin{my_list}
-\item The massively important thing to note about the solution in listing \ref{ex25_code} is to not be intimidated by the shear quantity of code listed. The code is well structured; if you are able to recognise this structure, you will be more apt to understand the solution. And better yet, you will be more on your way of being able to write you own amazing chunks of VHDL code. 
+\item The massively important thing to note about the solution in listing \ref{ex25_code} is to not be intimidated by the shear quantity of code listed. The code is well structured; if you are able to recognize this structure, you will be more apt to understand the solution. And better yet, you will be more on your way of being able to write you own amazing chunks of VHDL code. 
 
 \item The VHDL source code shown in listing \ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indented. No surprise here but, properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is as actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
 \end{my_list}
 
-\begin{lstlisting}[label=ex25_code, caption=Solution to Example 25 using a structural modelling approach.]
+\begin{lstlisting}[label=ex25_code, caption=Solution to Example 25 using a structural modeling approach.]
 entity mux2t1 is
    port (  A,B : in std_logic_vector(7 downto 0); 
            SEL : in  std_logic; 
