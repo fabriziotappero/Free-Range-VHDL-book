@@ -111,8 +111,8 @@ This is how you therefore proceed:
 
 \noindent
 \textbf{Step One:} The first step in a structural implementation is identical to the standard approach we have used for the implementing other VHDL circuits: the \texttt{entity}. The entity declaration is derived directly from dashed box in Fig.~\ref{ex22_comp} and is shown in listing~\ref{ex22_code_ent}. In other words, signals that intersect the dashed lines are signals that are known to the outside world and must be included in the entity declaration.
-\newpage
-\clearpage
+
+\newpage\clearpage
 \begin{lstlisting}[label=ex22_code_ent, caption=Entity declaration for 3-bit comparator.]
 -----------------------------------------------------
 -- Interface description of 3-bit comparator
@@ -252,8 +252,8 @@ x5: some_component port map (CLK => CLK,
                               CS => CS); 
 \end{lstlisting}
 
+\newpage\clearpage
 \section{Important Points}
-
 \begin{my_list}
 \item Structural modeling in VHDL supports hierarchical design concepts. The ability to abstract digital circuits to higher levels is the key to understanding and designing complex digital circuits.
 

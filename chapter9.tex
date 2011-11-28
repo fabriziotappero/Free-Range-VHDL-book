@@ -7,7 +7,7 @@
 % !TEX root = master.tex
 %
 \chapter{Registers and Register Transfer Level}
-The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straightforward concepts in VHDL. A register is VHDL is simply a vector version of a D flip-flop in which all operations on the flip-flops occur simultaneously. The "register transfer level", or RTL, is a flavor of design that is primarily concern with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "data-path" designs which requires the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the data-path. In these cases, the proper sequencing of data transfers is controlled by a FSM. 
+The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straightforward concepts in VHDL. A register in VHDL is simply a vector version of a D flip-flop in which all operations on the flip-flops occur simultaneously. The "register transfer level", or RTL, is a flavor of design that is primarily concerned with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "data-path" designs which require the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the data-path. In these cases, the proper sequencing of data transfers is controlled by a FSM. 
 
 The study of RTL-level design is best accomplished in the context of a data-path design. The design of data-paths is best accomplished in the context of a digital circuit that has some purpose such as an arithmetic logic unit design. Both of these topics are beyond what needs to be mentioned here. The good news is that the simplicity of the registers makes for a quick introduction to the matter. Major circuit implementations are saved for some other time.
 
@@ -54,7 +54,7 @@ begin
 end reg8;
 \end{lstlisting}
 
-The circuit in the following example is slightly more complex than most of the examples seen so far. Additionally, remember that there are many different solutions to the same problem. This is a common occurrence in VHDL, in fact, many times there is no best method for implementing a given circuit. The following examples are essentially the same problem solved using two different but functionally equivalent solutions.
+The circuit in the following example is slightly more complex than most of the examples seen so far. Additionally, remember that there are many different solutions to the same problem. This is a common occurrence in VHDL; in fact, many times there is no best method for implementing a given circuit. The following examples are essentially the same problem solved using two different but functionally equivalent solutions.
 
 \begin{leftbar}
 \begin{minipage}[t]{0.5\textwidth}
@@ -70,13 +70,13 @@ Use VHDL behavioral modeling to design the circuit shown on the right. Consider 
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The circuit shown in Example 24 includes two 8-bit registers and a 2:1 MUX. This is an example of a bus-based data transfer in the output of the MUX that is connected to the inputs of the two registers. Each of the two registers has their own independent load control input. The solution to Example 24 is shown in listing \ref{ex23_code}. And as we have grown to expect, there are a couple of things worth noting about this solution. 
+\textbf{SOLUTION.} The circuit shown in Example 24 includes two 8-bit registers and a 2:1 MUX. This is an example of a bus-based data transfer in the output of the MUX that is connected to the inputs of the two registers. Each of the two registers has its own independent load control input. The solution to Example 24 is shown in listing \ref{ex23_code}. And as we have grown to expect, there are a couple of things worth noting about this solution. 
 \begin{my_list}
 \item There are three concurrent statements in this solution: two behavioral models and one data-flow model. 
 
 \item There is a separate process for each of the two registers. Although it would have been possible to represent both registers using one process, it would have been somewhat complicated and somewhat hard to understand. The better approach in VHDL is always to break tasks down into their logically separate functions and use the various VHDL modeling techniques as tools to keep the tasks separate and simple. The reality is that the synthesizer becomes your friend if you provide it with simple models. The quantity of VHDL code describing a certain design is immaterial; the complexity of any given model is determined by the most complex piece of code in the model. Simple is always better in VHDL.
 
-\item All of signal shown in the Example 24 have external linkage except for the output of the MUX. The MUX output is connected to the inputs of both registers. The final approach taken in this solution is typical in VHDL: many processes that communicate with each other through shared signals. In this example, there is only one shared signal but this is a fairly simple program. The same inter-process communication model is used in more complicated circuits.
+\item All of signals shown in the Example 24 have external linkage except for the output of the MUX. The MUX output is connected to the inputs of both registers. The final approach taken in this solution is typical in VHDL: many processes that communicate with each other through shared signals. In this example, there is only one shared signal but this is a fairly simple program. The same inter-process communication model is used in more complicated circuits.
 
 \item The model for the 2:1 MUX uses the terminology \texttt{(others => '0')}. This is a short-hand terminology for assigning all of the outputs to '0'. The real nice part about this instruction is that you do not need to know how many 0’s you need to write. This is a nice feature in that if the width of the associated bundle were to change, this particular line of code would not need to be modified. 
 \end{my_list}
@@ -136,9 +136,9 @@ Use VHDL structural modeling to design the circuit shown on the right. Consider 
 \textbf{SOLUTION.} The solution to Example 25 is shown in listing \ref{ex25_code}. There is not too much interesting to note here. This is a more realistic example of a structural model compared to the example presented in the section on structural modeling. There are only a few new and wonderful things to note about this solution.
 
 \begin{my_list}
-\item The massively important thing to note about the solution in listing \ref{ex25_code} is to not be intimidated by the shear quantity of code listed. The code is well structured; if you are able to recognize this structure, you will be more apt to understand the solution. And better yet, you will be more on your way of being able to write you own amazing chunks of VHDL code. 
+\item The massively important thing to note about the solution in listing \ref{ex25_code} is to not be intimidated by the sheer quantity of code listed. The code is well structured; if you are able to recognize this structure, you will be more apt to understand the solution. And better yet, you will be more on your way to being able to write your own amazing chunks of VHDL code. 
 
-\item The VHDL source code shown in listing \ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indented. No surprise here but, properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is as actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
+\item The VHDL source code shown in listing \ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indentation. No surprise here but properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is as actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
 \end{my_list}
 
 \begin{lstlisting}[label=ex25_code, caption=Solution to Example 25 using a structural modeling approach.]

@@ -15,7 +15,7 @@ In order to move into more sophisticated VHDL, a good place to start is with the
 \section{Types of Data Objects}
 There are four types of data objects in VHDL: signals, variables, constants and files. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects are not discussed in this tutorial. 
 
-Mind that VHDL is vast programming language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translate into an FPGA/CPLD bit-stream is called RTL VHDL and represent only a small subset of what is included in the current VHDL standard. The file  data objects is an example of data object that can not be implemented in a silicon device.
+Mind that VHDL is a vast programming language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translated into an FPGA/CPLD bit-stream is called RTL VHDL and represents only a small subset of what is included in the current VHDL standard. The file  data objects are an example of a data object that can not be implemented in a silicon device.
 
 Just as side note, it is interesting to point out that it is also possible to compile VHDL code into an executable file that can be executed, generally for simulation purposes, with any general purpose Intel PC. For more details refer to the open-source work of T. Gingold available at \url{http://ghdl.free.fr}.
 
@@ -40,7 +40,7 @@ Variable & \texttt{{\bf variable} var\_name : var\_type := initial\_value;} \\
 \label{vhdl_data_objs}
 \end{table}
 
-Note that each of the data objects can optionally be assigned initial values to. As you know, signal declarations do not usually include initial values as opposed to constants which generally do. Example declarations for these three flavors of data objects are provided in Table \ref{vhdl_data_objs_ex}. These examples include several new data types which will be discussed in the next section. 
+Note that each of the data objects can optionally be assigned initial values. As you know, signal declarations do not usually include initial values as opposed to constants which generally do. Example declarations for these three flavors of data objects are provided in Table \ref{vhdl_data_objs_ex}. These examples include several new data types which will be discussed in the next section. 
 
 \begin{table}[!h]
 \centering
@@ -68,25 +68,25 @@ Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2 downto 0) := "
 \section{Variables and the Assignment Operator ``\texttt{:=}''}
 Although variables are similar to signals, variables are not as functional for the several reasons mentioned in this section. Variables can only be declared and used inside of processes, functions and procedures (functions and procedures will not be discussed here). Implied in this statement is the sequential nature of variable assignment statements in that all statements appearing in the body of a process are sequential. One of the early mistakes made by VHDL programmers is attempting to use variables outside of processes.
 
-The signal assignment operator, $<=$, was used to transfer the value of one signal to another with dealing with signal data objects. When working with variables, the assignment operator $:=$ is used to transfer the value of one variable data object to another. As you can see from Table \ref{vhdl_data_objs_ex}, the assignment operator is overloaded which allows it to be used to assign initial values to the three listed forms of data objects.
+The signal assignment operator, $<=$, was used to transfer the value of one signal to another while dealing with signal data objects. When working with variables, the assignment operator $:=$ is used to transfer the value of one variable data object to another. As you can see from Table \ref{vhdl_data_objs_ex}, the assignment operator is overloaded which allows it to be used to assign initial values to the three listed forms of data objects.
 
 \section{Signals vs. Variables}
-The use of signals and variables can be somewhat confusing because of their similarities. Generally speaking, a signal can be thought of as representing a wire or some type of physical connection in a design. Signals thus represent a mean to interface VHDL modules which includes connections to the outside world. In terms of circuit simulation, signals can be scheduled to take on multiple values at specific times in the simulation. The specifics of simulating circuits using VHDL are not covered here so the last statement may not carry much meaning to you. The important difference here is that events can be scheduled for signals while for variables, they cannot. The assignment of variables is considered to happen immediately and cannot have a list of scheduled events.
+The use of signals and variables can be somewhat confusing because of their similarities. Generally speaking, a signal can be thought of as representing a wire or some type of physical connection in a design. Signals thus represent a means to interface VHDL modules which include connections to the outside world. In terms of circuit simulation, signals can be scheduled to take on multiple values at specific times in the simulation. The specifics of simulating circuits using VHDL are not covered here so the last statement may not carry much meaning to you. The important difference here is that events can be scheduled for signals while for variables, they cannot. The assignment of variables is considered to happen immediately and cannot have a list of scheduled events.
 
 With relatively simple circuits, signal objects are generally sufficient. As your digital designs become more complex, there is a greater chance that you will need more control of your models than signals alone can provide. The main characteristic of signals that leave them somewhat limited in complex designs is when and how they are scheduled. More specifically, assignments made to signals inside a process are actually only scheduled when the same process is completed. The actual assignment is not made until after the process terminates. This is why multiple signal assignments can be made to the same signal during the execution of a process without generating any type of synthesis error. In the case of multiple signal assignments inside the process, only the most recent assignment to the signal during process execution is assigned. The important thing here is that the signal assignment is not made until after the process terminates. The potential problem that you might face is that the new result (the new value assigned to the signal) is not available to use inside the process. 
 
 Variable assignment within processes is different. When a variable is assigned a value inside of a process, the assignment is immediate and the newly assigned value can be used immediately inside of the process. In other words, the variable assignment is not scheduled as it was for the signal. This is a giant difference and has massive ramifications in both the circuit simulation and synthesis realm. 
 
-Variables cannot always be modeled as wires in a circuit. They also have no concept of memory since they cannot store events. With all this in mind, you may wonder the appropriate place to use variables. The answer is variables should only be used as iteration counters in loops or as temporary values when executing an algorithm that performs some type of calculation. It is possible to use variables outside of these areas, but it should be avoided.
+Variables cannot always be modeled as wires in a circuit. They also have no concept of memory since they cannot store events. With all this in mind, you may wonder what is the appropriate place to use variables. The answer is variables should only be used as iteration counters in loops or as temporary values when executing an algorithm that performs some type of calculation. It is possible to use variables outside of these areas, but it should be avoided.
 
-Even though instructions inside a process are executed consecutively, this should not full you in thinking that a process environment is similar to a C-like piece of code. Remember that while C-like code lines require some tens of clock cycles each to be executed, VHDL instructions require very little ns to be executed, hence less than one clock cycle. The price to pay for this enormously fast execution time is that any signal assignment inside a process only takes place at the end of the process. It is therefore advisable that your processes are shorts and simples.
+Even though instructions inside a process are executed consecutively, this should not fool you in thinking that a process environment is similar to apiece of C code. Remember that while lines of C code require some tens of clock cycles each to be executed, VHDL instructions require very little ns to be executed, hence less than one clock cycle. The price to pay for this enormously fast execution time is that any signal assignment inside a process only takes place at the end of the process. It is therefore advisable that your processes are short and simple.
 
 \section{Data Types}
 Not only does VHDL have many defined data types but VHDL also allows you to define your own types. Here however we will only deal with few of the most widely used types. In this section, the types that have already been discussed are listed and a few more popular and useful types are introduces. 
 
 \section{Commonly Used Types}
 
-The types already introduced in previous chapters as well as two new types are listed in Table \ref{vhdl_data_types}. The \texttt{std\_logic} and \texttt{std\_logic\_vector} types have been extensively used so far. These types are more complex then has been previously stated and will be discussed further in this chapter. The \texttt{enumerated} type was used during the previous discussion of finite states machines. The \texttt{integer} type was cryptically mentioned before but it will be discussed further along with the \texttt{boolean} type in this chapter. 
+The types already introduced in previous chapters as well as two new types are listed in Table \ref{vhdl_data_types}. The \texttt{std\_logic} and \texttt{std\_logic\_vector} types have been extensively used so far. These types are more complex than has been previously stated and will be discussed further in this chapter. The \texttt{enumerated} type was used during the previous discussion of finite state machines. The \texttt{integer} type was cryptically mentioned before but it will be discussed further along with the \texttt{boolean} type in this chapter. 
 
 \begin{table}[!h]
 \centering
@@ -110,9 +110,9 @@ boolean & \texttt{{\bf variable} my\_test : {\bf boolean} := {\bf false};} & Non
 \end{table}
 
 \section{Integer Types}
-The use of integer types aids in the design of algorithmic-type VHDL code. This type of coding allows VHDL to describe the behaviour of complex digital circuits. As you progress in your digital studies, you will soon find yourself in need of more complex descriptive VHDL tools. Data types such as integers partially fills that desire. This section briefly looks at integer types as well as the definition of user specified integer types.
+The use of integer types aids in the design of algorithmic-type VHDL code. This type of coding allows VHDL to describe the behaviour of complex digital circuits. As you progress in your digital studies, you will soon find yourself in need of more complex descriptive VHDL tools. Data types such as integers partially fill that desire. This section briefly looks at integer types as well as the definition of user-specified integer types.
 
-The range of the integer type is [-2,147,483,647 to 2,147,483,647]. These numbers should seem familiar since they represent the standard 32-bit range for a signed number: (-231 to +231). Other types similar to integers includes natural and positive types. These types are basically integers with shifted ranges. For example, the natural and positive types range from 0 and 1 to the full 32-bit range, respectively. Examples of integer declarations are shown in the following listing.
+The range of the integer type is [-2,147,483,647 to 2,147,483,647]. These numbers should seem familiar since they represent the standard 32-bit range for a signed number: (-231 to +231). Other types similar to integers include natural and positive types. These types are basically integers with shifted ranges. For example, the natural and positive types range from 0 and 1 to the full 32-bit range, respectively. Examples of integer declarations are shown in the following listing.
 \vspace{8pt}
 \begin{lstlisting}
 
@@ -122,7 +122,7 @@ variable max_range : integer := 255;
 constant start_addr : integer:= 512;
 \end{lstlisting}
 
-Although it could be possible to use only basic integer declarations in your code, VHDL allows you to define you own integer types with their own personalized range constraints. These special types should be used where possible to make you code more readable. These type definitions use the \texttt{type} \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
+Although it could be possible to use only basic integer declarations in your code, VHDL allows you to define your own integer types with their own personalized range constraints. These special types should be used wherever possible to make your code more readable. These type definitions use the \texttt{type} \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
 \vspace{8pt}
 \begin{lstlisting}
 
@@ -133,7 +133,7 @@ type apples  is range 0 to 15;
 type oranges is range 0 to 15; 
 \end{lstlisting}
 
-Although each of the types listed in the previous listing are basically integers, they are still considered different types and cannot be assigned to each other. In addition to this, any worthy VHDL synthesizer will do range checks on your integer types. In the context of the definitions previously presented, each of the statements in in the following listing is illegal. 
+Although each of the types listed in the previous listing are basically integers, they are still considered different types and cannot be assigned to each other. In addition to this, any worthy VHDL synthesizer will do range checks on your integer types. In the context of the definitions previously presented, each of the statements in the following listing is illegal. 
 \vspace{8pt}
 \begin{lstlisting}
 
@@ -148,7 +148,7 @@ my_score <= 110;        -- out of range
 \end{lstlisting}
 
 \section{The \texttt{std\_logic} Type}
-For the representation of digital signals, so far in this book, we have use the \texttt{std\_logic} type. However, one of the data types not used or not listed in this book is the \texttt{bit} type. This type can take on only the values of '1' or '0' only. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is officially defined in the VHDL STANDARD package and provides a common standard that can be used by all VHDL programmers.
+For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types neither used not listed in this book is the \texttt{bit} type. This type can take on only the values of '1' or '0'. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is officially defined in the VHDL STANDARD package and provides a common standard that can be used by all VHDL programmers.
 
 The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include '1' and '0'. The actual definition is shown in the listing \ref{ulogic_type}. As you can see, this definition lists \texttt{std\_ulogic} as opposed to the \texttt{std\_logic} you are used to. The \texttt{std\_logic} type is a \textit{resolved} version of the \texttt{std\_ulogic} type. The exact meaning of resolution is beyond the scope of this book and can be safely overlooked. 
 
@@ -165,7 +165,7 @@ type std_ulogic is ( 'U', -- uninitialised
                    );
 \end{lstlisting}
 
-The \texttt{std\_ulogic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in listing \ref{ulogic_type}, this book only deals with '0', '1', 'Z' and '-'. The 'Z' if generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high impedance state, the signal is not driven from that source and is effectively removed from the circuit. And finally, since the characters used in the \texttt{std\_ulogic} type are part of the definition, they must be used as listed. Mind the the use of lower-case letters will generate an error. 
+The \texttt{std\_ulogic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in listing \ref{ulogic_type}, this book only deals with '0', '1', 'Z' and '-'. The 'Z' if generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high impedance state, the signal is not driven from that source and is effectively removed from the circuit. And finally, since the characters used in the \texttt{std\_ulogic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error. 
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
 %\vspace{10pt}
@@ -204,6 +204,7 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 \item The variable is declared inside of the process, after the process \texttt{begin} line.
 \end{my_list}
 
+\newpage\clearpage
 \begin{lstlisting}[label=ex26_code, caption=Solution to Example 26.]
 entity clk_div is
     Port (    clk : in std_logic;

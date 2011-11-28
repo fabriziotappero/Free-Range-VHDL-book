@@ -64,7 +64,7 @@ use IEEE.math_real.all;
 use IEEE.math_complex.all;
 \end{verbatim}
 
-For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability of using the assignment operator \texttt{=} between two different data types. The following listing shows a simple coding example of some of the many advantages of using these libraries.
+For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability to use the assignment operator \texttt{=} to compare two different data types. The following listing shows a simple coding example of some of the many advantages of using these libraries.
 \newpage
 \clearpage
 
@@ -99,7 +99,7 @@ begin
    end process sync_proc; 
 end arch;
 \end{lstlisting}
-As it comes clear from the previous listing, the inclusion of these three main standard libraries allows you to write very powerful VHDL code. A quite useful cheat-sheet about VHDL standard libraries and what they can offer is available from here:
+As it becomes clear from the previous listing, the inclusion of these three main standard libraries allows you to write very powerful VHDL code. A quite useful cheat-sheet about VHDL standard libraries and what they can offer is available from here:
 \begin{verbatim}
 http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf
 http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
@@ -113,14 +113,14 @@ Alternatively, the same VHDL libraries can be browsed and downloaded from the GH
 
 \url{http://ghdl.free.fr}
 
-Finally, the software developing tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from: 
+Finally, the software development tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from: 
 
 \url{http://standards.ieee.org} 
 
-will shows you that the constant of type real \texttt{MATH\_PI = 3.1415926} is soon available to you as soon as you include the \texttt{"use IEEE.math\_real.all;"} line. The square root function \texttt{SQRT()} is just another example.
+will show you that the constant of type real \texttt{MATH\_PI = 3.1415926} is available to you as soon as you include the \texttt{"use IEEE.math\_real.all;"} line. The square root function \texttt{SQRT()} is just another example.
 
 \chapter{Appendix C: VHDL Reference Cards}
-Here-below you can find two sets of very useful VHDL reference cards made by Qualis Design Corporation.
+Hereafter you can find two sets of very useful VHDL reference cards made by Qualis Design Corporation.
 
 \begin{verbatim}
 http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf

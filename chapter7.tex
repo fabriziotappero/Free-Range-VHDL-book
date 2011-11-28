@@ -204,7 +204,8 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} The state diagram shown in this problem indicates that this is a three-state FSM with one Mealy-type external output and one external input. Since there are three states, the solution requires at least two state variables to handle the three states. The black-box diagram of the solution is shown in listing \ref{exe_19_code}. Note that the two state variables are handled as a bundled signal.
-\clearpage
+
+\newpage\clearpage
 \begin{figure}[!h]
     \centering
 	\includegraphics[width=5cm]{fsm/ex19_sol.png}
@@ -293,6 +294,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 	\includegraphics[width=5cm]{fsm/ex20_sol.png}
 \end{figure}
 
+\newpage\clearpage
 \begin{lstlisting}[label=exe_20_code, caption=Solution to Example 20.]
 entity my_fsm4 is 
     port ( X,CLK,RESET : in  std_logic; 
@@ -440,6 +442,7 @@ with PS select
 end fsm4;
 \end{lstlisting}
 
+\newpage\clearpage
 \begin{lstlisting}[label=exe_21_code_4, caption=The final solution to Example 21.]
 entity my_fsm4_oh is 
     port ( X,CLK,RESET : in  std_logic; 
@@ -511,8 +514,8 @@ end fsm4_oh;
 \item The actual encoding of the FSM's state variables when enumeration types are used is left up to the synthesis tool. If a preferred method of variable encoding is desired, using the attribute approach detail in this section is a simple but viable alternative. 
 \end{my_list}
 
-\newpage
-\clearpage
+%\newpage
+%\clearpage
 \section{Exercises: Behavioral Modeling of Finite State Machines}
 %%%%%% EXERCISE 1 %%%%%%
 \vspace{20pt}
@@ -585,6 +588,7 @@ Write a VHDL behavioral model that could be used to implement the state diagram 
 \includegraphics[width=5.3cm]{fsm/sm_ex2.png}
 \end{minipage}
 
+\newpage\clearpage
 %%%%%% EXERCISE 3 %%%%%%
 \vspace{20pt}
 \noindent
@@ -740,8 +744,8 @@ Write a VHDL behavioral model code that can be used to implement the state diagr
 \end{minipage}
 
 %%%%%% EXERCISE 7 %%%%%%
-\newpage
-\clearpage
+%\newpage
+%\clearpage
 \vspace{20pt}
 \noindent
 \begin{minipage}{1\textwidth}

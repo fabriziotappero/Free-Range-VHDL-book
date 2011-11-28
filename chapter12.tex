@@ -9,7 +9,7 @@
 \chapter{Standard Digital Circuits in VHDL}
 As you know or as you will be finding out soon, even the most complex digital circuit is comprised of a relatively small set of standard digital circuits plus some associated control signals. This list of standard digital circuits is a mixed bag of combinatorial sequential devices such as MUXes, decoders, counters, comparators, registers, etc. The art of digital design using VHDL is centered around the proper selection and interfacing of these devices. The actual creation and testing of these devices is de-emphasized. 
 
-The most efficient approach to utilizing standard digital circuits using VHDL is to use existing code for these devices and modify them according to the needs of your particular design. This approach allows you to utilize your current knowledge of VHDL to quickly an efficiently design complex digital circuits. The following listings show a set of standard digital devices and the VHDL code used to describe them. The following circuits are represented in various sizes and widths. Note that the following circuit descriptions represent possible VHDL descriptions but are by no means the only descriptions. They do however provide starting points for you to modify them for your own design needs. 
+The most efficient approach to utilizing standard digital circuits using VHDL is to use existing code for these devices and modify them according to the needs of your particular design. This approach allows you to utilize your current knowledge of VHDL to quickly and efficiently design complex digital circuits. The following listings show a set of standard digital devices and the VHDL code used to describe them. The following circuits are represented in various sizes and widths. Note that the following circuit descriptions represent possible VHDL descriptions but are by no means the only descriptions. They do however provide starting points for you to modify for your own design needs. 
 
 \section{RET D Flip-flop (Behavioral Model)}
 \noindent
@@ -123,7 +123,7 @@ end my_count;
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
 -------------------------------------------------------------------
--- Shift Register: One direction shift register with synchronous 
+-- Shift Register: unidirectional shift register with synchronous 
 -- parallel load. 
 -- 
 -- Required signals: 
