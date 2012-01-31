@@ -100,7 +100,7 @@ in       -- uses VHDL reserved word
 it_sucks -- try to avoid
 Big_vAlUe-- valid but ugly
 pa       -- possibly lacks meaning
-sim-val  -- illegal character(dash)
+sim-val  -- illegal character (dash)
 DDE_SUX  -- no comment
 \end{lstlisting}
 \end{flushright}
