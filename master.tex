@@ -6,7 +6,7 @@
 %
 % !TEX root = master.tex
 %
-\documentclass[11pt,b5paper]{book}
+\documentclass[11pt,b5paper]{book} % you can set the paper size in style.sty
 \usepackage{style}
 
 % LINE SPACING
@@ -17,9 +17,10 @@
 \begin{document}
 	% front cover
 	\thispagestyle{empty}
-	\begin{textblock*}{160mm}(5mm,5mm)
+	\begin{textblock*}{160mm}(0mm,3mm)
 	%\textblockcolour{red}
-	\includegraphics[width=160mm]{pics/cover.png}  % full-page picture
+	%\includegraphics[width=160mm]{pics/cover.png}  % full-page picture for A5 format
+    \includegraphics[width=155mm]{pics/cover.png}  % full-page picture for 160x240 format
 	\end{textblock*}
 	\null\newpage % latex might neglect \newpage because the page is empty, 
 		      % to avoid this use \null\newpage
@@ -92,6 +93,14 @@
 	    \include{appendix}
 	    \include{authors}
     \end{appendices}
+
+    % blank page
+	\thispagestyle{empty}
+	\null\newpage
+
+    % blank page
+	\thispagestyle{empty}
+	\null\newpage
 
 \end{document}
 %%%%%% DOCUMENT END  %%%%%%

@@ -87,6 +87,7 @@ end behav;
 The process statement should be considered a way the programmer has at his disposal to execute a series of sequential statements (i.e. in a behavioral manner); never forget that the process statement is itself a concurrent statement; therefore when you place two processes inside the architecture body, their execution will be concurrent.
 
 In Listing \ref{process_stat_complete}, you can see what a complete process statement looks like. Remember that all variables defined inside the process body will only be visible within the process body itself. Furthermore, notice that the statement at line 23 is placed inside the architecture body but outside the process body; therefore its execution happens concurrently with the process statement.
+\null\newpage
 \begin{lstlisting}[numbers=left,label=process_stat_complete, caption=Use of the process statement.]
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -157,6 +158,7 @@ $F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} Although it is not directly stated in the problem description, the VHDL code for this solution must use a behavioral architecture. This is because the problem states that an \texttt{if} statement should be used. The VHDL code for the solution is shown in Listing \ref{exe_9}. We have opted to leave out the black-box diagram in this case since the problem is relatively simple and thus does not really demonstrate the power of behavioral modeling.
+\null\newpage
 \begin{lstlisting}[label=exe_9, caption=Solution to Example 9.]
 entity my_ex is
 port 	(A,B,C : in  std_logic;
@@ -358,6 +360,7 @@ begin
 end my_soln_exam;
 \end{lstlisting}
 Another similar approach to Example 12 is to use the \textit{don't care} feature built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example 12 is shown in Listing \ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more ``definitive'' method of modeling the circuits I am dealing with.
+\null\newpage
 \begin{lstlisting}[label=exe_12_1, caption=Alternative solution to Example 12.]
 -- a solution that uses a don't care
 architecture my_soln_exam2 of my_example is
@@ -405,6 +408,7 @@ Write some VHDL code that implements the 8:1 MUX shown below. Use a case stateme
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} This solution to Example 13 is shown in listing \ref{exe_13}. The entity declaration is repeated below for your convenience. This solution places the \texttt{case} statement in the body of an \texttt{if} construct. In case you have not noticed it yet, the number of possible solutions to a given problem increases as the circuits you are implementing become more complex.
+\null\newpage
 \begin{lstlisting}[label=exe_13, caption=Solution to Example 13.]
 entity mux_8to1_ce is
     port ( Data_in : in  std_logic_vector (7 downto 0);

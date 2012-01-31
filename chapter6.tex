@@ -214,8 +214,6 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \item The \texttt{rising\_edge()} construct is used in the \texttt{if} statement to indicate that changes in the circuit output happen only on the rising edge of the \texttt{CLK} input. The \texttt{rising\_edge()} construct is actually an example of a VHDL function which has been defined in one of the included libraries. The way the VHDL code has been written makes the whole circuit synchronous; in fact, changes in the circuit's output are synchronized with the rising edge of the clock signal. In this case, the action is a transfer of the logic level on the \texttt{D} input to the \texttt{Q} output. 
 \item The process has the label \texttt{dff}. This is not required by the VHDL language but the addition of process labels promotes a self-describing nature of the code and increases its readability and understandability. 
 \end{my_list}
-
-\newpage\clearpage
 \begin{lstlisting}[label=exe_14, caption=Solution to Example 14.]
 ----------------------------------------------
 -- Model of a simple D Flip-Flop
@@ -394,7 +392,7 @@ Write the VHDL code that describes a T flip-flop shown on the right. Use a behav
 \item This code uses the characteristics equation of a T flip-flop in its implementation. We technically used a characteristic equation when we implemented the D flip-flop but since the characteristic equation of a D flip-flop is relatively trivial, you may not have been aware of it.
 \item Where there are certain advantages to using T flip-flops in come conditions, D flip-flops are generally the storage element of choice using VHDL. If you do not have a specific reason for using some type of flip-flop other than a D flip-flop, you probably should not. 
 \end{my_list}
-
+\null\newpage
 \begin{lstlisting}[label=exe_17, caption=Solution to Example 17.]
 -----------------------------------------------------------------
 -- RET T Flip-flop model with active-low asynchronous set input.

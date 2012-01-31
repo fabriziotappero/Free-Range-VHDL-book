@@ -15,14 +15,14 @@ The most efficient approach to utilizing standard digital circuits using VHDL is
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+---------------------------------------------------
 --  D flip-flop: RET D flip-flop with single output
 --
 --  Required signals: 
 ---------------------------------------------------
 --  CLK,D: in STD_LOGIC;
 --  Q: out STD_LOGIC;
--------------------------------------------------------------------
+---------------------------------------------------
 process (CLK,D) 
 begin
    if (rising_edge(CLK)) then  
@@ -37,15 +37,15 @@ end process;
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+---------------------------------------------------------------
 --  D flip-flop: FET D flip-flop with asynchronous preset. The 
 --  preset input takes precedence over the synchronous input.
 --
 --  Required signals: 
----------------------------------------------------
+---------------------------------------------------------------
 --  CLK,D,S: in STD_LOGIC;
 --  Q: out STD_LOGIC;
--------------------------------------------------------------------
+---------------------------------------------------------------
 process (CLK,D,S) 
 begin
    if (S = '0') then 
@@ -62,7 +62,7 @@ end process;
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+---------------------------------------------------
 --  Register: 8-bit Register with load enable. 
 --
 --  Required signals: 
@@ -70,7 +70,7 @@ end process;
 --  CLK,LD: in STD_LOGIC;
 --  D_IN: in STD_LOGIC_VECTOR(7 downto 0);
 --  D_OUT: out STD_LOGIC_VECTOR(7 downto 0);
--------------------------------------------------------------------
+---------------------------------------------------
 process (CLK,LD) 
 begin
    if (rising_edge(CLK)) then  
@@ -87,10 +87,10 @@ end process;
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+----------------------------------------------------------
 -- Counter: synchronous up/down counter with asynchronous 
 -- reset and synchronous parallel load. 
----------------------------------------------------
+----------------------------------------------------------
 entity COUNT_8B is
    port ( RESET,CLK,LD,UP : in std_logic; 
                       DIN : in std_logic_vector (7 downto 0); 
@@ -122,12 +122,12 @@ end my_count;
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+------------------------------------------------------------------
 -- Shift Register: unidirectional shift register with synchronous 
 -- parallel load. 
 -- 
 -- Required signals: 
----------------------------------------------------
+------------------------------------------------------------------
 -- CLK, D_IN: in STD_LOGIC;
 -- P_LOAD: in STD_LOGIC;
 -- P_LOAD_DATA: in STD_LOGIC_VECTOR(7 downto 0);
@@ -135,7 +135,7 @@ end my_count;
 -- 
 -- Required intermediate signals: 
 signal REG_TMP: STD_LOGIC_VECTOR(7 downto 0);
--------------------------------------------------------------------- 
+------------------------------------------------------------------
 process (CLK)
 begin
    if (rising_edge(CLK)) then
@@ -155,16 +155,16 @@ end process;
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+------------------------------------------------------------------
 -- Comparator: Implemented as a behavioral model. The outputs 
 -- include equals, less than and greater than status.  
 -- 
 -- Required signals: 
----------------------------------------------------
+------------------------------------------------------------------
 -- CLK: in STD_LOGIC;
 -- A_IN, B_IN : in STD_LOGIC_VECTOR(7 downto 0);
 -- ALB, AGB, AEB : out STD_LOGIC
--------------------------------------------------------------------
+------------------------------------------------------------------
 process(CLK)
 begin
    if ( A_IN < B_IN ) then ALB <= '1';
@@ -187,16 +187,16 @@ end process;
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+--------------------------------------------------------------------
 -- BCD to 7-Segment Decoder: Implemented as combinatorial circuit.  
 -- Outputs are active low; Hex outputs are included. The SSEG format
 -- is ABCDEFG (segA, segB etc.)
 --
 -- Required signals: 
----------------------------------------------------
+--------------------------------------------------------------------
 -- BCD_IN : in STD_LOGIC_VECTOR(3 downto 0);
 -- SSEG : out STD_LOGIC_VECTOR(6 downto 0); 
--------------------------------------------------------------------   
+--------------------------------------------------------------------
 with BCD_IN select
    SSEG <= "0000001" when "0000",   -- 0
            "1001111" when "0001",   -- 1
@@ -223,16 +223,16 @@ with BCD_IN select
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+----------------------------------------------------------------
 -- A 4:1 multiplexer implemented as behavioral model using case
 -- statement. 
 --
 -- Required signals: 
----------------------------------------------------
+----------------------------------------------------------------
 -- SEL: in STD_LOGIC_VECTOR(1 downto 0);
 -- A, B, C, D:in STD_LOGIC;
 -- MUX_OUT: out STD_LOGIC;
-----------------------------------------------------------------------
+----------------------------------------------------------------
 process (SEL, A, B, C, D)
 begin
    case SEL is
@@ -251,16 +251,16 @@ end process;
 \noindent
 \begin{minipage}{1\linewidth}
 \begin{lstlisting}
--------------------------------------------------------------------
+------------------------------------------------------------
 -- A 4:1 multiplexer implemented as data-flow model using a
 -- selective signal assignment statement. 
 --
 -- Required signals: 
----------------------------------------------------
+------------------------------------------------------------
 -- SEL: in STD_LOGIC_VECTOR(1 downto 0);
 -- A, B, C, D:in STD_LOGIC;
 -- MUX_OUT: out STD_LOGIC;
-----------------------------------------------------------------------
+------------------------------------------------------------
 with SEL select
    MUX_OUT <= A when "00", 
               B when "01", 
@@ -280,7 +280,7 @@ with SEL select
 -- combinatorial circuit with selective signal assignment statement
 --
 -- Required signals: 
----------------------------------------------------
+-------------------------------------------------------------------
 -- D_IN: in STD_LOGIC_VECTOR(2 downto 0); 
 -- FOUT: out STD_LOGIC_VECTOR(7 downto 0); 
 -------------------------------------------------------------------

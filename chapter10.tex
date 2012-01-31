@@ -33,7 +33,7 @@ The first thing to note about data objects is the similarity in their declaratio
 \hline
 Variable & \texttt{{\bf variable} var\_name : var\_type := initial\_value;} \\
 \hline
-\rowcolor{light-gray} Constant & \texttt{{\bf constant} const\_name : const\_type := initial\_value;} \\
+\rowcolor{light-gray} Constant & \texttt{{\bf constant} const\_name : const\_type:=initial\_value;} \\
 \hline
 \end{tabular}}
 \caption{Data object declaration forms.}
@@ -49,7 +49,7 @@ Note that each of the data objects can optionally be assigned initial values. As
 \rowcolor{gray} \textbf{Data object} & \textbf{Declaration form}\\
 \hline
 Signal & \texttt{{\bf signal} sig\_var1 : std\_logic := '0';} \\
-& \texttt{{\bf signal} tmp\_bus : std\_logic\_vector(3 downto 0) := "0011";} \\
+& \texttt{{\bf signal} tmp\_bus : std\_logic\_vector(3downto0):="0011";} \\
 & \texttt{{\bf signal} tmp\_int : integer range -128 to 127 := 0;}  \\
 & \texttt{{\bf signal} my\_int : integer;}\\
 \hline
@@ -57,7 +57,7 @@ Variable &\texttt{{\bf variable} my\_var1, my\_var2 : std\_logic;} \\
 &\texttt{{\bf variable} index\_a : integer range (0 to 255) := 0;} \\ 
 &\texttt{{\bf variable} index\_b : integer := -34;} \\
 \hline
-Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2 downto 0) := "001";} \\
+Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2downto0):="001";} \\
 &\texttt{{\bf constant} max\_cnt : integer := 12;} \\
 \hline
 \end{tabular}}

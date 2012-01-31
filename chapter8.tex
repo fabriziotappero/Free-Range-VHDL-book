@@ -112,7 +112,6 @@ This is how you therefore proceed:
 \noindent
 \textbf{Step One:} The first step in a structural implementation is identical to the standard approach we have used for the implementing other VHDL circuits: the \texttt{entity}. The entity declaration is derived directly from dashed box in Fig.~\ref{ex22_comp} and is shown in listing~\ref{ex22_code_ent}. In other words, signals that intersect the dashed lines are signals that are known to the outside world and must be included in the entity declaration.
 
-\newpage\clearpage
 \begin{lstlisting}[label=ex22_code_ent, caption=Entity declaration for 3-bit comparator.]
 -----------------------------------------------------
 -- Interface description of 3-bit comparator
@@ -171,7 +170,7 @@ The process of mapping provides the interface requirements for the individual co
 
 One key point to note in the instantiation process is the inclusion of labels for all instantiated design units. Labels should always be used as part of design unit instantiation because the use of appropriate labels increases the understandability of your VHDL model. In other words, the proper choice of labels increases the self-describing nature of your design and is considered a good VHDL programming approach.
 
-\begin{lstlisting}[label=ex22_code_final, caption=VHDL code for the top of the design hierarchy for the 3-bit comparator.]
+\begin{lstlisting}[label=ex22_code_final, caption=VHDL code for the design hierarchy for the 3-bit comparator.]
 entity my_compare is
     Port ( A_IN   : in std_logic_vector(2 downto 0);
            B_IN   : in std_logic_vector(2 downto 0);
@@ -252,7 +251,6 @@ x5: some_component port map (CLK => CLK,
                               CS => CS); 
 \end{lstlisting}
 
-\newpage\clearpage
 \section{Important Points}
 \begin{my_list}
 \item Structural modeling in VHDL supports hierarchical design concepts. The ability to abstract digital circuits to higher levels is the key to understanding and designing complex digital circuits.
