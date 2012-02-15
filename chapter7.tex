@@ -62,19 +62,24 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} This problem represents a basic FSM implementation. It is somewhat instructive to show the black-box diagram which is an aid in writing the entity description. Starting FSM problems with the drawing of a black box diagram is always a healthy approach particularly when dealing with FSMs. Oftentimes with FSM problems, it becomes challenging to discern the FSM inputs from the outputs. Drawing a diagram partially alleviates this problem. The black box diagram and the code for the solution of Example 18 is shown in listing \ref{exe_18_code}.
-%\clearpage
+
 \begin{figure}[!h]
     \centering
 	\includegraphics[width=5cm]{fsm/ex18_sol.png}
 \end{figure}
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_18_code, caption=Solution to Example 18.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_fsm1 is 
     port (  TOG_EN  : in  std_logic; 
             CLK,CLR : in  std_logic; 
                  Z1 : out std_logic); 
 end my_fsm1;
-
+-- architecture
 architecture fsm1 of my_fsm1 is
    type state_type is (ST0,ST1); 
    signal PS,NS : state_type; 
@@ -110,6 +115,7 @@ begin
    end process comb_proc; 
 end fsm1;
 \end{lstlisting}
+\end{minipage}
 
 And of course, this solution has many things worth noting in it. The more interesting things are listed below. 
 
@@ -136,14 +142,19 @@ In some FSM designs, the state variables are provided as outputs. To show this s
     \centering
 	\includegraphics[width=5cm]{fsm/ex18_sol_alt.png}
 \end{figure}
-\null\newpage
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_18_code_alt, caption=Solution to Example 18 that include state variable as output.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_fsm2 is 
     port (   TOG_EN : in  std_logic; 
             CLK,CLR : in  std_logic; 
                Y,Z1 : out std_logic); 
 end my_fsm2;
-
+-- architecture
 architecture fsm2 of my_fsm2 is
    type state_type is (ST0,ST1); 
    signal PS,NS : state_type; 
@@ -184,6 +195,7 @@ begin
            '0' when others; 
 end fsm2;
 \end{lstlisting}
+\end{minipage}
 
 Note that the VHDL code shown in listing \ref{exe_18_code_alt} differs in only two areas from the code shown in listing \ref{exe_18_code}. The first area is the modification of the entity declaration to account for the state variable output Y. The second area is the inclusion of the selective signal assignment statement which assigns a value of state variable output Y based on the condition of the state variable. The selective signal assignment statement is evaluated each time a change in signal PS is detected. Once again, since we have declared an enumeration type for the state variables, we have no way of knowing exactly how the synthesizer will decide to represent the state variable. The selective signal assignment statement in the code of listing \ref{exe_18_code_alt} only makes it appear like there is one state variable and the states are represented with a '1' and a '0'. In reality, there are methods we can use to control how the state variables are represented and we will deal with those soon. 
 
@@ -205,19 +217,24 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \noindent
 \textbf{SOLUTION.} The state diagram shown in this problem indicates that this is a three-state FSM with one Mealy-type external output and one external input. Since there are three states, the solution requires at least two state variables to handle the three states. The black-box diagram of the solution is shown in listing \ref{exe_19_code}. Note that the two state variables are handled as a bundled signal.
 
-\newpage\clearpage
+
 \begin{figure}[!h]
     \centering
 	\includegraphics[width=5cm]{fsm/ex19_sol.png}
 \end{figure}
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_19_code, caption=Solution to Example 19.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_fsm3 is 
     port ( X,CLK,SET : in  std_logic; 
                    Y : out std_logic_vector(1 downto 0); 
                   Z2 : out std_logic); 
 end my_fsm3;
-
+-- architecture
 architecture fsm3 of my_fsm3 is
    type state_type is (ST0,ST1,ST2); 
    signal PS,NS : state_type; 
@@ -263,9 +280,9 @@ begin
            "00" when others; 
 end fsm3;
 \end{lstlisting}
+\end{minipage}
 
 As usual, there are a couple of fun things to point out about the solution for Example 19. Most importantly, you should note the similarities between this solution and the previous solution. 
-
 
 \begin{my_list}
 \item The FSM has one Mealy-type output. The solution essentially treats this output as a Moore-type output in the first two \texttt{when} clauses of the \texttt{case} statement. In the final \texttt{when} clause, the Z2 output appears in both sections of the \texttt{if} statement. The fact the Z2 output is different in the context of state ST2 that makes it a Mealy-type output and therefore a Mealy-type FSM. 
@@ -294,14 +311,18 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 	\includegraphics[width=5cm]{fsm/ex20_sol.png}
 \end{figure}
 
-\newpage\clearpage
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_20_code, caption=Solution to Example 20.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_fsm4 is 
     port ( X,CLK,RESET : in  std_logic; 
                      Y : out std_logic_vector(1 downto 0); 
                  Z1,Z2 : out std_logic);  
 end my_fsm4;
-
+-- architecture
 architecture fsm4 of my_fsm4 is
    type state_type is (ST0,ST1,ST2,ST3); 
    signal PS,NS : state_type; 
@@ -351,6 +372,7 @@ begin
            "00" when others; 
 end fsm4;
 \end{lstlisting}
+\end{minipage}
 
 If you haven't noticed by now, implementing FSMs using the VHDL behavioral model is remarkably straightforward. In reality, I rarely code a FSM from scratch; I usually opt to grab some previous FSM I have coded and start from there. Keep in mind that real engineering is rarely based on a cookbook. For FSM problems, the engineering is in the testing and creation of the state diagram. Do not get too comfortable with behavioral modeling of FSMs; the real fun is actually generating a FSM that solves a given problem. 
 
@@ -394,6 +416,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 
 listing \ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example 20 to a pseudo one-hot encoding. Listing \ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in listing \ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesizer to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in listing \ref{exe_21_code_3} that the default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in listing \ref{exe_21_code_4} 
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_21_code_1, caption=Modifications to convert Example 20 to one-hot encoding.]
 -- full encoded approach
 entity my_fsm4 is 
@@ -421,7 +444,9 @@ attribute ENUM_ENCODING: STRING;
 attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
 signal PS,NS : state_type;
 \end{lstlisting}
-\null\newpage
+\end{minipage}
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_21_code_3, caption=Modifications to convert state output to pseudo one-hot encoding.]
 -- fake full encoded approach 
 with PS select
@@ -441,15 +466,20 @@ with PS select
         "1000" when others; 
 end fsm4;
 \end{lstlisting}
+\end{minipage}
 
-\newpage\clearpage
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_21_code_4, caption=The final solution to Example 21.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_fsm4_oh is 
     port ( X,CLK,RESET : in  std_logic; 
                      Y : out std_logic_vector(3 downto 0); 
                  Z1,Z2 : out std_logic);  
 end my_fsm4_oh;
-
+-- architeture
 architecture fsm4_oh of my_fsm4_oh is
    type state_type is (ST0,ST1,ST2,ST3);
    attribute ENUM_ENCODING: STRING; 
@@ -503,6 +533,7 @@ begin
 
 end fsm4_oh;
 \end{lstlisting}
+\end{minipage}
 
 \section{Important Points}
 
@@ -515,6 +546,7 @@ end fsm4_oh;
 \end{my_list}
 
 \section{Exercises: Behavioral Modeling of Finite State Machines}
+
 %%%%%% EXERCISE 1 %%%%%%
 \vspace{20pt}
 \noindent
@@ -525,12 +557,16 @@ Draw the state diagram associated with the following VHDL code. Be sure to provi
 \begin{minipage}{0.66\textwidth}
 \vspace{10px}
 \begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity fsm is 
    port (  X,CLK : in  std_logic; 
            RESET : in  std_logic; 
            Z1,Z2 : out std_logic;  
 end fsm;
-
+-- architecture
 architecture fsm of fsm is
    type state_type is (A,B,C);
    signal PS,NS : state_type;
@@ -548,21 +584,21 @@ begin
          Z1 <= '0';    Z2 <= '0'; 
          when A =>    
             Z1 <= '0';  
-            if (X = '0') then NS <= A; Z2 <= '1';   
+            if (X='0') then NS<=A; Z2<='1';   
             else  NS <= B; Z2 <= '0';
             end if; 
          when B =>    
             Z1 <= '1';  
-            if (X = '0') then NS <= A; Z2 <= '0';  
+            if (X='0') then NS<=A; Z2<='0';  
             else  NS <= C; Z2 <= '1'; 
             end if; 
          when C =>    
             Z1 <= '1';  
-            if (X = '0') then NS <= B; Z2 <= '1'; 
+            if (X='0') then NS<=B; Z2<='1'; 
             else  NS <= A; Z2 <= '0'; 
             end if; 
          when others =>    
-            Z1 <= '1'; NS <= A; Z2 <= '0'; 
+            Z1 <= '1'; NS<=A; Z2<='0'; 
       end case; 
    end process comb_proc; 
 end fsm;
@@ -586,7 +622,6 @@ Write a VHDL behavioral model that could be used to implement the state diagram 
 \includegraphics[width=5.3cm]{fsm/sm_ex2.png}
 \end{minipage}
 
-%\newpage\clearpage
 %%%%%% EXERCISE 3 %%%%%%
 \vspace{20pt}
 \noindent
@@ -597,11 +632,16 @@ Draw the state diagram associated with the following VHDL code. Be sure to provi
 \begin{minipage}{0.66\textwidth}
 \vspace{10px}
 \begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity fsmx is
     Port ( BUM1,BUM2 : in std_logic;
                  CLK : in std_logic;
             TOUT,CTA : out std_logic);
 end fsmx;
+-- architecture
 architecture my_fsmx of fsmx is
    type state_type is (S1,S2,S3); 
 	signal PS,NS : state_type; 
@@ -641,7 +681,9 @@ begin
                NS <= S2; 
             end if; 
       
-         when others =>  CTA <= '0'; TOUT <= '0'; NS <= S1;
+         when others =>   CTA <= '0'; 
+                         TOUT <= '0';
+                           NS <= S1;
       end case; 
    end process comb_p; 
 end my_fsmx;
@@ -675,13 +717,17 @@ Draw the state diagram associated with the following VHDL code. Consider the out
 \begin{minipage}{1\textwidth}
 \vspace{10px}
 \begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity fsm is 
 port (     X,CLK : in  std_logic; 
            RESET : in  std_logic; 
            Z1,Z2 : out std_logic;  
                Y : out std_logic_vector(2 downto 0)); 
 end fsm;
-
+-- architecture
 architecture my_fsm of fsm is
    type state_type is (A,B,C);
    attribute ENUM_ENCODING: STRING; 
@@ -689,14 +735,14 @@ architecture my_fsm of fsm is
    signal PS,NS : state_type;
 begin
 
-sync_proc: process(CLK,NS,RESET)
+sync_proc: process(CLK,NS,RESET) -- process
    begin
      if (RESET = '0') then PS <= C; 
      elsif (rising_edge(CLK)) then PS <= NS; 
      end if; 
    end process sync_proc; 
 
-comb_proc: process(PS,X)
+comb_proc: process(PS,X) -- process
    begin
       case PS is 
          when A =>    
@@ -742,8 +788,6 @@ Write a VHDL behavioral model code that can be used to implement the state diagr
 \end{minipage}
 
 %%%%%% EXERCISE 7 %%%%%%
-%\newpage
-%\clearpage
 \vspace{20pt}
 \noindent
 \begin{minipage}{1\textwidth}
@@ -752,20 +796,24 @@ Draw the state diagram that corresponds to the following VHDL model and state wh
 \vspace{10pt}
 \end{minipage}
 \begin{minipage}{0.66\textwidth}
-%\vspace{10px}
+
 \begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity fsm is
     Port ( CLK,CLR,SET,X1,X2 : in std_logic;
                        Z1,Z2 : out std_logic);
 end fsm;
+-- architecture
 architecture my_fsm of fsm is
    type state_type is (sA,sB,sC,sD); 
    attribute ENUM_ENCODING: STRING; 
    attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
    signal PS,NS : state_type; 
 begin
-
-   sync_p: process (CLK,NS,CLR,SET)
+   sync_p: process (CLK,NS,CLR,SET) -- process
    begin
       if (CLR = '1' and SET = '0') then 
          PS <= sA; 
@@ -776,7 +824,7 @@ begin
       end if; 
    end process sync_p; 
 
-   comb_p: process (X1,X2,PS)
+   comb_p: process (X1,X2,PS) -- process
    begin
       case PS is 
          when sA =>  
@@ -911,11 +959,6 @@ Write the VHDL behavioral model code that can be used to implement the state dia
 \centering
 \includegraphics[width=6cm]{fsm/sm_ex14.png}
 \end{minipage}
-
-%\clearpage
-%\newpage
-%\thispagestyle{empty}
-
 
 
 

@@ -108,17 +108,19 @@ The other groups of operators are generally used with numeric types. Since this 
 \section{The Concatenation Operator}
 The concatenation operator, \texttt{\&}, is often a useful operator when dealing with digital circuits. There are many times when you will find a need to tack together two separate values. The concatenation operator has been seen in some previous example solutions. Some more examples of the concatenation operators are presented in Listing \ref{concat_operator}. 
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=concat_operator, caption=Examples of the concatenation operator.]
 signal A_val, B_val : std_logic_vector(3 downto 0); 
 signal C_val : std_logic_vector(6 downto 0); 
 signal D_val : std_logic_vector(7 downto 0); 
-
+------
 C_val <= A_val & "00"; 
 C_val <= "11" & B_val; 
 C_val <= '1' & A_val & '0'; 
 D_val <= "0001" & C_val(3 downto 0); 
 D_val <= A_val & B_val; 
 \end{lstlisting}
+\end{minipage}
 
 \section{The Modulus and Remainder Operators}
 There is often confusion about the differences between the remainder operator and the modulus operator, \texttt{rem} and \texttt{mod} and the difference in their operation on negative and positive numbers. The definitions that VHDL uses for these operators are shown in Table \ref{rem_mod_def} while a few examples of these operators are provided in Table \ref{rem_mod_example}. A general rule followed by many programmers is to avoid using the \texttt{mod} operator when dealing with negative numbers. As you can see from the examples below, answers are sometime counter-intuitive. 
@@ -189,8 +191,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
@@ -214,17 +215,24 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \item The \texttt{rising\_edge()} construct is used in the \texttt{if} statement to indicate that changes in the circuit output happen only on the rising edge of the \texttt{CLK} input. The \texttt{rising\_edge()} construct is actually an example of a VHDL function which has been defined in one of the included libraries. The way the VHDL code has been written makes the whole circuit synchronous; in fact, changes in the circuit's output are synchronized with the rising edge of the clock signal. In this case, the action is a transfer of the logic level on the \texttt{D} input to the \texttt{Q} output. 
 \item The process has the label \texttt{dff}. This is not required by the VHDL language but the addition of process labels promotes a self-describing nature of the code and increases its readability and understandability. 
 \end{my_list}
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_14, caption=Solution to Example 14.]
-----------------------------------------------
--- Model of a simple D Flip-Flop
-----------------------------------------------
+-----------------------------------
+-- Model of a simple D Flip-Flop --
+-----------------------------------
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity d_ff_x is 
 	port ( D, CLK : in std_logic; 
 		   Q : out std_logic); 
 end d_ff_x; 
+-- architecture
 architecture my_d_ff of d_ff_x is 
 begin
-	dff:  process (D, CLK)
+	dff:  process (CLK)
 	begin
 		if (rising_edge(CLK)) then
 			Q <= D; 
@@ -232,6 +240,7 @@ begin
 	end process dff; 
 end my_d_ff; 
 \end{lstlisting}
+\end{minipage}
 
 The D flip-flop is best known and loved for its ability to store (save, remember) a single bit. The way that the VHDL code in listing \ref{exe_14} is able to store a bit is not however obvious. The bit-storage capability in the VHDL is implied by the way the VHDL code is interpreted. The implied storage capability comes about as a result of not providing a condition that indicates what should happen if the listed \texttt{if} condition is not met. In other words, if the \texttt{if} condition is not met, the device does not change the value of \texttt{Q} and therefore it must remember the current value. The memory feature of the current value, or state, constitutes the famous bit storage quality of a flip-flop. If you have not specified what the output should be for every possible set of input conditions, the option taken by VHDL is to not change the current output. By definition, if the input changes to an unspecified state, the output remains unchanged. In this case, the output associated with the previous set of input can be thought of as being remembered. It is this mechanism, as strange and interesting as it is, that is used to induce memory in the VHDL code. 
 
@@ -247,8 +256,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
@@ -273,19 +281,25 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \item The \texttt{S} input to the flip-flop is made synchronous by only allowing it to affect the operation of the flip-flop on the rising edge of the system clock. 
 \item On the rising edge of the clock, the \texttt{S} input takes precedence over the \texttt{D} input because the state of the \texttt{S} input is checked prior to examining the state of the \texttt{D} input. In an \texttt{if-else} statement, once one condition evaluates as true, none of the other conditions is checked. In other words, the \texttt{D} input is transferred to the output only the rising edge of the clock and only if the \texttt{S} input is not asserted.
 \end{my_list}
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_15, caption=Solution to Example 15.]
----------------------------------------------------------------
--- RET D Flip-flop model with active-low synchronous set input.
----------------------------------------------------------------
+------------------------------------------------------------------
+-- RET D Flip-flop model with active-low synchronous set input. --
+------------------------------------------------------------------
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity d_ff_ns is 
     port (  D,S :  in  std_logic; 
             CLK :  in  std_logic; 
               Q :  out std_logic); 
 end d_ff_ns;
-
+-- architecture
 architecture my_d_ff_ns of d_ff_ns is 
 begin
-   dff:  process (D,S,CLK)
+   dff:  process (S,CLK)
    begin
       if (rising_edge(CLK)) then
          if (S = '0') then
@@ -297,6 +311,7 @@ begin
    end process dff;
 end my_d_ff_ns;
 \end{lstlisting}
+\end{minipage}
 
 \begin{leftbar}
 \begin{minipage}{0.5\linewidth}
@@ -306,8 +321,7 @@ Write the VHDL code that describes a \texttt{D} flip-flop shown on the right. Us
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
@@ -318,7 +332,7 @@ Write the VHDL code that describes a \texttt{D} flip-flop shown on the right. Us
 \node (a) at (20,2.5) {}; % this is the reference point
 \draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{D};
 \draw [latex-] ($(a)+(-1.5,5)$) -- ++(-10,0) node[above]{CLK};
-\draw [latex-] ($(a)+(8.5,2.5)$) |- ++(-19,-5) node[above]{S};
+\draw [latex-] ($(a)+(8.5,2.5)$) |- ++(-19,-5) node[above]{R};
 \draw ($(a)+(-1,5)$) circle (2pt);
 % OUTPUTS
 \draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{Q};
@@ -332,19 +346,25 @@ Write the VHDL code that describes a \texttt{D} flip-flop shown on the right. Us
 \item The reset input is independent of the clock and takes priority over the clock. This prioritization is done by making the reset condition the first condition in the \texttt{if} statement. Evaluation of the other conditions continues if the \texttt{R} input does not evaluate to a '1'.
 \item The \texttt{falling\_edge()} function is used to make the D flip-flop falling-edge-triggered. Once again, this function is defined in one of the included libraries. 
 \end{my_list}
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_16, caption=Solution to Example 16.]
--------------------------------------------------------------------
--- FET D Flip-flop model with active-high asynchronous reset input.
--------------------------------------------------------------------
+----------------------------------------------------------------------
+-- FET D Flip-flop model with active-high asynchronous reset input. --
+----------------------------------------------------------------------
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity d_ff_r is 
     port (   D,R :  in  std_logic; 
              CLK :  in  std_logic; 
                Q :  out std_logic); 
 end d_ff_r;
-
+-- architecture
 architecture my_d_ff_r of d_ff_r is 
 begin
-   dff:  process (D,R,CLK)
+   dff:  process (R,CLK)
    begin
       if (R = '1') then 
          Q <= '0'; 
@@ -353,7 +373,9 @@ begin
       end if; 
    end process dff; 
 end my_d_ff_r; 
-\end{lstlisting}    
+\end{lstlisting}
+\end{minipage}
+  
 The solutions of Example 15 and Example 16 represent what can be considered the standard VHDL approaches to handling synchronous and asynchronous inputs, respectively. The general forms of these solutions are actually considered templates for synchronous and asynchronous inputs by several VHDL references. As you will see later, these solutions form the foundation to finite state machine design using VHDL.
 
 \begin{leftbar}
@@ -364,9 +386,7 @@ Write the VHDL code that describes a T flip-flop shown on the right. Use a behav
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
-%\draw[help lines] (0,0) grid (50,50);
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 % BOX
 \draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
 % INPUTS
@@ -374,10 +394,11 @@ Write the VHDL code that describes a T flip-flop shown on the right. Use a behav
 \node (b) at (0,-2) {}; % this is to extend the pink area
 \node (b) at (20,22.5) {}; % this is to extend the pink area
 \node (a) at (20,2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{D};
+\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{T};
 \draw [latex-] ($(a)+(-1.5,5)$) -- ++(-10,0) node[above]{CLK};
-\draw [latex-] ($(a)+(8.5,2.5)$) |- ++(-19,-5) node[above]{S};
+\draw [latex-] ($(a)+(8.5,1.0)$) |- ++(-19,-5) node[above]{S};
 \draw ($(a)+(-1,5)$) circle (2pt);
+\draw ($(a)+(8.5,1.8)$) circle (2pt);
 % OUTPUTS
 \draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{Q};
 \end{tikzpicture}
@@ -392,16 +413,21 @@ Write the VHDL code that describes a T flip-flop shown on the right. Use a behav
 \item This code uses the characteristics equation of a T flip-flop in its implementation. We technically used a characteristic equation when we implemented the D flip-flop but since the characteristic equation of a D flip-flop is relatively trivial, you may not have been aware of it.
 \item Where there are certain advantages to using T flip-flops in come conditions, D flip-flops are generally the storage element of choice using VHDL. If you do not have a specific reason for using some type of flip-flop other than a D flip-flop, you probably should not. 
 \end{my_list}
-\null\newpage
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_17, caption=Solution to Example 17.]
------------------------------------------------------------------
--- RET T Flip-flop model with active-low asynchronous set input.
------------------------------------------------------------------
+-------------------------------------------------------------------
+-- RET T Flip-flop model with active-low asynchronous set input. --
+-------------------------------------------------------------------
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity t_ff_s is 
     port ( T,S,CLK :  in  std_logic; 
                  Q :  out std_logic); 
 end t_ff_s;
-
+-- entity
 architecture my_t_ff_s of t_ff_s is 
    signal t_tmp : std_logic; -- intermediate signal declaration 
 begin
@@ -416,7 +442,8 @@ begin
 
    Q <= t_tmp; -- final output assignment
 end my_t_ff_s; 
-\end{lstlisting}    
+\end{lstlisting}
+\end{minipage}  
 
 \section{Inducing Memory: Data-flow vs. Behavioral Modeling}
 A major portion of digital design deals with sequential circuits. Generally speaking, most sequential circuit design is about synchronising events to a clock edge. In other words, output changes only occur on a clock edge. The introduction to memory elements in VHDL presented in this section may lead the reader to think that memory in VHDL is only associated with behavioral modeling, but this is not the case. The same concept of inducing memory holds for data-flow modeling as well: not explicitly specifying an output for every possible input condition generates memory. And on this note, checking for unintended memory element generation is one of the duties of the digital designer. As you would imagine, memory elements add an element of needless complexity to the synthesized circuit.
@@ -444,8 +471,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
@@ -475,8 +501,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
@@ -506,8 +531,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
@@ -537,8 +561,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
@@ -568,8 +591,7 @@ Provide a VHDL behavioral model of the T flip-flop shown on the right. The \text
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
@@ -599,8 +621,7 @@ Provide a VHDL behavioral model of the T flip-flop shown on the right. The \text
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.75,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
@@ -623,7 +644,5 @@ Provide a VHDL behavioral model of the T flip-flop shown on the right. The \text
 \end{tikzpicture}
 \end{flushleft}
 \end{minipage}
-
-
 
 

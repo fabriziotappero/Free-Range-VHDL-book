@@ -15,7 +15,7 @@ There are two types of loops in VHDL: \texttt{for} loops and \texttt{while} loop
 The purpose of a loop construct is to allow some coding instructions to happen iteratively (over and over again). These two types of loops of course share this functionality. As you probably remember from higher-level language programming, the syntax of the language is such that you can use either type of loop in any given situation by some modification of the code. The same is true in VHDL. But although you can be clever in the way you design your VHDL code, the best approach is to make the code readable and understandable. Keeping this concept in mind lets us see the functional differences between \texttt{for} and \texttt{while} loops. This basic difference can be best highlighted by examining the code provided in listing \ref{for_while_code}.
 
 \noindent
-\begin{minipage}{1\linewidth}
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=for_while_code, caption=The basic structure of the \texttt{for} and \texttt{while} loops.]
 -- for loop							|	-- while loop
 label: for index in a_range loop	|	label: while (condition) loop
@@ -37,6 +37,7 @@ The basic form of the \texttt{for} loop was shown in listing \ref{for_while_code
 \begin{lstlisting}
 
 
+
 for cnt_val in 0 to 24 loop
    -- sequential_statements
 end loop; 
@@ -45,8 +46,9 @@ end loop;
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
-type my_range is range 0 to 24; 
 
+type my_range is range 0 to 24; 
+--
 for cnt_val in my_range loop
    -- sequential_statements
 end loop; 
@@ -57,6 +59,7 @@ end loop;
 \begin{lstlisting}
 
 
+
 for cnt_val in 24 downto 0 loop
    -- sequential_statements
 end loop; 
@@ -65,8 +68,9 @@ end loop;
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
-type my_range is range 24 downto 0; 
 
+type my_range is range 24 downto 0; 
+--
 for cnt_val in my_range loop
    -- sequential_statements
 end loop
@@ -95,6 +99,7 @@ And lastly, as shown in the previous listing, \texttt{for} loops can also be imp
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
+
 constant max_fib : integer := 2000;
 variable fib_sum : integer := 1;
 variable tmp_sum : integer := 0;
@@ -110,6 +115,7 @@ end loop;
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
+
 constant max_num : integer := 10; 
 variable fib_sum : integer := 1; 
 variable tmp_sum : integer := 0; 
@@ -134,8 +140,9 @@ The next statement allows for the loop to bypass the remaining statements within
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
-variable my_sum : integer := 0; 
 
+variable my_sum : integer := 0; 
+--
 for cnt_val in 0 to 50 loop
    if (my_sum = 20) then 
       next; 
@@ -147,8 +154,9 @@ end loop;
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
-variable my_sum : integer := 0; 
 
+variable my_sum : integer := 0; 
+--
 while (my_sum < 300) loop
    next when (my_sum = 20); 
    my_sum := my_sum + 1; 
@@ -165,8 +173,9 @@ The \texttt{exit} statement allows for the immediate termination of the loop and
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
-variable my_sum : integer := 0; 
 
+variable my_sum : integer := 0; 
+--
 for cnt_val in 0 to 50 loop
    if (my_sum = 20) then 
       exit; 
@@ -178,8 +187,9 @@ end loop;
 \noindent
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
-variable my_sum : integer := 0; 
 
+variable my_sum : integer := 0; 
+--
 while (my_sum < 300) loop
    exit when (my_sum = 20); 
    my_sum := my_sum + 1; 
@@ -188,3 +198,5 @@ end loop;
 --
 \end{lstlisting}
 \end{minipage} 
+
+

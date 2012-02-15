@@ -21,8 +21,7 @@ VHDL programming is significantly different. Whereas a processor steps one by on
 \begin{figure}
 \centering
 \usetikzlibrary{er}
-\begin{tikzpicture}[minimum height=9mm,thick,scale=0.9]
-%\node[draw, not gate US] at (-2.5,0.05) (D) {D}; 
+\begin{tikzpicture}[minimum height=9mm,scale=0.9]
 \node[draw, and gate US] at (0,0.2) (C) {C}; 
 \node[draw, not gate US] at ([xshift=-1.95cm]C.input 2) (D) {D}; 
 \node[draw, or gate US] at (0,1.3) (B) {B}; 
@@ -51,8 +50,11 @@ Figure \ref{concurrent_circuit} shows a simple example of a circuit that operate
 Since most of us are human, we are only capable of reading one line of text at a time and in a sequential manner. We have the same limitation when we try to write some text, not to mention enter some text into a computer. So how then are we going to use text to describe a circuit that is inherently parallel? We did not have this problem when discussing something inherently sequential such as standard algorithmic programming. When writing code using an algorithmic programming language, there is generally only one processing element to focus on at each given time. Everything more or less follows up in a sequential manner, which fits nicely with our basic limitation as humans. 
 
 The VHDL programming paradigm is built around the concept of expression parallelism and concurrency with textual descriptions of circuits. The heart of VHDL programming is the concurrent statement. These are statements that look a lot like the statements in algorithmic languages but they are significantly different because the VHDL statements, by definition, express concurrency of execution.
- 
-\begin{lstlisting}[label=parallel_code, caption=VHDL code for the circuit of Figure 4.1.]
+
+\begin{lstlisting}[float, label=parallel_code, caption=VHDL code for the circuit of Figure 4.1.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
 -- entity
 entity my_circuit is
 port ( 
@@ -74,6 +76,7 @@ Listing \ref{parallel_code} shows the code that implements the circuit shown in 
 
 As a consequence of the concurrent nature of VHDL statements, the three chunks of code appearing below are 100\% equivalent to the code shown in Listing \ref{parallel_code}. Once again, since the statements are interpreted as occurring concurrently: the order that these statements appear in your VHDL source code makes no difference. Generally speaking, it would be a better idea to describe the circuit as shown in Listing \ref{parallel_code} since it somewhat reflects the natural organization of statements.
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=parallel_code_2, caption=Equivalent VHDL code for the circuit of Figure 4.1. ]
 C_out <= (not D_1) and B_2; 
 A_out <= A_1 and A_2;   
@@ -92,6 +95,7 @@ A_out <= A_1 and A_2;
 E_out <= A_out or B_out or C_out;
 C_out <= (not D_1) and B_2; 
 \end{lstlisting}
+\end{minipage}
 
 \section{Signal Assignment Operator ``$<=$''}
 Algorithmic programming languages always have some type of assignment operator. In C or Java, this is the well-known ``='' sign. In these languages, the assignment operator signifies a transfer of data from the right-hand side of the operator to the left-hand side. VHDL uses two consecutive characters to represent the assignment operator: ``$<=$''. This combination was chosen because it is different from the assignment operators in most other common algorithmic programming languages. The operator is officially known as a signal assignment operator to highlight its true purpose. The signal assignment operator specifies a relationship between signals. In other words, the signal on the left-hand side of the signal assignment operator is dependent upon the signals on the right-hand side of the operator.
@@ -105,9 +109,11 @@ In essence, the four types of statements represent the tools that you will use t
 \section{Concurrent Signal Assignment Statements}
 The general form of a concurrent signal assignment statement is shown in Listing \ref{concurrent_sig_assig}. In this case, the target is a signal that receives the values of the expression. An expression is defined by a constant, by a signal, or by a set of operators that operate on other signals. Examples of expressions used in VHDL code are shown in the examples that follow.
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=concurrent_sig_assig, caption=Syntax for the concurrent signal assignment statement.]
 <target> <= <expression>;
 \end{lstlisting}
+\end{minipage}
 
 \begin{leftbar}
 \noindent
@@ -119,10 +125,9 @@ Write the VHDL code that implements a three-input NAND gate. The three input sig
 
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}[numbers=left,label=example_1, caption=Solution of Example 1.]
+-- library declaration
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.std_logic_1164.all;
 -- entity
 entity my_nand3 is
 	port ( A,B,C : in  std_logic;
@@ -142,8 +147,7 @@ end exb_nand3;
 \end{minipage}
 \begin{minipage}{0.4\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,2.5) rectangle (40,22.5) node[midway]{my\_nand3};
@@ -176,12 +180,11 @@ Write the VHDL code to implement the function expressed by the following logic e
 \noindent
 \textbf{SOLUTION.} The black box diagram and associated VHDL code is shown in Listing \ref{example_2}.
 
-\begin{minipage}{0.55\linewidth}
+\begin{minipage}{0.57\linewidth}
 \begin{lstlisting}[label=example_2, caption=Solution of Example 2.]
+-- library declaration
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
 port ( L,M,N : in  std_logic;
@@ -196,8 +199,7 @@ end f3_2;
 \end{minipage}
 \begin{minipage}{0.4\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,2.5) rectangle (40,22.5) node[midway]{my\_ckt\_f3};
@@ -219,12 +221,10 @@ This example shows a one-line implementation of the given logic equation.
 An alternative solution to Example 2 is provided in Figure \ref{example_2_bis}. This example represents a massively important concept in VHDL. The solution shown in Listing \ref{example_2_bis} uses some special statements in order to implement the circuit. These special statements are used to provide what is often referred to as intermediate results. This approach is equivalent to declaring extra variables in an algorithmic programming language to be used for storing intermediate results. The need for intermediate results is accompanied by the declaration of extra signal values, which are often referred to intermediate signals. Note in Listing \ref{example_2_bis} that the declaration of intermediate signals is similar to the port declarations appearing in the entity declaration, except that the mode specification(\texttt{in}, \texttt{our} or \texttt{inout}) is missing. 
 
 \textbf{The intermediate signals must be declared within the body of the architecture} because they have no link to the outside world and thus do not appear in the entity declaration. Note that the intermediate signals are declared in the architecture body but appear before the \texttt{begin} statement.
-\null\newpage
-\begin{lstlisting}[label=example_2_bis, caption=Alternative solution of Example 2.]
+\begin{lstlisting}[float, label=example_2_bis, caption=Alternative solution of Example 2.]
+-- library declaration
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
 port ( L,M,N : in  std_logic;
@@ -239,7 +239,6 @@ begin
 	F3 <= A1 OR A2;
 end f3_1;
 \end{lstlisting}
-
 Despite the fact that the architectures \texttt{f3\_2 }and \texttt{f3\_1} of Listing \ref{example_2} and Listing \ref{example_2_bis} appear different, they are functionally equivalent. This is because all the statements are \textbf{concurrent signal assignment statements}. Even though the \texttt{f3\_1} architecture contains three CSAs, they are functionally equivalent to the CSA in \texttt{f3\_2} because each of the three statements is effectively executed concurrently.
 
 Although the approach of using intermediate signals is not mandatory for this example, their use brings up some good points. First, the use of intermediate signals is the norm for most VHDL models. The use of intermediate signals was optional in Listing \ref{example_2_bis} due to the fact that the example was modeling a relatively simple circuit. As circuits become more complex, there are many occasions in which intermediate signals must be used. Secondly, intermediate signals are something of a tool that you will often need to use in your VHDL models. The idea here is that you are trying to describe a digital circuit using a textual description language: you will often need to use intermediate signals in order to accomplish your goal of modeling the circuit. The use of intermediate signals allows you to more easily model digital circuits but does not make the generated hardware more complicated. The tendency in using VHDL is to think that since there is more text written on your page, the circuit you are describing and/or the resulting hardware is larger or more complex. This is simply not true. The main theme of VHDL is that you should use the VHDL tools at your disposal in order to model your circuits in the simplest way possible. Simple circuits have a higher probability of being understood and synthesized. But most importantly, a simple VHDL model is not related to the length of the actual VHDL code.
@@ -251,15 +250,16 @@ Concurrent signal assignment statements, seen before, associate one target with 
 
 The syntax of the conditional signal assignment is shown in Listing \ref{conditional_sig_assig}. The target in this case is the name of a signal. The condition is based upon the state of some other signals in the given circuit. Note that there is only one signal assignment operator associated with the conditional signal assignment statement.
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=conditional_sig_assig, caption=The syntax for the conditional signal assignment statement.]
 <target> <=	<expression> when <condition> else
 			<expression> when <condition> else
 			<expression>;
 \end{lstlisting}
+\end{minipage}
 
 The conditional signal assignment statement is probably easiest to understand in the context of a circuit. For our first example, let us simply redo Example 2 using conditional signal assignment instead of concurrent signal assignment.
 
-\newpage\clearpage
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 3.}
@@ -268,6 +268,7 @@ Write the VHDL code to implement the function expressed in Example 2. Use only c
 \noindent
 \textbf{SOLUTION.} The entity declaration does not change from Example 2 so the solution only needs a new architecture description. By reconsidering the same logic equation of Example 2, $F3=\overline{L}\overline{M}N+LM$, the solution to Example 3 is shown in Listing \ref{example_3}.
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=example_3, caption=Solution of Example 3.]
 architecture f3_3 of my_ckt_f3 is
 begin
@@ -276,6 +277,8 @@ F3 <= '1' when (L= '0' AND M = '0' AND N = '1') else
       '0';
 end f3_3;
 \end{lstlisting}
+\end{minipage}
+
 There are a couple of interesting points to note about this solution.
 \begin{my_list}
 \item It is not much of an improvement over the VHDL code written using concurrent signal assignment. In fact, it looks a bit less efficient in terms of the number of instructions.
@@ -295,18 +298,22 @@ Write the VHDL code that implements a 4:1 MUX using a single conditional signal 
 
 \begin{minipage}{0.62\linewidth}
 \begin{lstlisting}[label=example_4, caption=Solution of example 4.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_4t1_mux is
-port(D3,D2,D1,D0	: in std_logic;
-     SEL	: in  std_logic_vector(1 downto 0);
+port(D3,D2,D1,D0 : in std_logic;
+     SEL: in std_logic_vector(1 downto 0);
      MX_OUT	: out std_logic);
 end my_4t1_mux;
 -- architecture
-architecture mux4t1 of my_4t1_mux
+architecture mux4t1 of my_4t1_mux is
 begin
-	MX_OUT <= D3 when (SEL = "11")
-	          D2 when (SEL = "10")
-	          D1 when (SEL = "01")
-	          D0 when (SEL = "00")
+	MX_OUT <= D3 when (SEL = "11") else
+	          D2 when (SEL = "10") else
+	          D1 when (SEL = "01") else
+	          D0 when (SEL = "00") else
 	          '0';
 end mux4t1;
 
@@ -314,8 +321,7 @@ end mux4t1;
 \end{minipage}
 \begin{minipage}{0.2\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,0) rectangle (30,25) node[above]{my\_4to1\_mux};
@@ -337,17 +343,21 @@ end mux4t1;
 There are a couple of things to note in the solution provided in Listing \ref{example_4}.
 \begin{my_list}
 \item The solution looks somewhat efficient compared to the amount of logic that would have been required if CSA statements were used. The VHDL code looks good and is pleasing to the eye, qualities required for readability.
-\item The ``='' relational operator is used in conjunction with a bus signal. In this case, the values on the bundle SEL lines are accessed using double quotes around the specified values. In other word, signal quotes are used to describe values of single signals while double quotes are used to describe values associated with multiple signals, or bundles.
+\item The ``='' relational operator is used in conjunction with a bundle. In this case, the values on the bundle SEL are accessed using double quotes around the specified values. In other word, signal quotes are used to describe values of single signals while double quotes are used to describe values associated with multiple signals, or bundles.
 \item For the sake of completeness, we have included every possible condition for the SEL signal plus a catch-all \texttt{else} statement. We could have changed the line containing '0' to D0 and removed the line associated with the SEL condition of ``00''. This would be functionally equivalent to the solution shown but would not be nearly as impressive looking. Generally speaking, you should clearly provide all the options in the code and not rely on a catch-all statement for intended signal assignment.
 \end{my_list}
 Remember, a conditional signal assignment is a type of concurrent statement. In this case, the conditional signal assignment statement is executed any time a change occurs in the conditional signals (the signals listed in the expressions on the right-hand side of the signal assignment operator). This is similar to the concurrent signal assignment statement where the statement is executed any time there is a change in any of the signals listed on the right-hand side of the signal assignment operator.
 
-\begin{lstlisting}[label=example_4_bis, caption=Alternative solution to Example 4 accessing individual signals.]
+\begin{lstlisting}[float, label=example_4_bis, caption=Alternative solution to Example 4 accessing individual signals.]
 -----------------------------------------------------------------
 -- entity and architecture of 4:1 Multiplexor implemented using
 -- conditional signal assignment. The conditions access the
 -- individual signals of the SEL bundle in this model.
 -----------------------------------------------------------------
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_4t1_mux is
 port	(D3,D2,D1,D0   : in std_logic;
          SEL           : in std_logic_vector(1 downto 0);
@@ -359,7 +369,7 @@ begin
 	MX_OUT <= D3 when (SEL(1) = '1' and SEL(0) ='1') else
 	          D2 when (SEL(1) = '1' and SEL(0) ='0') else
 	          D1 when (SEL(1) = '0' and SEL(0) ='1') else
-	          D0 when (SEL(1) = '0' and SEL(1) ='0') else
+	          D0 when (SEL(1) = '0' and SEL(0) ='0') else
 	          '0';
 end mux4t1;
 \end{lstlisting}
@@ -370,13 +380,15 @@ The concept of working with bundles is massively important in VHDL. Generally sp
 
 \section{Selected Signal Assignment}
 Selected signal assignment statements are the third type of signal assignment that we will examine. As with conditional signal assignment statements, selected signal assignment statements only have one assignment operator. Selected signal assignment statements differ from conditional assignment statements in that assignments are based upon the evaluation of one expression. The syntax for the selected signal assignment statement is shown in Listing \ref{sel_sig_assig}.
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=sel_sig_assig, caption=Syntax for the selected signal assignment statement.]
 with <choose_expression> select
 	target <= <expression> when <choices>,
 	          <expression> when <choices>;
 \end{lstlisting}
 
-\newpage\clearpage
+\end{minipage}
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 5.}
@@ -384,6 +396,8 @@ Write VHDL code to implement the function expressed by the following logic equat
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} This is yet another version of the \texttt{my\_ckt\_f3} example that first appeared in Example 2. The solution is shown in Listing \ref{example_5}.
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=example_5, caption=Solution of Example 5.]
 -- yet another solution to the Example 2
 architecture f3_4 of my_ckt_f3 is
@@ -394,6 +408,7 @@ begin
 	      '0' when others;
 end f3_4;
 \end{lstlisting}
+\end{minipage}
 
 One thing to notice about the solution shown in Listing \ref{example_5} is the use of the \texttt{when others} clause as the final entry in the selected signal assignment statement. In reality, the middle clause \texttt{'0' when '0'} could be removed from the solution without changing the meaning of the statement. In general, it is considered good VHDL programming practice to include all the expected cases in the selected signal assignment statement followed by the \texttt{when others} clause.
 \begin{leftbar}
@@ -403,12 +418,11 @@ Write the VHDL code that implements a 4:1 MUX using a single selected signal ass
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} This is a repeat of Example 4 except that a selected signal assignment operator is used instead of a conditional signal assignment operator. The solution of Example 6 is shown in Listing \ref{example_6}. The black-box diagram for this example is the same as before and is not repeated here.
-\null\newpage
-\begin{lstlisting}[label=example_6, caption=Solution of Example 6.]
+
+\begin{lstlisting}[float, label=example_6, caption=Solution of Example 6.]
+-- library declaration
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
 port (D3,D2,D1,D0 : in  std_logic;
@@ -453,9 +467,7 @@ unknown value		& 000 \\
 
 \begin{minipage}{1\linewidth}
 \centering
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
-%\draw[help lines] (0,0) grid (50,50);
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 % BOX
 \draw (20,8) rectangle (35,17) node[above]{my\_sz\_ckt};
 % INPUTS
@@ -472,6 +484,10 @@ unknown value		& 000 \\
 ------------------------------------------------------------
 -- A decoder-type circuit using selected signal assignment
 ------------------------------------------------------------
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity my_sz_ckt is
     port ( D_IN   : in  std_logic_vector(3 downto 0);
            SX_OUT : out std_logic_vector(2 downto 0)); 
@@ -502,11 +518,10 @@ Write VHDL code to implement the function expressed by the following logic equat
 \noindent
 \textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or god forbid, Boolean algebra, to reduce a function. The solution of Example 6 in shown in Listing \ref{example_8}.
 
-\begin{lstlisting}[label=example_8, caption=Solution of Example 8.]
+\begin{lstlisting}[float, label=example_8, caption=Solution of Example 8.]
+-- library declaration
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
+use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
 port ( L,M,N : in  std_logic;

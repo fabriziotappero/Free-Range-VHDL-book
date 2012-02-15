@@ -34,13 +34,18 @@ Use VHDL behavioral modeling to design the 8-bit register that has a synchronous
 \item The assignment of the input to the output is based on characteristics of both the clock edge and the state of the LD signal. The approach taken in the VHDL model shown in listing \ref{ex23_code} is to provide a separate \texttt{if} clause for both the LD and CLK signals. Only one \texttt{if} statement could have been used by making both conditions associated with the single \texttt{if} clause but this is not considered good VHDL programming practice when dealing with synchronized elements. In other words, you should always strive to keep special conditions associated with the clocking signal separate from all other conditions associated with the action in question. Clock signals are somewhat special in the VHDL land; you should get into the habit of treating them gently. 
 \end{my_list}
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex23_code, caption=Solution to Example 23.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity reg8 is
     Port ( REG_IN  :  in std_logic_vector(7 downto 0);
            LD,CLK  :  in std_logic;
            REG_OUT : out std_logic_vector(7 downto 0));
 end reg8;
-
+-- architecture
 architecture reg8 of reg8 is
 begin
    reg: process(LD,CLK,REG_IN)
@@ -53,6 +58,7 @@ begin
    end process; 
 end reg8;
 \end{lstlisting}
+\end{minipage}
 
 The circuit in the following example is slightly more complex than most of the examples seen so far. Additionally, remember that there are many different solutions to the same problem. This is a common occurrence in VHDL; in fact, many times there is no best method for implementing a given circuit. The following examples are essentially the same problem solved using two different but functionally equivalent solutions.
 
@@ -81,20 +87,25 @@ Use VHDL behavioral modeling to design the circuit shown on the right. Consider 
 \item The model for the 2:1 MUX uses the terminology \texttt{(others => '0')}. This is a short-hand terminology for assigning all of the outputs to '0'. The real nice part about this instruction is that you do not need to know how many 0’s you need to write. This is a nice feature in that if the width of the associated bundle were to change, this particular line of code would not need to be modified. 
 \end{my_list}
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex24_code, caption=Solution to Example 24.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
 entity ckt_rtl is
    port (D1_IN,D2_IN : in std_logic_vector(7 downto 0);
              CLK,SEL : in std_logic; 
              LDA,LDB : in std_logic; 
          REG_A,REG_B : out std_logic_vector(7 downto 0)); 
 end ckt_rtl; 
-
+-- architecture
 architecture rtl_behavioral of ckt_rtl is 
    -- intermediate signal declaration ---------------
    signal s_mux_result : std_logic_vector(7 downto 0);
 begin
 
-   ra: process(LDA,CLK,s_mux_result)
+   ra: process(LDA,CLK,s_mux_result) -- process
    begin
       if (rising_edge(CLK)) then 
          if (LDA = '1') then 
@@ -103,7 +114,7 @@ begin
       end if;
    end process; 
 	
-   rb: process(LDB,CLK,s_mux_result)
+   rb: process(LDB,CLK,s_mux_result) -- process
    begin
       if (rising_edge(CLK)) then 
          if (LDB = '1') then 
@@ -118,6 +129,7 @@ begin
                    (others => '0') when others; 
 end rtl_behavioral;
 \end{lstlisting}
+\end{minipage}
 
 \begin{leftbar}
 \begin{minipage}[t]{0.5\textwidth}
@@ -141,28 +153,26 @@ Use VHDL structural modeling to design the circuit shown on the right. Consider 
 \item The VHDL source code shown in listing \ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indentation. No surprise here but properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is as actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
 \end{my_list}
 
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex25_code, caption=Solution to Example 25 using a structural modeling approach.]
-entity mux2t1 is
+entity mux2t1 is                                    --- ENTITY
    port (  A,B : in std_logic_vector(7 downto 0); 
            SEL : in  std_logic; 
          M_OUT : out std_logic_vector(7 downto 0)); 
 end mux2t1; 
-
-architecture my_mux of mux2t1 is
+architecture my_mux of mux2t1 is                    --- ARCHITECTURE
 begin 
    with SEL select
    M_OUT <= A when '1', 
             B when '0', 
             (others => '0') when others; 
 end my_mux;
-
-entity reg8 is
+entity reg8 is                                      --- ENTITY
     Port (  REG_IN : in std_logic_vector(7 downto 0);
             LD,CLK : in std_logic;
            REG_OUT : out std_logic_vector(7 downto 0));
 end reg8;
-
-architecture reg8 of reg8 is
+architecture reg8 of reg8 is                       --- ARCHITECTURE
 begin
    reg: process(LD,CLK,REG_IN)
    begin
@@ -173,45 +183,37 @@ begin
       end if;
    end process; 
 end reg8;
-
-entity ckt_rtl is
+entity ckt_rtl is                                    --- ENTITY
    port (D1_IN,D2_IN : in std_logic_vector(7 downto 0);
              CLK,SEL : in std_logic; 
              LDA,LDB : in std_logic; 
          REG_A,REG_B : out std_logic_vector(7 downto 0)); 
 end ckt_rtl; 
-
-architecture rtl_structural of ckt_rtl is 
- 
-   -- component declaration -----------------------
+architecture rtl_structural of ckt_rtl is           --- ARCHITECTURE
+   -- component declaration
    component mux2t1 
       port (  A,B : in std_logic_vector(7 downto 0); 
               SEL : in std_logic; 
             M_OUT : out std_logic_vector(7 downto 0)); 
-   end component; 
-
+   end component;
    component reg8 
        Port (  REG_IN : in std_logic_vector(7 downto 0);
                LD,CLK : in std_logic;
               REG_OUT : out std_logic_vector(7 downto 0));
    end component;
-
-   -- intermediate signal declaration ---------------
-   signal s_mux_result : std_logic_vector(7 downto 0); 
-	
+   -- intermediate signal declaration
+   signal s_mux_result : std_logic_vector(7 downto 0); 	
 begin
    ra: reg8
    port map ( REG_IN => s_mux_result,
                   LD => LDA,
                  CLK => CLK,
              REG_OUT => REG_A ); 
-
    rb: reg8
    port map ( REG_IN => s_mux_result,
                   LD => LDB,
                  CLK => CLK,
-             REG_OUT => REG_B ); 
-				 
+             REG_OUT => REG_B ); 			 
    m1: mux2t1
    port map (   A => D1_IN, 
                 B => D2_IN,
@@ -219,6 +221,7 @@ begin
             M_OUT => s_mux_result); 				 
 end rtl_structural;
 \end{lstlisting}
+\end{minipage}
 
 \section{Important Points}
 

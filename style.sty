@@ -47,7 +47,7 @@
 \usetikzlibrary{backgrounds}
 %\tikzset{background rectangle/.style={fill=red!8, rounded corners}, tight background}
 \tikzset{background rectangle/.style={fill=white, rounded corners}, tight background}
-\tikzset{every node/.style={font=\sffamily\small}} % font size in all drawings
+\tikzset{every node/.style={font=\sffamily\footnotesize}} % font size in all drawings
 
 % PDF tags
 \hypersetup{
@@ -114,6 +114,7 @@ urlcolor=darkgray}      % external links
 \definecolor{dark-gray}{gray}{0.45}
 \definecolor{dark-green}{rgb}{0.245,0.121,0.0}
 
+\usepackage{upquote} % this fix listings accents and aphostrophies
 \usepackage{courier}
 \lstset{
 	language=VHDL,
@@ -129,6 +130,7 @@ urlcolor=darkgray}      % external links
 	extendedchars=true,
 	breaklines=true,
 	classoffset=0,
+    morecomment=[s][\textit]{lab}{el}, % make the label word italics
 	otherkeywords={<=,:=, shared,=>,'}, % add <=, shared
 	keywordstyle=\color{blue},
 	commentstyle=\color[RGB]{10,140,20}, % green color
@@ -146,6 +148,8 @@ urlcolor=darkgray}      % external links
 	framexbottommargin=1pt,
 	backgroundcolor=\color{light-gray},
 	showstringspaces=false}
+
+
 
 \usepackage[hang, bf, small]{caption}
 \DeclareCaptionFont{white}{\color{white}}

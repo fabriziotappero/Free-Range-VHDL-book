@@ -6,5 +6,7 @@ rm *.aux *.toc *.log *.dvi
 
 rm .*.xml ._* .DS_Store
 
+rm *.tex~
+
 rm -R __MACOSX
 

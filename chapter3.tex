@@ -13,6 +13,8 @@ Not surprisingly, VHDL descriptions of circuits are based on the black-box appro
 
 \section{Entity}
 The VHDL entity construct provides a method to abstract the functionality of a circuit description to a higher level. It provides a simple wrapper for the lower-level circuitry. This wrapper effectively describes how the black box interfaces with the outside world. Since VHDL describes digital circuits, the entity simply lists the various inputs and outputs of the underlying circuitry. In VHDL terms, the black box is described by an entity declaration. The syntax of the entity declaration is shown in Listing \ref{entity_basic}.
+
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=entity_basic, caption=The entity declaration., mathescape=true]
 entity my_entity is
 port(
@@ -21,6 +23,8 @@ port(
      port_name_3 : inout std_logic ); --do not forget the semicolon
 end my_entity; -- do not forget this semicolon either
 \end{lstlisting}
+\end{minipage}
+
 \texttt{my\_entity} defines the name of the entity. The next section is nothing more than the list of signals from the underlying circuit that are available to the outside world, which is why it is often referred to as an interface specification. The \texttt{port\_name\_x} is an identifier used to differentiate the various signals. The next keyword (the keyword \texttt{in}) specifies the direction of the signal relative to the entity where signals can either enter, exit or do both. These input and output signals are associated with the keywords \textbf{in}, \textbf{out} and \textbf{inout}\footnote{The \texttt{inout} data mode will be discussed later on in the book.} respectively. The next keyword (the keyword \texttt{std\_logic}) refers to the type of data that the port will handle. There are several data types available in VHDL but we will primarily deal with the \texttt{std\_logic} type and derived versions. More information regarding the various VHDL data types will be discussed later.
 
 When you attempt to write fairly complicated VHDL code, you will need to split your code into different files, functions and packages constructors which will help you better deal with your code. In this scenario, the entity body will not only host the port definition statements but, most likely, other procedures as well. We will talk about this later in the book.\\
@@ -43,8 +47,7 @@ end killer_ckt;
 \end{minipage}
 \begin{minipage}{0.49\linewidth}
 \begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,0) rectangle (37,35) node[midway]{killer\_ckt};
@@ -84,8 +87,7 @@ In the black box of Listing \ref{entity_3} you can see the formal notation for a
 \begin{minipage}{1\linewidth}
 \vspace{5pt}
 \centering
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,0) rectangle (35,35) node[midway]{mux\_4};
@@ -132,7 +134,7 @@ Alternatively to the \texttt{std\_logic} data type, VHDL programmers sometimes u
 \section{VHDL Standard Libraries}
 The VHDL language as many other programming languages, has gone through a long and intense evolution. Among the most important standardization steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the two main library packages as shown in lines 2$\sim$4 of listing \ref{main_vhdl_lib}.
 
-\begin{minipage}{0.98\linewidth}
+\begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[numbers=left,label=main_vhdl_lib, caption=Typical inclusions of IEEE standard libraries.]
 -- library declaration
 library IEEE;
@@ -182,7 +184,8 @@ There can be any number of equivalent architectures describing a single entity. 
 For various reasons, such as facilitating code re-usability and connectibility, an architecture can be modeled in different ways. Understanding the various modeling techniques and understanding how to use them represent the first important steps in learning VHDL.
 
 An architecture can be written by means of three modeling techniques plus any combination of these three. There is the \textbf{data-flow model}, the \textbf{behavioral model}, the \textbf{structural model} and the \textbf{hybrid models}. These models will be described throughout the book. Listing \ref{architecture_1} gives a sneak preview of what a simple but complete VHDL code block looks like.
-\begin{lstlisting}[numbers=left, label=architecture_1, caption=Example of a simple VHDL block.]
+
+\begin{lstlisting}[float, numbers=left, label=architecture_1, caption=Example of a simple VHDL block.]
 -- FILE: my_sys.vhd
 library ieee;
 use ieee.std_logic_1164.all;
@@ -202,6 +205,7 @@ begin
 	var_1 := 34; -- variable assignment
 end circuit1_arc;
 \end{lstlisting}
+
 \section{Signal and Variable Assignments}
 In VHDL there are several object types. Among the most frequently used we will mention the \textbf{signal} object type, the \textbf{variable} object type and the \textbf{constant} object type. The signal type is the software representation of a wire. The variable type, like in C or Java, is used to store local information. The constant is like a variable object type, the value of which cannot be changed. A signal object can be of different types; we saw before, for example, that a signal object can be of type \texttt{std\_logic} or of other types like integer, custom types, etc. The same applies for variable objects.
 
@@ -232,8 +236,7 @@ We will see later on in the book that any time we need a non-concurrent executio
 \begin{minipage}{0.5\linewidth}
 \vspace{5pt}
 a)\\
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,5) rectangle (37,25) node[midway]{sys1};
@@ -252,8 +255,7 @@ a)\\
 \begin{minipage}{0.5\linewidth}
 \vspace{5pt}
 b)\\
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
 \draw (20,0) rectangle (37,25) node[midway]{sys2};
