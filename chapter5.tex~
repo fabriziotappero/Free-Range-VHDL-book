@@ -103,7 +103,7 @@ end my_system;
 architecture behav of my_system is
 	signal A1 : std_logic;
 begin
-	some_proc: process(A,B,C) is
+	some_proc: process(A, B, C) is
 	  variable a,b : integer;
 	begin
 		a=34;

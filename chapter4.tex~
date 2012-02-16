@@ -297,7 +297,7 @@ Write the VHDL code that implements a 4:1 MUX using a single conditional signal 
 \textbf{SOLUTION.} For this example we need to start from scratch. This of course includes the now famous black-box diagram and the associated entity statement. The VHDL portion of the solution is shown in Listing \ref{example_4}.
 
 \begin{minipage}{0.62\linewidth}
-\begin{lstlisting}[label=example_4, caption=Solution of Example 4.]
+\begin{lstlisting}[label=example_4, caption=Solution of example 4.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -496,10 +496,10 @@ end my_sz_ckt;
 architecture spec_dec of my_sz_ckt is
 begin
    with D_IN select
-SX_OUT <= "100" when "0000"|"0001"|"0010"|"0011", 
-          "010" when "0100"|"0101"|"0110"|"0111"|"1000"|"1001", 
-          "001" when "1010"|"1011"|"1100"|"1101"|"1110"|"1111", 
-          "000" when others;  
+SX_OUT<="100"when "0000"|"0001"|"0010"|"0011", 
+        "010"when "0100"|"0101"|"0110"|"0111"|"1000"|"1001", 
+        "001"when "1010"|"1011"|"1100"|"1101"|"1110"|"1111", 
+        "000"when others;  
 end spec_dec;
 \end{lstlisting}
 \end{minipage}

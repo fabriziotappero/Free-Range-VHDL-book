@@ -431,7 +431,7 @@ end t_ff_s;
 architecture my_t_ff_s of t_ff_s is 
    signal t_tmp : std_logic; -- intermediate signal declaration 
 begin
-   tff:  process (S,CLK)
+   tff:  process (T,S,CLK)
    begin
       if (S = '0') then  
          Q <= '1'; 

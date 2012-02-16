@@ -174,7 +174,7 @@ entity reg8 is                                      --- ENTITY
 end reg8;
 architecture reg8 of reg8 is                       --- ARCHITECTURE
 begin
-   reg: process(LD,CLK)
+   reg: process(LD,CLK,REG_IN)
    begin
       if (rising_edge(CLK)) then 
          if (LD = '1') then 
