@@ -14,8 +14,9 @@ Not surprisingly, VHDL descriptions of circuits are based on the black-box appro
 \section{Entity}
 The VHDL entity construct provides a method to abstract the functionality of a circuit description to a higher level. It provides a simple wrapper for the lower-level circuitry. This wrapper effectively describes how the black box interfaces with the outside world. Since VHDL describes digital circuits, the entity simply lists the various inputs and outputs of the underlying circuitry. In VHDL terms, the black box is described by an entity declaration. The syntax of the entity declaration is shown in Listing \ref{entity_basic}.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=entity_basic, caption=The entity declaration., mathescape=true]
+\begin{lstlisting}[label=entity_basic, caption=The entity declaration in VHDL., mathescape=true]
 entity my_entity is
 port(
      port_name_1 : in    std_logic ;
@@ -27,7 +28,9 @@ end my_entity; -- do not forget this semicolon either
 
 \texttt{my\_entity} defines the name of the entity. The next section is nothing more than the list of signals from the underlying circuit that are available to the outside world, which is why it is often referred to as an interface specification. The \texttt{port\_name\_x} is an identifier used to differentiate the various signals. The next keyword (the keyword \texttt{in}) specifies the direction of the signal relative to the entity where signals can either enter, exit or do both. These input and output signals are associated with the keywords \textbf{in}, \textbf{out} and \textbf{inout}\footnote{The \texttt{inout} data mode will be discussed later on in the book.} respectively. The next keyword (the keyword \texttt{std\_logic}) refers to the type of data that the port will handle. There are several data types available in VHDL but we will primarily deal with the \texttt{std\_logic} type and derived versions. More information regarding the various VHDL data types will be discussed later.
 
-When you attempt to write fairly complicated VHDL code, you will need to split your code into different files, functions and packages constructors which will help you better deal with your code. In this scenario, the entity body will not only host the port definition statements but, most likely, other procedures as well. We will talk about this later in the book.\\
+When you attempt to write fairly complicated VHDL code, you will need to split your code into different files, functions and packages constructors which will help you better deal with your code. In this scenario, the entity body will not only host the port definition statements but, most likely, other procedures as well. We will talk about this later in the book.
+
+\noindent
 \begin{minipage}{0.51\linewidth}
 \vspace{5pt}
 \begin{lstlisting}[label=entity_2, caption=VHDL entity declaration.]
@@ -84,7 +87,8 @@ As you can see by examining Listing \ref{entity_3}, there are two possible metho
 
 In the black box of Listing \ref{entity_3} you can see the formal notation for a bundle. Note that the black box uses a slash-and-number notation. The slash across the signal line indicates the signal is a bundle and the associated number specifies the number of signals in the bundle. Worthy of mention regarding the black box relative to Listing \ref{entity_3} is that the input lines \texttt{sel1} and \texttt{sel0} could have been made into one bundle containing the two signals.
 
-\begin{minipage}{1\linewidth}
+\noindent
+\begin{minipage}{0.99\linewidth}
 \vspace{5pt}
 \centering
 \begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
@@ -114,26 +118,28 @@ In the black box of Listing \ref{entity_3} you can see the formal notation for a
 -- for a MUX that selects one of four bus lines for the output.
 -------------------------------------------------------------
 entity mux4 is
-port (  a_data : in     std_logic_vector(0 to 7);
-        b_data : in     std_logic_vector(0 to 7);
-        c_data : in     std_logic_vector(0 to 7);
-        d_data : in     std_logic_vector(0 to 7);
-        sel1,sel0 : in  std_logic;
-        data_out  : out std_logic_vector(0 to 7));
+port (  a_data    : in     std_logic_vector(0 to 7);
+        b_data    : in     std_logic_vector(0 to 7);
+        c_data    : in     std_logic_vector(0 to 7);
+        d_data    : in     std_logic_vector(0 to 7);
+        sel1,sel0 : in     std_logic;
+        data_out  : out    std_logic_vector(0 to 7));
 end mux4;
 \end{lstlisting}
 \end{minipage}
+
 The data type \texttt{std\_logic} and the data type \texttt{std\_logic\_vector} is what the IEEE has standardized for the representation of digital signals. Normally, you should consider that these data types assume the logic value \texttt{1} or the logic value \texttt{0}. However, as specified in the \texttt{std\_logic\_1164} package, the implementation of the \texttt{std\_logic} type (and the \texttt{std\_logic\_vector} type) is a little more generous and includes 9 different values, specifically: \texttt{0,1,U,X,Z,W,L,H,-}. 
 
 The data type \texttt{std\_logic} becomes available to you soon after the declaration \texttt{library IEEE; use IEEE.std\_logic\_1164.all;} at the beginning of your code.
 
-The reason for all these values is the desire for modeling three-state drivers, pull-up and pull-down outputs, high impedance state and a few others types of inputs/outputs. For more details refer to the IEEE 1164 Standard\footnote{IEEE 1164 Standard \url{http://en.wikipedia.org/wiki/IEEE_1164}}.
+The reason for all these values is the desire for modeling three-state drivers, pull-up and pull-down outputs, high impedance state and a few others types of inputs/outputs. For more details refer to the IEEE 1164 Standard\footnote{IEEE 1164 Standard \footnotesize\url{http://en.wikipedia.org/wiki/IEEE_1164}}.
 
 Alternatively to the \texttt{std\_logic} data type, VHDL programmers sometimes use the much simpler data type \texttt{bit} which has only the logic values \texttt{1} and \texttt{0}.
 
 \section{VHDL Standard Libraries}
 The VHDL language as many other programming languages, has gone through a long and intense evolution. Among the most important standardization steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the two main library packages as shown in lines 2$\sim$4 of listing \ref{main_vhdl_lib}.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[numbers=left,label=main_vhdl_lib, caption=Typical inclusions of IEEE standard libraries.]
 -- library declaration
@@ -186,23 +192,26 @@ For various reasons, such as facilitating code re-usability and connectibility, 
 An architecture can be written by means of three modeling techniques plus any combination of these three. There is the \textbf{data-flow model}, the \textbf{behavioral model}, the \textbf{structural model} and the \textbf{hybrid models}. These models will be described throughout the book. Listing \ref{architecture_1} gives a sneak preview of what a simple but complete VHDL code block looks like.
 
 \begin{lstlisting}[float, numbers=left, label=architecture_1, caption=Example of a simple VHDL block.]
--- FILE: my_sys.vhd
+---------------------- FILE: my_sys.vhd ----------------------
+-- library declaration
 library ieee;
 use ieee.std_logic_1164.all;
+
 -- the ENTITY
 entity circuit1 is
 port (
     A,B,C   : in std_logic;
     F       : out std_logic);
 end circuit1;
+
 -- the ARCHITECTURE
 architecture circuit1_arc of circuit1 is
-	signal     sig_1: std_logic; -- signal definition
-	variable   var_1: integer; -- variable definition
+	signal     sig_1 : std_logic; -- signal definition
+	variable   var_1 : integer;   -- variable definition
 begin
-	F <= not (A and B and C); -- signal assignment
-	sig_1 <= A; -- another signal assignment
-	var_1 := 34; -- variable assignment
+	F <= not (A and B and C):     -- signal assignment
+	sig_1 <= A;                   -- another signal assignment
+	var_1 := 34;                  -- variable assignment
 end circuit1_arc;
 \end{lstlisting}
 
@@ -233,6 +242,7 @@ We will see later on in the book that any time we need a non-concurrent executio
 \item Why is it considered a good approach to always draw a black-box diagram when using VHDL to model digital circuits?
 \item Write VHDL entity declarations that describe the following black-box diagrams:
 
+\noindent
 \begin{minipage}{0.5\linewidth}
 \vspace{5pt}
 a)\\
@@ -275,9 +285,11 @@ b)\\
 
 \item Provide black-box diagrams that are defined by the following VHDL entity declarations:
 
+\noindent
 \begin{minipage}{1\linewidth}
 a)
 \begin{lstlisting}[]
+
 entity ckt_c is
 port (
     bun_a,bun_b_bun_c   : in    std_logic_vector(7 downto 0);
@@ -286,9 +298,12 @@ port (
 end ckt_c;
 \end{lstlisting}
 \end{minipage}
+
+\noindent
 \begin{minipage}{1\linewidth}
 b)
 \begin{lstlisting}[]
+
 entity ckt_e is
 port ( 
     RAM_CS,RAM_WE,RAM_OE    : in std_logic;
@@ -302,9 +317,11 @@ end ckt_e;
 
 \item The following two entity declarations contain two of the most common syntax errors made in VHDL. What are they?
 
+\noindent
 \begin{minipage}{1\linewidth}
 a)
 \begin{lstlisting}[framexrightmargin=-180pt]
+
 entity ckt_a is
 port (
     J,K : in  std_logic;
@@ -314,9 +331,11 @@ end ckt_a;
 \end{lstlisting}
 \end{minipage}
 
+\noindent
 \begin{minipage}{1\linewidth}
 b)
 \begin{lstlisting}[framexrightmargin=-80pt, mathescape=true]
+
 entity ckt_b is
 port (
 mr_fluffy   : in  std_logic_vector(15 downto 0);

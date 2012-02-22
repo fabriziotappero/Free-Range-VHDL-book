@@ -34,6 +34,7 @@ Use VHDL behavioral modeling to design the 8-bit register that has a synchronous
 \item The assignment of the input to the output is based on characteristics of both the clock edge and the state of the LD signal. The approach taken in the VHDL model shown in listing \ref{ex23_code} is to provide a separate \texttt{if} clause for both the LD and CLK signals. Only one \texttt{if} statement could have been used by making both conditions associated with the single \texttt{if} clause but this is not considered good VHDL programming practice when dealing with synchronized elements. In other words, you should always strive to keep special conditions associated with the clocking signal separate from all other conditions associated with the action in question. Clock signals are somewhat special in the VHDL land; you should get into the habit of treating them gently. 
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex23_code, caption=Solution to Example 23.]
 -- library declaration
@@ -87,6 +88,7 @@ Use VHDL behavioral modeling to design the circuit shown on the right. Consider 
 \item The model for the 2:1 MUX uses the terminology \texttt{(others => '0')}. This is a short-hand terminology for assigning all of the outputs to '0'. The real nice part about this instruction is that you do not need to know how many 0’s you need to write. This is a nice feature in that if the width of the associated bundle were to change, this particular line of code would not need to be modified. 
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex24_code, caption=Solution to Example 24.]
 -- library declaration
@@ -153,6 +155,7 @@ Use VHDL structural modeling to design the circuit shown on the right. Consider 
 \item The VHDL source code shown in listing \ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indentation. No surprise here but properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is as actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex25_code, caption=Solution to Example 25 using a structural modeling approach.]
 entity mux2t1 is                                    --- ENTITY

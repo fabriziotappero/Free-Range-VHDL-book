@@ -68,6 +68,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 	\includegraphics[width=5cm]{fsm/ex18_sol.png}
 \end{figure}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_18_code, caption=Solution to Example 18.]
 -- library declaration
@@ -143,6 +144,7 @@ In some FSM designs, the state variables are provided as outputs. To show this s
 	\includegraphics[width=5cm]{fsm/ex18_sol_alt.png}
 \end{figure}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_18_code_alt, caption=Solution to Example 18 that include state variable as output.]
 -- library declaration
@@ -223,6 +225,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 	\includegraphics[width=5cm]{fsm/ex19_sol.png}
 \end{figure}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_19_code, caption=Solution to Example 19.]
 -- library declaration
@@ -268,7 +271,7 @@ begin
             else  NS <= ST2;  Z2 <= '1';     
             end if; 
          when others => -- the catch all condition
-             Z2 <= '1'; NS < ST0; 
+             Z2 <= '1'; NS <= ST0; 
       end case; 
    end process comb_proc; 
  
@@ -311,6 +314,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 	\includegraphics[width=5cm]{fsm/ex20_sol.png}
 \end{figure}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_20_code, caption=Solution to Example 20.]
 -- library declaration
@@ -416,6 +420,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 
 listing \ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example 20 to a pseudo one-hot encoding. Listing \ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in listing \ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesizer to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in listing \ref{exe_21_code_3} that the default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in listing \ref{exe_21_code_4} 
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_21_code_1, caption=Modifications to convert Example 20 to one-hot encoding.]
 -- full encoded approach
@@ -446,6 +451,7 @@ signal PS,NS : state_type;
 \end{lstlisting}
 \end{minipage}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_21_code_3, caption=Modifications to convert state output to pseudo one-hot encoding.]
 -- fake full encoded approach 
@@ -468,6 +474,7 @@ end fsm4;
 \end{lstlisting}
 \end{minipage}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_21_code_4, caption=The final solution to Example 21.]
 -- library declaration

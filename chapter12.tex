@@ -12,9 +12,11 @@ As you know or as you will be finding out soon, even the most complex digital ci
 The most efficient approach to utilizing standard digital circuits using VHDL is to use existing code for these devices and modify them according to the needs of your particular design. This approach allows you to utilize your current knowledge of VHDL to quickly and efficiently design complex digital circuits. The following listings show a set of standard digital devices and the VHDL code used to describe them. The following circuits are represented in various sizes and widths. Note that the following circuit descriptions represent possible VHDL descriptions but are by no means the only descriptions. They do however provide starting points for you to modify for your own design needs. 
 
 \section{RET D Flip-flop (Behavioral Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ---------------------------------------------------
 --  D flip-flop: RET D flip-flop with single output
 --
@@ -34,9 +36,11 @@ end process;
 \end{minipage}
 
 \section{FET D Flip-flop with Active-low Asynchronous Preset (Behavioral Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ---------------------------------------------------------------
 --  D flip-flop: FET D flip-flop with asynchronous preset. The 
 --  preset input takes precedence over the synchronous input.
@@ -59,9 +63,11 @@ end process;
 \end{minipage}
 
 \section{8-Bit Register with Load Enable (Behavioral Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ---------------------------------------------------
 --  Register: 8-bit Register with load enable. 
 --
@@ -84,9 +90,11 @@ end process;
 \end{minipage}
 
 \section{Synchronous Up/Down Counter (Behavioral Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ----------------------------------------------------------
 -- Counter: synchronous up/down counter with asynchronous 
 -- reset and synchronous parallel load. 
@@ -119,9 +127,11 @@ end my_count;
 \end{minipage}
 
 \section{Shift Register with Synchronous Parallel Load (Behavioral Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ------------------------------------------------------------------
 -- Shift Register: unidirectional shift register with synchronous 
 -- parallel load. 
@@ -152,9 +162,11 @@ end process;
 \end{minipage}
 
 \section{8-Bit Comparator (Behavioral Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ------------------------------------------------------------------
 -- Comparator: Implemented as a behavioral model. The outputs 
 -- include equals, less than and greater than status.  
@@ -184,9 +196,11 @@ end process;
 \end{minipage}
 
 \section{BCD to 7-Segment Decoder (Data-Flow Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 --------------------------------------------------------------------
 -- BCD to 7-Segment Decoder: Implemented as combinatorial circuit.  
 -- Outputs are active low; Hex outputs are included. The SSEG format
@@ -220,9 +234,11 @@ with BCD_IN select
 \end{minipage}
 
 \section{4:1 Multiplexer (Behavioral Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ----------------------------------------------------------------
 -- A 4:1 multiplexer implemented as behavioral model using case
 -- statement. 
@@ -248,9 +264,11 @@ end process;
 \end{minipage}
 
 \section{4:1 Multiplexer (Data-Flow Model)}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 ------------------------------------------------------------
 -- A 4:1 multiplexer implemented as data-flow model using a
 -- selective signal assignment statement. 
@@ -272,9 +290,11 @@ with SEL select
 \end{minipage}
 
 \section{Decoder}
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 -------------------------------------------------------------------
 -- Decoder: 3:8 decoder with active high outputs implemented as
 -- combinatorial circuit with selective signal assignment statement

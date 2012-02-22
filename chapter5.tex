@@ -134,6 +134,7 @@ The sequential style of a signal assignment statement is syntactically equivalen
 \subsection{\texttt{if} Statement}
 The \texttt{if} statement is used to create a branch in the execution flow of the sequential statements. Depending on the conditions listed in the body of the \texttt{if} statement, either the instructions associated with one or none of the branches is executed when the \texttt{if} statement is processed. The general form of the \texttt{if} statement is shown in Listing \ref{if_stat}.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=if_stat, caption=Syntax of the \texttt{if} statement.]
 if (condition) then
@@ -166,6 +167,7 @@ $F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
 \noindent
 \textbf{SOLUTION.} Although it is not directly stated in the problem description, the VHDL code for this solution must use a behavioral architecture. This is because the problem states that an \texttt{if} statement should be used. The VHDL code for the solution is shown in Listing \ref{exe_9}. We have opted to leave out the black-box diagram in this case since the problem is relatively simple and thus does not really demonstrate the power of behavioral modeling.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_9, caption=Solution to Example 9.]
 -- library declaration
@@ -195,8 +197,10 @@ end dumb_example;
 
 This is probably not the best way to implement a logic function but it does show an \texttt{if} statement in action. An alternate architecture for the solution of Example 9 is shown in Listing \ref{exe_9_1}.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_9_1, caption=Alternative solution to Example 9.]
+-- architecture
 architecture bad_example of my_ex_7 is
 begin
 	proc1: process(A,B,C)
@@ -241,6 +245,7 @@ Write some VHDL code that implements the 8:1 MUX shown below. Use an \texttt{if}
 \noindent
 \textbf{SOLUTION.} The solution to Example 10 is shown in Listing \ref{exe_10}.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_10, caption=Solution to Example 10.]
 -- library declaration
@@ -305,6 +310,7 @@ Write some VHDL code that implements the 8:1 MUX shown here. Use as many \texttt
 \noindent
 \textbf{SOLUTION.} The solution to Example 11 is strangely similar to the solution of Example 10. Note that in this solution the \textit{if} statements can be nested to attain various effects. The solution to Example 11 is shown in Listing \ref{exe_11}.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_11, caption=Solution to Example 11.]
 -- library declaration
@@ -344,6 +350,7 @@ end mux_8to1_ce_arch;
 \subsection{\texttt{Case} Statement}
 The \texttt{case} statement is somewhat similar to the \texttt{if} statement in that a sequence of statements is executed if an associated expression is true. The \texttt{case} statement differs from the \texttt{if} statement in that the resulting choice is made depending upon the value of the single control expression. Only one of the sequential statements is executed for each execution of the case statement. The syntax for the case statement is shown in Listing \ref{case_stat}.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=case_stat, caption=Syntax for the \textit{case} statement.]
 case (expression) is
@@ -376,6 +383,7 @@ $F\_OUT(A,B,C)=A\overline{B}\overline{C}+ABC+\overline{A}BC$
 
 The solution is shown in Listing \ref{exe_12}. An interesting feature of this solution is the grouping of the three input signals which allows the use of a \texttt{case} statement in the solution. This approach requires the declaration of an intermediate signal which is appropriately labeled ``ABC''. Once again, this is probably not the most efficient method to implement a function but it does highlight the need to be resourceful and creative when describing the behavior of digital circuits.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_12, caption=Solution to Example 12.]
 -- library declaration
@@ -406,6 +414,7 @@ end my_soln_exam;
 
 Another similar approach to Example 12 is to use the \textit{don't care} feature built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example 12 is shown in Listing \ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more ``definitive'' method of modeling the circuits I am dealing with.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_12_1, caption=Alternative solution to Example 12.]
 architecture my_soln_exam2 of my_example is
@@ -455,6 +464,7 @@ Write some VHDL code that implements the 8:1 MUX shown below. Use a case stateme
 \noindent
 \textbf{SOLUTION.} This solution to Example 13 is shown in listing \ref{exe_13}. The entity declaration is repeated below for your convenience. This solution places the \texttt{case} statement in the body of an \texttt{if} construct. In case you have not noticed it yet, the number of possible solutions to a given problem increases as the circuits you are implementing become more complex.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_13, caption=Solution to Example 13.]
 -- library declaration

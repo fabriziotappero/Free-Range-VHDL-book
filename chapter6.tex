@@ -108,10 +108,11 @@ The other groups of operators are generally used with numeric types. Since this 
 \section{The Concatenation Operator}
 The concatenation operator, \texttt{\&}, is often a useful operator when dealing with digital circuits. There are many times when you will find a need to tack together two separate values. The concatenation operator has been seen in some previous example solutions. Some more examples of the concatenation operators are presented in Listing \ref{concat_operator}. 
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=concat_operator, caption=Examples of the concatenation operator.]
 signal A_val, B_val : std_logic_vector(3 downto 0); 
-signal C_val : std_logic_vector(6 downto 0); 
+signal C_val : std_logic_vector(5 downto 0); 
 signal D_val : std_logic_vector(7 downto 0); 
 ------
 C_val <= A_val & "00"; 
@@ -216,6 +217,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \item The process has the label \texttt{dff}. This is not required by the VHDL language but the addition of process labels promotes a self-describing nature of the code and increases its readability and understandability. 
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_14, caption=Solution to Example 14.]
 -----------------------------------
@@ -282,6 +284,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \item On the rising edge of the clock, the \texttt{S} input takes precedence over the \texttt{D} input because the state of the \texttt{S} input is checked prior to examining the state of the \texttt{D} input. In an \texttt{if-else} statement, once one condition evaluates as true, none of the other conditions is checked. In other words, the \texttt{D} input is transferred to the output only the rising edge of the clock and only if the \texttt{S} input is not asserted.
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_15, caption=Solution to Example 15.]
 ------------------------------------------------------------------
@@ -347,6 +350,7 @@ Write the VHDL code that describes a \texttt{D} flip-flop shown on the right. Us
 \item The \texttt{falling\_edge()} function is used to make the D flip-flop falling-edge-triggered. Once again, this function is defined in one of the included libraries. 
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_16, caption=Solution to Example 16.]
 ----------------------------------------------------------------------
@@ -414,6 +418,7 @@ Write the VHDL code that describes a T flip-flop shown on the right. Use a behav
 \item Where there are certain advantages to using T flip-flops in come conditions, D flip-flops are generally the storage element of choice using VHDL. If you do not have a specific reason for using some type of flip-flop other than a D flip-flop, you probably should not. 
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=exe_17, caption=Solution to Example 17.]
 -------------------------------------------------------------------

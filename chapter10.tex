@@ -17,7 +17,10 @@ There are four types of data objects in VHDL: signals, variables, constants and 
 
 Mind that VHDL is a vast programming language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translated into an FPGA/CPLD bit-stream is called RTL VHDL and represents only a small subset of what is included in the current VHDL standard. The file  data objects are an example of a data object that can not be implemented in a silicon device.
 
-Just as side note, it is interesting to point out that it is also possible to compile VHDL code into an executable file that can be executed, generally for simulation purposes, with any general purpose Intel PC. For more details refer to the open-source work of T. Gingold available at \url{http://ghdl.free.fr}.
+Just as side note, it is interesting to point out that it is also possible to compile VHDL code into an executable file that can be executed, generally for simulation purposes, with any general purpose Intel PC. For more details refer to the open-source work of T. Gingold available at:
+
+\noindent
+\url{http://ghdl.free.fr}.
 
 \section{Data Object Declarations}
 
@@ -29,9 +32,9 @@ The first thing to note about data objects is the similarity in their declaratio
 \hline
 \rowcolor{gray} \textbf{VHDL data object} & \textbf{Declaration form}\\
 \hline
-\rowcolor{light-gray} Signal & \texttt{{\bf signal} sig\_name : sig\_type := initial\_value;} \\
+\rowcolor{light-gray} Signal & \texttt{{\bf signal} sig\_name : sig\_type:=initial\_value;} \\
 \hline
-Variable & \texttt{{\bf variable} var\_name : var\_type := initial\_value;} \\
+Variable & \texttt{{\bf variable} var\_name : var\_type:=initial\_value;} \\
 \hline
 \rowcolor{light-gray} Constant & \texttt{{\bf constant} const\_name : const\_type:=initial\_value;} \\
 \hline
@@ -49,15 +52,15 @@ Note that each of the data objects can optionally be assigned initial values. As
 \rowcolor{gray} \textbf{Data object} & \textbf{Declaration form}\\
 \hline
 Signal & \texttt{{\bf signal} sig\_var1 : std\_logic := '0';} \\
-& \texttt{{\bf signal} tmp\_bus : std\_logic\_vector(3downto0):="0011";} \\
+& \texttt{{\bf signal} tmp\_bus : std\_logic\_vector(3 downto 0):="0011";} \\
 & \texttt{{\bf signal} tmp\_int : integer range -128 to 127 := 0;}  \\
-& \texttt{{\bf signal} my\_int : integer;}\\
+& \texttt{{\bf signal} my\_int  : integer;}\\
 \hline
 Variable &\texttt{{\bf variable} my\_var1, my\_var2 : std\_logic;} \\
 &\texttt{{\bf variable} index\_a : integer range (0 to 255) := 0;} \\ 
 &\texttt{{\bf variable} index\_b : integer := -34;} \\
 \hline
-Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2downto0):="001";} \\
+Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2 downto 0):="001";} \\
 &\texttt{{\bf constant} max\_cnt : integer := 12;} \\
 \hline
 \end{tabular}}
@@ -114,8 +117,10 @@ The use of integer types aids in the design of algorithmic-type VHDL code. This 
 The range of the integer type is (-2,147,483,647 to 2,147,483,647). These numbers should seem familiar since they represent the standard 32-bit range for a signed number: ($-2^{31}$ to $+2^{31}$). Other types similar to integers include natural and positive types. These types are basically integers with shifted ranges. For example, the natural and positive types range from 0 and 1 to the full 32-bit range, respectively. Examples of integer declarations are shown in the following listing.
 \vspace{8pt}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 -- integer declarations
 signal my_int : integer range 0 to 255 := 0;
 variable max_range : integer := 255;
@@ -126,8 +131,10 @@ constant start_addr : integer:= 512;
 Although it could be possible to use only basic integer declarations in your code, VHDL allows you to define your own integer types with their own personalized range constraints. These special types should be used wherever possible to make your code more readable. These type definitions use the \texttt{type} \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
 \vspace{8pt}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 -- integer type declarations
 type scores  is range 0 to 100; 
 type years   is range -3000 to 3000; 
@@ -139,8 +146,10 @@ type oranges is range 0 to 15;
 Although each of the types listed in the previous listing are basically integers, they are still considered different types and cannot be assigned to each other. In addition to this, any worthy VHDL synthesizer will do range checks on your integer types. In the context of the definitions previously presented, each of the statements in the following listing is illegal. 
 \vspace{8pt}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
+
 -- Illegal assignment statements
 signal score1    : scores  := 100;  
 signal my_apple  : apples  := 0; 
@@ -157,6 +166,7 @@ For the representation of digital signals so far in this book, we have used the 
 
 The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include '1' and '0'. The actual definition is shown in the listing \ref{ulogic_type}. As you can see, this definition lists \texttt{std\_ulogic} as opposed to the \texttt{std\_logic} you are used to. The \texttt{std\_logic} type is a \textit{resolved} version of the \texttt{std\_ulogic} type. The exact meaning of resolution is beyond the scope of this book and can be safely overlooked. 
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ulogic_type, caption=Declaration of the \texttt{std\_ulogic} enumerated type.]
 type std_ulogic is ( 'U', -- uninitialised 
@@ -211,6 +221,7 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 \item The variable is declared inside of the process, after the process \texttt{begin} line.
 \end{my_list}
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex26_code, caption=Solution to Example 26.]
 -- library declaration

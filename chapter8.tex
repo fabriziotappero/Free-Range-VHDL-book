@@ -73,6 +73,7 @@ The circuit shown in Fig.~\ref{ex22_comp} contains some extra information that r
 
 The first part of the solution is to provide entity and architecture implementations for the individual gates shown in Fig.~\ref{ex22_comp}. We need to provided as least one definition of an XNOR gate and a 3-input AND gate. We only need to provide one definition of the XNOR gate despite the fact that actually three are shown in the diagram. The modular VHDL approach allows us to reuse circuit definitions and we take advantage of this feature. These definitions are shown in listing~\ref{ex22_code}. 
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex22_code, caption=Entity and Architecture definitions for discrete gates.]
 ----------------------------------
@@ -114,6 +115,7 @@ This is how you therefore proceed:
 \noindent
 \textbf{Step One:} The first step in a structural implementation is identical to the standard approach we have used for the implementing other VHDL circuits: the \texttt{entity}. The entity declaration is derived directly from dashed box in Fig.~\ref{ex22_comp} and is shown in listing~\ref{ex22_code_ent}. In other words, signals that intersect the dashed lines are signals that are known to the outside world and must be included in the entity declaration.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex22_code_ent, caption=Entity declaration for 3-bit comparator.]
 -----------------------------------------------
@@ -132,6 +134,7 @@ end my_compare;
 
 There are two factors involved in declaring a design unit: 1) how to do it and, 2) where to place it. A component declaration can be viewed as a modification of the associated entity declaration. The difference is that the word entity is replaced with the word component and the word component must also follow the word end to terminate the instantiation. The best way to do this is by cutting, pasting and modifying the original entity declaration. The resulting component declaration is placed in the architecture declaration after the \texttt{architecture} line and before the \texttt{begin} line. The two component declarations and their associated entity declarations are shown in the next listing. Listing~\ref{ex22_code_final} shows the component declarations as they appear in working VHDL code.
 
+\noindent
 \begin{minipage}[t]{0.48\textwidth}
 \vspace{0pt}
 \noindent
@@ -174,6 +177,7 @@ The process of mapping provides the interface requirements for the individual co
 
 One key point to note in the instantiation process is the inclusion of labels for all instantiated design units. Labels should always be used as part of design unit instantiation because the use of appropriate labels increases the understandability of your VHDL model. In other words, the proper choice of labels increases the self-describing nature of your design and is considered a good VHDL programming approach.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex22_code_final, caption=VHDL code for the design hierarchy for the 3-bit comparator.]
 -- library declaration
@@ -227,6 +231,7 @@ It is worth noting that the solution shown in listing \ref{ex22_code_final} is n
 
 The alternative approach to mapping is to use \texttt{implied mapping}. In this approach, connections between external signals from the design units are associated with signals in the design unit by order of their appearance in the mapping statement. This differs from direct mapping because only signals from the higher-level design appear in the mapping statement instead. The association between signals in the design units and the higher-level design are implied by the ordering of the signal as they appear in the component or entity declaration. This approach uses less space in the source code but requires signals to be placed in the proper order. An alternative but equivalent architecture for the previous example using implied mapping is shown in listing \ref{ex22_code_final_alt}. 
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex22_code_final_alt, caption=Alternative architecture for Example 22 using implied mapping.]
 -- library declaration
@@ -262,6 +267,7 @@ end ckt2;
 
 Due to the fact that this design was relatively simple, it was possible to bypass one of the interesting issues that arises when using structural modeling. Often when dealing with structural designs, different levels of the design will contain the same signal name. The question arises as to whether the synthesizer is able to differentiate between the signal names across the hierarchy. VHDL synthesizers, like compilers for higher-level languages, are able to handle such instances. Signals with the same names are mapped according to the mapping presented in the component instantiation statement. Probably the most common occurrence of this is with clock signals. In this case, a component instantiation such as the one shown in listing \ref{ex22_code_same_sig} is both valid and commonly seen in designs containing a system clock. Name collision does not occur because the signal name on the left-hand side of the $=>$ operator is understood to be internal to the component while the signal on the right-hand side is understood to reside in the next level up in the hierarchy.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex22_code_same_sig, caption=Example of the same signal name crossing hierarchical boundaries.]
 x5: some_component port map (CLK => CLK,
@@ -313,7 +319,6 @@ Provide a VHDL model that can be used to implement the following circuit.
 \centering
 \includegraphics[width=6cm]{smu_vhdl/ex2.png}
 \end{minipage}
-
 
 %%%%%% EXERCISE 3 %%%%%%
 \vspace{20pt}

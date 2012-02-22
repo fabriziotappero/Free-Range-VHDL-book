@@ -68,7 +68,7 @@ use IEEE.math_complex.all;
 
 % this box is positioned relatively to this page
 % not sure how to make is relative to the text
-\begin{textblock}{7}(8.5,10.4)
+\begin{textblock}{7}(8.7,10.7)
 {\tiny
 \begin{verbatim}
 NOTE
@@ -79,13 +79,13 @@ TRY TO AVOID THEM !
 use IEEE.std_logic_signed.all;
 use IEEE.std_logic_unsigned.all;
 use IEEE.std_logic_arith.all;
-use IEEE.math_complex.all;
 \end{verbatim}
 }
 \end{textblock}
 
 For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability to use the assignment operator \texttt{=} to compare two different data types. The following listing shows a simple coding example of some of the many advantages of using these libraries.
 
+\noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=good_lib_ex, caption=Example of operators and types available with some IEEE packages.]
 -- typical packages declaration
@@ -116,13 +116,13 @@ begin
    begin
      if CLR = '1' then 
         OUT1 <= '0';  
-     elsif rising_edge(CLK) then --std_logic_1164 gives you rising_edge()
-       Y1 <= A+B+unsigned("0" & IN1);--numeric_std defines addition
-                                      --for unsigned types.
+     elsif rising_edge(CLK) then --std_logic_1164 gives rising_edge()
+       Y1 <= A + B + unsigned("0" & IN1);--numeric_std defines addition
+                                         --for unsigned types.
 
        Y2<= resize(A, Y2'length) + B + ("0" & IN1);
   
-       X <= to_integer(A);--numeric_std gives you "to_integer()"
+       X <= to_integer(A); --numeric_std gives to_integer()
 
         OUT1 <= IN1 AND IN2; 
      end if; 
@@ -133,6 +133,7 @@ end arch;
 
 As it becomes clear from the previous listing, the inclusion of these main standard libraries allows you to write very powerful VHDL code. A quite useful cheat-sheet about VHDL standard libraries and what they can offer is available from here:
 
+\noindent
 \begin{verbatim}
 http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf
 http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
@@ -140,22 +141,32 @@ http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
 
 The IEEE standardized libraries heavily enhance the VHDL language capability giving you a long list of functions that you can freely use in your VHDL source code. A list of these libraries cannot be included here for obvious copyright reasons but all IEEE libraries source code is freely available to you from the following link:
 
+\noindent
 \url{http://standards.ieee.org/downloads/1076/1076.2-1996/}
 
+\noindent
 Alternatively, the same VHDL libraries can be browsed and downloaded from the GHDL website:
 
+\noindent
 \url{http://ghdl.free.fr}
 
+\noindent
 Finally, the software development tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from: 
 
-\url{http://standards.ieee.org} 
+\noindent
+\url{http://standards.ieee.org}
 
+\noindent
 will show you that the constant of type real \texttt{MATH\_PI = 3.1415926} is available to you as soon as you include the \texttt{"use IEEE.math\_real.all;"} line. The square root function \texttt{SQRT()} is just another example.
 
 \section{Non-standard Libraries}
 If {you often use google for learning purposes}, you will soon discover that the use of the non-standard library:\\
-\texttt{library ieee;}\\
- \texttt{ieee.std\_logic\_arith.all;}\\
+\texttt{library ieee;}
+
+\noindent
+\texttt{ieee.std\_logic\_arith.all;}
+
+\noindent
 is amazingly common among VHDL programmers. 
 
 The \texttt{std\_logic\_arith} library, as well as the \texttt{std\_logic\_unsigned} and the \texttt{std\_logic\_signed} libraries, were written and packaged by Synoptics to provide extended VHDL programming functionalities. Using these libraries eliminates the need for data conversion and, for instance, it allows you to write:\\
@@ -165,13 +176,14 @@ Despite the great advantage that these non-standard libraries seem to give you, 
 \section{IEEE Standard Libraries}
 In VHDL, basic arithmetics is defined for the \texttt{integer} data type and for the \texttt{natural} data type. In order to have more control during synthesis over the various data formats, other libraries were developed and included into the IEEE standard.
 
-The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the \texttt{std\_logic\_arith} library.
+The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the\\ \texttt{std\_logic\_arith} library.
 
 As a natural consequence, we recommend using the types \texttt{unsigned}, \texttt{signed} and \texttt{integer} instead of the simpler \texttt{std\_logic\_vector} type for the many needs you might have. Refer to listing \ref{good_lib_ex} for en example of the wise use of the type \texttt{unsigned} or the type \texttt{integer} over the type \texttt{std\_logic\_vector}.
 
 \chapter{VHDL Reference Cards}
 Hereafter you can find two sets of very useful VHDL reference cards made by Qualis Design Corporation.
 
+\noindent
 \begin{verbatim}
 http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf
 http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
