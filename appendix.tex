@@ -46,11 +46,11 @@ constant       &  is        &  package  &  sll       &              \\
 \mbox{}
 
 \chapter{Standard VHDL Packages}
-After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardisation of the language. 
+After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardization of the language. 
 
-After three main language standardisation steps that took place in 1987, 1993 and in 2002, VHDL now includes a large set of packages that, once included in your code, give to the user the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
+After three main language standardization steps that took place in 1987, 1993 and in 2002, VHDL now includes a large set of packages that, once included in your code, give you the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
 
-The main VHDL language library packages that you will probably need to use in your career as an engineer can be included in your code by using the following statements:
+The main VHDL language library packages that you will probably need to use in your career as an engineer can be included in your code via the following statements:
 
 {\scriptsize
 \begin{verbatim}
@@ -83,7 +83,7 @@ use IEEE.std_logic_arith.all;
 }
 \end{textblock}
 
-For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability to use the assignment operator \texttt{=} to compare two different data types. The following listing shows a simple coding example of some of the many advantages of using these libraries.
+For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability to use the several data types like the \texttt{std\_logic} or the \texttt{std\_logic\_vector}. The following listing shows a simple coding example of some of the many advantages of using these libraries.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -92,10 +92,6 @@ For instance, the inclusion of the package \texttt{std\_logic\_1164} in your cod
 library IEEE;
 use ieee.std_logic_1164.all ;
 use ieee.numeric_std.all ;
-
--- notice how the use of these libraries was avoided
--- use ieee.std_logic_arith.all ;
--- use ieee.std_logic_unsigned.all ;
 
 -- entity
 entity my_blk is 
@@ -131,7 +127,7 @@ end arch;
 \end{lstlisting}
 \end{minipage}
 
-As it becomes clear from the previous listing, the inclusion of these main standard libraries allows you to write very powerful VHDL code. A quite useful cheat-sheet about VHDL standard libraries and what they can offer is available from here:
+As it becomes clear from the previous listing, the inclusion of the main standard libraries allows you to write very powerful VHDL code. A quite useful cheat-sheet about VHDL standard libraries and what they can offer is available from here:
 
 \noindent
 \begin{verbatim}
@@ -139,7 +135,7 @@ http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf
 http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
 \end{verbatim}
 
-The IEEE standardized libraries heavily enhance the VHDL language capability giving you a long list of functions that you can freely use in your VHDL source code. A list of these libraries cannot be included here for obvious copyright reasons but all IEEE libraries source code is freely available to you from the following link:
+The IEEE standardized libraries heavily enhance the VHDL language capability giving you a long list of functions that you can freely use in your VHDL source code. A list of these libraries cannot be included here for copyright reasons but all IEEE libraries source code is freely available to you from the following link:
 
 \noindent
 \url{http://standards.ieee.org/downloads/1076/1076.2-1996/}
@@ -159,6 +155,13 @@ Finally, the software development tool (e.g. Xilinx ISE) that you use for the sy
 \noindent
 will show you that the constant of type real \texttt{MATH\_PI = 3.1415926} is available to you as soon as you include the \texttt{"use IEEE.math\_real.all;"} line. The square root function \texttt{SQRT()} is just another example.
 
+\section{IEEE Standard Libraries}
+In VHDL, basic arithmetics is defined for the \texttt{integer} data type and for the \texttt{natural} data type. In order to have more control during synthesis over the various data formats, other libraries were developed and included into the IEEE standard.
+
+The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the Synoptics \texttt{std\_logic\_arith} library.
+
+As a natural consequence, we recommend using the types \texttt{unsigned}, \texttt{signed} and \texttt{integer} instead of the simpler \texttt{std\_logic\_vector} type for the many needs you might have. Refer to listing \ref{good_lib_ex} for en example of the wise use of the type \texttt{unsigned} or the type \texttt{integer} over the type \texttt{std\_logic\_vector}.
+
 \section{Non-standard Libraries}
 If {you often use google for learning purposes}, you will soon discover that the use of the non-standard library:\\
 \texttt{library ieee;}
@@ -173,13 +176,6 @@ The \texttt{std\_logic\_arith} library, as well as the \texttt{std\_logic\_unsig
 \texttt{a\_logic\_vector <= a\_logic\_vector + 1;}\\
 Despite the great advantage that these non-standard libraries seem to give you, their use is not considered a good practice. Because of compatibility issues during synthesis, we strongly discourage the use of these libraries.
 
-\section{IEEE Standard Libraries}
-In VHDL, basic arithmetics is defined for the \texttt{integer} data type and for the \texttt{natural} data type. In order to have more control during synthesis over the various data formats, other libraries were developed and included into the IEEE standard.
-
-The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the\\ \texttt{std\_logic\_arith} library.
-
-As a natural consequence, we recommend using the types \texttt{unsigned}, \texttt{signed} and \texttt{integer} instead of the simpler \texttt{std\_logic\_vector} type for the many needs you might have. Refer to listing \ref{good_lib_ex} for en example of the wise use of the type \texttt{unsigned} or the type \texttt{integer} over the type \texttt{std\_logic\_vector}.
-
 \chapter{VHDL Reference Cards}
 Hereafter you can find two sets of very useful VHDL reference cards made by Qualis Design Corporation.
 
@@ -191,28 +187,28 @@ http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
 
 \newpage\clearpage
 \thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,0mm)
+\begin{textblock*}{148mm}(1mm,10mm)
 %\textblockcolour{red}
 \includegraphics[width=145mm]{ref_cards/qr1.pdf}
 \end{textblock*}
 \null\newpage
 
 \thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,0mm)
+\begin{textblock*}{148mm}(1mm,10mm)
 %\textblockcolour{red}
 \includegraphics[width=145mm]{ref_cards/qr2.pdf}
 \end{textblock*}
 \null\newpage
 
 \thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,0mm)
+\begin{textblock*}{148mm}(1mm,10mm)
 %\textblockcolour{red}
 \includegraphics[width=145mm]{ref_cards/qr3.pdf}
 \end{textblock*}
 \null\newpage
 
 \thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,0mm)
+\begin{textblock*}{148mm}(1mm,10mm)
 %\textblockcolour{red}
 \includegraphics[width=145mm]{ref_cards/qr4.pdf}
 \end{textblock*}

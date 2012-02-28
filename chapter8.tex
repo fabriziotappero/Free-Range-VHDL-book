@@ -285,10 +285,13 @@ x5: some_component port map (CLK => CLK,
 
 \item If you use one FPGA software development tool from one of the major FPGA players in the market, you will be able to use digital blocks already developed once you declare them. In this case the entity declaration is not the one of listing \ref{ex22_code_ent} but instead a simple library inclusion in your VHDL code that looks like:
 
-\hspace*{50pt}
+\noindent
+\begin{minipage}{0.99\textwidth}
 \texttt{library UNISIM;}\\
-\hspace*{50pt}
 \texttt{use UNISIM.VComponents.all;}\\
+\hspace*{50pt}
+\end{minipage}
+
 All digital blocks available from this library package are described in the documentation of the FPGA software development tool (e.g. Xilinx ISE).
 \end{my_list}
 

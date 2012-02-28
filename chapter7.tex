@@ -29,7 +29,7 @@ The FSM model shown in Fig.~\ref{fsm} is probably the most common model for desc
 	\label{fsm_imp}
 \end{figure}
 
-There are several different approaches used to model FSMs using VHDL. The many different possible approaches are a result of the general versatility of VHDL as a programming language. What we will describe in this section is probably the clearest approach for FSM implementation. A block diagram of the approach we will use in the implementation of FSMs is shown in Fig.~\ref{fsm_imp}.
+There are several different approaches used to model FSMs using VHDL. The many different possible approaches are a result of the general versatility of VHDL as a language. What we will describe in this section is probably the clearest approach for FSM implementation. A block diagram of the approach we will use in the implementation of FSMs is shown in Fig.~\ref{fsm_imp}.
 
 Although it does not look that much clearer, you will soon be finding the FSM model shown in Fig.~\ref{fsm_imp} to be a straightforward method to implement FSMs. The approach we will use divides the FSM into two VHDL processes. One process, referred to as the \texttt{Synchronous Process} handles all the matters regarding clocking and other controls associated with the storage element. The other process, the \texttt{Combinatorial Process}, handles all the matters associated with the \texttt{Next State Decoder} and the \texttt{Output Decoder} of Fig.~\ref{fsm}. Note that the two blocks in Fig.~\ref{fsm} are both comprised of solely the combinatorial logic.
 
@@ -111,7 +111,7 @@ begin
             end if; 
          when others => -- the catch-all condition
             Z1 <= '0';  -- arbitrary; it should never 
-            NS <= ST0;  --  make it to these two statements
+            NS <= ST0;  -- make it to these two statements
       end case; 
    end process comb_proc; 
 end fsm1;
@@ -174,7 +174,7 @@ begin
    begin
       case PS is 
       Z1 <= '0';    
-      when ST0 =>    -- items regarding state ST0
+      when ST0 =>       -- items regarding state ST0
             Z1 <= '0';  -- Moore output
             if (TOG_EN = '1') then NS <= ST1; 
             else  NS <= ST0; 
@@ -488,10 +488,10 @@ entity my_fsm4_oh is
 end my_fsm4_oh;
 -- architeture
 architecture fsm4_oh of my_fsm4_oh is
-   type state_type is (ST0,ST1,ST2,ST3);
-   attribute ENUM_ENCODING: STRING; 
-   attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
-   signal PS,NS : state_type; 
+  type state_type is (ST0,ST1,ST2,ST3);
+  attribute ENUM_ENCODING: STRING; 
+  attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
+  signal PS,NS : state_type; 
 begin
    sync_proc: process(CLK,NS,RESET)
    begin

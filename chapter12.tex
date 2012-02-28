@@ -11,7 +11,7 @@ As you know or as you will be finding out soon, even the most complex digital ci
 
 The most efficient approach to utilizing standard digital circuits using VHDL is to use existing code for these devices and modify them according to the needs of your particular design. This approach allows you to utilize your current knowledge of VHDL to quickly and efficiently design complex digital circuits. The following listings show a set of standard digital devices and the VHDL code used to describe them. The following circuits are represented in various sizes and widths. Note that the following circuit descriptions represent possible VHDL descriptions but are by no means the only descriptions. They do however provide starting points for you to modify for your own design needs. 
 
-\section{RET D Flip-flop (Behavioral Model)}
+\section{RET D Flip-flop - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -35,7 +35,7 @@ end process;
 \end{lstlisting}
 \end{minipage}
 
-\section{FET D Flip-flop with Active-low Asynchronous Preset (Behavioral Model)}
+\section{FET D Flip-flop with Active-low Asynchronous Preset - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -62,22 +62,22 @@ end process;
 \end{lstlisting}
 \end{minipage}
 
-\section{8-Bit Register with Load Enable (Behavioral Model)}
+\section{8-Bit Register with Load Enable - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
 
----------------------------------------------------
+-----------------------------------------------
 --  Register: 8-bit Register with load enable. 
 --
 --  Required signals: 
----------------------------------------------------
+-----------------------------------------------
 --  CLK,LD: in STD_LOGIC;
 --  D_IN: in STD_LOGIC_VECTOR(7 downto 0);
 --  D_OUT: out STD_LOGIC_VECTOR(7 downto 0);
----------------------------------------------------
-process (CLK,LD) 
+-----------------------------------------------
+process (CLK) 
 begin
    if (rising_edge(CLK)) then  
       if (LD = '1') then   -- positive logic for LD
@@ -89,7 +89,7 @@ end process;
 \end{lstlisting}
 \end{minipage}
 
-\section{Synchronous Up/Down Counter (Behavioral Model)}
+\section{Synchronous Up/Down Counter - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -126,7 +126,7 @@ end my_count;
 \end{lstlisting}
 \end{minipage}
 
-\section{Shift Register with Synchronous Parallel Load (Behavioral Model)}
+\section{Shift Register with Synchronous Parallel Load - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -161,7 +161,7 @@ end process;
 \end{lstlisting}
 \end{minipage}
 
-\section{8-Bit Comparator (Behavioral Model)}
+\section{8-Bit Comparator - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -195,7 +195,7 @@ end process;
 \end{lstlisting}
 \end{minipage}
 
-\section{BCD to 7-Segment Decoder (Data-Flow Model)}
+\section{BCD to 7-Segment Decoder - Data-Flow Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -233,7 +233,7 @@ with BCD_IN select
 \end{lstlisting}
 \end{minipage}
 
-\section{4:1 Multiplexer (Behavioral Model)}
+\section{4:1 Multiplexer - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -263,7 +263,7 @@ end process;
 \end{lstlisting}
 \end{minipage}
 
-\section{4:1 Multiplexer (Data-Flow Model)}
+\section{4:1 Multiplexer - Data-Flow Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}

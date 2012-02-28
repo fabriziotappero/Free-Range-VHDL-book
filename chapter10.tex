@@ -15,7 +15,7 @@ In order to move into more sophisticated VHDL, a good place to start is with the
 \section{Types of Data Objects}
 There are four types of data objects in VHDL: signals, variables, constants and files. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects are not discussed in this tutorial. 
 
-Mind that VHDL is a vast programming language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translated into an FPGA/CPLD bit-stream is called RTL VHDL and represents only a small subset of what is included in the current VHDL standard. The file  data objects are an example of a data object that can not be implemented in a silicon device.
+Mind that VHDL is a vast language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translated into an FPGA/CPLD bit-stream is called RTL VHDL and represents only a small subset of what is included in the current VHDL standard. The file  data objects are an example of a data object that can not be implemented in a silicon device.
 
 Just as side note, it is interesting to point out that it is also possible to compile VHDL code into an executable file that can be executed, generally for simulation purposes, with any general purpose Intel PC. For more details refer to the open-source work of T. Gingold available at:
 
@@ -114,7 +114,7 @@ boolean & \texttt{{\bf variable} my\_test : {\bf boolean} := {\bf false};} & Non
 \section{Integer Types}
 The use of integer types aids in the design of algorithmic-type VHDL code. This type of coding allows VHDL to describe the behaviour of complex digital circuits. As you progress in your digital studies, you will soon find yourself in need of more complex descriptive VHDL tools. Data types such as integers partially fill that desire. This section briefly looks at integer types as well as the definition of user-specified integer types.
 
-The range of the integer type is (-2,147,483,647 to 2,147,483,647). These numbers should seem familiar since they represent the standard 32-bit range for a signed number: ($-2^{31}$ to $+2^{31}$). Other types similar to integers include natural and positive types. These types are basically integers with shifted ranges. For example, the natural and positive types range from 0 and 1 to the full 32-bit range, respectively. Examples of integer declarations are shown in the following listing.
+The range of the integer type is (-2,147,483,647 to 2,147,483,647). These numbers should seem familiar since they represent the standard 32-bit range for a signed number: ($-2^{31}$ to $+2^{31}$). Other types similar to integers include natural and positive types. These types are basically integers with shifted ranges. For example, the natural and positive types range from 0 and 1 to the full 31-bit range, respectively. Examples of integer declarations are shown in the following listing.
 \vspace{8pt}
 
 \noindent
@@ -162,7 +162,7 @@ my_score <= 110;        -- out of range
 \end{minipage}
 
 \section{The \texttt{std\_logic} Type}
-For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types neither used not listed in this book is the \texttt{bit} type. This type can take on only the values of '1' or '0'. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is officially defined in the VHDL STANDARD package and provides a common standard that can be used by all VHDL programmers.
+For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types neither used not listed in this book is the \texttt{bit} type. This type can take on only the values of '1' or '0'. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is defined in the VHDL package \texttt{ieee.std\_logic\_1164} and provides a common standard that can be used by all VHDL programmers.
 
 The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include '1' and '0'. The actual definition is shown in the listing \ref{ulogic_type}. As you can see, this definition lists \texttt{std\_ulogic} as opposed to the \texttt{std\_logic} you are used to. The \texttt{std\_logic} type is a \textit{resolved} version of the \texttt{std\_ulogic} type. The exact meaning of resolution is beyond the scope of this book and can be safely overlooked. 
 
@@ -224,43 +224,43 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex26_code, caption=Solution to Example 26.]
+
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all;
+
 -- entity
 entity clk_div is
-    Port (    clk : in std_logic;
-           div_en : in std_logic;
-             sclk : out std_logic);
+Port (
+    clk    : in std_logic;
+    div_en : in std_logic;
+    sclk   : out std_logic);
 end clk_div;
+
 -- architecture
 architecture my_clk_div of clk_div is
-
-   type my_count is range 0 to 100;     -- user-defined type
-   constant max_count : my_count := 63; -- user-defined constant
-   signal tmp_sclk : std_logic;         -- intermediate signal for clock
-   
-begin
-   my_div: process (clk, div_en)   
-      variable div_count : my_count := 0; 
-
-   begin
-      if (rising_edge(clk)) then            -- look for clock edge
-         if (div_en = '1') then             -- divider enabled
-            if (div_count = max_count) then 
-               tmp_sclk <= not tmp_sclk;    -- toggle output
-               div_count := 0;              -- reset count
-            else
-               div_count := div_count + 1; 
-            end if; 
-         else                       -- divider disabled
-            div_count := 0;         -- reset count 
-            tmp_sclk <= '0';        -- turn off output
-         end if; 
-      end if; 
-   end process my_div; 
-
-   s_clk <= tmp_sclk;   -- assign to output
+    type my_count is range 0 to 100;     -- user-defined type
+    constant max_count : my_count := 31; -- user-defined constant
+    signal tmp_sclk : std_logic;         -- intermediate signal
+    begin
+        my_div: process (clk,div_en)
+        variable div_count : my_count := 0;
+        begin
+            if (div_en = '0') then
+                div_count := 0;
+                tmp_sclk <= '0';             
+            elsif (rising_edge(clk)) then
+                    -- divider enabled
+                    if (div_count = max_count) then
+                        tmp_sclk <= not tmp_sclk;   -- toggle output
+                        div_count := 0;             -- reset count
+                    else
+                        div_count := div_count + 1; -- count
+                    end if;
+            end if;
+        end process my_div;
+        sclk <= tmp_sclk;                           -- final assignment
 end my_clk_div;
 \end{lstlisting}
 \end{minipage}

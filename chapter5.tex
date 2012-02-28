@@ -9,7 +9,7 @@
 \chapter{Standard Models in VHDL Architectures}
 As you may remember, the VHDL architecture describes how your VHDL system will behave. The architecture body is comprised of two parts: the declaration section and the begin-end section where a collection of (concurrent) signal assignments appear. We have studied three types of signal assignment so far: concurrent signal assignment, conditional signal assignment and selected signal assignment. We were about to describe another concurrent statement, the process statement, before we got side-tracked. Now, let us quickly introduce a new topic before we jump into the process statement.
 
-There are three different approaches to writing VHDL architectures. These approaches are known as \textit{data-flow style}, \textit{structural style} and \textit{behavioral style} architectures. The standard approach to learning VHDL is to introduce each of these architectural styles individually and design a few circuits using that style. Although this approach is good from the standpoint of keeping things simple while immersed in the learning process, it is also somewhat misleading because more complicated VHDL circuits generally use a mixture of these three styles. Keep this fact in mind in the following discussion of these styles. We will, however, put most of our focus on data-flow and behavioral architectures. Structural modeling is essentially a method to combine an existing set of VHDL models. In other words, structural modeling supports the interconnection of black boxes but does not have the ability to describe the logic functions used to model the circuit operation. For this reason, it is less of a design method and more of an approach for interfacing previously designed modules.
+There are three different approaches to writing VHDL architectures. These approaches are known as \textbf{data-flow style}, \textbf{structural style} and \textbf{behavioral style} architectures. The standard approach to learning VHDL is to introduce each of these architectural styles individually and design a few circuits using that style. Although this approach is good from the standpoint of keeping things simple while immersed in the learning process, it is also somewhat misleading because more complicated VHDL circuits generally use a mixture of these three styles. Keep this fact in mind in the following discussion of these styles. We will, however, put most of our focus on data-flow and behavioral architectures. Structural modeling is essentially a method to combine an existing set of VHDL models. In other words, structural modeling supports the interconnection of black boxes but does not have the ability to describe the logic functions used to model the circuit operation. For this reason, it is less of a design method and more of an approach for interfacing previously designed modules.
 
 The reason we choose to slip the discussion of the different architectures at this point is that you already have some familiarity with one of the styles. Up to this point, all of our circuits have been implemented using the data-flow style. We are now at the point of talking about the behavioral style of architectures which is primarily centered around another concurrent statement known as the process statement. If it seems confusing, some of the confusion should go away once we start dealing with actual circuits and real VHDL code.
 
@@ -88,7 +88,7 @@ end behav;
 
 The process statement should be considered a way the programmer has at his disposal to execute a series of sequential statements (i.e. in a behavioral manner); never forget that the process statement is itself a concurrent statement; therefore when you place two processes inside the architecture body, their execution will be concurrent.
 
-In Listing \ref{process_stat_complete}, you can see what a complete process statement looks like. Remember that all variables defined inside the process body will only be visible within the process body itself. Furthermore, notice that the statement at line 23 is placed inside the architecture body but outside the process body; therefore its execution happens concurrently with the process statement.
+In Listing \ref{process_stat_complete}, you can see what a complete process statement looks like. Remember that all variables defined inside the process body will only be visible within the process body itself. Furthermore, notice that the statement at line 24 is placed inside the architecture body but outside the process body; therefore its execution happens concurrently with the process statement.
 
 \begin{lstlisting}[float, numbers=left,label=process_stat_complete, caption=Use of the process statement.]
 -- library declaration
@@ -106,11 +106,11 @@ begin
 	some_proc: process(A,B,C) is
 	  variable a,b : integer;
 	begin
-		a=34;
-		b=67;
+		a:=74;
+		b:=67;
 		A1 <= A and B and C;
-		if a>b
-			F <= A1 or B;
+		if a>b then
+            F <= A1 or B;
 		end if;
 	end process some_proc;
 	-- we are outside the process body	
