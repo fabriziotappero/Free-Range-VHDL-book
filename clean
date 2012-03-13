@@ -10,3 +10,5 @@ rm *.tex~ *.sty~
 
 rm -R __MACOSX
 
+rm *~*
+

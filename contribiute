@@ -1,0 +1,36 @@
+
+#### FREE RANGE VHDL - how to contribute ####
+
+git (www.git-scm.com) is the version control system used to menage the 
+content of this book. 
+This instructions tell you how to contribute to the development
+of the VHDL book "FREE RANGE VHDL".
+
+
+1) get the latest latex version of the book:
+    wget http://www.freerangefactory.org/dl/free_range_vhdl_tex.zip
+    unzip free_range_vhdl_tex.zip
+    cd free_range_vhdl_tex
+
+2) you can see the history of the latest version of the book with:
+    gitk
+
+4) Modify and save any file you want.
+
+5) use the file "compile" and the file "clean" to compile and to 
+   clean your final book version. check the status of your work
+   with the command:
+    git status
+
+5) create a patch with the command:
+    git diff > my_patch.patch
+
+6) send the file "my_patch.patch" and an explanation of what you 
+    have done to:
+
+    contact@freerangefactory.org
+    
+
+
+
+
