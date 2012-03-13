@@ -644,8 +644,8 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity fsmx is
-    Port ( BUM1,BUM2 : in std_logic;
-                 CLK : in std_logic;
+    Port ( BUM1,BUM2 : in  std_logic;
+                 CLK : in   std_logic;
             TOUT,CTA : out std_logic);
 end fsmx;
 -- architecture
@@ -810,7 +810,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity fsm is
-    Port ( CLK,CLR,SET,X1,X2 : in std_logic;
+    Port ( CLK,CLR,SET,X1,X2 : in  std_logic;
                        Z1,Z2 : out std_logic);
 end fsm;
 -- architecture

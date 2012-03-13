@@ -7,7 +7,7 @@
 % !TEX root = master.tex
 %
 \chapter{Registers and Register Transfer Level}
-The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straightforward concepts in VHDL. A register in VHDL is simply a vector version of a D flip-flop in which all operations on the flip-flops occur simultaneously. The "register transfer level", or RTL, is a flavor of design that is primarily concerned with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "data-path" designs which require the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the data-path. In these cases, the proper sequencing of data transfers is controlled by a FSM. 
+The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straightforward concepts in VHDL. A register in VHDL is simply a vector version of a D flip-flop in which all operations on the flip-flops occur simultaneously. The ``register transfer level'', or RTL, is a flavor of design that is primarily concerned with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "data-path" designs which require the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the data-path. In these cases, the proper sequencing of data transfers is controlled by a FSM. 
 
 The study of RTL-level design is best accomplished in the context of a data-path design. The design of data-paths is best accomplished in the context of a digital circuit that has some purpose such as an arithmetic logic unit design. Both of these topics are beyond what needs to be mentioned here. The good news is that the simplicity of the registers makes for a quick introduction to the matter. Major circuit implementations are saved for some other time.
 
@@ -27,11 +27,13 @@ Use VHDL behavioral modeling to design the 8-bit register that has a synchronous
 \noindent
 \textbf{SOLUTION.} The solution for the 8-bit register looks amazingly similar to a model of a D flip-flop. The full solution to Example 23 is shown in listing \ref{ex23_code}. As usual, there are a couple of things worth noting in this solution.
 \begin{my_list}
-\item Note that there is an \texttt{if} statement that does not contain a corresponding \texttt{else} which is what generates the memory element. For this example, there are considered to be eight bit-sized memory elements (flip-flops). For this example the flip flops are considered to be D-type flip-flops. The storage elements are associated with the REG\_OUT bundle. The ease in using VHDL code to generate D flip-flops in this manner makes D flip-flops the most widely used type of flip-flop in digital design.
+\item Note that there is an \texttt{if} statement that does not contain a corresponding \texttt{else} which is what generates the memory element. For this example, there are considered to be eight bit-sized memory elements (flip-flops). For this example the flip flops are considered to be D-type flip-flops. The storage elements are associated with the \texttt{REG\_OUT} bundle. The ease in using VHDL code to generate D flip-flops in this manner makes D flip-flops the most widely used type of flip-flop in digital design.
 
 \item The code uses a bundle signal for both the input and output. The assignment of the bundles to other bundles is straightforward in VHDL as is shown in the code. In many cases, such as the one in this example, there is no need to use a bundle access operator in the VHDL model. 
 
 \item The assignment of the input to the output is based on characteristics of both the clock edge and the state of the LD signal. The approach taken in the VHDL model shown in listing \ref{ex23_code} is to provide a separate \texttt{if} clause for both the LD and CLK signals. Only one \texttt{if} statement could have been used by making both conditions associated with the single \texttt{if} clause but this is not considered good VHDL programming practice when dealing with synchronized elements. In other words, you should always strive to keep special conditions associated with the clocking signal separate from all other conditions associated with the action in question. Clock signals are somewhat special in the VHDL land; you should get into the habit of treating them gently. 
+
+\item Since signals \texttt{REG\_IN} and \texttt{LD} are required to be synchronous they do not appear inside the process sensitivity list.
 \end{my_list}
 
 \noindent
@@ -49,7 +51,7 @@ end reg8;
 -- architecture
 architecture reg8 of reg8 is
 begin
-   reg: process(LD,CLK)
+   reg: process(CLK)
    begin
       if (rising_edge(CLK)) then 
          if (LD = '1') then 
@@ -96,9 +98,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity ckt_rtl is
-   port (D1_IN,D2_IN : in std_logic_vector(7 downto 0);
-             CLK,SEL : in std_logic; 
-             LDA,LDB : in std_logic; 
+   port (D1_IN,D2_IN : in  std_logic_vector(7 downto 0);
+             CLK,SEL : in  std_logic; 
+             LDA,LDB : in  std_logic; 
          REG_A,REG_B : out std_logic_vector(7 downto 0)); 
 end ckt_rtl; 
 -- architecture
@@ -107,7 +109,7 @@ architecture rtl_behavioral of ckt_rtl is
    signal s_mux_result : std_logic_vector(7 downto 0);
 begin
 
-   ra: process(LDA,CLK,s_mux_result) -- process
+   ra: process(CLK) -- process
    begin
       if (rising_edge(CLK)) then 
          if (LDA = '1') then 
@@ -116,7 +118,7 @@ begin
       end if;
    end process; 
 	
-   rb: process(LDB,CLK,s_mux_result) -- process
+   rb: process(CLK) -- process
    begin
       if (rising_edge(CLK)) then 
          if (LDB = '1') then 
@@ -177,7 +179,7 @@ entity reg8 is                                      --- ENTITY
 end reg8;
 architecture reg8 of reg8 is                       --- ARCHITECTURE
 begin
-   reg: process(LD,CLK)
+   reg: process(CLK)
    begin
       if (rising_edge(CLK)) then 
          if (LD = '1') then 

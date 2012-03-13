@@ -99,9 +99,9 @@ C_out <= (not D_1) and B_2;
 \end{minipage}
 
 \section{Signal Assignment Operator ``$<=$''}
-Algorithmic programming languages always have some type of assignment operator. In C or Java, this is the well-known ``='' sign. In these languages, the assignment operator signifies a transfer of data from the right-hand side of the operator to the left-hand side. VHDL uses two consecutive characters to represent the assignment operator: ``$<=$''. This combination was chosen because it is different from the assignment operators in most other common algorithmic programming languages. The operator is officially known as a signal assignment operator to highlight its true purpose. The signal assignment operator specifies a relationship between signals. In other words, the signal on the left-hand side of the signal assignment operator is dependent upon the signals on the right-hand side of the operator.
+Algorithmic programming languages always have some type of assignment operator. In C or Java, this is the well-known ``='' sign. In these languages, the assignment operator signifies a transfer of data from the right-hand side of the operator to the left-hand side. VHDL uses two consecutive characters to represent the assignment operator: ``\texttt{$<=$}''. This combination was chosen because it is different from the assignment operators in most other common algorithmic programming languages. The operator is officially known as a signal assignment operator to highlight its true purpose. The signal assignment operator specifies a relationship between signals. In other words, the signal on the left-hand side of the signal assignment operator is dependent upon the signals on the right-hand side of the operator.
 
-With these new insights into VHDL, you should be able to understand the code of Listing \ref{parallel_code} and its relationship to its schematic shown in Figure \ref{concurrent_circuit}. The statement \texttt{\footnotesize G~$<=$~A~AND~B;} indicates that the value of the signal named \texttt{\footnotesize G} represents an AND logic operation between the signals \texttt{\footnotesize A} and \texttt{\footnotesize B}.
+With these new insights into VHDL, you should be able to understand the code of Listing \ref{parallel_code} and its relationship to its schematic shown in Figure \ref{concurrent_circuit}. The statement ``\texttt{G~$<=$~A~AND~B;}'' indicates that the value of the signal named \texttt{G} represents an AND logic operation between the signals \texttt{A} and \texttt{B}.
 
 There are four types of concurrent statements that are examined in this chapter. We have already briefly discussed the concurrent signal assignment statement which we will soon examine further and put it into the context of an actual circuit. The three other types of concurrent statements that are of immediate interest to us are the process statement, the conditional signal assignment and the selected signal assignment.
 
@@ -139,12 +139,12 @@ end my_nand3;
 -- architecture
 architecture exa_nand3 of my_nand3 is
 begin
-	F <= NOT (A AND B AND C);
+	F <= A NAND B NAND C;
 end exa_nand3;
 -- alternative architecture
 architecture exb_nand3 of my_nand3 is
 begin
-	F <= A NAND B NAND C;
+	F <= NOT(NOT((A AND B) AND C));
 end exb_nand3;
 \end{lstlisting}
 \end{minipage}
@@ -368,8 +368,8 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
-port	(D3,D2,D1,D0   : in std_logic;
-         SEL           : in std_logic_vector(1 downto 0);
+port	(D3,D2,D1,D0   : in  std_logic;
+         SEL           : in  std_logic_vector(1 downto 0);
          MX_OUT        : out std_logic);
 end my_4t1_mux;
 -- architecture
@@ -601,4 +601,3 @@ d) $F(A,B,C,D) = \displaystyle\sum(1,2) $
 \item Provide a VHDL model of a 3:8 decoder using conditional signal assignment, selected signal assignment and a process statement; consider the decoder’s outputs to be active-high.
 \item Provide a VHDL model of a 3:8 decoder using conditional signal assignment, selected signal assignment and a process statement; consider the decoder’s outputs to be active-low.
 \end{my_num_list}
-

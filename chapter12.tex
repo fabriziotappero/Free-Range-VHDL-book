@@ -100,8 +100,8 @@ end process;
 -- reset and synchronous parallel load. 
 ----------------------------------------------------------
 entity COUNT_8B is
-   port ( RESET,CLK,LD,UP : in std_logic; 
-                      DIN : in std_logic_vector (7 downto 0); 
+   port ( RESET,CLK,LD,UP : in  std_logic; 
+                      DIN : in  std_logic_vector (7 downto 0); 
                     COUNT : out std_logic_vector (7 downto 0)); 
 end COUNT_8B; 
 architecture my_count of COUNT_8B is 

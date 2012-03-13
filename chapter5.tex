@@ -9,7 +9,7 @@
 \chapter{Standard Models in VHDL Architectures}
 As you may remember, the VHDL architecture describes how your VHDL system will behave. The architecture body is comprised of two parts: the declaration section and the begin-end section where a collection of (concurrent) signal assignments appear. We have studied three types of signal assignment so far: concurrent signal assignment, conditional signal assignment and selected signal assignment. We were about to describe another concurrent statement, the process statement, before we got side-tracked. Now, let us quickly introduce a new topic before we jump into the process statement.
 
-There are three different approaches to writing VHDL architectures. These approaches are known as \textbf{data-flow style}, \textbf{structural style} and \textbf{behavioral style} architectures. The standard approach to learning VHDL is to introduce each of these architectural styles individually and design a few circuits using that style. Although this approach is good from the standpoint of keeping things simple while immersed in the learning process, it is also somewhat misleading because more complicated VHDL circuits generally use a mixture of these three styles. Keep this fact in mind in the following discussion of these styles. We will, however, put most of our focus on data-flow and behavioral architectures. Structural modeling is essentially a method to combine an existing set of VHDL models. In other words, structural modeling supports the interconnection of black boxes but does not have the ability to describe the logic functions used to model the circuit operation. For this reason, it is less of a design method and more of an approach for interfacing previously designed modules.
+There are three different approaches to writing VHDL architectures. These approaches are known as \textbf{data-flow} style, \textbf{structural} style and \textbf{behavioral} style architectures. The standard approach to learning VHDL is to introduce each of these architectural styles individually and design a few circuits using that style. Although this approach is good from the standpoint of keeping things simple while immersed in the learning process, it is also somewhat misleading because more complicated VHDL circuits generally use a mixture of these three styles. Keep this fact in mind in the following discussion of these styles. We will, however, put most of our focus on data-flow and behavioral architectures. Structural modeling is essentially a method to combine an existing set of VHDL models. In other words, structural modeling supports the interconnection of black boxes but does not have the ability to describe the logic functions used to model the circuit operation. For this reason, it is less of a design method and more of an approach for interfacing previously designed modules.
 
 The reason we choose to slip the discussion of the different architectures at this point is that you already have some familiarity with one of the styles. Up to this point, all of our circuits have been implemented using the data-flow style. We are now at the point of talking about the behavioral style of architectures which is primarily centered around another concurrent statement known as the process statement. If it seems confusing, some of the confusion should go away once we start dealing with actual circuits and real VHDL code.
 
@@ -285,7 +285,7 @@ One other thing to notice about the solution in Example 10 is that every possibl
 \noindent
 \begin{minipage}{0.52\linewidth}
 \textbf{EXAMPLE 11.}
-Write some VHDL code that implements the 8:1 MUX shown here. Use as many \texttt{if} statements as you deem necessary to implement your design. In the black-box diagram, the CE input is a chip enable. When CE = '1', the output acts like the MUX of Example 10. When CE is '0', the output of the MUX is '0'.
+Write some VHDL code that implements the 8:1 MUX shown here. Use as many \texttt{if} statements as you deem necessary to implement your design. In the black-box diagram, the  \texttt{CE} input is a chip enable. When \texttt{CE = '1'}, the output acts like the  MUX of Example 10. When  \texttt{CE} is  \texttt{'0'}, the output of the MUX is  \texttt{'0'}.
 \end{minipage}
 \begin{minipage}{0.45\linewidth}
 \begin{flushright}
@@ -308,7 +308,7 @@ Write some VHDL code that implements the 8:1 MUX shown here. Use as many \texttt
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 11 is strangely similar to the solution of Example 10. Note that in this solution the \textit{if} statements can be nested to attain various effects. The solution to Example 11 is shown in Listing \ref{exe_11}.
+\textbf{SOLUTION.} The solution to Example 11 is strangely similar to the solution of Example 10. Note that in this solution the \texttt{if} statements can be nested to attain various effects. The solution to Example 11 is shown in Listing \ref{exe_11}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -412,7 +412,7 @@ end my_soln_exam;
 \end{lstlisting}
 \end{minipage}
 
-Another similar approach to Example 12 is to use the \textit{don't care} feature built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example 12 is shown in Listing \ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more ``definitive'' method of modeling the circuits I am dealing with.
+Another similar approach to Example 12 is to use the \textit{don't care} feature built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example 12 is shown in Listing \ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more definitive method of modeling the circuits I am dealing with.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -424,7 +424,7 @@ begin
 	my_proc: process (ABC)
 	begin
 		case (ABC) is
-		when "100"  => F_OUT <='1';
+		when "100"  => F_OUT <= '1';
 		when "-11"  => F_OUT <= '1';
 		when others => F_OUT <= '0';
 		end case;

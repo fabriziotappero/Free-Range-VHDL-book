@@ -6,7 +6,7 @@
 %
 % !TEX root = master.tex
 %
-\chapter{Structural Modeling Using VHDL}
+\chapter{Structural Modeling In VHDL}
 As was mentioned earlier, there are generally three approaches to writing VHDL code: data-flow modeling, behavioral modeling and structural modeling.
 
 Up to this point, this book has only dealt with data-flow and behavioral models. This section presents an introduction to structural modeling. 
@@ -15,9 +15,11 @@ As digital designs become more complex, it becomes less likely that any one desi
 
 The design of complex digital circuits using VHDL should closely resemble the structure of complex computer programs. Many of the techniques and practices used to construct large and well structured computer programs written in higher-level languages should also be applied when using VHDL. This common structure we are referring to is the ever so popular modular approach to coding. The term structural modeling is the terminology that VHDL uses for the modular design. The VHDL modular design approach directly supports hierarchical design which is essentially employed when attempting to understand complex digital designs. 
 
-The benefits of modular design to VHDL are similar to the benefits that modular design or object oriented design provides for higher-level computer languages. Modular designs promote understandability by packing low-level functionality into modules. These modules can be easily reused in other designs thus saving the designer time by removing the need to reinvent and re-test the wheel. The hierarchical approach extends beyond code written on file level. VHDL modules can be placed in appropriately named files and libraries in the same way as higher-level languages. Moreover, there are often libraries out there that contain useful modules that can only be accessed using a structural modeling approach. Having access to these libraries and being fluent in their use will serve to increase your perception as a VHDL guru.
+The benefits of modular design to VHDL are similar to the benefits that modular design or object-oriented design provides for higher-level computer languages. Modular designs promote understandability by packing low-level functionality into modules. These modules can be easily reused in other designs thus saving the designer time by removing the need to reinvent and re-test the wheel. The hierarchical approach extends beyond code written on file level. VHDL modules can be placed in appropriately named files and libraries in the same way as higher-level languages. Moreover, there are often libraries out there that contain useful modules that can only be accessed using a structural-modeling approach. Having access to these libraries and being fluent in their use will serve to increase your perception as a VHDL guru.
 
-And finally, after all the commentary regarding complex designs, we present a few simple examples. Though the structural approach is most appropriately used in complex digital designs, the examples presented in this section are rather simplistic in nature. These examples show the essential details of VHDL structural modeling. It is up to the designer to conjure up digital designs where a structural modeling approach would be more appropriate. Keep in mind that your first exposure to structural modeling may be somewhat rough. Although there is some new syntax to become familiar with, once you complete a few structural designs, this new syntax becomes ingrained in your brain and it becomes second nature to apply where required. The tendency at this juncture in your VHDL programming career is to use some type of schematic capture software instead of learning the structural modeling approach. The fact is that no one of consequence uses the schematic capture software except for tired old university professors who are more interested in selling books than they are in teaching modern approach to VHDL modeling. The funny part about this entire process is that the schematic capture software is a tool that allows you to visually represent circuits but in the end generates VHDL code (the only thing the synthesizer understands is VHDL code).
+After all the commentary regarding complex designs, we present a few simple examples. Though the structural approach is most appropriately used in complex digital designs, the examples presented in this section are rather simplistic in nature. These examples show the essential details of VHDL structural modeling. It is up to the designer to conjure up digital designs where a structural modeling approach would be more appropriate. Keep in mind that your first exposure to structural modeling may be somewhat rough. Although there is some new syntax to become familiar with, once you complete a few structural designs, this new syntax becomes ingrained in your brain and it becomes second nature to apply where required.
+
+The tendency at this juncture in your VHDL programming career is to use some type of schematic capture software instead of learning the structural modeling approach. The fact is that no one of consequence uses the schematic capture software except for tired old university professors who are more interested in selling books than they are in teaching modern approach to VHDL modeling. The funny part about this entire process is that the schematic capture software is a tool that allows you to visually represent circuits but in the end generates VHDL code (the only thing the synthesizer understands is VHDL code).
 
 \section{VHDL and Other Languages: Exploiting the Similarities}
 The main tool for modularity in higher-level languages such as C is the function. In other computer languages, similar modularity is accomplished through the use of methods, procedures and subroutines. The approach used in C is to 1) name the function interface you plan on writing (the function declaration), 2) code what the function will do (the function body), 3) let the program know it exists and is available to be called (the prototype) and 4) call the function from the main portion of the code. The approach used in VHDL is similar: 1) name the module you plan to describe (the entity), 2) describe what the module will do (the architecture), 3) let the program know the module exists and can be used (component declaration) and 4) use the module in your code (component instantiation, or mapping). The similarities between these two approaches are listed in Table \ref{vhdl_c_comp}.
@@ -80,7 +82,7 @@ The first part of the solution is to provide entity and architecture implementat
 -- Description of XNOR function --
 ----------------------------------
 entity big_xnor is
-    Port ( A,B : in std_logic;
+    Port ( A,B : in  std_logic;
              F : out std_logic);
 end big_xnor;
 
@@ -122,8 +124,8 @@ This is how you therefore proceed:
 -- Interface description of 3-bit comparator --
 -----------------------------------------------
 entity my_compare is
-    Port ( A_IN : in std_logic_vector(2 downto 0);
-           B_IN : in std_logic_vector(2 downto 0);
+    Port ( A_IN   : in  std_logic_vector(2 downto 0);
+           B_IN   : in  std_logic_vector(2 downto 0);
            EQ_OUT : out std_logic);
 end my_compare;
 \end{lstlisting}
@@ -132,21 +134,23 @@ end my_compare;
 \noindent
 \textbf{Step Two:} The next step is to declare the design units that are used in the circuit. In VHDL lingo, declaration refers to the act of making a particular design unit available for use in a particular design. Note that the act of declaring a design unit, by definition, transforms your circuit into a hierarchical design. The declaration of a design unit makes the unit available to be placed into the design hierarchy. Design units are essentially modules that are used in the lower levels of the design. For our design, we need to declare two separate design units: the XOR gate and a 3-input AND gate.  
 
-There are two factors involved in declaring a design unit: 1) how to do it and, 2) where to place it. A component declaration can be viewed as a modification of the associated entity declaration. The difference is that the word entity is replaced with the word component and the word component must also follow the word end to terminate the instantiation. The best way to do this is by cutting, pasting and modifying the original entity declaration. The resulting component declaration is placed in the architecture declaration after the \texttt{architecture} line and before the \texttt{begin} line. The two component declarations and their associated entity declarations are shown in the next listing. Listing~\ref{ex22_code_final} shows the component declarations as they appear in working VHDL code.
+There are two factors involved in declaring a design unit: 1) how to do it and, 2) where to place it. A component declaration can be viewed as a modification of the associated entity declaration. The difference is that the word entity is replaced with the word component and the word component must also follow the word end to terminate the instantiation. The best way to do this is by copying, pasting and modifying the original entity declaration. The resulting component declaration is placed in the architecture declaration after the \texttt{architecture} line and before the \texttt{begin} line. The two component declarations and their associated entity declarations are shown in the next listing. Listing~\ref{ex22_code_final} shows the component declarations as they appear in working VHDL code.
 
 \noindent
 \begin{minipage}[t]{0.48\textwidth}
 \vspace{0pt}
 \noindent
 \begin{lstlisting}[]
+
 entity big_xnor is
-    Port ( A,B : in std_logic;
+    Port ( A,B : in  std_logic;
              F : out std_logic);
 end big_xnor;
 \end{lstlisting}
 \begin{lstlisting}[]
+
 entity big_and3 is
-    Port ( A,B,C : in std_logic;
+    Port ( A,B,C : in  std_logic;
                F : out std_logic);
 end big_and3;
 \end{lstlisting}
@@ -154,14 +158,16 @@ end big_and3;
 \begin{minipage}[t]{0.48\textwidth}
 \vspace{0pt}\raggedright
 \begin{lstlisting}[]
+
 component big_xnor 
-   Port ( A,B : in std_logic;
+   Port ( A,B : in  std_logic;
             F : out std_logic);
 end component;
 \end{lstlisting}
 \begin{lstlisting}[]
+
 component big_and3 
-   Port ( A,B,C : in std_logic;
+   Port ( A,B,C : in  std_logic;
               F : out std_logic);
 end component;
 \end{lstlisting}
@@ -185,21 +191,22 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_compare is
-    Port ( A_IN   : in std_logic_vector(2 downto 0);
-           B_IN   : in std_logic_vector(2 downto 0);
+    Port ( A_IN   : in  std_logic_vector(2 downto 0);
+           B_IN   : in  std_logic_vector(2 downto 0);
            EQ_OUT : out std_logic);
 end my_compare;
 -- architecture
-architecture ckt1 of my_compare is 
+architecture ckt1 of my_compare is
+
    -- XNOR gate --------------------
    component big_xnor is
-      Port ( A,B : in std_logic;
+      Port ( A,B : in  std_logic;
                F : out std_logic);
    end component;
  
    -- 3-input AND gate -------------
    component big_and3 is
-      Port ( A,B,C : in std_logic;
+      Port ( A,B,C : in  std_logic;
                  F : out std_logic);
    end component;
 
@@ -239,19 +246,19 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_compare is
-    Port ( A_IN   : in std_logic_vector(2 downto 0);
-           B_IN   : in std_logic_vector(2 downto 0);
+    Port ( A_IN   : in  std_logic_vector(2 downto 0);
+           B_IN   : in  std_logic_vector(2 downto 0);
            EQ_OUT : out std_logic);
 end my_compare;
 -- architecture
 architecture ckt2 of my_compare is 
    component big_xnor is
-      Port ( A,B : in std_logic;
+      Port ( A,B : in  std_logic;
                F : out std_logic);
    end component;
 
    component big_and3 is
-      Port ( A,B,C : in std_logic;
+      Port ( A,B,C : in  std_logic;
                  F : out std_logic);
    end component;
    signal p1_out,p2_out,p3_out : std_logic; 
@@ -285,13 +292,12 @@ x5: some_component port map (CLK => CLK,
 
 \item If you use one FPGA software development tool from one of the major FPGA players in the market, you will be able to use digital blocks already developed once you declare them. In this case the entity declaration is not the one of listing \ref{ex22_code_ent} but instead a simple library inclusion in your VHDL code that looks like:
 
+\vspace*{5pt}
 \noindent
 \begin{minipage}{0.99\textwidth}
 \texttt{library UNISIM;}\\
 \texttt{use UNISIM.VComponents.all;}\\
-\hspace*{50pt}
 \end{minipage}
-
 All digital blocks available from this library package are described in the documentation of the FPGA software development tool (e.g. Xilinx ISE).
 \end{my_list}
 
