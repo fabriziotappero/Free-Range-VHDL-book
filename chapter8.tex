@@ -21,8 +21,10 @@ After all the commentary regarding complex designs, we present a few simple exam
 
 The tendency at this juncture in your VHDL programming career is to use some type of schematic capture software instead of learning the structural modeling approach. The fact is that no one of consequence uses the schematic capture software except for tired old university professors who are more interested in selling books than they are in teaching modern approach to VHDL modeling. The funny part about this entire process is that the schematic capture software is a tool that allows you to visually represent circuits but in the end generates VHDL code (the only thing the synthesizer understands is VHDL code).
 
-\section{VHDL and Other Languages: Exploiting the Similarities}
-The main tool for modularity in higher-level languages such as C is the function. In other computer languages, similar modularity is accomplished through the use of methods, procedures and subroutines. The approach used in C is to 1) name the function interface you plan on writing (the function declaration), 2) code what the function will do (the function body), 3) let the program know it exists and is available to be called (the prototype) and 4) call the function from the main portion of the code. The approach used in VHDL is similar: 1) name the module you plan to describe (the entity), 2) describe what the module will do (the architecture), 3) let the program know the module exists and can be used (component declaration) and 4) use the module in your code (component instantiation, or mapping). The similarities between these two approaches are listed in Table \ref{vhdl_c_comp}.
+\section{VHDL Modularity with Components}
+The main tool for modularity in higher-level languages such as C is the function. In other computer languages, similar modularity is accomplished through the use of methods, procedures and subroutines. The approach used in C is to 1) name the function interface you plan on writing (the function declaration), 2) code what the function will do (the function body), 3) let the program know it exists and is available to be called (the prototype) and 4) call the function from the main portion of the code. In VDHL modularity is achieved via the use of \textbf{packages}, \textbf{components} and \textbf{functions}. In the following sections we are going to see how to use \texttt{components}.
+
+The approach to use a \texttt{component} in VHDL  is: 1) name the module you plan to describe (the entity), 2) describe what the module will do (the architecture), 3) let the program know the module exists and can be used (component declaration) and 4) use the module in your code (component instantiation, or mapping). The similarities between these two approaches are listed in Table \ref{vhdl_c_comp}.
 
 \begin{table}[!b]
 \centering
@@ -106,12 +108,13 @@ end ckt1;
 \end{minipage}
 
 The implementations shown in listing~\ref{ex22_code} present no new VHDL details. The new information is contained in how the circuit elements listed in Fig.~\ref{ex22_comp} are used as components in a larger circuit. The procedures for implementing a structural VHDL design can be summarized in the following steps. These steps assume that the entity declarations for the interior modules already exist.
-\begin{my_list}
-\item Generate the top-level entity declaration
-\item Declare the lower-level design units used in design
-\item Declare required internal signals used to connect the design units
-\item Instantiate the design units
-\end{my_list}
+
+\noindent
+\textbf{Step 1.} Generate the top-level entity declaration.\\
+\textbf{Step 2.} Declare the lower-level design units used in design.\\
+\textbf{Step 3.} Declare required internal signals used to connect the design units.\\
+\textbf{Step 4.} Instantiate the design units.
+
 This is how you therefore proceed:
 
 \noindent
@@ -134,7 +137,7 @@ end my_compare;
 \noindent
 \textbf{Step Two:} The next step is to declare the design units that are used in the circuit. In VHDL lingo, declaration refers to the act of making a particular design unit available for use in a particular design. Note that the act of declaring a design unit, by definition, transforms your circuit into a hierarchical design. The declaration of a design unit makes the unit available to be placed into the design hierarchy. Design units are essentially modules that are used in the lower levels of the design. For our design, we need to declare two separate design units: the XOR gate and a 3-input AND gate.  
 
-There are two factors involved in declaring a design unit: 1) how to do it and, 2) where to place it. A component declaration can be viewed as a modification of the associated entity declaration. The difference is that the word entity is replaced with the word component and the word component must also follow the word end to terminate the instantiation. The best way to do this is by copying, pasting and modifying the original entity declaration. The resulting component declaration is placed in the architecture declaration after the \texttt{architecture} line and before the \texttt{begin} line. The two component declarations and their associated entity declarations are shown in the next listing. Listing~\ref{ex22_code_final} shows the component declarations as they appear in working VHDL code.
+There are two factors involved in declaring a design unit: 1) how to do it and, 2) where to place it. A component declaration can be viewed as a modification of the associated entity declaration. The difference is that the word \texttt{entity} is replaced with the word \texttt{component} and the word \texttt{component} must also be followed by the word \texttt{end component} to terminate the declaration. The best way to do this is by copying, pasting and modifying the original entity declaration. The resulting component declaration is placed in the architecture declaration after the \texttt{architecture} line and before the \texttt{begin} line. The two component declarations and their associated entity declarations are shown in the next listing. Listing~\ref{ex22_code_final} shows the component declarations as they appear in working VHDL code.
 
 \noindent
 \begin{minipage}[t]{0.48\textwidth}
@@ -279,6 +282,74 @@ Due to the fact that this design was relatively simple, it was possible to bypas
 \begin{lstlisting}[label=ex22_code_same_sig, caption=Example of the same signal name crossing hierarchical boundaries.]
 x5: some_component port map (CLK => CLK,
                               CS => CS); 
+\end{lstlisting}
+\end{minipage}
+
+
+\section{Generic Map}
+As we have seen in the previous section, the use of the keyword \texttt{component} allows us to declare a VHDL module for further instantiation.
+
+Often it is desirable to write code that is generic. For instance a routine that perform a certain task on an input array of a generic size. Let us suppose that we want to implement a piece of code of a parity check routine that returns \texttt{'1'} when the input N-size array is an even number and \texttt{'0'} when the input N-size array is an odd number. The Listing \ref{gen_parity_check} shows such an implementation.
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[numbers=left, label=gen_parity_check, caption= Parity check implementation with generic input array size.]
+-- library declarations
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity gen_parity_check is
+    generic ( n: positive);
+    port    ( x: in  std_logic_vector(n-1 downto 0);
+              y: out std_vector);
+end entity;
+-- architecture
+architecture arch of gen_parity_check is
+    begin
+        process(x)
+            variable temp: std_logic;
+        begin
+            temp:=0;
+            for i in input'range loop
+                temp := temp XOR input(i);
+            end loop;
+            y <= temp;
+        end process
+end arch;
+\end{lstlisting}
+\end{minipage}
+
+Listing \ref{gen_map} shows how the code above can be declared and instantiated in your own code via the already see \texttt{component} method. Specifically, In Listing \ref{gen_map} the above generic parity check module is used to create a 4-bit parity check module.
+
+To achieve the mentioned modularity the keyword \texttt{generic} was used inside the \texttt{entity} field in the code above and again inside the \texttt{component} field during its declaration in the code below. The \texttt{generic} field it is used to allow you to control all generic variables.
+
+Notice how during instantiation, Listing \ref{gen_map} line 20, the keyword \texttt{generic map} was used in conjunction with the keyword \texttt{port map} to define the generic variables.
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[numbers=left, label=gen_map, caption=Use of \texttt{generic} for the construct of a generic parity check code.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity my_parity_chk is
+    Port ( input   : in  std_logic_vector(3 downto 0);
+           output  : out std_logic);
+end my_parity_chk;
+
+-- architecture
+architecture arch of my_parity_chk is 
+   --------------- component declaration --------------------
+   component gen_parity_check is
+      generic ( std_logic : positive);
+      port    ( input     : in  std_logic_vector(N-1 downto 0);
+                output    : out std_logic);
+   end component;
+begin
+   -------------- component instantiation -------------------
+   cp1: my_parity_chk generic map (4) port map (input, output);
+end arch;
+
 \end{lstlisting}
 \end{minipage}
 

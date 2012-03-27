@@ -13,7 +13,7 @@ Many of the concepts presented so far have been implicitly presented in the cont
 In order to move into more sophisticated VHDL, a good place to start is with the definition of VHDL objects (e.g. data types). An object is an item in VHDL that has both a name (associated identifier) and a specific type. There are four types of objects and many different data types in VHDL. Up to this point, we have only used \texttt{signal} data objects and \texttt{std\_logic} data types. Two new data objects and several new data types are introduced and discussed in this section.
 
 \section{Types of Data Objects}
-There are four types of data objects in VHDL: \textbf{signals}, \textbf{variables}, \textbf{constants} and \textbf{files}. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects are not discussed in this tutorial. 
+There are four types of data objects in VHDL: \textbf{signals}, \textbf{variables}, \textbf{constants} and \textbf{files}. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects, exclusively used in simulations, are not discussed in this chapter.
 
 Mind that VHDL is a vast language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translated into an FPGA/CPLD bit-stream is called RTL VHDL and represents only a small subset of what is included in the current VHDL standard. The file  data objects are an example of a data object that can not be implemented in a silicon device.
 
@@ -86,8 +86,48 @@ Variables cannot always be modeled as wires in a circuit. They also have no conc
 
 Even though instructions inside a process are executed consecutively, this should not fool you in thinking that a process environment is similar to apiece of C code. Remember that while lines of C code require some tens of clock cycles each to be executed, VHDL instructions require very little time to be executed, less than one clock cycle. The price to pay for this enormously fast execution time is that any signal assignment inside a process only takes place at the end of the process. It is therefore advisable that your processes are short and simple.
 
-\section{Data Types}
-Not only does VHDL have many defined data types but VHDL also allows you to define your own types. Here however we will only deal with few of the most widely used types. In this section, the types that have already been discussed are listed and a few more popular and useful types are introduces. 
+\section{Standard Data Types}
+Not only does VHDL have many defined data types but VHDL also allows you to define your own types. Here however we will only deal with few of the most widely used types. Among the most popular VHDL data type we would like to mention the following data types:\\
+
+\noindent
+\texttt{bit}: It is a two-value enumerated type. Replaced by the \texttt{std\_logic} type.\\
+\texttt{bit\_vector}: Replaced by the more powerful \texttt{std\_logic\_vector} type.\\
+\texttt{boolean}: As expected, it is a two-value enumerated type.\\
+\texttt{boolean vector}: It is the vector form of a \texttt{boolean} type.\\
+\texttt{integer}: Refer to the Integer Types section.\\
+\texttt{natural}: It is a subtype of \texttt{integer} because it is a non-negative integer.\\
+\texttt{positive}: It is a subtype of \texttt{integer} because it is a positive integer.\\
+\texttt{integer\_vector}: It is the vector form of an \texttt{integer} type.\\
+\texttt{character}: A 256-symbol enumerated type.\\
+\texttt{string}: It is the vector form of a \texttt{character} type.\\
+
+In the following sections, a few more popular and useful types are introduces.
+
+\section{User-Defined Types}
+VHDL allows you to define your own data type. A typical example of custom integer type is:
+
+\noindent
+\texttt{type my\_type is range 0 to 100;}\\
+\texttt{constant my\_const : my\_type := 31;}
+
+\noindent
+Obviously it is possible to define more complex data structures. For instance it is a common practice to use a custom data type when you want to implement a ROM (read-only memory) in VHDL.
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}
+
+-- typical custom data type for a 20-byte ROM
+type memory is array (0 to 19 of std_logic_vector(7 downto 0);
+constant my_rom : memory := (
+        1 => "11111111"
+        2 => "11110111"
+        5 => "11001111"
+       12 => "10110101"
+       18 => "10001101"
+   others => "00000000");
+\end{lstlisting}
+\end{minipage}
 
 \section{Commonly Used Types}
 The types already introduced in previous chapters as well as two new types are listed in Table \ref{vhdl_data_types}. The \texttt{std\_logic} and \texttt{std\_logic\_vector} types have been extensively used so far. These types are more complex than has been previously stated and will be discussed further in this chapter. The \texttt{enumerated} type was used during the previous discussion of finite state machines. The \texttt{integer} type was cryptically mentioned before but it will be discussed further along with the \texttt{boolean} type in this chapter. 
@@ -130,7 +170,7 @@ constant start_addr : integer := 512;
 \end{lstlisting}
 \end{minipage}
 
-Although it could be possible to use only basic integer declarations in your code, VHDL allows you to define your own integer types with their own personalized range constraints. These special types should be used wherever possible to make your code more readable. These type definitions use the type \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
+Although it could be possible to use only basic integer declarations in your code, as we have seen before, VHDL allows you to define your own data types with their own personalized range constraints. These special types should be used wherever possible to make your code more readable. The custom integer-type definition uses the type \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
 \vspace{8pt}
 
 \noindent
@@ -163,16 +203,57 @@ my_score  <= 110;        -- out of range
 \end{lstlisting}
 \end{minipage}
 
-\section{The \texttt{std\_logic} Type}
-For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types neither used not listed in this book is the \texttt{bit} type. This type can take on only the values of '1' or '0'. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is defined in the VHDL package \texttt{ieee.std\_logic\_1164} and provides a common standard that can be used by all VHDL programmers.
+\section{\texttt{signed} and \texttt{unsigned} Types}
+\texttt{signed} and \texttt{unsigned} data types are available once you declare the standard IEEE \texttt{ieee.numeric\_std} package. Mind that these two data types are also defined in the non-standard \texttt{std\_logic\_arith} package. The use of non-standard libraries is however highly discouraged.
 
-The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include '1' and '0'. The actual definition is shown in the listing \ref{ulogic_type}. As you can see, this definition lists \texttt{std\_ulogic} as opposed to the \texttt{std\_logic} you are used to. The \texttt{std\_logic} type is a resolved version of the \texttt{std\_ulogic} type. The exact meaning of resolution is beyond the scope of this book and can be safely overlooked. 
+A \texttt{signed} value ranges from $-2^{N-1}$ to $2^{N-1}-1$ and an \texttt{unsigned} value ranges from $0$ to $2^N-1$ where $N$ is the number of bits.
+
+\texttt{signed} and \texttt{unsigned} types can be conveniently used for internal variables as well as for entity ports. Additionally the \texttt{ieee.numeric\_signed} library and the \texttt{ieee.numeric\_unsigned} library offer arithmetic and type conversion for both types.
+
+\texttt{signed} and \texttt{unsigned} types are, in a way, similar to \texttt{std\_logic\_vector} types and so the question that you might have is:\\
+\textit{Why should I need a \texttt{signed/unsigned} type in place of\\ a \texttt{std\_logic\_vector} type?}\\
+The answer to this question is in listing \ref{my_sum}, specifically in line 17 and in line 18. The use of \texttt{signed/unsigned} types is desirable any time your ``begs of bits'' (signals, variables or constants) stop being ``begs'' and become numbers of type signed, unsigned or even integers.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ulogic_type, caption=Declaration of the \texttt{std\_ulogic} enumerated type.]
+\begin{lstlisting}[numbers=left, label=my_sum, caption= Use of unsigned types in your code.]
+-- library declaration
+library IEEE;
+    use IEEE.std_logic_1164.all; -- defines std_logic_vector type
+    use ieee.numeric_std.all;    -- defines signed and unsigned types
+-- entity
+entity double_sum is
+    Port (
+        in1       : in  std_logic_vector (7 downto 0);
+        in2       : in  std_logic_vector (7 downto 0);
+        out1      : out std_logic_vector (7 downto 0));
+        unsig_in  : in  unsigned(7 downto 0);
+        unsig_out : out unsigned(7 downto 0));
+    end double_sum;
+-- architecture
+architecture arch of sum is
+    begin
+        out1 <= in1 + 1;  -- ILLEGAL OPERATION, 1 is an integer
+        out1 <= in1 + in2;-- ILLEGAL OPERATION, addition is not defined
+        unsig_out <= unsig_in + 1;                  -- legal operation
+        unsig_out <= unsigned(in1) + 1;             -- legal operation
+        out1 <= std_logic_vector(unsigned(in1) + 1);-- legal operation
+    end arch;
+\end{lstlisting}
+\end{minipage}
 
-type std_ulogic is ( 'U', -- uninitialised 
+As final note, we should mention that the inclusion of the non-standard \texttt{std\_logic\_unsigned} library could have given us the possibility of doing \texttt{out1 <= in1 + 1;} in line 17 of listing \ref{my_sum}, making things much simpler. However, once again, the use of non-standard library is highly discouraged.
+
+\section{\texttt{std\_logic} Types}
+For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types, similar to \texttt{std\_logic}, neither used not endorsed in this book is the \texttt{bit} type. This type can take on only the values of \texttt{'1'} or \texttt{'0'}. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is defined in the VHDL package \texttt{ieee.std\_logic\_1164} and provides a common standard that can be used by all VHDL programmers.
+
+The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include \texttt{'1'} and \texttt{'0'}. The actual definition is shown in the listing \ref{logic_type}. The \texttt{std\_logic} type is a resolved version of the \texttt{std\_ulogic} type. Resolved means that unlike for \texttt{std\_ulogic} types, when you use \texttt{std\_logic} type signals, you can use multiple assignments to the same signal without having the compile to complain about it.
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=logic_type, caption=Declaration of the \texttt{std\_logic} enumerated type.]
+
+type std_logic is  ( 'U', -- uninitialised 
                      'X', -- forcing unknown
                      '0', -- forcing 0
                      '1', -- forcing 1
@@ -185,7 +266,7 @@ type std_ulogic is ( 'U', -- uninitialised
 \end{lstlisting}
 \end{minipage}
 
-The \texttt{std\_ulogic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in listing \ref{ulogic_type}, this book only deals with \texttt{'0'},  \texttt{'1'},  \texttt{'Z'} and  \texttt{'-'}. The  \texttt{'Z'} is generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high impedance state, the signal is not driven from that source and is effectively removed from the circuit. And finally, since the characters used in the \texttt{std\_ulogic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error. 
+The \texttt{std\_logic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in listing \ref{logic_type}, this book only deals with \texttt{'0'},  \texttt{'1'},  \texttt{'Z'} and  \texttt{'-'}. The  \texttt{'Z'} is generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high-impedance state, the signal is not driven from that source and is effectively removed from the circuit. Finally, since the characters used in the \texttt{std\_logic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error. 
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
 \vspace{10pt}
@@ -226,7 +307,7 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ex26_code, caption=Solution to Example 26.]
+\begin{lstlisting}[numbers=left,label=ex26_code, caption=Solution to Example 26.]
 
 -- library declaration
 library IEEE;
@@ -263,12 +344,36 @@ architecture my_clk_div of clk_div is
                     end if;
             end if;
         end process my_div;
-        sclk <= tmp_sclk;                           -- final assignment
+        sclk <= tmp_sclk;                          -- final assignment
 end my_clk_div;
 \end{lstlisting}
 \end{minipage}
 
-The VHDL implementation of frequency divider that takes a certain clock signal and generate a second clock signal of higher or lower frequency is a quite common practise in VHDL. Normally such an implementation is done using clock management blocks built in the FPGA fabric specifically for these purposes.  Digital Clock Managers (DCM), Mixed Mode Clock Managers (MMCM) or Phase Locked Loops (PLL) are just some examples.
+The VHDL implementation of frequency divider that takes a certain clock signal and generates a second clock signal of higher or lower frequency is quite common practise in VHDL. Such an implementation is normally done using clock management blocks built in the FPGA fabric specifically for this purpose. Digital Clock Managers (DCM), Mixed Mode Clock Managers (MMCM) or Phase Locked Loops (PLL) are just some examples.
 
-The use of clock management blocks will guarantee your design to meet timing requirements or clock phase noise constrains that will ensure to you a lot less headaches. Try to remember this.
+The use of clock management blocks will guarantee your design meets timing requirements or clock phase noise constraints that will make your job a lot easier in the long run. Try to remember this.
+
+\section{Important Points}
+
+\begin{my_list}
+\item The use of \texttt{signed/unsigned} types is desirable any time your ``begs of bits'' (signals, variables or constants) stop being ``begs'' and become numbers of type signed, unsigned or even integers. A typical example is the variable used for a counter for which there is really no reason to use a \texttt{std\_logic\_vector} type for. Refer to line 33 of Listing \ref{ex26_code}.
+
+\item The standard IEEE library \texttt{numeric\_std} is needed when you want to use \texttt{signed} and/or \texttt{unsigned} types. The standard IEEE library \texttt{numeric\_std} is almost always preferred over the non-standard\\ \texttt{std\_logic\_arith} library.
+\item Any use of the non-standard Synopsis libraries: \texttt{std\_logic\_signed}, \texttt{std\_logic\_unsigned} and \texttt{std\_logic\_arith} is highly discouraged.
+\item You cannot increment a \texttt{std\_logic\_vector} type signal, you need to first convert it into an unsigned, a signed or an integer:
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}
+library IEEE;
+use IEEE.std_logic_1164.all;
+use ieee.numeric_std.all
+
+signal val1, val2 : std_logic_vector( 31 downto 0 );
+val2 <= val1 + 1;     -- ILLEGAL OPERATION 
+val2 <= std_logic_vector( unsigned(val1) + 1 );
+\end{lstlisting}
+\end{minipage}
+
+\end{my_list}
 
