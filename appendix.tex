@@ -60,28 +60,14 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 -- more IEEE libraries
+use IEEE.numeric_signed.all;
+use IEEE.numberic_unsigned.all;
+
 use IEEE.numeric_bit.all;
 use IEEE.math_real.all;
 use IEEE.math_complex.all;
 \end{verbatim}
 }
-
-% this box is positioned relatively to this page
-% not sure how to make is relative to the text
-\begin{textblock}{7}(8.7,10.7)
-{\tiny
-\begin{verbatim}
-NOTE
-Synoptics libraries that are not
-part of the IEEE standard. 
-TRY TO AVOID THEM !
-
-use IEEE.std_logic_signed.all;
-use IEEE.std_logic_unsigned.all;
-use IEEE.std_logic_arith.all;
-\end{verbatim}
-}
-\end{textblock}
 
 For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability to use the several data types like the \texttt{std\_logic} or the \texttt{std\_logic\_vector}. The following listing shows a simple coding example of some of the many advantages of using these libraries.
 
@@ -158,7 +144,7 @@ will show you that the constant of type real \texttt{MATH\_PI = 3.1415926} is av
 \section{IEEE Standard Libraries}
 In VHDL, basic arithmetics is defined for the \texttt{integer} data type and for the \texttt{natural} data type. In order to have more control during synthesis over the various data formats, other libraries were developed and included into the IEEE standard.
 
-The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the Synoptics \texttt{std\_logic\_arith} library.
+The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the Synopsys \texttt{std\_logic\_arith} library.
 
 As a natural consequence, we recommend using the types \texttt{unsigned}, \texttt{signed} and \texttt{integer} instead of the simpler \texttt{std\_logic\_vector} type for the many needs you might have. Refer to listing \ref{good_lib_ex} for en example of the wise use of the type \texttt{unsigned} or the type \texttt{integer} over the type \texttt{std\_logic\_vector}.
 
@@ -172,7 +158,7 @@ If {you often use google for learning purposes}, you will soon discover that the
 \noindent
 is amazingly common among VHDL programmers. 
 
-The \texttt{std\_logic\_arith} library, as well as the \texttt{std\_logic\_unsigned} and the \texttt{std\_logic\_signed} libraries, were written and packaged by Synoptics to provide extended VHDL programming functionalities. Using these libraries eliminates the need for data conversion and, for instance, it allows you to write:\\
+The \texttt{std\_logic\_arith} library, as well as the \texttt{std\_logic\_unsigned} and the \texttt{std\_logic\_signed} libraries, were written and packaged by Synopsys to provide extended VHDL programming functionalities. Using these libraries eliminates the need for data conversion and, for instance, it allows you to write:\\
 \texttt{a\_logic\_vector <= a\_logic\_vector + 1;}\\
 Despite the great advantage that these non-standard libraries seem to give you, their use is not considered a good practice. Because of compatibility issues during synthesis, we strongly discourage the use of these libraries.
 

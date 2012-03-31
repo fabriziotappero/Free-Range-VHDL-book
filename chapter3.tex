@@ -137,7 +137,7 @@ The reason for all these values is the desire for modeling three-state drivers, 
 Alternatively to the \texttt{std\_logic} data type, VHDL programmers sometimes use the much simpler data type \texttt{bit} which has only the logic values \texttt{1} and \texttt{0}.
 
 \section{VHDL Standard Libraries}
-The VHDL language as many other computer languages, has gone through a long and intense evolution. Among the most important standardization steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the two main library packages as shown in lines 2$\sim$4 of listing \ref{main_vhdl_lib}.
+The VHDL language as many other computer languages, has gone through a long and intense evolution. Among the most important standardization steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the two main library packages as shown in lines 2$\sim$4 of Listing \ref{main_vhdl_lib}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -178,7 +178,7 @@ end my_arch;
 \end{lstlisting}
 \end{minipage}
 
-Once these packages have been included, you will have access to a very large set of goodies: several data types, overloaded operators, various conversion functions, math functions and so on. For instance, the inclusion of the package \texttt{numeric\_std.all} will give you the possibility of using the \texttt{unsigned} data type and the function \texttt{to\_unsigned} shown in listing \ref{main_vhdl_lib}. For a detailed description of what these libraries include, refer to the \texttt{Language Templates} of your favorite synthesis software tool (e.g. the yellow light bulb in the top panel of the Xilinx ISE software tool).
+Once these packages have been included, you will have access to a very large set of goodies: several data types, overloaded operators, various conversion functions, math functions and so on. For instance, the inclusion of the package \texttt{numeric\_std.all} will give you the possibility of using the \texttt{unsigned} data type and the function \texttt{to\_unsigned} shown in Listing \ref{main_vhdl_lib}. For a detailed description of what these libraries include, refer to the \texttt{Language Templates} of your favorite synthesis software tool (e.g. the yellow light bulb in the top panel of the Xilinx ISE software tool).
 
 For more information on VHDL standard libraries refer to the Appendix.
 

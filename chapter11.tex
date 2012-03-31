@@ -12,7 +12,7 @@ As the circuits you are required to design become more and more complex, you wil
 There are two types of loops in VHDL: \texttt{for} loops and \texttt{while} loops. The names of these loops should seem familiar from your experience with higher-level computer programming languages. Generally speaking, you can leverage your previous experience with these loop types when describing the behavior of digital circuits. The comforting part is that since these two types of loops are both sequential statements, they can only appear inside processes. You will also be able to apply to the circuits you will be describing using VHDL the algorithmic thinking and designing skills you developed in coding with higher-level computer languages. The syntax is slightly different but the basic structured programming concepts are the same. 
 
 \section{\texttt{for} and \texttt{while} Loops}
-The purpose of a loop construct is to allow some coding instructions to happen iteratively (over and over again). These two types of loops of course share this functionality. As you probably remember from higher-level language programming, the syntax of the language is such that you can use either type of loop in any given situation by some modification of the code. The same is true in VHDL. But although you can be clever in the way you design your VHDL code, the best approach is to make the code readable and understandable. Keeping this concept in mind lets us see the functional differences between \texttt{for} and \texttt{while} loops. This basic difference can be best highlighted by examining the code provided in listing \ref{for_while_code}.
+The purpose of a loop construct is to allow some coding instructions to happen iteratively (over and over again). These two types of loops of course share this functionality. As you probably remember from higher-level language programming, the syntax of the language is such that you can use either type of loop in any given situation by some modification of the code. The same is true in VHDL. But although you can be clever in the way you design your VHDL code, the best approach is to make the code readable and understandable. Keeping this concept in mind lets us see the functional differences between \texttt{for} and \texttt{while} loops. This basic difference can be best highlighted by examining the code provided in Listing \ref{for_while_code}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -29,7 +29,7 @@ The major difference between these two loops lies in the number of iterations th
 The \texttt{while} loop should be used when you do not know the number of iterations the loop needs to perform. In this case, the loop stops iterating when the terms stated in the condition clause are not met. Using these loops in this manner constitutes a good programming practice. The loop labels are listed in italics to indicate that they are optional. These labels should be always used to clarify the associated VHDL code. Use of loop labels is an especially good idea when nested loops are used and when loop control statements are applied. 
 
 \subsection{\texttt{for} Loops}
-The basic form of the \texttt{for} loop was shown in listing \ref{for_while_code}. This loop uses some type of index value to iterate through a range of discrete values. There are two options that can be applied as to the range of discrete values: 1) the range can be specified in the \texttt{for} loop statement or 2) the loop can use a previously declared range. Hereafter you find  an example.
+The basic form of the \texttt{for} loop was shown in Listing \ref{for_while_code}. This loop uses some type of index value to iterate through a range of discrete values. There are two options that can be applied as to the range of discrete values: 1) the range can be specified in the \texttt{for} loop statement or 2) the loop can use a previously declared range. Hereafter you find  an example.
 
 \vspace{10pt}
 \noindent
@@ -133,7 +133,7 @@ end loop;
 
 Similarly to higher-level computer languages, VHDL provides some extra loop control options. These options include the \texttt{next} statement and the \texttt{exit} statement. These statements are similar to their counterparts in higher-level languages in the control they can exert over loops. These two loop-control constructs are available for use in either the \texttt{for} or the \texttt{while} loop. 
 
-\subsubsection{The \texttt{next} Statement}
+\subsubsection{\texttt{next} Statement}
 The next statement allows for the loop to bypass the remaining statements within the body of the loop and start immediately at the next iteration. In \texttt{for} loops, the index variable is incremented automatically before the start of the upcoming iteration. In \texttt{while} loops, it is up to the programmer to ensure that the loop operates properly when the next statement is used. There are two forms of the \texttt{next} statement and both forms are shown in the next listing. These are two examples that use the \texttt{next} statement and do not necessarily represent a good programming practice nor really contain meaningful code.
 
 \vspace{10pt}
@@ -166,7 +166,7 @@ end loop;
 \end{lstlisting}
 \end{minipage}
 
-\subsubsection{The \texttt{exit} Statement}
+\subsubsection{\texttt{exit} Statement}
 The \texttt{exit} statement allows for the immediate termination of the loop and can be used in both \texttt{for} loops and \texttt{while} loops. Once the \texttt{exit} statement is encountered in the flow of the code, control is returned to the statement following the \texttt{end loop} statement associated with the given loop. The \texttt{exit} statement works in nested loops as well. The two forms of the exit statement are similar to the two forms of the next statement. Examples of these forms are provided in the next listing.
 
 \vspace{10pt}

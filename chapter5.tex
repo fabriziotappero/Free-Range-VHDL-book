@@ -129,7 +129,7 @@ There are three types of sequential statements that we will be discussing. The f
 the ``{\footnotesize$<=$}''. We will not say too much about the first type though because we have already been dealing with its analogue in the data-flow models. The other two types of statements are the \textbf{if statement} and the \textbf{case statement}. The nice part about all of these statements is that you have worked with them before in algorithmic programming languages. The structure and function of the VHDL \texttt{if} and \texttt{case} statements is strikingly similar. Keep this in mind when you read the descriptions that follow.
 
 \subsection{Signal Assignment Statement}
-The sequential style of a signal assignment statement is syntactically equivalent to the concurrent signal assignment statement. Another way to look at it is that if a signal assignment statement appears inside of a process then it is a sequential statement; otherwise, it is a concurrent signal assignment statement. To drive the point home, the signal assignment statement ``{\footnotesize$F <= A~XOR~B;$}'' in the data-flow style architecture of Listing \ref{process_statement_compl_1} is a concurrent signal assignment statement while the same statement in the behavioral style architecture, listing \ref{process_statement_compl_2}, is a sequential signal assignment statement. The functional differences were already covered in the discussion regarding process statements.
+The sequential style of a signal assignment statement is syntactically equivalent to the concurrent signal assignment statement. Another way to look at it is that if a signal assignment statement appears inside of a process then it is a sequential statement; otherwise, it is a concurrent signal assignment statement. To drive the point home, the signal assignment statement ``{\footnotesize$F <= A~XOR~B;$}'' in the data-flow style architecture of Listing \ref{process_statement_compl_1} is a concurrent signal assignment statement while the same statement in the behavioral style architecture, Listing \ref{process_statement_compl_2}, is a sequential signal assignment statement. The functional differences were already covered in the discussion regarding process statements.
 
 \subsection{\texttt{if} Statement}
 The \texttt{if} statement is used to create a branch in the execution flow of the sequential statements. Depending on the conditions listed in the body of the \texttt{if} statement, either the instructions associated with one or none of the branches is executed when the \texttt{if} statement is processed. The general form of the \texttt{if} statement is shown in Listing \ref{if_stat}.
@@ -347,7 +347,7 @@ end mux_8to1_ce_arch;
 \end{lstlisting}
 \end{minipage}
 
-\subsection{\texttt{Case} Statement}
+\subsection{\texttt{case} Statement}
 The \texttt{case} statement is somewhat similar to the \texttt{if} statement in that a sequence of statements is executed if an associated expression is true. The \texttt{case} statement differs from the \texttt{if} statement in that the resulting choice is made depending upon the value of the single control expression. Only one of the sequential statements is executed for each execution of the case statement. The syntax for the case statement is shown in Listing \ref{case_stat}.
 
 \noindent
@@ -462,7 +462,7 @@ Write some VHDL code that implements the 8:1 MUX shown below. Use a case stateme
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This solution to Example 13 is shown in listing \ref{exe_13}. The entity declaration is repeated below for your convenience. This solution places the \texttt{case} statement in the body of an \texttt{if} construct. In case you have not noticed it yet, the number of possible solutions to a given problem increases as the circuits you are implementing become more complex.
+\textbf{SOLUTION.} This solution to Example 13 is shown in Listing \ref{exe_13}. The entity declaration is repeated below for your convenience. This solution places the \texttt{case} statement in the body of an \texttt{if} construct. In case you have not noticed it yet, the number of possible solutions to a given problem increases as the circuits you are implementing become more complex.
 
 \noindent
 \begin{minipage}{0.99\linewidth}

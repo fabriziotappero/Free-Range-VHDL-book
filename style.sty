@@ -33,9 +33,6 @@
 \usepackage{tabularx,colortbl}
 \usepackage{multirow}
 
-% eliminate dots in table of contents
-\renewcommand{\@dotsep}{10000}
-
 % some Basic page setups
 %\addtolength{\parskip}{0.01\baselineskip} % change new paragraph line spacing
 \setlength{\parindent}{8pt} % paragraph indentation
@@ -71,6 +68,19 @@ urlcolor=darkgray}      % external links
 \title{free range vhdl}
 \author{Bryan Mealy, Fabrizio Tappero}
 \date{\today}
+
+% eliminate dots in table of contents
+\renewcommand{\@dotsep}{10000}
+
+% changes distance between section number and section title in table of contents
+\makeatletter
+\renewcommand{\l@section}{\@dottedtocline{1}{1.5em}{2.6em}}
+\renewcommand{\l@subsection}{\@dottedtocline{2}{4.0em}{3.6em}}
+\renewcommand{\l@subsubsection}{\@dottedtocline{3}{7.4em}{4.5em}}
+\makeatother
+
+% eliminate indentation in quote environment
+\renewenvironment{quotation}{\list{}{\leftmargin=0.3in\rightmargin=0.8in}\item[]}{\endlist}
 
 % re-style the itemize adding the command \compactlist
 \usepackage{pifont}
