@@ -241,6 +241,8 @@ It is worth noting that the solution shown in Listing \ref{ex22_code_final} is n
 
 The alternative approach to mapping is to use \texttt{implied mapping}. In this approach, connections between external signals from the design units are associated with signals in the design unit by order of their appearance in the mapping statement. This differs from direct mapping because only signals from the higher-level design appear in the mapping statement instead. The association between signals in the design units and the higher-level design are implied by the ordering of the signal as they appear in the component or entity declaration. This approach uses less space in the source code but requires signals to be placed in the proper order. An alternative but equivalent architecture for the previous example using implied mapping is shown in Listing \ref{ex22_code_final_alt}. 
 
+To successfully simulate and synthesize the design shown in Listing~\ref{ex22_code_final}, the code of Listing~\ref{ex22_code} needs to be included in your VHDL project as well. It is normal practice to keep the two listings in two distinctive files. The same is true for the implementation of Listing~\ref{ex22_code_final_alt}.
+
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex22_code_final_alt, caption=Alternative architecture for Example 22 using implied mapping.]
@@ -352,6 +354,8 @@ end arch;
 
 \end{lstlisting}
 \end{minipage}
+
+Once again, to successfully simulate and synthesize the design shown in Listing~\ref{gen_map}, the code of Listing~\ref{gen_parity_check} needs to be included in your VHDL project as well.
 
 \section{Important Points}
 \begin{my_list}

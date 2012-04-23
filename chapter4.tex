@@ -9,7 +9,7 @@
 \chapter{VHDL Programming Paradigm}
 The previous chapter introduced the idea of the basic design units of VHDL: the entity and the architecture. Most of the time was spent describing the entity simply because there is so much less involved compared to the architecture. Remember, the entity declaration is used to describe the interface of a circuit to the outside world. The architecture is used to describe how the circuit is intended to function.
 
-Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realizing this is massively important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is a not a good idea. 
+Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realizing this is very important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is a not a good idea. 
 
 When viewed correctly, VHDL represents a completely different approach to programming while still having many similarities to other programming languages. The main similarity is that they both use a syntactical and rule-based language to describe something abstract. But, the difference is that they are describing two different things. Most programming languages are used to implement functionalities in a sequential manner, one instruction at a time. VHDL however describes hardware and so instructions are executed in a concurrent manner\footnote{In VHDL there are actually ways to obtain sequential execution as well.}, meaning that all instructions are executed at once. Realizing this fact will help you to truly understand the VHDL programming paradigm and language.
 
@@ -222,7 +222,7 @@ end f3_2;
 
 This example shows a one-line implementation of the given logic equation.
 
-An alternative solution to Example 2 is provided in Figure \ref{example_2_bis}. This example represents a massively important concept in VHDL. The solution shown in Listing \ref{example_2_bis} uses some special statements in order to implement the circuit. These special statements are used to provide what is often referred to as intermediate results. This approach is equivalent to declaring extra variables in an algorithmic programming language to be used for storing intermediate results. The need for intermediate results is accompanied by the declaration of extra signal values, which are often referred to intermediate signals. Note in Listing \ref{example_2_bis} that the declaration of intermediate signals is similar to the port declarations appearing in the entity declaration, except that the mode specification (\texttt{in}, \texttt{our} or \texttt{inout}) is missing. 
+An alternative solution to Example 2 is provided in Figure \ref{example_2_bis}. This example represents an important concept in VHDL. The solution shown in Listing \ref{example_2_bis} uses some special statements in order to implement the circuit. These special statements are used to provide what is often referred to as intermediate results. This approach is equivalent to declaring extra variables in an algorithmic programming language to be used for storing intermediate results. The need for intermediate results is accompanied by the declaration of extra signal values, which are often referred to intermediate signals. Note in Listing \ref{example_2_bis} that the declaration of intermediate signals is similar to the port declarations appearing in the entity declaration, except that the mode specification (\texttt{in}, \texttt{our} or \texttt{inout}) is missing. 
 
 The intermediate signals must be declared within the body of the architecture because they have no link to the outside world and thus do not appear in the entity declaration. Note that the intermediate signals are declared in the architecture body but appear before the \texttt{begin} statement.
 
@@ -385,7 +385,7 @@ end mux4t1;
 
 Though it is still early in the VHDL learning game, you have been exposed to a lot of concepts and syntax. The conditional signal assignment is maybe a bit less intuitive than the concurrent signal assignment. There is however an alternative way to make sense of it. If you think about it, the conditional signal assignment statement is similar in function to the \texttt{if-else }constructs in algorithmic programming languages. We will touch more upon this relationship once we start talking about sequential statements.
 
-The concept of working with bundles is massively important in VHDL. Generally speaking, if you can use a bundle as opposed to individual signals, you should. You will often need to access individual signals within a bundle. When this is the case, a special syntax is used (e.g. \texttt{SEL(1)}). Be sure to note that the code shown in Listing \ref{example_4_bis} is equivalent to but probably not as clear as the code shown in Listing \ref{example_4}. Be sure to note the similarities and differences.
+The concept of working with bundles is very important in VHDL. Generally speaking, if you can use a bundle as opposed to individual signals, you should. You will often need to access individual signals within a bundle. When this is the case, a special syntax is used (e.g. \texttt{SEL(1)}). Be sure to note that the code shown in Listing \ref{example_4_bis} is equivalent to but probably not as clear as the code shown in Listing \ref{example_4}. Be sure to note the similarities and differences.
 
 \section{Selected Signal Assignment \texttt{with select}}
 Selected signal assignment statements are the third type of signal assignment that we will examine. As with conditional signal assignment statements, selected signal assignment statements only have one assignment operator. Selected signal assignment statements differ from conditional assignment statements in that assignments are based upon the evaluation of one expression. The syntax for the selected signal assignment statement is shown in Listing \ref{sel_sig_assig}.
@@ -530,7 +530,36 @@ The final comment regarding the selected signal assignment is similar to the fin
 Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L}\overline{M}N+LM$.
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or god forbid, Boolean algebra, to reduce a function. The solution of Example 6 in shown in Listing \ref{example_8}.
+\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L}\overline{M}N+LM$ and its Karnaugh map is shown below. The solution of Example 8 in shown in Listing \ref{example_8}.\\
+\vspace{5pt}
+
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+$ F3(L,M,N) = \displaystyle\sum(1,6,7) $
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\scriptsize\textsf{\begin{tabular}{c|c|c|c}
+\texttt\textbf{L} & \texttt\textbf{M}& \texttt\textbf{N}& \texttt\textbf{F3}\\
+\hline
+\rowcolor{light-gray} 0 & 0 & 0 & 0 \\
+\hline
+0 & 0 & 1 & 1 \\
+\hline
+\rowcolor{light-gray} 0 & 1 & 0 & 0  \\
+\hline
+0 & 1 & 1 & 0  \\
+\hline
+\rowcolor{light-gray} 1 & 0 & 0 & 0  \\
+\hline
+1 & 0 & 1 & 0  \\
+\hline
+\rowcolor{light-gray} 1 & 1 & 0 & 1  \\
+\hline
+1 & 1 & 1 & 1  \\
+\hline
+\end{tabular}}
+\end{minipage}
+
 
 \begin{lstlisting}[float, label=example_8, caption=Solution of Example 8.]
 -- library declaration
@@ -577,7 +606,7 @@ a) $F(A,B) =\overline{A}B +A +A\overline{B}$
 
 b) $F(A,B,C,D) =\overline{A}C\overline{D} +\overline{B}C +BC\overline{D}$
 
-c) $F(A,B,C,D) =(\overline{A}+B)*(\overline{B}+C+\overline{D})*(\overline{A}+D)$
+c) $F(A,B,C,D) =(\overline{A}+B)\cdot(\overline{B}+C+\overline{D})\cdot(\overline{A}+D)$
 
 d) $F(A,B,C,D) = \displaystyle\prod(3,2) $
 
@@ -589,7 +618,7 @@ f) $F(A,B,C,D) = \displaystyle\sum(1,2) $
 
 a) $F(A,B,C,D) =\overline{A}C\overline{D} +\overline{B}C +BC\overline{D}$
 
-b) $F(A,B,C,D) =(\overline{A}+B)*(\overline{B}+C+\overline{D})*(\overline{A}+D)$
+b) $F(A,B,C,D) =(\overline{A}+B)\cdot(\overline{B}+C+\overline{D})\cdot(\overline{A}+D)$
 
 c) $F(A,B,C,D) = \displaystyle\prod(3,2) $
 

@@ -179,7 +179,7 @@ port 	(A,B,C : in  std_logic;
 	 	 F_OUT : out std_logic);
 end my_ex;
 -- architecture
-architecture dumb_example of my_ex is
+architecture silly_example of my_ex is
 begin
 	proc1: process(A,B,C) is
 	begin
@@ -191,7 +191,7 @@ begin
 	   		F_OUT <= '0';
 		end if;
 	end process proc1;
-end dumb_example;
+end silly_example;
 \end{lstlisting}
 \end{minipage}
 
@@ -502,14 +502,14 @@ end my_case_ex;
 \end{lstlisting}
 \end{minipage}
 
-One massively important point in the solution to Example 13 is the fact that a \texttt{case} statement was embedded into an \texttt{if} statement. The technical term for this style of coding is, as you would guess, nesting. Nesting sequential statements is typical in behavioral models and is used often. This is actually one of the features that make behavioral modeling so much more powerful than data-flow modeling. The reality is that conditional and selective signal assignment statements can not be nested.
+One very important point in the solution to Example 13 is the fact that a \texttt{case} statement was embedded into an \texttt{if} statement. The technical term for this style of coding is, as you would guess, nesting. Nesting sequential statements is typical in behavioral models and is used often. This is actually one of the features that make behavioral modeling so much more powerful than data-flow modeling. The reality is that conditional and selective signal assignment statements can not be nested.
 
 \section{Caveats Regarding Sequential Statements}
 As you begin to work with sequential statements, you tend to start getting the feeling that you are doing algorithmic programming using a higher-level language. This is due to the fact that sequential statements have a similar look and feel to some of the programming constructs in higher-level languages. The bad part of this tendency is when and if your VHDL coding approach becomes similar to that of the higher-level language. Since this happens very often with people who are learning VHDL, it is appropriate to remind once again that \textbf{VHDL is not programming: VHDL is hardware design}. You are, generally speaking, not implementing algorithms in VHDL, you are describing hardware: this is a totally different paradigm.
 
 It is not uncommon to see many, not so good, pieces of VHDL code that attempt to use a single process statement in order to implement a relatively complex circuit. Although the code appears like it should work in terms of the provided statements, this is an illusion based on the fact that your mind is interpreting the statements in terms of a higher-level language. The reality is that VHDL is somewhat mysterious in that you are trusting the VHDL synthesizer to magically know what you are trying to describe. If you do not understand the ins and outs of VHDL at a low level, your circuit is not going to synthesize properly. Most likely you understand simple VHDL behavioral models. But once the models become complex, your understanding quickly fades away. The solution to this problem is really simple: keep your VHDL models simple, particularly your process statements. 
 
-In VHDL, the best approach is to keep your process statements centered around a single function and have several process statements that communicate with each other. The bad approach is to have one massive process statement that does everything for you. The magic of VHDL is that if you provide simple code to the synthesizer, it is more than likely going to provide you with a circuit that works and with an implementation that is simple and eloquent. If you provide the synthesizer with complicated VHDL code, the final circuit may work and may even be efficient in both speed and real estate, but probably not. As opposed to higher-level languages where small amounts of code often translate directly to code of relatively high efficiency, efficiency in VHDL code is obtained by compact and simple partitioning of the VHDL code based on the underlying hardware constructs. In other words, simple VHDL models are better but the simplicity is generally obtained by proper partitioning and description of the model. So try to fight off the urge to impress your friends with the world's shortest VHDL model; your hardware friends will know better.
+In VHDL, the best approach is to keep your process statements centered around a single function and have several process statements that communicate with each other. The bad approach is to have one big process statement that does everything for you. The magic of VHDL is that if you provide simple code to the synthesizer, it is more than likely going to provide you with a circuit that works and with an implementation that is simple and eloquent. If you provide the synthesizer with complicated VHDL code, the final circuit may work and may even be efficient in both speed and real estate, but probably not. As opposed to higher-level languages where small amounts of code often translate directly to code of relatively high efficiency, efficiency in VHDL code is obtained by compact and simple partitioning of the VHDL code based on the underlying hardware constructs. In other words, simple VHDL models are better but the simplicity is generally obtained by proper partitioning and description of the model. So try to fight off the urge to impress your friends with the world's shortest VHDL model; your hardware friends will know better.
 \section{Summary}
 Let us now review some of the important concepts that have been introduced in this chapter.
 \begin{my_list}
@@ -531,7 +531,7 @@ a) $F(A,B) =\overline{A}B +A +A\overline{B}$
 
 b) $F(A,B,C,D) =\overline{A}C\overline{D} +\overline{B}C +BC\overline{D}$
 
-c) $F(A,B,C,D) =(\overline{A}+B)*(\overline{B}+C+\overline{D})*(\overline{A}+D)$
+c) $F(A,B,C,D) =(\overline{A}+B)\cdot(\overline{B}+C+\overline{D})\cdot(\overline{A}+D)$
 
 d) $F(A,B,C) = \displaystyle\prod(5,1,4,3) $
 

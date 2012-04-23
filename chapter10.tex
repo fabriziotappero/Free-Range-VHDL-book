@@ -80,7 +80,7 @@ The use of signals and variables can be somewhat confusing because of their simi
 
 With relatively simple circuits, signal objects are generally sufficient. As your digital designs become more complex, there is a greater chance that you will need more control of your models than signals alone can provide. The main characteristic of signals that leave them somewhat limited in complex designs is when and how they are scheduled. More specifically, \textbf{assignments made to signals inside a process are actually only scheduled when the same process is completed. The actual assignment is not made until after the process terminates}. This is why multiple signal assignments can be made to the same signal during the execution of a process without generating any type of synthesis error. In the case of multiple signal assignments inside the process, only the most recent assignment to the signal during process execution is assigned. The important thing here is that the signal assignment is not made until after the process terminates. The potential problem that you might face is that the new result (the new value assigned to the signal) is not available to use inside the process. 
 
-Variable assignment within processes is different. When a variable is assigned a value inside of a process, the assignment is immediate and the newly assigned value can be used immediately inside of the process. In other words, the variable assignment is not scheduled as it was for the signal. This is a giant difference and has massive ramifications in both the circuit simulation and synthesis realm. 
+Variable assignment within processes is different. When a variable is assigned a value inside of a process, the assignment is immediate and the newly assigned value can be used immediately inside of the process. In other words, the variable assignment is not scheduled as it was for the signal. This is a giant difference and has very important ramifications in both the circuit simulation and synthesis realm. 
 
 Variables cannot always be modeled as wires in a circuit. They also have no concept of memory since they cannot store events. With all this in mind, you may wonder what is the appropriate place to use variables. The answer is variables should only be used as iteration counters in loops or as temporary values when executing an algorithm that performs some type of calculation. It is possible to use variables outside of these areas, but it should be avoided.
 
@@ -216,7 +216,7 @@ Why would I need to use a \textbf{\color{gray}signed} or \textbf{\color{gray}uns
 \end{quotation}
 The answer to this question is in Listing \ref{my_sum}, specifically in line 17 and in line 18. The \texttt{std\_logic\_vector} type should not be used to define a numerically meaningful\footnote{Numerically meaningful signal: a signal that looks and behave like a number.} signal or variable. The \texttt{std\_logic\_vector} type should be only employed for defining ``bags of bits''.
 
-The use of \texttt{signed/unsigned} types is desirable any time your begs of bits (signals, variables or constants) stop being ``begs'' and become numbers of type signed, unsigned or even integers.
+The use of \texttt{signed/unsigned} types is desirable any time your bags of bits (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -360,7 +360,7 @@ The use of clock management blocks will guarantee your design meets timing requi
 \section{Important Points}
 
 \begin{my_list}
-\item The use of \texttt{signed/unsigned} types is desirable any time your ``begs of bits'' (signals, variables or constants) stop being ``begs'' and become numbers of type signed, unsigned or even integers. A typical example is the variable used for a counter for which there is really no reason to use a \texttt{std\_logic\_vector} type for. Refer to line 17, 22 and 33 of Listing \ref{ex26_code}.
+\item The use of \texttt{signed/unsigned} types is desirable any time your ``bags of bits'' (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers. A typical example is the variable used for a counter for which there is really no reason to use a \texttt{std\_logic\_vector} type for. Refer to line 17, 22 and 33 of Listing \ref{ex26_code}.
 
 \item The standard IEEE library \texttt{numeric\_std} is needed when you want to use \texttt{signed} and/or \texttt{unsigned} types. The standard IEEE library \texttt{numeric\_std} is almost always preferred over the non-standard\\ \texttt{std\_logic\_arith} library.
 \item Any use of the non-standard Synopsys libraries: \texttt{std\_logic\_signed}, \texttt{std\_logic\_unsigned} and \texttt{std\_logic\_arith} is highly discouraged.
