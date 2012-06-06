@@ -174,7 +174,7 @@ Example 1 demonstrates the use of the concurrent signal assignment (CSA) stateme
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 2.}
-Write the VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L}\overline{M}N+LM$
+Write the VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L} \cdot \overline{M}\cdot N+L\cdot M$
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} The black box diagram and associated VHDL code is shown in Listing \ref{example_2}.
@@ -269,7 +269,7 @@ The conditional signal assignment statement is probably easiest to understand in
 Write the VHDL code to implement the function expressed in Example 2. Use only conditional signal assignment statements in your VHDL code. 
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The entity declaration does not change from Example 2 so the solution only needs a new architecture description. By reconsidering the same logic equation of Example 2, $F3=\overline{L}\overline{M}N+LM$, the solution to Example 3 is shown in Listing \ref{example_3}.
+\textbf{SOLUTION.} The entity declaration does not change from Example 2 so the solution only needs a new architecture description. By reconsidering the same logic equation of Example 2, $F3=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$, the solution to Example 3 is shown in Listing \ref{example_3}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -398,7 +398,7 @@ with <choose_expression> select
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 5.}
-Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L}\overline{M}N+LM$. Use only selected signal assignment statements in your VHDL code.
+Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$. Use only selected signal assignment statements in your VHDL code.
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} This is yet another version of the \texttt{my\_ckt\_f3} example that first appeared in Example 2. The solution is shown in Listing \ref{example_5}.
@@ -523,10 +523,10 @@ The final comment regarding the selected signal assignment is similar to the fin
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 8.}
-Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L}\overline{M}N+LM$.
+Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$.
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L}\overline{M}N+LM$ and its Karnaugh map is shown below. The solution of Example 8 in shown in Listing \ref{example_8}.\\
+\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$ and its Karnaugh map is shown below. The solution of Example 8 in shown in Listing \ref{example_8}.\\
 \vspace{5pt}
 
 \noindent
