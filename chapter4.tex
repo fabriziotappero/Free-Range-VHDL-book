@@ -140,13 +140,8 @@ end my_nand3;
 -- architecture
 architecture exa_nand3 of my_nand3 is
 begin
-	F <= (A NAND B) NAND C;
-end exa_nand3;
--- alternative architecture
-architecture exb_nand3 of my_nand3 is
-begin
 	F <= NOT(A AND B AND C);
-end exb_nand3;
+end exa_nand3;
 \end{lstlisting}
 \end{minipage}
 \begin{minipage}{0.4\linewidth}
@@ -172,9 +167,9 @@ This example contains a few new ideas that are worth further clarification.
 \begin{my_list}
 \item There are header files and library files that must be included in your VHDL code in order for your code to correctly compile. These few lines of code are listed at the top of the code in Listing \ref{example_1}. The listed lines are more than what is needed for this example but they will be required in later examples. To save space, these lines will be omitted in some of the coming examples.
 \item This example highlights the use of several logic operators. The logic operators available in VHDL are AND, OR, NAND, NOR, XOR and XNOR. The NOT operator is technically speaking not a logic operator but is also available. Moreover, these logic operators are considered to be binary operators in that they operate on the two values appearing on the left and right-hand side of the operator. The NOT operator is a unary operator and for that, it only operates on the value appearing to the right of the operator.
-\item Two architectures have been provided in this solution; they are both associated with the same entity. This is fairly common practice in complex circuits but is not overly useful in most VHDL design.
+\item One architecture for one entity has been provided in this solution. This is fairly common practice in most VHDL design.
 \end{my_list}
-Example 1 demonstrates the use of the concurrent signal assignment (CSA) statement in a working VHDL program (refer to line 12 and 17 of Listing \ref{example_1}). But since there is only one CSA statement, the concept of concurrency is not readily apparent. The idea behind any concurrent statement in VHDL is that the output is changed any time one of the input signals changes. In other words, the output F is re-evaluated any time a signal on the input expression changes. This is a key concept in truly understanding the VHDL, so you may want to read that sentence a few more times. The idea of concurrency is more clearly demonstrated in Example~2.
+Example 1 demonstrates the use of the concurrent signal assignment (CSA) statement in a working VHDL program (refer to line 12 of Listing \ref{example_1}). But since there is only one CSA statement, the concept of concurrency is not readily apparent. The idea behind any concurrent statement in VHDL is that the output is changed any time one of the input signals changes. In other words, the output F is re-evaluated any time a signal on the input expression changes. This is a key concept in truly understanding the VHDL, so you may want to read that sentence a few more times. The idea of concurrency is more clearly demonstrated in Example~2.
 
 \begin{leftbar}
 \noindent
