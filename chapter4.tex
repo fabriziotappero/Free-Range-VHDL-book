@@ -1,8 +1,8 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2011
-%
-% (C) 2011 B. Mealy, F. Tappero
+% Date: May, 2012
+% URL: freerangefactory.org
+% (C) 2012 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -55,12 +55,13 @@ The VHDL programming paradigm is built around the concept of expression parallel
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
+
 -- entity
 entity my_circuit is
-port ( 
-	A_1,A_2,B_1,B_2,D_1	: in  std_logic;
-	E_out				: out std_logic;
+port ( A_1,A_2,B_1,B_2,D_1	: in  std_logic;
+       E_out				: out std_logic);
 end my_circuit;
+
 -- architecture
 architecture my_circuit_arc of my_circuit is
 	signal A_out, B_out, C_out : std_logic;
@@ -126,7 +127,7 @@ Write the VHDL code that implements a three-input NAND gate. The three input sig
 \textbf{SOLUTION.} It is good practice to always draw a diagram of the circuit you are designing. Furthermore, although we could draw a diagram showing the familiar symbol for the NAND gate, we will choose to keep the diagram general and take the black-box approach instead. Remember, the black box is a nice aid when it comes to writing the entity declaration. The solution to Example 1 is provided in Listing \ref{example_1}.
 
 \noindent
-\begin{minipage}{0.5\linewidth}
+\begin{minipage}{0.55\linewidth}
 \begin{lstlisting}[numbers=left,label=example_1, caption=Solution of Example 1.]
 -- library declaration
 library IEEE;
@@ -139,12 +140,12 @@ end my_nand3;
 -- architecture
 architecture exa_nand3 of my_nand3 is
 begin
-	F <= A NAND B NAND C;
+	F <= (A NAND B) NAND C;
 end exa_nand3;
 -- alternative architecture
 architecture exb_nand3 of my_nand3 is
 begin
-	F <= NOT(NOT((A AND B) AND C));
+	F <= NOT(A AND B AND C);
 end exb_nand3;
 \end{lstlisting}
 \end{minipage}
@@ -222,7 +223,7 @@ end f3_2;
 
 This example shows a one-line implementation of the given logic equation.
 
-An alternative solution to Example 2 is provided in Figure \ref{example_2_bis}. This example represents an important concept in VHDL. The solution shown in Listing \ref{example_2_bis} uses some special statements in order to implement the circuit. These special statements are used to provide what is often referred to as intermediate results. This approach is equivalent to declaring extra variables in an algorithmic programming language to be used for storing intermediate results. The need for intermediate results is accompanied by the declaration of extra signal values, which are often referred to intermediate signals. Note in Listing \ref{example_2_bis} that the declaration of intermediate signals is similar to the port declarations appearing in the entity declaration, except that the mode specification (\texttt{in}, \texttt{our} or \texttt{inout}) is missing. 
+An alternative solution to Example 2 is provided in Figure \ref{example_2_bis}. This example represents an important concept in VHDL. The solution shown in Listing \ref{example_2_bis} uses some special statements in order to implement the circuit. These special statements are used to provide what is often referred to as intermediate results. This approach is equivalent to declaring extra variables in an algorithmic programming language to be used for storing intermediate results. The need for intermediate results is accompanied by the declaration of extra signal values, which are often referred to intermediate signals. Note in Listing \ref{example_2_bis} that the declaration of intermediate signals is similar to the port declarations appearing in the entity declaration, except that the mode specification (\texttt{in}, \texttt{out} or \texttt{inout}) is missing. 
 
 The intermediate signals must be declared within the body of the architecture because they have no link to the outside world and thus do not appear in the entity declaration. Note that the intermediate signals are declared in the architecture body but appear before the \texttt{begin} statement.
 

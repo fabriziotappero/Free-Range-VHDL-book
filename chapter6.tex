@@ -1,8 +1,8 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2011
-%
-% (C) 2011 B. Mealy, F. Tappero
+% Date: May, 2012
+% URL: freerangefactory.org
+% (C) 2012 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -126,7 +126,7 @@ D_val <= A_val & B_val;
 \end{minipage}
 
 \section{Modulus and Remainder Operators}
-There is often confusion about the differences between the remainder operator and the modulus operator, \texttt{rem} and \texttt{mod} and the difference in their operation on negative and positive numbers. The definitions that VHDL uses for these operators are shown in Table \ref{rem_mod_def} while a few examples of these operators are provided in Table \ref{rem_mod_example}. A general rule followed by many programmers is to avoid using the \texttt{mod} operator when dealing with negative numbers. As you can see from the examples below, answers are sometime counter-intuitive. 
+Both the remainder operator \texttt{rem} and the modulus operator \texttt{mod} are applied to integers types and both give back an integer type. There is often confusion about the differences between the two operators and the difference in their operation on negative and positive numbers. The definitions that VHDL uses for these operators are shown in Table \ref{rem_mod_def} while a few examples of these operators are provided in Table \ref{rem_mod_example}. A general rule followed by many programmers is to avoid using the \texttt{mod} operator when dealing with negative numbers. As you can see from the examples below, answers are sometime counter-intuitive. 
 
 \begin{table}
 \centering
@@ -134,12 +134,13 @@ There is often confusion about the differences between the remainder operator an
 Operator & Name & Satisfies this Conditions & Comment\\
 \hline
 \multicolumn{1}{c|}{\texttt{rem}} & \multicolumn{1}{c|}{remainder} & 1. sign of (X \texttt{rem} Y) is the same as X \\
-&& 2. abs (X \texttt{rem} Y) $<$ \texttt{abs} (X) & \texttt{abs} = absolute value\\
-&& 3. X = (X/Y)*Y+(X \texttt{rem} Y) \\
+&& 2. abs (X \texttt{rem} Y) $<$ \texttt{abs} (Y) & \texttt{abs} = absolute value\\
+&& 3. (X \texttt{rem} Y) = (X - (X / Y) * Y) \\
 \hline
-\multicolumn{1}{c|}{\texttt{mod}} & \multicolumn{1}{c|}{modulus} & 1. sign of (X \texttt{mod} Y) is the same as X \\
-&& 2. abs (X \texttt{mod} Y) $<$ \texttt{abs} (X) & \texttt{abs} = absolute value\\
-&& 3. X = Y*N+(X \texttt{mod} Y) \\
+\multicolumn{1}{c|}{\texttt{mod}} & \multicolumn{1}{c|}{modulus} & 1. sign of (X \texttt{mod} Y) is the same as Y \\
+&& 2. abs (X \texttt{mod} Y) $<$ \texttt{abs} (Y) & \texttt{abs} = absolute value\\
+&& 3. (X \texttt{mod} Y) = ( X * ( Y - N )) \\ 
+&&   for some integer N\\
 \hline
 \end{tabular}}
 \caption{Definitions of \texttt{rem} and \texttt{mod} operators.}
@@ -177,12 +178,12 @@ Coding styles in VHDL fall under the category of data-flow, behavioral and struc
 Since you should make no effort whatsoever to memorize VHDL syntax, it is recommended that a cheat sheet always be kept next to you as you perform VHDL modeling. Developing a true understanding of VHDL is what is going to make you into a good hardware designer. The ability to memorize VHDL syntax proves almost nothing. 
 
 \section{Using VHDL for Sequential Circuits}
-All the circuits we have examined up until now have been combinatorial logic circuits. In other words, none of the circuits we have examined so far are actually able to store information. This section show some of the various methods used to describe sequential circuits. We limit our discussion to VHDL behavioral models for several different flavors of D flip-flops. It is possible and in some cases desirable to use data-flow models to describe storage elements in VHDL, but it is much easier to use behavior models.   
+All the circuits we have examined up until now have been combinatorial logic circuits. In other words, none of the circuits we have examined so far are actually able to store information. This section shows some of the various methods used to describe sequential circuits. We limit our discussion to VHDL behavioral models for several different flavors of D flip-flops. It is possible and in some cases desirable to use data-flow models to describe storage elements in VHDL, but it is much easier to use behavior models.   
 
 The few approaches for designing flip-flops shown in the next section cover just about all the possible functionality you could imagine when you make use of a D flip-flop. Once you understand these basics, you will be on your way to understand how to use VHDL to design Finite State Machines (FSMs). This book will examine FSMs in a later chapter.
 
 \section{Simple Storage Elements Using VHDL}
-The general approach for learning how to implement storage elements in digital design is to study the properties of a basic cross-coupled cell. The cross coupled cell forms what is referred to as \textbf{a latch}. The concept of a clocking signal is added to the device in order to enhance its controllability. Finally, some type of pulse narrowing circuitry is added to the clocking signal to get to the flop-flop. The flip-flop is nothing more than an edge-sensitive bit-storage device.
+The general approach for learning how to implement storage elements in digital design is to study the properties of a basic cross-coupled cell. The cross coupled cell forms what is referred to as \textbf{a latch}. The concept of a clocking signal is added to the device in order to enhance its controllability. Finally, some type of pulse narrowing circuitry is added to the clocking signal to get to the flip-flop. The flip-flop is nothing more than an edge-sensitive bit-storage device.
 
 The study of a VHDL implementation of storage elements starts with the edge-triggered D flip-flop. The VHDL examples presented are the basic edge-triggered D flip-flop with an assortment of added functionality. 
 \begin{leftbar}
@@ -213,8 +214,8 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \noindent
 \textbf{SOLUTION.} The solution to Example 14 is shown in Listing \ref{exe_14}. Listed below are a few interesting things to note about the solution.
 \begin{my_list}
-\item The given architecture body describes the \texttt{my\_d\_ff} version of the \texttt{d\_ff\_x} entity.
-\item Because this example requires the use of a behavioral model, the architecture body is comprised primarily of a process statement. The statements within the process are executed sequentially. The process is executed each time a change is detected in any of the signals in the process' sensitivity list.  In this case, the statements within the process are executed each time there is a change in logic level of the \texttt{D} or \texttt{CLK} signals.
+\item The given architecture body describes the \texttt{my\_d\_ff} version of the \texttt{d\_ff} entity.
+\item Because this example requires the use of a behavioral model, the architecture body is comprised primarily of a process statement. The statements within the process are executed sequentially. The process is executed each time a change is detected in any of the signals in the process' sensitivity list.  In this case, the statements within the process are executed each time there is a change in logic level of the \texttt{CLK} signal.
 \item The \texttt{rising\_edge()} construct is used in the \texttt{if} statement to indicate that changes in the circuit output happen only on the rising edge of the \texttt{CLK} input. The \texttt{rising\_edge()} construct is actually an example of a VHDL function which has been defined in one of the included libraries. The way the VHDL code has been written makes the whole circuit synchronous; in fact, changes in the circuit's output are synchronized with the rising edge of the clock signal. In this case, the action is a transfer of the logic level on the \texttt{D} input to the \texttt{Q} output.
 \item The functionality of \texttt{rising\_edge(CLK)} can be achieved using the quite popular VHDL ``\texttt{event}'' attribute via the construct:\\ 
 \texttt{CLK'event and CLK='1'}.\\
@@ -250,7 +251,7 @@ end my_d_ff;
 \end{lstlisting}
 \end{minipage}
 
-The D flip-flop is best known and loved for its ability to store (save, remember) a single bit. The way that the VHDL code in Listing \ref{exe_14} is able to store a bit is not however obvious. The bit-storage capability in the VHDL is implied by the way the VHDL code is interpreted. The implied storage capability comes about as a result of not providing a condition that indicates what should happen if the listed \texttt{if} condition is not met. In other words, if the \texttt{if} condition is not met, the device does not change the value of \texttt{Q} and therefore it must remember the current value. The memory feature of the current value, or state, constitutes the famous bit storage quality of a flip-flop. If you have not specified what the output should be for every possible set of input conditions, the option taken by VHDL is to not change the current output. By definition, if the input changes to an unspecified state, the output remains unchanged. In this case, the output associated with the previous set of input can be thought of as being remembered. It is this mechanism, as strange and interesting as it is, that is used to induce memory in the VHDL code. 
+The D flip-flop is best known and loved for its ability to store (save, remember) a single bit. The way that the VHDL code in Listing \ref{exe_14} is able to store a bit is not however obvious. The bit-storage capability in VHDL is implied by the way the VHDL code is interpreted. The implied storage capability comes about as a result of not providing a condition that indicates what should happen if the listed \texttt{if} condition is not met. In other words, if the \texttt{if} condition is not met, the device does not change the value of \texttt{Q} and therefore it must remember the current value. The memory feature of the current value, or state, constitutes the famous bit storage quality of a flip-flop. If you have not specified what the output should be for every possible set of input conditions, the option taken by VHDL is to not change the current output. By definition, if the input changes to an unspecified state, the output remains unchanged. In this case, the output associated with the previous set of input can be thought of as being remembered. It is this mechanism, as strange and interesting as it is, that is used to induce memory in the VHDL code. 
 
 In terms of the D flip-flop shown in Example 14, the only time the output is specified is for that delta time associated with the rising edge of the clock. The typical method used to provide a catch-all condition in case the if condition is not met is with an \texttt{else} clause. Generally speaking, a quick way to tell if you have induced a memory element is to look for the presence of an \texttt{else} clause associated with the \texttt{if} statement. 
 
@@ -267,7 +268,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 %\draw[help lines] (0,0) grid (50,50);
 % BOX
-\draw (20,5) rectangle (35,20) node[midway]{$D\_FF$};
+\draw (20,5) rectangle (35,20) node[midway]{$d\_ff\_ns$};
 % INPUTS
 \small
 \node (b) at (0,-2) {}; % this is to extend the pink area
@@ -309,7 +310,7 @@ end d_ff_ns;
 -- architecture
 architecture my_d_ff_ns of d_ff_ns is 
 begin
-   dff:  process (S,CLK)
+   dff:  process (CLK)
    begin
       if (rising_edge(CLK)) then
          if (S = '0') then

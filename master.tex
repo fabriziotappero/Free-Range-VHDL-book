@@ -1,13 +1,14 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2011
-%
-% (C) 2011 B. Mealy, F. Tappero
+% Date: May, 2012
+% URL: freerangefactory.org
+% (C) 2012 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
 %\documentclass[11pt,b5paper]{book} % you can set the paper size in style.sty
-\documentclass[gray, 11pt,b5paper]{book} % generate whole document in B&W
+%\documentclass[gray, 11pt,b5paper]{book} % generate whole document in B&W
+\documentclass[11pt,b5paper]{book} % generate whole document in color
 \usepackage{style}
 
 
@@ -19,18 +20,16 @@
 \begin{document}
 
 	% front cover
-%	\thispagestyle{empty}
-%	\begin{textblock*}{160mm}(0mm,3mm)
-%	%\textblockcolour{red}
-%	%\includegraphics[width=160mm]{pics/cover.png}  % full-page picture for A5 format
-%    \includegraphics[width=155mm]{pics/cover.png}  % full-page picture for 160x240 format
-%	\end{textblock*}
-%	\null\newpage % latex might neglect \newpage because the page is empty, 
-		      % to avoid this use \null\newpage
+	\thispagestyle{empty}
+	\begin{textblock*}{160mm}(-3mm,0mm)
+	%\textblockcolour{red}
+    \includegraphics[width=160mm]{pics/cover.png}  % full-page picture for 160x240 format
+	\end{textblock*}
+	\null\newpage % latex might neglect \newpage because the page is empty, 
 
 	% blank page
-%	\thispagestyle{empty}
-%	\null\newpage
+	\thispagestyle{empty}
+	\null\newpage
 
 	% front matter %
 	\thispagestyle{empty}
