@@ -376,85 +376,133 @@ Once again, to successfully simulate and synthesize the design shown in Listing~
 All digital blocks available from this library package are described in the documentation of the FPGA software development tool (e.g. Xilinx ISE).
 \end{my_list}
 
-\section{Exercises: Register Transfer Level Circuits}
+\section{Exercises: Structural Modeling}
 
 %%%%%% EXERCISE 1 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}{1\textwidth}
 \textbf{EXERCISE 1.}
-Provide a VHDL model that can be used to implement the following circuit.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{smu_vhdl/ex1.png}
+Draw a block diagram of the circuit represented by the VHDL code listed below. Be sure to completely label the final diagram.
+\vspace{10pt}
+
+\begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity ckt1 is
+    Port ( EN1, EN2 : in  std_logic;
+                CLK : in  std_logic;
+                  Z : out std_logic);
+end ckt1;
+-- architecture
+architecture arch of ckt1 is
+
+    component T_FF
+        port ( T,CLK : in  std_logic;
+                   Q : out std_logic);
+    end component;
+
+    signal t_in, t1_s, t2_s : std_logic;
+begin
+    t1 : T_FF
+    port map (T => t_in,
+            CLK => CLK,
+              Q => t1_s );
+    t2 : T_FF
+    port map (T => t1_s,
+            CLK => CLK,
+              Q => t2_s );
+
+       Z <= t2_s OR t1_s;
+    t_in <= EN1 AND EN2;
+end arch;
+\end{lstlisting}
 \end{minipage}
 
 %%%%%% EXERCISE 2 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}{1\textwidth}
 \textbf{EXERCISE 2.}
-Provide a VHDL model that can be used to implement the following circuit.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{smu_vhdl/ex2.png}
+Draw a block diagram of the circuit represented by the VHDL code listed below. Be sure to completely label the final diagram.
+\vspace{10pt}
+
+\begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity ckt is
+    port ( A,B : in  std_logic;
+             C : out std_logic);
+end ckt;
+-- architecture
+architecture my_ckt of ckt is
+
+    component bb1
+        port (D,E : in  std_logic;
+            F,G,H : out std_logic);
+end component;
+
+    component bb2
+        port ( L,M,N : in  std_logic;
+                   P : out std_logic);
+end component;
+
+    signal x1,x2,x3 : std_logic;
+begin
+    b1: bb1
+    port map ( D => A, E => B, F => x1, G => x2, H => x3);
+
+    b2: bb2
+    port map ( L => x1, M => x2, N => x3, P => C);
+
+end my_ckt;
+\end{lstlisting}
 \end{minipage}
 
 %%%%%% EXERCISE 3 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}{\textwidth}
 \textbf{EXERCISE 3.}
-Provide a VHDL model that can be used to implement the following circuit. 
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
+Provide the VHDL structural models for the circuits listed below.
+
+\vspace{7pt}
+\begin{minipage}[b]{0.45\linewidth}
 \centering
-\includegraphics[width=6cm]{smu_vhdl/ex3.png}
+a)
+\includegraphics[width=0.8\textwidth]{smu_vhdl/ex3a.png}
+\end{minipage}
+\hspace{0.2cm}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+b)
+\includegraphics[width=0.5\textwidth]{smu_vhdl/ex3b.png}
+\end{minipage}\\
+
+\vspace{7pt}
+\begin{minipage}[b]{0.45\linewidth}
+\centering
+c)
+\includegraphics[width=0.8\textwidth]{smu_vhdl/ex3c.png}
+\end{minipage}
+\hspace{0.2cm}
+\begin{minipage}[b]{0.5\linewidth}
+\centering
+d)
+\includegraphics[width=0.8\textwidth]{smu_vhdl/ex3d.png}
+\end{minipage}
 \end{minipage}
 
-%%%%%% EXERCISE 4 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 4.}
-Provide a VHDL model that can be used to implement the following circuit.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{smu_vhdl/ex4.png}
-\end{minipage}
 
-%%%%%% EXERCISE 5 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 5.}
-Provide a VHDL model that can be used to implement the following circuit.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{smu_vhdl/ex5.png}
-\end{minipage}
 
-%%%%%% EXERCISE 6 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 6.}
-Provide a VHDL model that can be used to implement the following circuit.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{smu_vhdl/ex6.png}
-\end{minipage}
+
+
+
+
 
 
 
