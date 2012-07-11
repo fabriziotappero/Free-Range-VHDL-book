@@ -37,7 +37,7 @@ begin
 end process my_label;
 \end{lstlisting}
 
-Listing \ref{process_statement_compl_1} and \ref{process_statement_compl_2} show a data-flow architecture and a behavioral style architecture for the same XOR port. The main difference between the two architectures is the presence of the process statement in the listed code. 
+Listings \ref{process_statement_compl_1} and \ref{process_statement_compl_2} show a data-flow architecture and a behavioral style architecture for the same XOR port. The main difference between the two architectures is the presence of the process statement in the listed code. 
 
 Let us remember that the concurrent signal assignment statement in the data-flow description operates as follows. Since it is a concurrent statement, any time there is a change in any of the signals listed on the right-hand side of the signal assignment operator, the signal on the left-hand side of the operator is re-evaluated. For the behavioral architecture description, any time there is a change in signals in the process sensitivity list, all of the sequential statements in the process are re-evaluated. Evaluation of the process statement is controlled by the signals that are placed in the process sensitivity list. These two approaches are effectively the same except the syntax is significantly different. 
 
@@ -373,7 +373,7 @@ Write some VHDL code that implements the following function using the \texttt{ca
 $F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This solution falls into the category of not being the best way to implement a circuit using VHDL. It does, however, illustrate another useful feature in the VHDL. The first part of this solution requires that we list the function as a sum of minterm. This is done by multiplying the non-minterm product term given in the example by 1. In this case, 1 is equivalent to ($A+\overline{A}$). This factoring operation is shown as:
+\textbf{SOLUTION.} This solution falls into the category of not being the best way to implement a circuit using VHDL. It does, however, illustrate another useful feature in the VHDL. The first part of this solution requires that we list the function as a sum of minterms. This is done by multiplying the non-minterm product term given in the example by 1. In this case, 1 is equivalent to ($A+\overline{A}$). This factoring operation is shown as:
 
 $F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
 
@@ -502,7 +502,7 @@ end my_case_ex;
 \end{lstlisting}
 \end{minipage}
 
-One very important point in the solution to Example 13 is the fact that a \texttt{case} statement was embedded into an \texttt{if} statement. The technical term for this style of coding is, as you would guess, nesting. Nesting sequential statements is typical in behavioral models and is used often. This is actually one of the features that make behavioral modeling so much more powerful than data-flow modeling. The reality is that conditional and selective signal assignment statements can not be nested.
+One very important point in the solution to Example 13 is the fact that a \texttt{case} statement was embedded into an \texttt{if} statement. The technical term for this style of coding is, as you would guess, nesting. Nesting sequential statements is typical in behavioral models and is used often. This is actually one of the features that make behavioral modeling so much more powerful than data-flow modeling. The reality is that conditional and selective signal assignment statements cannot be nested.
 
 \section{Caveats Regarding Sequential Statements}
 As you begin to work with sequential statements, you tend to start getting the feeling that you are doing algorithmic programming using a higher-level language. This is due to the fact that sequential statements have a similar look and feel to some of the programming constructs in higher-level languages. The bad part of this tendency is when and if your VHDL coding approach becomes similar to that of the higher-level language. Since this happens very often with people who are learning VHDL, it is appropriate to remind once again that \textbf{VHDL is not programming: VHDL is hardware design}. You are, generally speaking, not implementing algorithms in VHDL, you are describing hardware: this is a totally different paradigm.
@@ -519,7 +519,7 @@ Let us now review some of the important concepts that have been introduced in th
 \item The process statement is a concurrent statement. Statements appearing within the process statement are sequential statements.
 \item The \texttt{if} statement has a direct analogy to the conditional signal assignment statement used in data-flow modeling.
 \item The \texttt{case} statement has a direct analogy to the selected signal assignment statement used in data-flow modeling.
-\item Both the \texttt{case} statement and the \texttt{if} statement can be nested. \textbf{Concurrent, conditional and selected signal assignment statements can not be nested}.
+\item Both the \texttt{case} statement and the \texttt{if} statement can be nested. \textbf{Concurrent, conditional and selected signal assignment statements cannot be nested}.
 \item The simplest concurrent statement is the concurrent signal assignment statement (e.g. ``{\footnotesize$F <= A;$}''). Its sequential equivalent is the sequential signal assignment statement and it looks identical.
 \end{my_list}
 

@@ -473,7 +473,7 @@ One common approach for learning the syntax and mechanics of new computer langua
 
 \item If a signal declared in the entity declaration has a mode specifier of out, that signal cannot appear on the right-hand side of a signal assignment operator. This limitation is bypassed by using intermediate signals for any functional assignments and later assigning the intermediate signal to the output signal using a concurrent signal assignment statement.
 
-\item The mode specification of \texttt{buffer} should never be used in VHDL unless you are somebody who does not know any better and you are not interested in learning the best VHDL approach in this regard.
+\item The mode specification of \texttt{buffer} should be avoided in favor of intermediate signals.
 \end{my_list}
 
 \section{Exercises: Basic Memory Elements}

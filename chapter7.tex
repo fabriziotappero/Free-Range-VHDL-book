@@ -18,7 +18,7 @@ As you will see in the next section, simple FSM designs are just a step beyond t
 	\label{fsm}
 \end{figure}
 
-A block diagram for a standard Moore-type FSM is shown in Fig.~\ref{fsm}. This diagram looks fairly typical but some different names are used for the some of the blocks in the design. The \texttt{Next State Decoder} is a block of combinatorial logic that uses the current external inputs and the current state to decide upon the next state of the FSM. In other words, the inputs to the \texttt{Next State Decoder} block are decoded to produce an output that represents the next state of the FSM. The circuitry in \texttt{Next State Decoder} is generally the excitation equations for the storage elements (flip-flops) in the \texttt{State Register} block. The next state becomes the present state of the FSM when the clock input to the state registers block becomes active. The state registers block is a storage element that stores the present state of the machine. The inputs to the \texttt{Output Decoder} are used to generate the desired external outputs. The inputs are decoded via combinatorial logic to produce the external outputs. Because the external outputs are only dependent upon the current state of the machine, this FSM is classified as a Moore-type FSM.
+A block diagram for a standard Moore-type FSM is shown in Fig.~\ref{fsm}. This diagram looks fairly typical but different names are used for some of the blocks in the design. The \texttt{Next State Decoder} is a block of combinatorial logic that uses the current external inputs and the current state to decide upon the next state of the FSM. In other words, the inputs to the \texttt{Next State Decoder} block are decoded to produce an output that represents the next state of the FSM. The circuitry in \texttt{Next State Decoder} is generally the excitation equations for the storage elements (flip-flops) in the \texttt{State Register} block. The next state becomes the present state of the FSM when the clock input to the state registers block becomes active. The state registers block is a storage element that stores the present state of the machine. The inputs to the \texttt{Output Decoder} are used to generate the desired external outputs. The inputs are decoded via combinatorial logic to produce the external outputs. Because the external outputs are only dependent upon the current state of the machine, this FSM is classified as a Moore-type FSM.
 
 The FSM model shown in Fig.~\ref{fsm} is probably the most common model for describing a Moore-type FSM. That is most likely because students are often asked to generate the combinatorial logic required to implement the \texttt{Next State Decoder} and the \texttt{Output Decoder}; however here we want to think about FSMs in the context of VHDL. The true power of VHDL starts to emerge in its dealings with FSMs. As you will see, the versatility of VHDL behavioral modeling removes the need for large paper designs of endless K-maps and endless combinatorial logic elements.
 
@@ -31,7 +31,7 @@ The FSM model shown in Fig.~\ref{fsm} is probably the most common model for desc
 
 There are several different approaches used to model FSMs using VHDL. The many different possible approaches are a result of the general versatility of VHDL as a language. What we will describe in this section is probably the clearest approach for FSM implementation. A block diagram of the approach we will use in the implementation of FSMs is shown in Fig.~\ref{fsm_imp}.
 
-Although it does not look that much clearer, you will soon be finding the FSM model shown in Fig.~\ref{fsm_imp} to be a straightforward method to implement FSMs. The approach we will use divides the FSM into two VHDL processes. One process, referred to as the \texttt{Synchronous Process} handles all the matters regarding clocking and other controls associated with the storage element. The other process, the \texttt{Combinatorial Process}, handles all the matters associated with the \texttt{Next State Decoder} and the \texttt{Output Decoder} of Fig.~\ref{fsm}. Note that the two blocks in Fig.~\ref{fsm} are both comprised of solely the combinatorial logic.
+Although it does not look that much clearer, you will soon be finding the FSM model shown in Fig.~\ref{fsm_imp} to be a straightforward method to implement FSMs. The approach we will use divides the FSM into two VHDL processes. One process, referred to as the \texttt{Synchronous Process} handles all the matters regarding clocking and other controls associated with the storage element. The other process, the \texttt{Combinatorial Process}, handles all the matters associated with the \texttt{Next State Decoder} and the \texttt{Output Decoder} of Fig.~\ref{fsm}. Note that the two blocks in Fig.~\ref{fsm} are both comprised solely of combinatorial logic.
 
 
 There is some new lingo used in the description of signals used in Fig.~\ref{fsm_imp}; this description is outlined and described below: 
@@ -125,7 +125,7 @@ And of course, this solution has many things worth noting in it. The more intere
 
 \item The synchronous process is equal in form and function to the simple D flip-flops we examined in the section about sequential circuits. The only difference is that we have substituted PS and NS for D and Q, respectively. Something to note here is that the storage element is associated with the PS signal only. Note that PS is not specified for every possible combination of inputs. 
 
-\item Even though this example is of the simplest FSM you could hope for, the code looks somewhat complicated. But if you examine it closely, you can see that everything is nicely compartmentalized in the solution. There are two processes; the synchronous process handles the asynchronous reset and the assignment of a new state upon the arrival of the system clock. Additionally, the combinatorial process handles the outputs not handled in the synchronous process, the outputs and the generation of the next state of the FSM. 
+\item Even though this example is of the simplest FSM you could hope for, the code looks somewhat complicated. But if you examine it closely, you can see that everything is nicely compartmentalized in the solution. There are two processes; the synchronous process handles the asynchronous reset and the assignment of a new state upon the arrival of the system clock. Additionally, the combinational process handles the outputs not handled in the synchronous process. 
 
 \item Because the two processes operate concurrently, they can be considered as working in a lock-step manner. Changes to the NS signal that are generated in the combinatorial process force an evaluation of the synchronous process. When the changes are actually instituted in the synchronous process on the next clock edge, the changes in the PS signal causes the combinatorial process to be evaluated. And so on and so forth. 
 
@@ -152,9 +152,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_fsm2 is 
-    port (   TOG_EN : in  std_logic; 
-            CLK,CLR : in  std_logic; 
-               Y,Z1 : out std_logic); 
+   port (   TOG_EN : in  std_logic; 
+           CLK,CLR : in  std_logic; 
+              Y,Z1 : out std_logic); 
 end my_fsm2;
 -- architecture
 architecture fsm2 of my_fsm2 is
@@ -163,30 +163,30 @@ architecture fsm2 of my_fsm2 is
 begin
    sync_proc: process(CLK,NS,CLR)
    begin
-     if (CLR = '1') then 
-        PS <= ST0; 
-     elsif (rising_edge(CLK)) then 
-        PS <= NS; 
-     end if; 
+      if (CLR = '1') then 
+         PS <= ST0; 
+      elsif (rising_edge(CLK)) then 
+         PS <= NS; 
+      end if; 
    end process sync_proc; 
 
    comb_proc: process(PS,TOG_EN)
    begin
-      case PS is 
-      Z1 <= '0';    
-      when ST0 =>       -- items regarding state ST0
-            Z1 <= '0';  -- Moore output
+      Z1 <= '0';
+      case PS is    
+         when ST0 =>        -- items regarding state ST0
+            Z1 <= '0';      -- Moore output
             if (TOG_EN = '1') then NS <= ST1; 
             else  NS <= ST0; 
             end if; 
-         when ST1 =>    -- items regarding state ST1
-            Z1 <= '1';  -- Moore output
+         when ST1 =>        -- items regarding state ST1
+            Z1 <= '1';      -- Moore output
             if (TOG_EN = '1') then NS <= ST0; 
             else  NS <= ST1; 
             end if; 
-         when others => -- the catch-all condition
-            Z1 <= '0';  -- arbitrary; it should never 
-            NS <= ST0;  --  make it to these two statements
+         when others =>     -- the catch-all condition
+            Z1 <= '0';      -- arbitrary; it should never 
+            NS <= ST0;      -- make it to these two statements
       end case; 
    end process comb_proc; 
  
@@ -201,7 +201,7 @@ end fsm2;
 
 Note that the VHDL code shown in Listing \ref{exe_18_code_alt} differs in only two areas from the code shown in Listing \ref{exe_18_code}. The first area is the modification of the entity declaration to account for the state variable output Y. The second area is the inclusion of the selective signal assignment statement which assigns a value of state variable output Y based on the condition of the state variable. The selective signal assignment statement is evaluated each time a change in signal PS is detected. Once again, since we have declared an enumeration type for the state variables, we have no way of knowing exactly how the synthesizer will decide to represent the state variable. The selective signal assignment statement in the code of Listing \ref{exe_18_code_alt} only makes it appear like there is one state variable and the states are represented with a '1' and a '0'. In reality, there are methods we can use to control how the state variables are represented and we will deal with those soon. 
 
-Lastly, there are three concurrent statements in the VHDL code shown in Listing \ref{exe_18_code}: two process statements and a selective signal assignment statement. 
+Lastly, there are three concurrent statements in the VHDL code shown in Listing \ref{exe_18_code_alt}: two process statements and a selective signal assignment statement. 
 
 \begin{leftbar}
 \begin{minipage}[t]{0.5\textwidth}
@@ -244,34 +244,34 @@ architecture fsm3 of my_fsm3 is
 begin
    sync_proc: process(CLK,NS,SET)
    begin
-     if (SET = '1') then 
-        PS <= ST2; 
-     elsif (rising_edge(CLK)) then 
-        PS <= NS; 
-     end if; 
+      if (SET = '1') then 
+         PS <= ST2; 
+      elsif (rising_edge(CLK)) then 
+         PS <= NS; 
+      end if; 
    end process sync_proc; 
 
    comb_proc: process(PS,X)
    begin
+      Z2 <= '0';           -- pre-assign FSM outputs
       case PS is 
-         Z2 <= '0';     -- pre-assign FSM outputs
-         when ST0 =>    -- items regarding state ST0
-            Z2 <= '0';  -- Mealy output always 0
+         when ST0 =>       -- items regarding state ST0
+            Z2 <= '0';     -- Mealy output always 0
             if (X = '0') then NS <= ST0;  
             else  NS <= ST1; 
             end if; 
-         when ST1 =>    -- items regarding state ST1
-            Z2 <= '0';  -- Mealy output always 0
+         when ST1 =>       -- items regarding state ST1
+            Z2 <= '0';     -- Mealy output always 0
             if (X = '0') then NS <= ST0; 
             else  NS <= ST2; 
             end if; 
-         when ST2 =>    -- items regarding state ST2
+         when ST2 =>       -- items regarding state ST2
             -- Mealy output handled in the if statement
             if (X = '0') then NS <= ST0; Z2 <= '0'; 
             else  NS <= ST2;  Z2 <= '1';     
             end if; 
-         when others => -- the catch all condition
-             Z2 <= '1'; NS <= ST0; 
+         when others =>    -- the catch all condition
+            Z2 <= '1'; NS <= ST0; 
       end case; 
    end process comb_proc; 
  
@@ -399,7 +399,7 @@ For one-hot encoded FSMs, only one flip-flop is asserted at any given time. This
 
 The question naturally arises as to how VHDL can be used to implement one-hot encoded FSMs. If you want total control of the process, you will need to grab control away from the synthesizer. And since we are concerned with learning VHDL, we need to look at the process of explicitly encoding one-hot FSMs. 
 
-The modular approach we used to implement FSMs expedites the conversion process from using enumeration types to actually specifying how the state variables are represented. These changes required from our previous approach are limited to how the outputs are assigned to the state variables and how the state variables are forced to be represented by certain bit patterns. Modifications to the full encoded approach are thus limited to the entity declaration (you will need more variables to represent the states), the declaration of the state variables (you will need to explicitly declare the bit patterns associated with each state) and the assignment of the state variables to the outputs (in this case, we are actually not faking it like we were in other examples). 
+The modular approach we used to implement FSMs expedites the conversion process from using enumeration types to actually specifying how the state variables are represented. The changes from our previous approach are limited to how the outputs are assigned to the state variables and how the state variables are forced to be represented by certain bit patterns. Modifications to the full encoded approach are thus limited to the entity declaration (you will need more variables to represent the states), the declaration of the state variables (you will need to explicitly declare the bit patterns associated with each state) and the assignment of the state variables to the outputs (in this case, we are actually not faking it like we were in other examples). 
 
 \begin{leftbar}
 \begin{minipage}[t]{0.5\textwidth}
