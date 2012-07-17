@@ -14,13 +14,13 @@ So far we have only implicitly mentioned the operators available in VHDL. This s
 \footnotesize\textsf{\begin{tabular}{l|lllllll}
 Operator type\\
 \hline
-\rowcolor{light-gray} logical & and & or & nand & nor & xor & xnor & not \\
+\rowcolor{light-gray} exponential, absolute value & ** & abs & & & & & \\
+logical & and & or & nand & nor & xor & xnor & not \\
+\rowcolor{light-gray} multip., division, module, remainer & * & / & mod & rem\\
+addition, subtraction  & $+$ & $-$ & & & & &   \\
+\rowcolor{light-gray} identity, negation & $+$ & $-$ & & & & & \\
+\rowcolor{light-gray} concatenate, shift, rotate & \& & sll & srl & sla & sra & rol & ror \\
 relational & = & /= & $<$ & $<=$ & $>$ & $>=$ & \\
-\rowcolor{light-gray} shift & sll & srl & sla & sra & rol & ror & \\
-addition & + & - & & & & & \\
-\rowcolor{light-gray} unary & + & - & & & & & \\
-multiplying & * & / & mod & rem \\
-\rowcolor{light-gray} others & ** & abs & \& & & & & \\
 \hline
 \end{tabular}}
 \caption{VHDL operators.}
