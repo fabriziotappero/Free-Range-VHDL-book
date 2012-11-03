@@ -22,8 +22,8 @@ The most efficient approach to utilizing standard digital circuits using VHDL is
 --
 --  Required signals: 
 ---------------------------------------------------
---  CLK,D: in STD_LOGIC;
---  Q: out STD_LOGIC;
+--  CLK,D: in  std_logic;
+--  Q:     out std_logic;
 ---------------------------------------------------
 process (CLK) 
 begin
@@ -47,8 +47,8 @@ end process;
 --
 --  Required signals: 
 ---------------------------------------------------------------
---  CLK,D,S: in STD_LOGIC;
---  Q: out STD_LOGIC;
+--  CLK,D,S: in  std_logic;
+--  Q:       out std_logic;
 ---------------------------------------------------------------
 process (CLK,S) 
 begin
@@ -73,9 +73,9 @@ end process;
 --
 --  Required signals: 
 -----------------------------------------------
---  CLK,LD: in STD_LOGIC;
---  D_IN: in STD_LOGIC_VECTOR(7 downto 0);
---  D_OUT: out STD_LOGIC_VECTOR(7 downto 0);
+--  CLK,LD: in  std_logic;
+--  D_IN:   in  std_logic_vector(7 downto 0);
+--  D_OUT:  out std_logic_vector(7 downto 0);
 -----------------------------------------------
 process (CLK) 
 begin
@@ -145,13 +145,13 @@ Refer to Appendix C for a comprehensive list of type conversion functions like t
 -- 
 -- Required signals: 
 ------------------------------------------------------------------
--- CLK, D_IN: in STD_LOGIC;
--- P_LOAD: in STD_LOGIC;
--- P_LOAD_DATA: in STD_LOGIC_VECTOR(7 downto 0);
--- D_OUT: out STD_LOGIC; 
+-- CLK, D_IN:   in  std_logic;
+-- P_LOAD:      in  std_logic;
+-- P_LOAD_DATA: in  std_logic_vector(7 downto 0);
+-- D_OUT:       out std_logic; 
 -- 
 -- Required intermediate signals: 
-signal REG_TMP: STD_LOGIC_VECTOR(7 downto 0);
+signal REG_TMP: std_logic_vector(7 downto 0);
 ------------------------------------------------------------------
 process (CLK)
 begin
@@ -162,7 +162,7 @@ begin
          REG_TMP <= REG_TMP(6 downto 0) & D_IN;
       end if;
    end if;
-   D_OUT <= REG_TMP(3);
+   D_OUT <= REG_TMP(7);
 end process;
 --
 \end{lstlisting}
@@ -180,9 +180,9 @@ end process;
 -- 
 -- Required signals: 
 ------------------------------------------------------------------
--- CLK: in STD_LOGIC;
--- A_IN, B_IN : in STD_LOGIC_VECTOR(7 downto 0);
--- ALB, AGB, AEB : out STD_LOGIC
+-- CLK:           in  std_logic;
+-- A_IN, B_IN:    in  std_logic_vector(7 downto 0);
+-- ALB, AGB, AEB: out std_logic
 ------------------------------------------------------------------
 process(CLK)
 begin
@@ -215,8 +215,8 @@ end process;
 --
 -- Required signals: 
 --------------------------------------------------------------------
--- BCD_IN : in STD_LOGIC_VECTOR(3 downto 0);
--- SSEG : out STD_LOGIC_VECTOR(6 downto 0); 
+-- BCD_IN: in  std_logic_vector(3 downto 0);
+-- SSEG:   out std_logic_vector(6 downto 0); 
 --------------------------------------------------------------------
 with BCD_IN select
    SSEG <= "0000001" when "0000",   -- 0
@@ -252,9 +252,9 @@ with BCD_IN select
 --
 -- Required signals: 
 ----------------------------------------------------------------
--- SEL: in STD_LOGIC_VECTOR(1 downto 0);
--- A, B, C, D:in STD_LOGIC;
--- MUX_OUT: out STD_LOGIC;
+-- SEL:        in  std_logic_vector(1 downto 0);
+-- A, B, C, D: in  std_logic;
+-- MUX_OUT:    out std_logic;
 ----------------------------------------------------------------
 process (SEL, A, B, C, D)
 begin
@@ -282,9 +282,9 @@ end process;
 --
 -- Required signals: 
 ------------------------------------------------------------
--- SEL: in STD_LOGIC_VECTOR(1 downto 0);
--- A, B, C, D:in STD_LOGIC;
--- MUX_OUT: out STD_LOGIC;
+-- SEL:        in  std_logic_vector(1 downto 0);
+-- A, B, C, D: in  std_logic;
+-- MUX_OUT:    out std_logic;
 ------------------------------------------------------------
 with SEL select
    MUX_OUT <= A when "00", 
@@ -308,8 +308,8 @@ with SEL select
 --
 -- Required signals: 
 -------------------------------------------------------------------
--- D_IN: in STD_LOGIC_VECTOR(2 downto 0); 
--- FOUT: out STD_LOGIC_VECTOR(7 downto 0); 
+-- D_IN: in  std_logic_vector(2 downto 0); 
+-- FOUT: out std_logic_vector(7 downto 0); 
 -------------------------------------------------------------------
 with D_IN select
    F_OUT <= "00000001" when "000",

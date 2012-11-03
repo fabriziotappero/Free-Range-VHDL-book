@@ -205,7 +205,7 @@ architecture bad_example of my_ex_7 is
 begin
 	proc1: process(A,B,C)
 	begin
-		if (A='0' and B='0' and C='0') or (B='1' and C='1') then
+		if (A='1' and B='0' and C='0') or (B='1' and C='1') then
 	   		F_OUT <= '1';
 		else
 	   		F_OUT <= '0';
