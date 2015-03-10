@@ -2,7 +2,7 @@
 % Authors: Bryan Mealy, Fabrizio Tappero
 % Date: May, 2012
 % URL: freerangefactory.org
-% (C) 2012 B. Mealy, F. Tappero
+% (C) 2013 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -169,9 +169,9 @@ Operator & Name & Satisfies this Conditions & Comment\\
 \section{Review of Almost Everything Up to Now}
 VHDL is a language used to design, test and implement digital circuits. The basic design units in VHDL are the entity and the architecture which exemplify the general hierarchical approach of VHDL. The entity represents the black-box diagram of the circuit or the interface of the circuit to the outside world while the architecture encompasses all the other details of how the circuit behaves. 
 
-The VHDL architecture is comprised of statements that describe the behavior of the digital circuit. Because this is a hardware description language, statements in VHDL are primarily considered to execute concurrently. The idea of concurrency is one of the main themes of VHDL as one would expect since a digital circuit can be modeled as a set of logic gates that operate concurrently. 
+The VHDL architecture is made of statements that describe the behavior of the digital circuit. Because this is a hardware description language, statements in VHDL are primarily considered to execute concurrently. The idea of concurrency is one of the main themes of VHDL as one would expect since a digital circuit can be modeled as a set of logic gates that operate concurrently. 
 
-The main concurrent statement types in VHDL are the concurrent signal assignment statement, the conditional signal assignment statement, the selected signal assignment statement and the process statement. The process statement is a concurrent statement which is comprised of sequential statements exclusively. The main types of sequential statements are the signal assignment statement, the  \texttt{if} statement and the  \texttt{case} statement. The  \texttt{if} statement is a sequential version of conditional signal assignment statement while the  \texttt{case} statement is a sequential version of the selected signal assignment statement. The syntax of these statements and examples are given in the following table.
+The main concurrent statement types in VHDL are the concurrent signal assignment statement, the conditional signal assignment statement, the selected signal assignment statement and the process statement. The process statement is a concurrent statement which is constituted of sequential statements exclusively. The main types of sequential statements are the signal assignment statement, the  \texttt{if} statement and the  \texttt{case} statement. The  \texttt{if} statement is a sequential version of conditional signal assignment statement while the  \texttt{case} statement is a sequential version of the selected signal assignment statement. The syntax of these statements and examples are given in the following table.
 
 Coding styles in VHDL fall under the category of data-flow, behavioral and structural models. Exclusive use of process statements indicates a   behavioral model. The use of concurrent, conditional and selective signal assignment indicate the use of a data-flow model. VHDL code describing more complex digital circuits will generally contain both features of all of these types of modeling. 
 
@@ -215,7 +215,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \textbf{SOLUTION.} The solution to Example 14 is shown in Listing \ref{exe_14}. Listed below are a few interesting things to note about the solution.
 \begin{my_list}
 \item The given architecture body describes the \texttt{my\_d\_ff} version of the \texttt{d\_ff} entity.
-\item Because this example requires the use of a behavioral model, the architecture body is comprised primarily of a process statement. The statements within the process are executed sequentially. The process is executed each time a change is detected in any of the signals in the process' sensitivity list.  In this case, the statements within the process are executed each time there is a change in logic level of the \texttt{CLK} signal.
+\item Because this example requires the use of a behavioral model, the architecture body includes primarily a process statement. The statements within the process are executed sequentially. The process is executed each time a change is detected in any of the signals in the process' sensitivity list.  In this case, the statements within the process are executed each time there is a change in logic level of the \texttt{CLK} signal.
 \item The \texttt{rising\_edge()} construct is used in the \texttt{if} statement to indicate that changes in the circuit output happen only on the rising edge of the \texttt{CLK} input. The \texttt{rising\_edge()} construct is actually an example of a VHDL function which has been defined in one of the included libraries. The way the VHDL code has been written makes the whole circuit synchronous; in fact, changes in the circuit's output are synchronized with the rising edge of the clock signal. In this case, the action is a transfer of the logic level on the \texttt{D} input to the \texttt{Q} output.
 \item The functionality of \texttt{rising\_edge(CLK)} can be achieved using the quite popular VHDL ``\texttt{event}'' attribute via the construct:\\ 
 \texttt{CLK'event and CLK='1'}.\\
@@ -342,7 +342,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \node (b) at (20,22.5) {}; % this is to extend the pink area
 \node (a) at (20,2.5) {}; % this is the reference point
 \draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{D};
-\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{$\overline{CLK}$};
 \draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
 \draw [latex-] ($(a)+(8.5,2.5)$) |- ++(-19,-5) node[above]{R};
 % OUTPUTS

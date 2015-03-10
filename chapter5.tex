@@ -7,7 +7,7 @@
 % !TEX root = master.tex
 %
 \chapter{Standard Models in VHDL Architectures}
-As you may remember, the VHDL architecture describes how your VHDL system will behave. The architecture body is comprised of two parts: the declaration section and the begin-end section where a collection of (concurrent) signal assignments appear. We have studied three types of signal assignment so far: concurrent signal assignment, conditional signal assignment and selected signal assignment. We were about to describe another concurrent statement, the process statement, before we got side-tracked. Now, let us quickly introduce a new topic before we jump into the process statement.
+As you may remember, the VHDL architecture describes how your VHDL system will behave. The architecture body contains two parts: the declaration section and the begin-end section where a collection of (concurrent) signal assignments appear. We have studied three types of signal assignment so far: concurrent signal assignment, conditional signal assignment and selected signal assignment. We were about to describe another concurrent statement, the process statement, before we got side-tracked. Now, let us quickly introduce a new topic before we jump into the process statement.
 
 There are three different approaches to writing VHDL architectures. These approaches are known as \textbf{data-flow} style, \textbf{structural} style and \textbf{behavioral} style architectures. The standard approach to learning VHDL is to introduce each of these architectural styles individually and design a few circuits using that style. Although this approach is good from the standpoint of keeping things simple while immersed in the learning process, it is also somewhat misleading because more complicated VHDL circuits generally use a mixture of these three styles. Keep this fact in mind in the following discussion of these styles. We will, however, put most of our focus on data-flow and behavioral architectures. Structural modeling is essentially a method to combine an existing set of VHDL models. In other words, structural modeling supports the interconnection of black boxes but does not have the ability to describe the logic functions used to model the circuit operation. For this reason, it is less of a design method and more of an approach for interfacing previously designed modules.
 
@@ -26,7 +26,7 @@ The heart of the behavioral style architecture is the \textit{process statement}
 \section{Process Statement}
 The process statement itself is a concurrent statement identified by its label, its sensitivity list, a declaration area and a begin-end area containing instructions executed sequentially. An example of the process statement is shown in Listing \ref{process_statement}. 
 
-The main point to remember about the process statement is that its body is comprised of sequential statements. The main difference between concurrent signal assignment statements and process statements lies with these sequential statements. But once again, let us stick to the similarities before we dive into the differences. The process label, listed in Listing \ref{process_statement} is optional but should always be included to promote the self-description of your VHDL code.
+The main point to remember about the process statement is that its body is constituted of sequential statements. The main difference between concurrent signal assignment statements and process statements lies with these sequential statements. But once again, let us stick to the similarities before we dive into the differences. The process label, listed in Listing \ref{process_statement} is optional but should always be included to promote the self-description of your VHDL code.
 
 \begin{lstlisting}[float, label=process_statement, caption=Syntax for the process statement.]
 -- this is my first process
@@ -121,7 +121,7 @@ end behav;
 \section{Sequential Statements}
 Now that we have the process statement at our disposal, we have a way to execute some code in a sequential manner.
 
-Within a process, the execution of the sequential statements is initiated when a change in the signal contained in the process sensitivity list occurs. Generally speaking, execution of statements within the process body continues until the end of the process body is reached. The strangeness evokes a philosophical dilemma: the process statement is a concurrent statement yet it is comprised of sequential statements. This is actually a tough concept to grasp. After years of contemplation, I am only starting to grasp the reality of this strange contradiction. 
+Within a process, the execution of the sequential statements is initiated when a change in the signal contained in the process sensitivity list occurs. Generally speaking, execution of statements within the process body continues until the end of the process body is reached. The strangeness evokes a philosophical dilemma: the process statement is a concurrent statement yet it is made of sequential statements. This is actually a tough concept to grasp. After years of contemplation, I am only starting to grasp the reality of this strange contradiction. 
 
 The key to understand sequential evaluation of statements occurring in a concurrent statement remains hidden in the interpretation of VHDL code by the synthesizer. And since the ins and outs of this interpretation are not always readily apparent, some implementation details must be taken for granted until the time comes when you really need to fully understand the process. The solution is to keep your process statements as simple as possible. The tendency is to use the process statement as a repository for a bunch of loosely-related sequential statements. Although syntactically correct, the code is not intelligible (understandable) in the context of digital circuit generation. You should strive to keep your process statements simple. Divide up your intended functionality into several process statements that communicate with each other rather than one giant, complicated, bizarre process statement. Remember, process statements are concurrent statements: they all can be executed concurrently. Try to take advantage of this feature in order to simplify your circuit descriptions.
 
@@ -277,7 +277,7 @@ end mux_8t1_arc;
 \end{lstlisting}
 \end{minipage}
 
-The solution to Example 10 shown in Listing \ref{exe_10} uses some new syntax. The entity uses bundle signals, but the associated architecture needs to access individual elements of these bundles. The solution is to use the bus index operator to access internal signals of the bus. This is comprised of a number representing an index placed inside parentheses (for example \texttt{Data\_in(7)}). Bus index operators are used extensively in VHDL and were previously mentioned. The solution to Example 10 shows a more typical use of the operator than was previously mentioned.
+The solution to Example 10 shown in Listing \ref{exe_10} uses some new syntax. The entity uses bundle signals, but the associated architecture needs to access individual elements of these bundles. The solution is to use the bus index operator to access internal signals of the bus. This is done via the use of a number representing an index placed inside parentheses (for example \texttt{Data\_in(7)}). Bus index operators are used extensively in VHDL and were previously mentioned. The solution to Example 10 shows a more typical use of the operator than was previously mentioned.
 
 One other thing to notice about the solution in Example 10 is that every possible combination of the select variable is accounted for in the code. It would be possible to remove the final \texttt{elsif} statement in the code shown in Listing \ref{exe_10} and place the associated signal assignment in the \texttt{else} clause. But this is not considered good VHDL practice and should be avoided at all costs. The justification for this is that it will modify the readability of the code but not alter the hardware generated by the code.
 
@@ -495,7 +495,7 @@ begin
             when others => F_CTRL <= '0'; 
          end case; 
       else
-          F_OUT <= '0'; 
+          F_CTRL <= '0'; 
       end if; 
    end process my_mux; 
 end my_case_ex;
