@@ -1,5 +1,7 @@
 Latex source files of the open-source book FREE RANGE VHDL
 
+For more info and latest PDF: http://www.freerangefactory.org
+
 # FREE RANGE VHDL
 
 Bryan Mealy, Fabrizio Tappero
