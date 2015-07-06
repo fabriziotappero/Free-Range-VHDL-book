@@ -1,6 +1,6 @@
 Latex source files of the open-source book FREE RANGE VHDL
 
-For more info and latest PDF: http://www.freerangefactory.org
+For more info and latest PDF: http://freerangefactory.org/shop.html#FreeRangeVHDL-Book
 
 # FREE RANGE VHDL
 
@@ -39,11 +39,3 @@ ns-level logic events in a comfortable software environment.
 This book was written with the intention of being freely available to everybody. The formatted electronic version of
  this book is available from the Internet. Any part of this book can be copied, distributed and modified in accordance
  with the conditions of its license.
-
-DISCLAIMER
-This book quickly takes you down the path toward understanding VHDL and writing solid VHDL code. The ideas presented
-herein represent the core knowledge you will need to get up and running with VHDL. This book in no way presents a
-complete description of the VHDL language. In an effort to expedite the learning process, some of the finer details of
-VHDL have been omitted from this book. Anyone who has the time and inclination should feel free to further explore the
-true depth of the VHDL language. There are many on-line VHDL reference books and free tutorials. If you find yourself
-becoming curious about what this book is not telling you about VHDL, take a look at some of these references.
