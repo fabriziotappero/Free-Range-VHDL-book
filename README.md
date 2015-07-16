@@ -1,6 +1,8 @@
 Latex source files of the open-source book FREE RANGE VHDL
 
-For more info and latest PDF: http://freerangefactory.org/shop.html#FreeRangeVHDL-Book
+For more info: http://freerangefactory.org
+Free Range VHDL Paperback: http://freerangefactory.org/shop.html#FreeRangeVHDL-Book
+Free Range VHDL PDF: http://freerangefactory.org/pdf/free_range_vhdl.pdf
 
 # FREE RANGE VHDL
 
