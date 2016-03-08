@@ -1,14 +1,18 @@
 
 #### FREE RANGE VHDL - how to contribute ####
 
-FREE RANGE VHDL is written in Latex. source code is available from 
+FREE RANGE VHDL is written in Latex. The source code is available from: 
  https://github.com/fabriziotappero/Free-Range-VHDL-book
+
+To help out with the book you can point out problems or suggestions 
+by sending me an e-mail at:
+   http://freerangefactory.org/#contact
+
+Alternatively, you can get the Latex source, edit it and sending me a
+patch. If you like that please keep reading.
 
 git (www.git-scm.com) is the version control system used to menage the 
 content of this book. I personally use the Git Shell command line.
-These instructions tell you how to contribute to the development
-of the VHDL book "FREE RANGE VHDL".
-
 
 1) Get the latest latex version of the book from github:
     git clone https://github.com/fabriziotappero/Free-Range-VHDL-book.git
@@ -19,22 +23,19 @@ of the VHDL book "FREE RANGE VHDL".
 
 4) Modify and save any file you want.
 
-5) use the command "compile" and the command "clean" to compile and 
-   clean your final PDF. check the status of your work
-   with the command:
+5) If you have Latex installed in your machine, use the command "compile" 
+   and the command "clean" to compile and clean your final PDF. 
+   check the status of your work with the command:
     git status
 
 5) create a patch with the command:
     git diff > my_patch.patch
 
-6) copy and paste the content of the file "my_patch.patch" and an 
-   explanation of what you have done to:
-
+6) copy and paste the content of the patch file and an explanation of what
+   you have done in:
     http://freerangefactory.org/#contact
-    
+
 AN ALTERNATIVE AND MODERN WAY IS TO GENERATE A GITHUB PULL REQUEST.
 https://yangsu.github.io/pull-request-tutorial/
 
-I would love for you to do that.
-
-
+I would love to hear your suggestions and get your help!
