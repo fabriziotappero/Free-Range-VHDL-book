@@ -1,11 +1,11 @@
 ## some help to use git ##
 
 ### STEP 1 ###
-git clone https://github.com/fabriziotappero/freerangevhdl-book.git
-cd freerangevhdl-book
+git clone https://github.com/fabriziotappero/Free-Range-VHDL-book.git
+cd .\Free-Range-VHDL-book
 
 ### STEP 2 ###
-do your modifications
+do your editing
 git status or git status -a or simply use gitk
 git add .
 git commit -m 'added some good stuff'
@@ -13,5 +13,9 @@ git commit -m 'added some good stuff'
 ### STEP 3 ###
 git push -u origin master
 
-more here here:
+this command will work only if you have writing permission
+on the remote github account.
+
+more git help here:
 http://rogerdudler.github.io/git-guide
+
