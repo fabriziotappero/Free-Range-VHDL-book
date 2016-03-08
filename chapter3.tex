@@ -300,9 +300,9 @@ a)
 
 entity ckt_c is
 port (
-    bun_a,bun_b_bun_c   : in    std_logic_vector(7 downto 0);
-    lda,ldb,ldc         : in    std_logic;
-    reg_a, reg_b, reg_c : out   std_logic_vector(7 downto 0);
+    bun_a, bun_b, bun_c  : in    std_logic_vector(7 downto 0);
+    lda, ldb, ldc        : in    std_logic;
+    reg_a, reg_b, reg_c  : out   std_logic_vector(7 downto 0));
 end ckt_c;
 \end{lstlisting}
 \end{minipage}
@@ -314,11 +314,11 @@ b)
 
 entity ckt_e is
 port ( 
-    RAM_CS,RAM_WE,RAM_OE    : in std_logic;
+    RAM_CS, RAM_WE, RAM_OE  : in std_logic;
     SEL_OP1, SEL_OP2        : in std_logic_vector(3 downto 0);
     RAM_DATA_IN             : in std_logic_vector(7 downto 0);
     RAM_ADDR_IN             : in std_logic_vector(9 downto 0);
-    RAM_DATA_OUT            : in std_logic_vector(7 downto 0);
+    RAM_DATA_OUT            : in std_logic_vector(7 downto 0));
 end ckt_e;
 \end{lstlisting}
 \end{minipage}
