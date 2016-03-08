@@ -6,6 +6,8 @@ Free Range VHDL Paperback: http://freerangefactory.org/shop.html#FreeRangeVHDL-B
 
 Free Range VHDL PDF: http://freerangefactory.org/pdf/free_range_vhdl.pdf
 
+If you want to contribute please have a look at the "contribiute" file.
+
 # FREE RANGE VHDL
 
 Bryan Mealy, Fabrizio Tappero
