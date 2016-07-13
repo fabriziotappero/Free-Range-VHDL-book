@@ -210,11 +210,11 @@ architecture circuit1_arc of circuit1 is
 begin
     process (a,b,c)
         variable var_1 : integer;         -- variable definition
-        begin
-            F <= not (A and B and C);     -- signal assignment
-	        sig_1 <= A;                   -- another signal assignment
-	        var_1 := 34;                  -- variable assignment
-        end process;
+    begin
+        F <= not (A and B and C);         -- signal assignment
+	    sig_1 <= A;                       -- another signal assignment
+	    var_1 := 34;                      -- variable assignment
+    end process;
     G <= not (A and B);                   -- concurrent assignment 
 end circuit1_arc;
 \end{lstlisting}
