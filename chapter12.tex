@@ -7,11 +7,11 @@
 % !TEX root = master.tex
 %
 \chapter{Standard Digital Circuits in VHDL}
-As you know or as you will be finding out soon, even the most complex digital circuit is composed of a relatively small set of standard digital circuits plus some associated control signals. This list of standard digital circuits is a mixed bag of combinatorial sequential devices such as MUXes, decoders, counters, comparators, registers, etc. The art of digital design using VHDL is centered around the proper selection and interfacing of these devices. The actual creation and testing of these devices is de-emphasized. 
+As you know or as you will be finding out soon, even the most complex digital circuit is composed of a relatively small set of standard digital circuits plus some associated control signals. This list of standard digital circuits is a mixed bag of combinatorial sequential devices such as MUXes, decoders, counters, comparators, registers, etc. The art of digital design using VHDL is centered around the proper selection and interfacing of these devices. The actual creation and testing of these devices is de-emphasized.
 
-The most efficient approach to utilizing standard digital circuits using VHDL is to use existing code for these devices and modify them according to the needs of your particular design. This approach allows you to utilize your current knowledge of VHDL to quickly and efficiently design complex digital circuits. The following listings show a set of standard digital devices and the VHDL code used to describe them. The following circuits are represented in various sizes and widths. Note that the following circuit descriptions represent possible VHDL descriptions but are by no means the only descriptions. They do however provide starting points for you to modify for your own design needs. 
+The most efficient approach to utilizing standard digital circuits using VHDL is to use existing code for these devices and modify them according to the needs of your particular design. This approach allows you to utilize your current knowledge of VHDL to quickly and efficiently design complex digital circuits. The following listings show a set of standard digital devices and the VHDL code used to describe them. The following circuits are represented in various sizes and widths. Note that the following circuit descriptions represent possible VHDL descriptions but are by no means the only descriptions. They do however provide starting points for you to modify for your own design needs.
 
-\section{RET D Flip-flop - Behavioral Model}
+\section{RET D~Flip-flop - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -20,14 +20,14 @@ The most efficient approach to utilizing standard digital circuits using VHDL is
 ---------------------------------------------------
 --  D flip-flop: RET D flip-flop with single output
 --
---  Required signals: 
+--  Required signals:
 ---------------------------------------------------
 --  CLK,D: in  std_logic;
 --  Q:     out std_logic;
 ---------------------------------------------------
-process (CLK) 
+process (CLK)
 begin
-   if (rising_edge(CLK)) then  
+   if (rising_edge(CLK)) then
       Q <= D;
    end if;
 end process;
@@ -35,26 +35,26 @@ end process;
 \end{lstlisting}
 \end{minipage}
 
-\section{FET D Flip-flop with Active-low Asynchronous Preset - Behavioral Model}
+\section{FET D~Flip-flop with Active-low Asynchronous Preset - Behavioral Model}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}
 
 ---------------------------------------------------------------
---  D flip-flop: FET D flip-flop with asynchronous preset. The 
+--  D flip-flop: FET D flip-flop with asynchronous preset. The
 --  preset input takes precedence over the synchronous input.
 --
---  Required signals: 
+--  Required signals:
 ---------------------------------------------------------------
 --  CLK,D,S: in  std_logic;
 --  Q:       out std_logic;
 ---------------------------------------------------------------
-process (CLK,S) 
+process (CLK,S)
 begin
-   if (S = '0') then 
-      Q <= '1'; 
-   elsif (falling_edge(CLK)) then  
+   if (S = '0') then
+      Q <= '1';
+   elsif (falling_edge(CLK)) then
       Q <= D;
    end if;
 end process;
@@ -69,17 +69,17 @@ end process;
 \begin{lstlisting}
 
 -----------------------------------------------
---  Register: 8-bit Register with load enable. 
+--  Register: 8-bit Register with load enable.
 --
---  Required signals: 
+--  Required signals:
 -----------------------------------------------
 --  CLK,LD: in  std_logic;
 --  D_IN:   in  std_logic_vector(7 downto 0);
 --  D_OUT:  out std_logic_vector(7 downto 0);
 -----------------------------------------------
-process (CLK) 
+process (CLK)
 begin
-   if (rising_edge(CLK)) then  
+   if (rising_edge(CLK)) then
       if (LD = '1') then   -- positive logic for LD
          D_OUT <= D_IN;
       end if;
@@ -96,8 +96,8 @@ end process;
 \begin{lstlisting}[numbers=left]
 
 ----------------------------------------------------------
--- Counter: synchronous up/down counter with asynchronous 
--- reset and synchronous parallel load. 
+-- Counter: synchronous up/down counter with asynchronous
+-- reset and synchronous parallel load.
 ----------------------------------------------------------
 -- library declaration
 library IEEE;
@@ -105,33 +105,33 @@ use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
 entity COUNT_8B is
-   port ( RESET,CLK,LD,UP : in  std_logic; 
-                      DIN : in  std_logic_vector (7 downto 0); 
-                    COUNT : out std_logic_vector (7 downto 0)); 
-end COUNT_8B; 
-architecture my_count of COUNT_8B is 
+   port ( RESET,CLK,LD,UP : in  std_logic;
+                      DIN : in  std_logic_vector (7 downto 0);
+                    COUNT : out std_logic_vector (7 downto 0));
+end COUNT_8B;
+architecture my_count of COUNT_8B is
    signal  t_cnt : unsigned(7 downto 0); -- internal counter signal
-begin          
-   process (CLK, RESET) 
+begin
+   process (CLK, RESET)
    begin
-      if (RESET = '1') then    
+      if (RESET = '1') then
          t_cnt <= (others => '0');  -- clear
       elsif (rising_edge(CLK)) then
          if (LD = '1') then     t_cnt <= unsigned(DIN);  -- load
-         else 
+         else
             if (UP = '1') then  t_cnt <= t_cnt + 1; -- incr
             else                t_cnt <= t_cnt - 1; -- decr
             end if;
          end if;
       end if;
    end process;
-   COUNT <= std_logic_vector(t_cnt); 
+   COUNT <= std_logic_vector(t_cnt);
 end my_count;
 --
 \end{lstlisting}
 \end{minipage}
 
-Refer to Appendix C for a comprehensive list of type conversion functions like the ones in line 24 and line 32 of the code above. 
+Refer to Appendix C for a comprehensive list of type conversion functions like the ones in line 24 and line 32 of the code above.
 
 \section{Shift Register with Synchronous Parallel Load - Behavioral Model}
 
@@ -140,17 +140,17 @@ Refer to Appendix C for a comprehensive list of type conversion functions like t
 \begin{lstlisting}
 
 ------------------------------------------------------------------
--- Shift Register: unidirectional shift register with synchronous 
--- parallel load. 
--- 
--- Required signals: 
+-- Shift Register: unidirectional shift register with synchronous
+-- parallel load.
+--
+-- Required signals:
 ------------------------------------------------------------------
 -- CLK, D_IN:   in  std_logic;
 -- P_LOAD:      in  std_logic;
 -- P_LOAD_DATA: in  std_logic_vector(7 downto 0);
--- D_OUT:       out std_logic; 
--- 
--- Required intermediate signals: 
+-- D_OUT:       out std_logic;
+--
+-- Required intermediate signals:
 signal REG_TMP: std_logic_vector(7 downto 0);
 ------------------------------------------------------------------
 process (CLK)
@@ -175,10 +175,10 @@ end process;
 \begin{lstlisting}
 
 ------------------------------------------------------------------
--- Comparator: Implemented as a behavioral model. The outputs 
--- include equals, less than and greater than status.  
--- 
--- Required signals: 
+-- Comparator: Implemented as a behavioral model. The outputs
+-- include equals, less than and greater than status.
+--
+-- Required signals:
 ------------------------------------------------------------------
 -- CLK:           in  std_logic;
 -- A_IN, B_IN:    in  std_logic_vector(7 downto 0);
@@ -189,14 +189,14 @@ begin
    if ( A_IN < B_IN ) then ALB <= '1';
    else ALB <= '0';
    end if;
-    
+
    if ( A_IN > B_IN ) then AGB <= '1';
    else AGB <= '0';
    end if;
-    
+
    if ( A_IN = B_IN ) then AEB <= '1';
    else AEB <= '0';
-   end if;    
+   end if;
 end process;
 --
 \end{lstlisting}
@@ -209,14 +209,14 @@ end process;
 \begin{lstlisting}
 
 --------------------------------------------------------------------
--- BCD to 7-Segment Decoder: Implemented as combinatorial circuit.  
+-- BCD to 7-Segment Decoder: Implemented as combinatorial circuit.
 -- Outputs are active low; Hex outputs are included. The SSEG format
 -- is ABCDEFG (segA, segB etc.)
 --
--- Required signals: 
+-- Required signals:
 --------------------------------------------------------------------
 -- BCD_IN: in  std_logic_vector(3 downto 0);
--- SSEG:   out std_logic_vector(6 downto 0); 
+-- SSEG:   out std_logic_vector(6 downto 0);
 --------------------------------------------------------------------
 with BCD_IN select
    SSEG <= "0000001" when "0000",   -- 0
@@ -248,9 +248,9 @@ with BCD_IN select
 
 ----------------------------------------------------------------
 -- A 4:1 multiplexer implemented as behavioral model using case
--- statement. 
+-- statement.
 --
--- Required signals: 
+-- Required signals:
 ----------------------------------------------------------------
 -- SEL:        in  std_logic_vector(1 downto 0);
 -- A, B, C, D: in  std_logic;
@@ -278,19 +278,19 @@ end process;
 
 ------------------------------------------------------------
 -- A 4:1 multiplexer implemented as data-flow model using a
--- selective signal assignment statement. 
+-- selective signal assignment statement.
 --
--- Required signals: 
+-- Required signals:
 ------------------------------------------------------------
 -- SEL:        in  std_logic_vector(1 downto 0);
 -- A, B, C, D: in  std_logic;
 -- MUX_OUT:    out std_logic;
 ------------------------------------------------------------
 with SEL select
-   MUX_OUT <= A when "00", 
-              B when "01", 
-              C when "10", 
-              D when "11", 
+   MUX_OUT <= A when "00",
+              B when "01",
+              C when "10",
+              D when "11",
               (others => '0') when others;
 --
 \end{lstlisting}
@@ -306,10 +306,10 @@ with SEL select
 -- Decoder: 3:8 decoder with active high outputs implemented as
 -- combinatorial circuit with selective signal assignment statement
 --
--- Required signals: 
+-- Required signals:
 -------------------------------------------------------------------
--- D_IN: in  std_logic_vector(2 downto 0); 
--- FOUT: out std_logic_vector(7 downto 0); 
+-- D_IN: in  std_logic_vector(2 downto 0);
+-- FOUT: out std_logic_vector(7 downto 0);
 -------------------------------------------------------------------
 with D_IN select
    F_OUT <= "00000001" when "000",
