@@ -40,7 +40,7 @@ There is some new lingo used in the description of signals used in Fig.~\ref{fsm
 
 \item The inputs labelled \texttt{State Transition Inputs} include external inputs that control the state transitions. These inputs also include external inputs used to decode Mealy-type external outputs. 
 
-\item The \texttt{Present State} signals are used by the \texttt{Combinatorial Process} box for both next state decoding and output decoding. The diagram of Fig.~\ref{fsm_imp} also shows that the \texttt{Present State} variables can also be provided as outputs to the FSM but they are not required.
+\item The \texttt{Present State} signals are used by the \texttt{Combinatorial \\ Process} box for both next state decoding and output decoding. The diagram of Fig.~\ref{fsm_imp} also shows that the \texttt{Present State} variables can also be provided as outputs to the FSM but they are not required.
 \end{my_list}
 
 One final comment before we begin. Although there are many different methods that can be used to described FSMs using VHDL, two of the more common approaches are the dependent and independent PS/NS styles. This book only covers the dependent style because it is clearer than the independent PS/NS style. The model shown in Fig.~\ref{fsm_imp} is actually a model of the dependent PS/NS style of FSMs. Once you understand the VHDL modeling of the dependent PS/NS style of FSM, the understanding of the independent PS/NS style or any other style is relatively painless. More information on the other FSM coding styles is found in various VHDL texts or on the web.
