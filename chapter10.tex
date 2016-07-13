@@ -43,9 +43,9 @@ Variable & \texttt{{\bf variable} var\_name : var\_type:=initial\_value;} \\
 \label{vhdl_data_objs}
 \end{table}
 
-Note that each of the data objects can optionally be assigned initial values. Signal declarations do not usually include initial values as opposed to constants which generally do. 
+Note that each of the data objects can optionally be assigned initial values. Signal declarations do not usually include initial values as opposed to constants which generally do.
 
-Initial values for signals are in fact not implementable on silicon by the synthesizing tools but are taken into consideration by VHDL simulation tools. Example~declarations for these three flavors of data objects are provided in Table \ref{vhdl_data_objs_ex}. These examples include several new data types which will be discussed in the next section. 
+Initial values for signals are in fact not implementable on silicon by the synthesizing tools but are taken into consideration by VHDL simulation tools. Example declarations for these three flavors of data objects are provided in Table \ref{vhdl_data_objs_ex}. These examples include several new data types which will be discussed in the next section.
 
 \begin{table}[!h]
 \centering
@@ -59,14 +59,14 @@ Signal & \texttt{{\bf signal} sig\_var1 : std\_logic := '0';} \\
 & \texttt{{\bf signal} my\_int  : integer;}\\
 \hline
 Variable &\texttt{{\bf variable} my\_var1, my\_var2 : std\_logic;} \\
-&\texttt{{\bf variable} index\_a : integer range (0 to 255) := 0;} \\ 
+&\texttt{{\bf variable} index\_a : integer range (0 to 255) := 0;} \\
 &\texttt{{\bf variable} index\_b : integer := -34;} \\
 \hline
 Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2 downto 0):="001";} \\
 &\texttt{{\bf constant} max\_cnt : integer := 12;} \\
 \hline
 \end{tabular}}
-\caption{Example~declarations for signal, variable and constant data objects.}
+\caption{Example declarations for signal, variable and constant data objects.}
 \label{vhdl_data_objs_ex}
 \end{table}
 
@@ -78,9 +78,9 @@ The signal assignment operator, $<=$, was used to transfer the value of one sign
 \section{Signals vs. Variables}
 The use of signals and variables can be somewhat confusing because of their similarities. Generally speaking, a signal can be thought of as representing a wire or some type of physical connection in a design. Signals thus represent a means to interface VHDL modules which include connections to the outside world. In terms of circuit simulation, signals can be scheduled to take on multiple values at specific times in the simulation. The specifics of simulating circuits using VHDL are not covered here so the last statement may not carry much meaning to you. The important difference here is that events can be scheduled for signals while for variables, they cannot. The assignment of variables is considered to happen immediately and cannot have a list of scheduled events.
 
-With relatively simple circuits, signal objects are generally sufficient. As your digital designs become more complex, there is a greater chance that you will need more control of your models than signals alone can provide. The main characteristic of signals that leave them somewhat limited in complex designs is when and how they are scheduled. More specifically, \textbf{assignments made to signals inside a process are actually only scheduled when the same process is completed. The actual assignment is not made until after the process terminates}. This is why multiple signal assignments can be made to the same signal during the execution of a process without generating any type of synthesis error. In the case of multiple signal assignments inside the process, only the most recent assignment to the signal during process execution is assigned. The important thing here is that the signal assignment is not made until after the process terminates. The potential problem that you might face is that the new result (the new value assigned to the signal) is not available to use inside the process. 
+With relatively simple circuits, signal objects are generally sufficient. As your digital designs become more complex, there is a greater chance that you will need more control of your models than signals alone can provide. The main characteristic of signals that leave them somewhat limited in complex designs is when and how they are scheduled. More specifically, \textbf{assignments made to signals inside a process are actually only scheduled when the same process is completed. The actual assignment is not made until after the process terminates}. This is why multiple signal assignments can be made to the same signal during the execution of a process without generating any type of synthesis error. In the case of multiple signal assignments inside the process, only the most recent assignment to the signal during process execution is assigned. The important thing here is that the signal assignment is not made until after the process terminates. The potential problem that you might face is that the new result (the new value assigned to the signal) is not available to use inside the process.
 
-Variable assignment within processes is different. When a variable is assigned a value inside of a process, the assignment is immediate and the newly assigned value can be used immediately inside of the process. In other words, the variable assignment is not scheduled as it was for the signal. This is a giant difference and has very important ramifications in both the circuit simulation and synthesis realm. 
+Variable assignment within processes is different. When a variable is assigned a value inside of a process, the assignment is immediate and the newly assigned value can be used immediately inside of the process. In other words, the variable assignment is not scheduled as it was for the signal. This is a giant difference and has very important ramifications in both the circuit simulation and synthesis realm.
 
 Variables cannot always be modeled as wires in a circuit. They also have no concept of memory since they cannot store events. With all this in mind, you may wonder what is the appropriate place to use variables. The answer is variables should only be used as iteration counters in loops or as temporary values when executing an algorithm that performs some type of calculation. It is possible to use variables outside of these areas, but it should be avoided.
 
@@ -130,7 +130,7 @@ constant my_rom : memory := (
 \end{minipage}
 
 \section{Commonly Used Types}
-The types already introduced in previous chapters as well as two new types are listed in Table \ref{vhdl_data_types}. The \texttt{std\_logic} and \texttt{std\_logic\_vector} types have been extensively used so far. These types are more complex than has been previously stated and will be discussed further in this chapter. The \texttt{enumerated} type was used during the previous discussion of finite state machines. The \texttt{integer} type was cryptically mentioned before but it will be discussed further along with the \texttt{boolean} type in this chapter. 
+The types already introduced in previous chapters as well as two new types are listed in Table \ref{vhdl_data_types}. The \texttt{std\_logic} and \texttt{std\_logic\_vector} types have been extensively used so far. These types are more complex than has been previously stated and will be discussed further in this chapter. The \texttt{enumerated} type was used during the previous discussion of finite state machines. The \texttt{integer} type was cryptically mentioned before but it will be discussed further along with the \texttt{boolean} type in this chapter.
 
 \begin{table}[!h]
 \centering
@@ -178,14 +178,14 @@ Although it could be possible to use only basic integer declarations in your cod
 \begin{lstlisting}
 
 -- integer type declarations
-type scores  is range 0 to 100; 
-type years   is range -3000 to 3000; 
-type apples  is range 0 to 15; 
-type oranges is range 0 to 15; 
+type scores  is range 0 to 100;
+type years   is range -3000 to 3000;
+type apples  is range 0 to 15;
+type oranges is range 0 to 15;
 \end{lstlisting}
 \end{minipage}
 
-Although each of the types listed in the previous listing are basically integers, they are still considered different types and cannot be assigned to each other. In addition to this, any worthy VHDL synthesizer will do range checks on your integer types. In the context of the definitions previously presented, each of the statements in the following listing is illegal. 
+Although each of the types listed in the previous listing are basically integers, they are still considered different types and cannot be assigned to each other. In addition to this, any worthy VHDL synthesizer will do range checks on your integer types. In the context of the definitions previously presented, each of the statements in the following listing is illegal.
 \vspace{8pt}
 
 \noindent
@@ -193,9 +193,9 @@ Although each of the types listed in the previous listing are basically integers
 \begin{lstlisting}
 
 -- Illegal assignment statements
-signal score1    : scores  := 100;  
-signal my_apple  : apples  := 0; 
-signal my_orange : oranges := 0; 
+signal score1    : scores  := 100;
+signal my_apple  : apples  := 0;
+signal my_orange : oranges := 0;
 
 my_apple  <= my_orange;  -- different types
 my_orange <= 24;         -- out of range
@@ -257,7 +257,7 @@ The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} typ
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=logic_type, caption=Declaration of the \texttt{std\_logic} enumerated type.]
 
-type std_logic is  ( 'U', -- uninitialised 
+type std_logic is  ( 'U', -- uninitialised
                      'X', -- forcing unknown
                      '0', -- forcing 0
                      '1', -- forcing 1
@@ -265,12 +265,12 @@ type std_logic is  ( 'U', -- uninitialised
                      'W', -- weak unknown
                      'L', -- weak 0
                      'H', -- weak 1
-                     '-'  -- unspecified (do not care) 
+                     '-'  -- unspecified (do not care)
                    );
 \end{lstlisting}
 \end{minipage}
 
-The \texttt{std\_logic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in Listing~\ref{logic_type}, this book only deals with \texttt{'0'},  \texttt{'1'},  \texttt{'Z'} and  \texttt{'-'}. The  \texttt{'Z'} is generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high-impedance state, the signal is not driven from that source and is effectively removed from the circuit. Finally, since the characters used in the \texttt{std\_logic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error. 
+The \texttt{std\_logic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in Listing~\ref{logic_type}, this book only deals with \texttt{'0'},  \texttt{'1'},  \texttt{'Z'} and  \texttt{'-'}. The  \texttt{'Z'} is generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high-impedance state, the signal is not driven from that source and is effectively removed from the circuit. Finally, since the characters used in the \texttt{std\_logic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error.
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
 \vspace{10pt}
@@ -302,9 +302,9 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 \textbf{SOLUTION.} As usual for more complex concepts and circuits, there are a seemingly infinite number of solutions. A solution that uses several of the concepts discussed in this section is presented in Listing~\ref{ex26_code}. Some of the more important issues in this solution are listed below.
 
 \begin{my_list}
-\item The type declaration for  \texttt{my\_count} appears in the architecture body before the \texttt{begin} statement. 
+\item The type declaration for  \texttt{my\_count} appears in the architecture body before the \texttt{begin} statement.
 
-\item A constant is used for the  \texttt{max\_count} variable. This allows for quick adjustments in the clock frequency. In this example, this concept is somewhat trivial because the  \texttt{max\_count} variable is used only once.  
+\item A constant is used for the  \texttt{max\_count} variable. This allows for quick adjustments in the clock frequency. In this example, this concept is somewhat trivial because the  \texttt{max\_count} variable is used only once.
 
 \item The variable is declared inside of the process, after the process \texttt{begin} line.
 \end{my_list}
@@ -337,7 +337,7 @@ architecture my_clk_div of clk_div is
         begin
             if (div_en = '0') then
                 div_count := 0;
-                tmp_sclk <= '0';             
+                tmp_sclk <= '0';
             elsif (rising_edge(clk)) then
                     -- divider enabled
                     if (div_count = max_count) then
@@ -375,7 +375,7 @@ use IEEE.std_logic_1164.all;
 use ieee.numeric_std.all
 
 signal val1, val2 : std_logic_vector( 31 downto 0 );
-val2 <= val1 + 1;     -- ILLEGAL OPERATION 
+val2 <= val1 + 1;     -- ILLEGAL OPERATION
 val2 <= std_logic_vector( unsigned(val1) + 1 );
 \end{lstlisting}
 \end{minipage}

@@ -46,7 +46,7 @@ constant       &  is        &  package  &  sll       &              \\
 \mbox{}
 
 \chapter{Standard VHDL Packages}
-After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardization of the language. 
+After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardization of the language.
 
 After three main language standardization steps that took place in 1987, 1993 and in 2002, VHDL now includes a large set of packages that, once included in your code, give you the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
 
@@ -73,17 +73,17 @@ For instance, the inclusion of the package \texttt{std\_logic\_1164} in your cod
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=good_lib_ex, caption=Example~of operators and types available with some IEEE packages.]
+\begin{lstlisting}[label=good_lib_ex, caption=Example of operators and types available with some IEEE packages.]
 -- typical packages declaration
 library IEEE;
 use ieee.std_logic_1164.all ;
 use ieee.numeric_std.all ;
 
 -- entity
-entity my_blk is 
+entity my_blk is
     port (  IN1, IN2  : in  std_logic;
-            CLK, CLR  : in  std_logic; 
-            OUT1      : out std_logic); 
+            CLK, CLR  : in  std_logic;
+            OUT1      : out std_logic);
 end my_blk;
 
 -- architecture
@@ -96,19 +96,19 @@ signal X  : integer range 0 to 255;
 begin
    sync_proc: process(CLK,CLR)
    begin
-     if CLR = '1' then 
-        OUT1 <= '0';  
+     if CLR = '1' then
+        OUT1 <= '0';
      elsif rising_edge(CLK) then --std_logic_1164 gives rising_edge()
        Y1 <= A + B + unsigned("0" & IN1);--numeric_std defines addition
                                          --for unsigned types.
 
        Y2<= resize(A, Y2'length) + B + ("0" & IN1);
-  
+
        X <= to_integer(A); --numeric_std gives to_integer()
 
-        OUT1 <= IN1 AND IN2; 
-     end if; 
-   end process sync_proc; 
+        OUT1 <= IN1 AND IN2;
+     end if;
+   end process sync_proc;
 end arch;
 \end{lstlisting}
 \end{minipage}
@@ -133,7 +133,7 @@ Alternatively, the same VHDL libraries can be browsed and downloaded from the GH
 \url{http://ghdl.free.fr}
 
 \noindent
-Finally, the software development tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from: 
+Finally, the software development tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from:
 
 \noindent
 \url{http://standards.ieee.org}
@@ -156,7 +156,7 @@ If {you often use google for learning purposes}, you will soon discover that the
 \texttt{ieee.std\_logic\_arith.all;}
 
 \noindent
-is amazingly common among VHDL programmers. 
+is amazingly common among VHDL programmers.
 
 The \texttt{std\_logic\_arith} library, as well as the \texttt{std\_logic\_unsigned} and the \texttt{std\_logic\_signed} libraries, were written and packaged by Synopsys to provide extended VHDL programming functionalities. Using these libraries eliminates the need for data conversion and, for instance, it allows you to write:\\
 \texttt{a\_logic\_vector <= a\_logic\_vector + 1;}\\

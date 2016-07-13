@@ -128,7 +128,7 @@ end mux4;
 \end{lstlisting}
 \end{minipage}
 
-The data type \texttt{std\_logic} and the data type \texttt{std\_logic\_vector} is what the IEEE has standardized for the representation of digital signals. Normally, you should consider that these data types assume the logic value \texttt{1} or the logic value \texttt{0}. However, as specified in the \texttt{std\_logic\_1164} package, the implementation of the \texttt{std\_logic} type (and the \texttt{std\_logic\_vector} type) is a little more generous and includes 9 different values, specifically: \texttt{0,1,U,X,Z,W,L,H,-}. 
+The data type \texttt{std\_logic} and the data type \texttt{std\_logic\_vector} is what the IEEE has standardized for the representation of digital signals. Normally, you should consider that these data types assume the logic value \texttt{1} or the logic value \texttt{0}. However, as specified in the \texttt{std\_logic\_1164} package, the implementation of the \texttt{std\_logic} type (and the \texttt{std\_logic\_vector} type) is a little more generous and includes 9 different values, specifically: \texttt{0,1,U,X,Z,W,L,H,-}.
 
 The data type \texttt{std\_logic} becomes available to you soon after the declaration \texttt{library IEEE; use IEEE.std\_logic\_1164.all;} at the beginning of your code.
 
@@ -148,7 +148,7 @@ use IEEE.std_logic_1164.all; -- basic IEEE library
 use IEEE.numeric_std.all;    -- IEEE library for the unsigned type and
                              -- various arithmetic operators
 
--- WARNING: in general try NOT to use the following libraries 
+-- WARNING: in general try NOT to use the following libraries
 --          because they are not IEEE standard libraries
 -- use IEEE.std_logic_arith.all;
 -- use IEEE.std_logic_unsigned.all;
@@ -173,7 +173,7 @@ begin
 -- "4" could be used instead of "v2'length", but the "length"
 -- attribute makes life easier if you want to change the size of v2
 
-	F <= NOT (A AND B AND C);	
+	F <= NOT (A AND B AND C);
 end my_arch;
 \end{lstlisting}
 \end{minipage}
@@ -191,7 +191,7 @@ For various reasons, such as facilitating code re-usability and connectibility, 
 
 An architecture can be written by means of three modeling techniques plus any combination of these three. There is the \textbf{data-flow model}, the \textbf{behavioral model}, the \textbf{structural model} and the \textbf{hybrid models}. These models will be described throughout the book. Listing~\ref{architecture_1} gives a sneak preview of what a simple but complete VHDL code block looks like.
 
-\begin{lstlisting}[float, numbers=left, label=architecture_1, caption=Example~of a simple VHDL block.]
+\begin{lstlisting}[float, numbers=left, label=architecture_1, caption=Example of a simple VHDL block.]
 ---------------------- FILE: my_sys.vhd ----------------------
 -- library declaration
 library ieee;
@@ -215,7 +215,7 @@ begin
 	    sig_1 <= A;                       -- another signal assignment
 	    var_1 := 34;                      -- variable assignment
     end process;
-    G <= not (A and B);                   -- concurrent assignment 
+    G <= not (A and B);                   -- concurrent assignment
 end circuit1_arc;
 \end{lstlisting}
 
@@ -230,7 +230,7 @@ It is important to understand the difference between variables and signals, spec
 
 In order to be able to introduce the use of a variable we had to employ the \textit{process construct}, a construct that you are not yet familiar with. We will see more in details later on in the book that any time we need a non-concurrent execution environment where code lines are executed one after the other (like in C or Java), we will be using the \textit{process construct}. Inside a process, all instructions are executed consecutively from top to bottom. However the process itself will be executed concurrently with the rest of the code (e.g. the instruction at line 24).
 
-Always remember that the assignment of Listing~\ref{architecture_1} at line 24 and the execution of the process, are not executed consecutively but instead concurrently (all at the same time). Any hope that the execution of line 24 will happen before or after the execution of the process will only result in great disappointment. 
+Always remember that the assignment of Listing~\ref{architecture_1} at line 24 and the execution of the process, are not executed consecutively but instead concurrently (all at the same time). Any hope that the execution of line 24 will happen before or after the execution of the process will only result in great disappointment.
 
 As a final note, let us to remind that the type \texttt{std\_logic} only exists if you declare the library \texttt{ieee.std\_logic\_1164.all} as done in line 4 of Listing~\ref{architecture_1}.
 
@@ -313,7 +313,7 @@ b)
 \begin{lstlisting}[]
 
 entity ckt_e is
-port ( 
+port (
     RAM_CS, RAM_WE, RAM_OE  : in std_logic;
     SEL_OP1, SEL_OP2        : in std_logic_vector(3 downto 0);
     RAM_DATA_IN             : in std_logic_vector(7 downto 0);
