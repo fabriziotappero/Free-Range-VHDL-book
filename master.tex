@@ -10,6 +10,7 @@
 %\documentclass[gray, 11pt,b5paper]{book} % generate whole document in B&W
 \documentclass[11pt,b5paper]{book} % generate whole document in color
 \usepackage{style}
+\usepackage{pageslts} % count pages in document and more
 
 
 % LINE SPACING
@@ -19,6 +20,8 @@
 %%%%%% DOCUMENT BEGIN %%%%%%
 \begin{document}
 
+	\pagenumbering{arabic} % for pageslts package to get page numbering correctly
+	
 	% front cover
 	\thispagestyle{empty}
 	\begin{textblock*}{160mm}(-3mm,0mm)
