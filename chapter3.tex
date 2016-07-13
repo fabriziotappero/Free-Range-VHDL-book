@@ -12,7 +12,7 @@ The ``black-box'' approach to any type of design implies a hierarchical structur
 Not surprisingly, VHDL descriptions of circuits are based on the black-box approach. The two main parts of any hierarchical design are the black box and the stuff that goes in the black box (which can of course be other black boxes). In VHDL, the black box is referred to as \textbf{entity} and the stuff that goes inside it is referred to as the \textbf{architecture}. For this reason, the VHDL entity and architecture are closely related. As you can probably imagine, creating the entity is relatively simple while a good portion of the VHDL coding time is spent on properly writing the architecture. Our approach here is to present an introduction to writing VHDL code by describing the entity and then moving on to the details of writing the architecture. Familiarity with the entity will hopefully aid in your learning of the techniques to describe the architecture.
 
 \section{Entity}
-The VHDL entity construct provides a method to abstract the functionality of a circuit description to a higher level. It provides a simple wrapper for the lower-level circuitry. This wrapper effectively describes how the black box interfaces with the outside world. Since VHDL describes digital circuits, the entity simply lists the various inputs and outputs of the underlying circuitry. In VHDL terms, the black box is described by an entity declaration. The syntax of the entity declaration is shown in Listing \ref{entity_basic}.
+The VHDL entity construct provides a method to abstract the functionality of a circuit description to a higher level. It provides a simple wrapper for the lower-level circuitry. This wrapper effectively describes how the black box interfaces with the outside world. Since VHDL describes digital circuits, the entity simply lists the various inputs and outputs of the underlying circuitry. In VHDL terms, the black box is described by an entity declaration. The syntax of the entity declaration is shown in Listing~\ref{entity_basic}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -69,7 +69,7 @@ end killer_ckt;
 \end{flushright}
 \end{minipage}
 
-Listing \ref{entity_2} shows an example of a black box and the VHDL code used to describe it. Listed below are a few points to note about the code in Listing \ref{entity_2}. Most of the points deal with the readability and understandability of the VHDL code.
+Listing~\ref{entity_2} shows an example of a black box and the VHDL code used to describe it. Listed below are a few points to note about the code in Listing~\ref{entity_2}. Most of the points deal with the readability and understandability of the VHDL code.
 
 \begin{my_list}
 \item Each port name is unique and has an associated mode and data type. This is a requirement.
@@ -81,11 +81,11 @@ Listing \ref{entity_2} shows an example of a black box and the VHDL code used to
 
 Hopefully, you are not finding these entity specifications too challenging. In fact, they are so straightforward, we will throw in one last twist before we leave the realm of VHDL entities. Most of the more meaningful circuits that you will be designing, analyzing and testing have many similar and closely related inputs and outputs. These are commonly referred to as ``bus signals'' in computer lingo. Bus lines are made of more than one signal that differ in name by only a numeric character. In other words, each separate signal in the bus name contains the bus name plus a number to separate it from other signals in the bus. Individual bus signals are referred to as elements of the bus. As you would imagine, buses are often used in digital circuits. Unfortunately, the word bus also refers to established data transfer protocols. To disambiguate the word bus, we will be using the word ``bundle'' to refer to a set of similar signals and bus to refer to a protocol.
 
-Bundles are easily described in the VHDL entity. All that is needed is a new data type and a special notation to indicate when a signal is a bundle or not. A few examples are shown in Listing \ref{entity_3}. In these examples note that the mode remains the same but the type has changed. The \texttt{std\_logic} data type has now been replaced by the word \texttt{std\_logic\_vector} to indicate that each signal name contains more than one signal. There are ways to reference individual members of each bundle, but we will get to those details later.
+Bundles are easily described in the VHDL entity. All that is needed is a new data type and a special notation to indicate when a signal is a bundle or not. A few examples are shown in Listing~\ref{entity_3}. In these examples note that the mode remains the same but the type has changed. The \texttt{std\_logic} data type has now been replaced by the word \texttt{std\_logic\_vector} to indicate that each signal name contains more than one signal. There are ways to reference individual members of each bundle, but we will get to those details later.
 
-As you can see by examining Listing \ref{entity_3}, there are two possible methods to describe the signals in a bundle. These two methods are shown in the argument lists that follow the data type declaration. The signals in the bus can be listed in one of two orders which are specified by the \textbf{to} and \textbf{downto} keywords. If you want the most significant bit of your bundle to be on the the first bit on the left you use \textbf{downto} keyword. Be sure not to forget the orientation of signals when you are using this notation in your VHDL model.
+As you can see by examining Listing~\ref{entity_3}, there are two possible methods to describe the signals in a bundle. These two methods are shown in the argument lists that follow the data type declaration. The signals in the bus can be listed in one of two orders which are specified by the \textbf{to} and \textbf{downto} keywords. If you want the most significant bit of your bundle to be on the the first bit on the left you use \textbf{downto} keyword. Be sure not to forget the orientation of signals when you are using this notation in your VHDL model.
 
-In the black box of Listing \ref{entity_3} you can see the formal notation for a bundle. Note that the black box uses a slash-and-number notation. The slash across the signal line indicates the signal is a bundle and the associated number specifies the number of signals in the bundle. Worthy of mention regarding the black box relative to Listing \ref{entity_3} is that the input lines \texttt{sel1} and \texttt{sel0} could have been made into one bundle containing the two signals.
+In the black box of Listing~\ref{entity_3} you can see the formal notation for a bundle. Note that the black box uses a slash-and-number notation. The slash across the signal line indicates the signal is a bundle and the associated number specifies the number of signals in the bundle. Worthy of mention regarding the black box relative to Listing~\ref{entity_3} is that the input lines \texttt{sel1} and \texttt{sel0} could have been made into one bundle containing the two signals.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -137,7 +137,7 @@ The reason for all these values is the desire for modeling three-state drivers, 
 Alternatively to the \texttt{std\_logic} data type, VHDL programmers sometimes use the much simpler data type \texttt{bit} which has only the logic values \texttt{1} and \texttt{0}.
 
 \section{VHDL Standard Libraries}
-The VHDL language as many other computer languages, has gone through a long and intense evolution. Among the most important standardization steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the two main library packages as shown in lines 2$\sim$4 of Listing \ref{main_vhdl_lib}.
+The VHDL language as many other computer languages, has gone through a long and intense evolution. Among the most important standardization steps we can mention are the release of the \texttt{IEEE Standard 1164} package as well as some child standards that further extended the functionality of the language. In order to take advantage of the main implementable feature of VHDL you just need to import the two main library packages as shown in lines 2$\sim$4 of Listing~\ref{main_vhdl_lib}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -178,7 +178,7 @@ end my_arch;
 \end{lstlisting}
 \end{minipage}
 
-Once these packages have been included, you will have access to a very large set of goodies: several data types, overloaded operators, various conversion functions, math functions and so on. For instance, the inclusion of the package \texttt{numeric\_std.all} will give you the possibility of using the \texttt{unsigned} data type and the function \texttt{to\_unsigned} shown in Listing \ref{main_vhdl_lib}. For a detailed description of what these libraries include, refer to the \texttt{Language Templates} of your favorite synthesis software tool (e.g. the yellow light bulb in the top panel of the Xilinx ISE software tool).
+Once these packages have been included, you will have access to a very large set of goodies: several data types, overloaded operators, various conversion functions, math functions and so on. For instance, the inclusion of the package \texttt{numeric\_std.all} will give you the possibility of using the \texttt{unsigned} data type and the function \texttt{to\_unsigned} shown in Listing~\ref{main_vhdl_lib}. For a detailed description of what these libraries include, refer to the \texttt{Language Templates} of your favorite synthesis software tool (e.g. the yellow light bulb in the top panel of the Xilinx ISE software tool).
 
 For more information on VHDL standard libraries refer to the Appendix.
 
@@ -189,9 +189,9 @@ There can be any number of equivalent architectures describing a single entity. 
 
 For various reasons, such as facilitating code re-usability and connectibility, an architecture can be modeled in different ways. Understanding the various modeling techniques and understanding how to use them represent the first important steps in learning VHDL.
 
-An architecture can be written by means of three modeling techniques plus any combination of these three. There is the \textbf{data-flow model}, the \textbf{behavioral model}, the \textbf{structural model} and the \textbf{hybrid models}. These models will be described throughout the book. Listing \ref{architecture_1} gives a sneak preview of what a simple but complete VHDL code block looks like.
+An architecture can be written by means of three modeling techniques plus any combination of these three. There is the \textbf{data-flow model}, the \textbf{behavioral model}, the \textbf{structural model} and the \textbf{hybrid models}. These models will be described throughout the book. Listing~\ref{architecture_1} gives a sneak preview of what a simple but complete VHDL code block looks like.
 
-\begin{lstlisting}[float, numbers=left, label=architecture_1, caption=Example of a simple VHDL block.]
+\begin{lstlisting}[float, numbers=left, label=architecture_1, caption=Example~of a simple VHDL block.]
 ---------------------- FILE: my_sys.vhd ----------------------
 -- library declaration
 library ieee;
@@ -222,17 +222,17 @@ end circuit1_arc;
 \section{Signal and Variable Assignments}
 In VHDL there are several object types. Among the most frequently used we will mention the \textbf{signal} object type, the \textbf{variable} object type and the \textbf{constant} object type. The signal type is the software representation of a wire. The variable type, like in C or Java, is used to store local information. The constant is like a variable object type, the value of which cannot be changed. A signal object can be of different types; we saw before, for example, that a signal object can be of type \texttt{std\_logic} or of other types like integer, custom types, etc. The same applies for variable objects.
 
-Before using any signal or variable, it is mandatory to declare them. Signals are declared at the top of the architecture body, just before the keyword \texttt{begin}. Variables must be declared inside the \textit{process construct} and are local. An example is shown in line 15 and 18 of Listing \ref{architecture_1}.
+Before using any signal or variable, it is mandatory to declare them. Signals are declared at the top of the architecture body, just before the keyword \texttt{begin}. Variables must be declared inside the \textit{process construct} and are local. An example is shown in line 15 and 18 of Listing~\ref{architecture_1}.
 
-As seen in line 20 and line 21 of Listing \ref{architecture_1} when you want to assign a new value to an object of type signal you use the operator ``$<=$''. Alternatively, when you want to assign a new value to an object of type variable you will use the operator ``$:=$'', shown in line 22.
+As seen in line 20 and line 21 of Listing~\ref{architecture_1} when you want to assign a new value to an object of type signal you use the operator ``$<=$''. Alternatively, when you want to assign a new value to an object of type variable you will use the operator ``$:=$'', shown in line 22.
 
 It is important to understand the difference between variables and signals, specifically when their value changes. A variable changes its value soon after the variable assignment is executed. Instead, a signal changes its value ``some time'' after the signal assignment expression is evaluated. This has important consequences for the updated values of variables and signals. This means that you should never assume that a signal assignment can happen instantly and it also means that you can take advantage of variables every time you need to implement a counter or to store values when inside a process.
 
 In order to be able to introduce the use of a variable we had to employ the \textit{process construct}, a construct that you are not yet familiar with. We will see more in details later on in the book that any time we need a non-concurrent execution environment where code lines are executed one after the other (like in C or Java), we will be using the \textit{process construct}. Inside a process, all instructions are executed consecutively from top to bottom. However the process itself will be executed concurrently with the rest of the code (e.g. the instruction at line 24).
 
-Always remember that the assignment of Listing \ref{architecture_1} at line 24 and the execution of the process, are not executed consecutively but instead concurrently (all at the same time). Any hope that the execution of line 24 will happen before or after the execution of the process will only result in great disappointment. 
+Always remember that the assignment of Listing~\ref{architecture_1} at line 24 and the execution of the process, are not executed consecutively but instead concurrently (all at the same time). Any hope that the execution of line 24 will happen before or after the execution of the process will only result in great disappointment. 
 
-As a final note, let us to remind that the type \texttt{std\_logic} only exists if you declare the library \texttt{ieee.std\_logic\_1164.all} as done in line 4 of Listing \ref{architecture_1}.
+As a final note, let us to remind that the type \texttt{std\_logic} only exists if you declare the library \texttt{ieee.std\_logic\_1164.all} as done in line 4 of Listing~\ref{architecture_1}.
 
 \section{Summary}
 \begin{my_list}

@@ -45,7 +45,7 @@ Variable & \texttt{{\bf variable} var\_name : var\_type:=initial\_value;} \\
 
 Note that each of the data objects can optionally be assigned initial values. Signal declarations do not usually include initial values as opposed to constants which generally do. 
 
-Initial values for signals are in fact not implementable on silicon by the synthesizing tools but are taken into consideration by VHDL simulation tools. Example declarations for these three flavors of data objects are provided in Table \ref{vhdl_data_objs_ex}. These examples include several new data types which will be discussed in the next section. 
+Initial values for signals are in fact not implementable on silicon by the synthesizing tools but are taken into consideration by VHDL simulation tools. Example~declarations for these three flavors of data objects are provided in Table \ref{vhdl_data_objs_ex}. These examples include several new data types which will be discussed in the next section. 
 
 \begin{table}[!h]
 \centering
@@ -66,7 +66,7 @@ Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2 downto 0):="00
 &\texttt{{\bf constant} max\_cnt : integer := 12;} \\
 \hline
 \end{tabular}}
-\caption{Example declarations for signal, variable and constant data objects.}
+\caption{Example~declarations for signal, variable and constant data objects.}
 \label{vhdl_data_objs_ex}
 \end{table}
 
@@ -142,11 +142,11 @@ The types already introduced in previous chapters as well as two new types are l
 \hline
 std\_logic\_vectors & \texttt{{\bf signal} busA : {\bf std\_logic\_vector}(3 downto 0)}; & all examples \\
 \hline
-\rowcolor{light-gray} enumerated &  \texttt{{\bf type} state\_type {\bf is} (ST0,ST1,ST2,ST3);} & Example 18\\
+\rowcolor{light-gray} enumerated &  \texttt{{\bf type} state\_type {\bf is} (ST0,ST1,ST2,ST3);} & Example~18\\
 \hline
 boolean & \texttt{{\bf variable} my\_test : {\bf boolean} := {\bf false};} & None \\
 \hline
-\rowcolor{light-gray} integer & \texttt{{\bf signal} iter\_cnt : {\bf integer} := 0;}  & Example 26 \\
+\rowcolor{light-gray} integer & \texttt{{\bf signal} iter\_cnt : {\bf integer} := 0;}  & Example~26 \\
 \hline
 \end{tabular}}
 \caption{Some popular data types already introduced in previous chapters.}
@@ -214,7 +214,7 @@ A \texttt{signed} value ranges from $-2^{N-1}$ to $2^{N-1}-1$ and an \texttt{uns
 \begin{quotation}\ttfamily
 Why would I need to use a \textbf{\color{gray}signed} or \textbf{\color{gray}unsigned} type in place of a \textbf{\color{gray}std\_logic\_vector} type?
 \end{quotation}
-The answer to this question is in Listing \ref{my_sum}, specifically in line 17 and in line 18. The \texttt{std\_logic\_vector} type should not be used to define a numerically meaningful\footnote{Numerically meaningful signal: a signal that looks and behave like a number.} signal or variable. The \texttt{std\_logic\_vector} type should be only employed for defining ``bags of bits''.
+The answer to this question is in Listing~\ref{my_sum}, specifically in line 17 and in line 18. The \texttt{std\_logic\_vector} type should not be used to define a numerically meaningful\footnote{Numerically meaningful signal: a signal that looks and behave like a number.} signal or variable. The \texttt{std\_logic\_vector} type should be only employed for defining ``bags of bits''.
 
 The use of \texttt{signed/unsigned} types is desirable any time your bags of bits (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers.
 
@@ -246,12 +246,12 @@ architecture arch of sum is
 \end{lstlisting}
 \end{minipage}
 
-As final note, we should mention that the inclusion of the non-standard \texttt{std\_logic\_arith} library could have given us the possibility of doing \texttt{out1 <= in1 + 1;} in line 17 of Listing \ref{my_sum}, making things much simpler. However, once again, the use of non-standard library is highly discouraged.
+As final note, we should mention that the inclusion of the non-standard \texttt{std\_logic\_arith} library could have given us the possibility of doing \texttt{out1 <= in1 + 1;} in line 17 of Listing~\ref{my_sum}, making things much simpler. However, once again, the use of non-standard library is highly discouraged.
 
 \section{\texttt{std\_logic} Types}
 For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types, similar to \texttt{std\_logic}, neither used nor endorsed in this book is the \texttt{bit} type. This type can take on only the values of \texttt{'1'} or \texttt{'0'}. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is defined in the VHDL package \texttt{ieee.std\_logic\_1164} and provides a common standard that can be used by all VHDL programmers.
 
-The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include \texttt{'1'} and \texttt{'0'}. The actual definition is shown in the Listing \ref{logic_type}. The \texttt{std\_logic} type is a resolved version of the \texttt{std\_ulogic} type. Resolved means that unlike for \texttt{std\_ulogic} types, when you use \texttt{std\_logic} type signals, you can use multiple assignments to the same signal without having the compile to complain about it.
+The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include \texttt{'1'} and \texttt{'0'}. The actual definition is shown in the Listing~\ref{logic_type}. The \texttt{std\_logic} type is a resolved version of the \texttt{std\_ulogic} type. Resolved means that unlike for \texttt{std\_ulogic} types, when you use \texttt{std\_logic} type signals, you can use multiple assignments to the same signal without having the compile to complain about it.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -270,7 +270,7 @@ type std_logic is  ( 'U', -- uninitialised
 \end{lstlisting}
 \end{minipage}
 
-The \texttt{std\_logic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in Listing \ref{logic_type}, this book only deals with \texttt{'0'},  \texttt{'1'},  \texttt{'Z'} and  \texttt{'-'}. The  \texttt{'Z'} is generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high-impedance state, the signal is not driven from that source and is effectively removed from the circuit. Finally, since the characters used in the \texttt{std\_logic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error. 
+The \texttt{std\_logic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in Listing~\ref{logic_type}, this book only deals with \texttt{'0'},  \texttt{'1'},  \texttt{'Z'} and  \texttt{'-'}. The  \texttt{'Z'} is generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high-impedance state, the signal is not driven from that source and is effectively removed from the circuit. Finally, since the characters used in the \texttt{std\_logic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error. 
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
 \vspace{10pt}
@@ -299,7 +299,7 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} As usual for more complex concepts and circuits, there are a seemingly infinite number of solutions. A solution that uses several of the concepts discussed in this section is presented in Listing \ref{ex26_code}. Some of the more important issues in this solution are listed below.
+\textbf{SOLUTION.} As usual for more complex concepts and circuits, there are a seemingly infinite number of solutions. A solution that uses several of the concepts discussed in this section is presented in Listing~\ref{ex26_code}. Some of the more important issues in this solution are listed below.
 
 \begin{my_list}
 \item The type declaration for  \texttt{my\_count} appears in the architecture body before the \texttt{begin} statement. 
@@ -311,7 +311,7 @@ Design a clock divider circuit that reduces the frequency of the input signal by
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[numbers=left,label=ex26_code, caption=Solution to Example 26.]
+\begin{lstlisting}[numbers=left,label=ex26_code, caption=Solution to Example~26.]
 
 -- library declaration
 library IEEE;
@@ -360,7 +360,7 @@ The use of clock management blocks will guarantee your design meets timing requi
 \section{Important Points}
 
 \begin{my_list}
-\item The use of \texttt{signed/unsigned} types is desirable any time your ``bags of bits'' (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers. A typical example is the variable used for a counter for which there is really no reason to use a \texttt{std\_logic\_vector} type for. Refer to line 17, 22 and 33 of Listing \ref{ex26_code}.
+\item The use of \texttt{signed/unsigned} types is desirable any time your ``bags of bits'' (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers. A typical example is the variable used for a counter for which there is really no reason to use a \texttt{std\_logic\_vector} type for. Refer to line 17, 22 and 33 of Listing~\ref{ex26_code}.
 
 \item The standard IEEE library \texttt{numeric\_std} is needed when you want to use \texttt{signed} and/or \texttt{unsigned} types. The standard IEEE library \texttt{numeric\_std} is almost always preferred over the non-standard\\ \texttt{std\_logic\_arith} library.
 \item Any use of the non-standard Synopsys libraries: \texttt{std\_logic\_signed}, \texttt{std\_logic\_unsigned} and \texttt{std\_logic\_arith} is highly discouraged.

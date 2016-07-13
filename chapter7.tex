@@ -61,7 +61,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This problem represents a basic FSM implementation. It is somewhat instructive to show the black-box diagram which is an aid in writing the entity description. Starting FSM problems with the drawing of a black box diagram is always a healthy approach particularly when dealing with FSMs. Oftentimes with FSM problems, it becomes challenging to discern the FSM inputs from the outputs. Drawing a diagram partially alleviates this problem. The black box diagram and the code for the solution of Example 18 is shown in Listing \ref{exe_18_code}.
+\textbf{SOLUTION.} This problem represents a basic FSM implementation. It is somewhat instructive to show the black-box diagram which is an aid in writing the entity description. Starting FSM problems with the drawing of a black box diagram is always a healthy approach particularly when dealing with FSMs. Oftentimes with FSM problems, it becomes challenging to discern the FSM inputs from the outputs. Drawing a diagram partially alleviates this problem. The black box diagram and the code for the solution of Example~18 is shown in Listing~\ref{exe_18_code}.
 
 \begin{figure}[!h]
     \centering
@@ -70,7 +70,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_18_code, caption=Solution to Example 18.]
+\begin{lstlisting}[label=exe_18_code, caption=Solution to Example~18.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -136,9 +136,9 @@ And of course, this solution has many things worth noting in it. The more intere
 \item The Z1 output is pre-assigned as the first step in the combinatorial process. Pre-assigning it in this fashion prevents the unexpected latch generation for the Z1 signal. When dealing with FSMs, there is a natural tendency for the FSM designer to forget to specify an output for the Z1 variable in each of the states. Pre-assigning it prevents latches from being generated and can arguably clean up the source code. The pre-assignment makes no difference to the VHDL code because if multiple assignments are made within the code, only the final assignment takes effect. In other words, only the final assignment is considered once the process terminates. 
 \end{my_list}
 
-There is one final thing to note about Example 18. In an effort to keep the example simple, we disregarded the digital values of the state variables. This is indicated in the black-box diagram of Listing \ref{exe_18_code} by the fact that the only output of the FSM is the signal Z1. This is reasonable in that it could be considered that only one output was required in order to control some other device or circuit. The state variable is represented internally and its precise representation is not important since the state variable is not provided as an output. 
+There is one final thing to note about Example~18. In an effort to keep the example simple, we disregarded the digital values of the state variables. This is indicated in the black-box diagram of Listing~\ref{exe_18_code} by the fact that the only output of the FSM is the signal Z1. This is reasonable in that it could be considered that only one output was required in order to control some other device or circuit. The state variable is represented internally and its precise representation is not important since the state variable is not provided as an output. 
 
-In some FSM designs, the state variables are provided as outputs. To show this situation, we will provide a solution to Example 18 with the state variables as outputs. The black-box diagram and the VHDL code of this solution is shown in Listing \ref{exe_18_code_alt}.
+In some FSM designs, the state variables are provided as outputs. To show this situation, we will provide a solution to Example~18 with the state variables as outputs. The black-box diagram and the VHDL code of this solution is shown in Listing~\ref{exe_18_code_alt}.
 \begin{figure}[!h]
     \centering
 	\includegraphics[width=5cm]{fsm/ex18_sol_alt.png}
@@ -146,7 +146,7 @@ In some FSM designs, the state variables are provided as outputs. To show this s
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_18_code_alt, caption=Solution to Example 18 that include state variable as output.]
+\begin{lstlisting}[label=exe_18_code_alt, caption=Solution to Example~18 that include state variable as output.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -199,9 +199,9 @@ end fsm2;
 \end{lstlisting}
 \end{minipage}
 
-Note that the VHDL code shown in Listing \ref{exe_18_code_alt} differs in only two areas from the code shown in Listing \ref{exe_18_code}. The first area is the modification of the entity declaration to account for the state variable output Y. The second area is the inclusion of the selective signal assignment statement which assigns a value of state variable output Y based on the condition of the state variable. The selective signal assignment statement is evaluated each time a change in signal PS is detected. Once again, since we have declared an enumeration type for the state variables, we have no way of knowing exactly how the synthesizer will decide to represent the state variable. The selective signal assignment statement in the code of Listing \ref{exe_18_code_alt} only makes it appear like there is one state variable and the states are represented with a '1' and a '0'. In reality, there are methods we can use to control how the state variables are represented and we will deal with those soon. 
+Note that the VHDL code shown in Listing~\ref{exe_18_code_alt} differs in only two areas from the code shown in Listing~\ref{exe_18_code}. The first area is the modification of the entity declaration to account for the state variable output Y. The second area is the inclusion of the selective signal assignment statement which assigns a value of state variable output Y based on the condition of the state variable. The selective signal assignment statement is evaluated each time a change in signal PS is detected. Once again, since we have declared an enumeration type for the state variables, we have no way of knowing exactly how the synthesizer will decide to represent the state variable. The selective signal assignment statement in the code of Listing~\ref{exe_18_code_alt} only makes it appear like there is one state variable and the states are represented with a '1' and a '0'. In reality, there are methods we can use to control how the state variables are represented and we will deal with those soon. 
 
-Lastly, there are three concurrent statements in the VHDL code shown in Listing \ref{exe_18_code_alt}: two process statements and a selective signal assignment statement. 
+Lastly, there are three concurrent statements in the VHDL code shown in Listing~\ref{exe_18_code_alt}: two process statements and a selective signal assignment statement. 
 
 \begin{leftbar}
 \begin{minipage}[t]{0.5\textwidth}
@@ -217,7 +217,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The state diagram shown in this problem indicates that this is a three-state FSM with one Mealy-type external output and one external input. Since there are three states, the solution requires at least two state variables to handle the three states. The black-box diagram of the solution is shown in Listing \ref{exe_19_code}. Note that the two state variables are handled as a bundled signal.
+\textbf{SOLUTION.} The state diagram shown in this problem indicates that this is a three-state FSM with one Mealy-type external output and one external input. Since there are three states, the solution requires at least two state variables to handle the three states. The black-box diagram of the solution is shown in Listing~\ref{exe_19_code}. Note that the two state variables are handled as a bundled signal.
 
 
 \begin{figure}[!h]
@@ -227,7 +227,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_19_code, caption=Solution to Example 19.]
+\begin{lstlisting}[label=exe_19_code, caption=Solution to Example~19.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -285,7 +285,7 @@ end fsm3;
 \end{lstlisting}
 \end{minipage}
 
-As usual, there are a couple of fun things to point out about the solution for Example 19. Most importantly, you should note the similarities between this solution and the previous solution. 
+As usual, there are a couple of fun things to point out about the solution for Example~19. Most importantly, you should note the similarities between this solution and the previous solution. 
 
 \begin{my_list}
 \item The FSM has one Mealy-type output. The solution essentially treats this output as a Moore-type output in the first two \texttt{when} clauses of the \texttt{case} statement. In the final \texttt{when} clause, the Z2 output appears in both sections of the \texttt{if} statement. The fact the Z2 output is different in the context of state ST2 that makes it a Mealy-type output and therefore a Mealy-type FSM. 
@@ -308,7 +308,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \end{leftbar}
 
 \noindent
-\textbf{SOLUTION.} The state diagram indicates that its implementation will contain four states, one external input and two external outputs. This is a hybrid FSM in that the if contains both a Mealy and Moore-type output but in this case, the FSM would be considered a Mealy-type FSM. The black-box diagram and the actual solution for the solution is shown in Listing \ref{exe_20_code}. 
+\textbf{SOLUTION.} The state diagram indicates that its implementation will contain four states, one external input and two external outputs. This is a hybrid FSM in that the if contains both a Mealy and Moore-type output but in this case, the FSM would be considered a Mealy-type FSM. The black-box diagram and the actual solution for the solution is shown in Listing~\ref{exe_20_code}. 
 \begin{figure}[!h]
     \centering
 	\includegraphics[width=5cm]{fsm/ex20_sol.png}
@@ -316,7 +316,7 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_20_code, caption=Solution to Example 20.]
+\begin{lstlisting}[label=exe_20_code, caption=Solution to Example~20.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -406,7 +406,7 @@ The modular approach we used to implement FSMs expedites the conversion process 
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 21.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the listed state variables as output. Use one-hot encoding for the state variables. This problem is Example 20 all over again but uses true one-hot encoding for the state variables. 
+Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the listed state variables as output. Use one-hot encoding for the state variables. This problem is Example~20 all over again but uses true one-hot encoding for the state variables. 
 \vspace{50px}
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
@@ -418,11 +418,11 @@ Write the VHDL code that implements the FSM shown on the right. Use a dependent 
 \noindent
 \textbf{SOLUTION.} The state diagram shows four states, one external input X, two external outputs Z1 and Z2 with the Z2 output being a Mealy output. This is a Mealy machine that indicates one-hot encoding should be used to encode the state variables. We will approach the implementation of this FSM one piece at the time.
 
-Listing \ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example 20 to a pseudo one-hot encoding. Listing \ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in Listing \ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesizer to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in Listing \ref{exe_21_code_3} that the default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in Listing \ref{exe_21_code_4} 
+Listing~\ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example~20 to a pseudo one-hot encoding. Listing~\ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in Listing~\ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesizer to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in Listing~\ref{exe_21_code_3} that the default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in Listing~\ref{exe_21_code_4} 
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_21_code_1, caption=Modifications to convert Example 20 to one-hot encoding.]
+\begin{lstlisting}[label=exe_21_code_1, caption=Modifications to convert Example~20 to one-hot encoding.]
 -- full encoded approach
 entity my_fsm4 is 
     port ( X,CLK,RESET : in  std_logic; 
@@ -476,7 +476,7 @@ end fsm4;
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_21_code_4, caption=The final solution to Example 21.]
+\begin{lstlisting}[label=exe_21_code_4, caption=The final solution to Example~21.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
