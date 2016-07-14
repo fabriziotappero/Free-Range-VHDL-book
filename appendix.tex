@@ -53,7 +53,7 @@ After three main language standardization steps that took place in 1987, 1993 an
 The main VHDL language library packages that you will probably need to use in your career as an engineer can be included in your code via the following statements:
 
 {\scriptsize
-\begin{verbatim}
+\begin{lstlisting}
 library IEEE;
 -- essential IEEE libraries
 use IEEE.std_logic_1164.all;
@@ -61,12 +61,12 @@ use IEEE.numeric_std.all;
 
 -- more IEEE libraries
 use IEEE.numeric_signed.all;
-use IEEE.numberic_unsigned.all;
+use IEEE.numeric_unsigned.all;
 
 use IEEE.numeric_bit.all;
 use IEEE.math_real.all;
 use IEEE.math_complex.all;
-\end{verbatim}
+\end{lstlisting}
 }
 
 For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability to use the several data types like the \texttt{std\_logic} or the \texttt{std\_logic\_vector}. The following listing shows a simple coding example of some of the many advantages of using these libraries.
