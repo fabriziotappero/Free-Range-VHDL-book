@@ -9,11 +9,11 @@
 \chapter{Structural Modeling In VHDL}
 As was mentioned earlier, there are generally three approaches to writing VHDL code: data-flow modeling, behavioral modeling and structural modeling.
 
-Up to this point, this book has only dealt with data-flow and behavioral models. This section presents an introduction to structural modeling. 
+Up to this point, this book has only dealt with data-flow and behavioral models. This section presents an introduction to structural modeling.
 
-As digital designs become more complex, it becomes less likely that any one design can be implemented with any one of the three types of VHDL models. We have already seen this property in dealings with FSMs where we mixed process statements (behavioral modeling) with selective signal assignment statements (data-flow modeling). The result was a hybrid VHDL model. By its very nature, structural modeling is likewise a hybrid VHDL model. Most complex designs could be considered structural models, i.e. if they are implemented using sound coding procedures. 
+As digital designs become more complex, it becomes less likely that any one design can be implemented with any one of the three types of VHDL models. We have already seen this property in dealings with FSMs where we mixed process statements (behavioral modeling) with selective signal assignment statements (data-flow modeling). The result was a hybrid VHDL model. By its very nature, structural modeling is likewise a hybrid VHDL model. Most complex designs could be considered structural models, i.e. if they are implemented using sound coding procedures.
 
-The design of complex digital circuits using VHDL should closely resemble the structure of complex computer programs. Many of the techniques and practices used to construct large and well structured computer programs written in higher-level languages should also be applied when using VHDL. This common structure we are referring to is the ever so popular modular approach to coding. The term structural modeling is the terminology that VHDL uses for the modular design. The VHDL modular design approach directly supports hierarchical design which is essentially employed when attempting to understand complex digital designs. 
+The design of complex digital circuits using VHDL should closely resemble the structure of complex computer programs. Many of the techniques and practices used to construct large and well structured computer programs written in higher-level languages should also be applied when using VHDL. This common structure we are referring to is the ever so popular modular approach to coding. The term structural modeling is the terminology that VHDL uses for the modular design. The VHDL modular design approach directly supports hierarchical design which is essentially employed when attempting to understand complex digital designs.
 
 The benefits of modular design to VHDL are similar to the benefits that modular design or object-oriented design provides for higher-level computer languages. Modular designs promote understandability by packing low-level functionality into modules. These modules can be easily reused in other designs thus saving the designer time by removing the need to reinvent and re-test the wheel. The hierarchical approach extends beyond code written on file level. VHDL modules can be placed in appropriately named files and libraries in the same way as higher-level languages. Moreover, there are often libraries out there that contain useful modules that can only be accessed using a structural-modeling approach. Having access to these libraries and being fluent in their use will serve to increase your perception as a VHDL guru.
 
@@ -62,11 +62,11 @@ Design a 3-bit comparator using a VHDL structural modeling. The interface to thi
 \end{leftbar}
 
 \noindent
-\textbf{SOLUTION.} A comparator is one of the classic combinatorial circuits that every digital design engineer must derive at some point in his career. The solution presented here implements the discrete gate version of the circuit which is shown in Fig.~\ref{ex22_comp}. Once again, the solution presented here is primarily an example of a VHDL structural model and does not represent the most efficient method to represent a comparator using VHDL. 
+\textbf{SOLUTION.} A comparator is one of the classic combinatorial circuits that every digital design engineer must derive at some point in his career. The solution presented here implements the discrete gate version of the circuit which is shown in Fig.~\ref{ex22_comp}. Once again, the solution presented here is primarily an example of a VHDL structural model and does not represent the most efficient method to represent a comparator using VHDL.
 
 The approach of this solution is to model each of the discrete gates as individual blocks. In this case, they are actually simple gates but the interfacing requirements of the VHDL structural approach are the same regardless of whether the circuit elements are simple gates or complex digital subsystems.
 
-The circuit shown in Fig.~\ref{ex22_comp} contains some extra information that relates to its VHDL structural implementation. First, the dashed line represents the boundary of the top-level VHDL entity; therefore signals that cross this boundary must appear in the entity declaration for this implementation. Second, each of the internal signals is given a name. In this case, internal signals are defined to be signals that do not cross the dashed entity boundary. This is a requirement for VHDL structural implementations as these signals must be assigned to the various sub-modules in the interior of the design (somewhere in the architecture). 
+The circuit shown in Fig.~\ref{ex22_comp} contains some extra information that relates to its VHDL structural implementation. First, the dashed line represents the boundary of the top-level VHDL entity; therefore signals that cross this boundary must appear in the entity declaration for this implementation. Second, each of the internal signals is given a name. In this case, internal signals are defined to be signals that do not cross the dashed entity boundary. This is a requirement for VHDL structural implementations as these signals must be assigned to the various sub-modules in the interior of the design (somewhere in the architecture).
 
 \begin{figure}[!h]
     \centering
@@ -75,7 +75,7 @@ The circuit shown in Fig.~\ref{ex22_comp} contains some extra information that r
 	\label{ex22_comp}
 \end{figure}
 
-The first part of the solution is to provide entity and architecture implementations for the individual gates shown in Fig.~\ref{ex22_comp}. We need to provided as least one definition of an XNOR gate and a 3-input AND gate. We only need to provide one definition of the XNOR gate despite the fact that actually three are shown in the diagram. The modular VHDL approach allows us to reuse circuit definitions and we take advantage of this feature. These definitions are shown in Listing~\ref{ex22_code}. 
+The first part of the solution is to provide entity and architecture implementations for the individual gates shown in Fig.~\ref{ex22_comp}. We need to provide at least one definition of an XNOR gate and a 3-input AND gate. We only need to provide one definition of the XNOR gate despite the fact that actually three are shown in the diagram. The modular VHDL approach allows us to reuse circuit definitions and we take advantage of this feature. These definitions are shown in Listing~\ref{ex22_code}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -90,8 +90,8 @@ end big_xnor;
 
 architecture ckt1 of big_xnor is
 begin
-      F <= not ( (A and (not B)) or ( (not A) and B) ); 
-end ckt1;   
+      F <= not ( (A and (not B)) or ( (not A) and B) );
+end ckt1;
 -----------------------------------------
 -- Description of 3-input AND function --
 -----------------------------------------
@@ -102,7 +102,7 @@ end big_and3;
 
 architecture ckt1 of big_and3 is
 begin
-      F <= ( A and B and C ); 
+      F <= ( A and B and C );
 end ckt1;
 \end{lstlisting}
 \end{minipage}
@@ -135,7 +135,7 @@ end my_compare;
 \end{minipage}
 
 \noindent
-\textbf{Step Two:} The next step is to declare the design units that are used in the circuit. In VHDL lingo, declaration refers to the act of making a particular design unit available for use in a particular design. Note that the act of declaring a design unit, by definition, transforms your circuit into a hierarchical design. The declaration of a design unit makes the unit available to be placed into the design hierarchy. Design units are essentially modules that reside in the lower levels of the design. For our design, we need to declare two separate design units: the XOR gate and a 3-input AND gate.  
+\textbf{Step Two:} The next step is to declare the design units that are used in the circuit. In VHDL lingo, declaration refers to the act of making a particular design unit available for use in a particular design. Note that the act of declaring a design unit, by definition, transforms your circuit into a hierarchical design. The declaration of a design unit makes the unit available to be placed into the design hierarchy. Design units are essentially modules that reside in the lower levels of the design. For our design, we need to declare two separate design units: the XOR gate and a 3-input AND gate.
 
 There are two factors involved in declaring a design unit: 1) how to do it and, 2) where to place it. A component declaration can be viewed as a modification of the associated entity declaration. The difference is that the word \texttt{entity} is replaced with the word \texttt{component} and the word \texttt{component} must also be followed by the word \texttt{end component} to terminate the declaration. The best way to do this is by copying, pasting and modifying the original entity declaration. The resulting component declaration is placed in the architecture declaration after the \texttt{architecture} line and before the \texttt{begin} line. The two component declarations and their associated entity declarations are shown in the next listing. Listing~\ref{ex22_code_final} shows the component declarations as they appear in working VHDL code.
 
@@ -162,14 +162,14 @@ end big_and3;
 \vspace{0pt}\raggedright
 \begin{lstlisting}[]
 
-component big_xnor 
+component big_xnor
    Port ( A,B : in  std_logic;
             F : out std_logic);
 end component;
 \end{lstlisting}
 \begin{lstlisting}[]
 
-component big_and3 
+component big_and3
    Port ( A,B,C : in  std_logic;
               F : out std_logic);
 end component;
@@ -182,7 +182,7 @@ end component;
 \noindent
 \textbf{Step Four:} The final step is to create instances of the required modules and map the instances of the various components in the architecture body. Technically speaking, as the word instantiation implies, the appearance of instances of design units is the main part of the instantiation process. In some texts, the process of instantiation includes what we have referred to as component declaration but we have opted not to do this here. The approach presented here is to have the declaration refer to the component declarations before the \texttt{begin} line while instantiation refers to the creation of individual instances after the \texttt{begin} line. The mapping process is therefore included in our definition of component instantiation.
 
-The process of mapping provides the interface requirements for the individual components in the design. This mapping step associates external connections from each of the components to signals in the next step upwards in the design hierarchy. Each of the signals associated with individual components maps to either an internal or external signal in the higher-level design. Each of the individual mappings includes a unique name for the particular instance as well as the name of the original entity. The actual mapping information follows the VHDL key words of \texttt{port map}. All of this information appears in the final solution shown in Listing \ref{ex22_code_final}.
+The process of mapping provides the interface requirements for the individual components in the design. This mapping step associates external connections from each of the components to signals in the next step upwards in the design hierarchy. Each of the signals associated with individual components maps to either an internal or external signal in the higher-level design. Each of the individual mappings includes a unique name for the particular instance as well as the name of the original entity. The actual mapping information follows the VHDL key words of \texttt{port map}. All of this information appears in the final solution shown in Listing~\ref{ex22_code_final}.
 
 One key point to note in the instantiation process is the inclusion of labels for all instantiated design units. Labels should always be used as part of design unit instantiation because the use of appropriate labels increases the understandability of your VHDL model. In other words, the proper choice of labels increases the self-describing nature of your design and is considered a good VHDL programming approach.
 
@@ -206,7 +206,7 @@ architecture ckt1 of my_compare is
       Port ( A,B : in  std_logic;
                F : out std_logic);
    end component;
- 
+
    -- 3-input AND gate -------------
    component big_and3 is
       Port ( A,B,C : in  std_logic;
@@ -214,38 +214,38 @@ architecture ckt1 of my_compare is
    end component;
 
    -- intermediate signal declaration
-   signal p1_out,p2_out,p3_out : std_logic; 
+   signal p1_out,p2_out,p3_out : std_logic;
 
 begin
    x1: big_xnor port map (A => A_IN(2),
                           B => B_IN(2),
-                          F => p1_out); 
+                          F => p1_out);
 
    x2: big_xnor port map (A => A_IN(1),
                           B => B_IN(1),
-                          F => p2_out); 
-  
+                          F => p2_out);
+
    x3: big_xnor port map (A => A_IN(0),
                           B => B_IN(0),
-                          F => p3_out); 
-  
+                          F => p3_out);
+
    a1: big_and3 port map (A => p1_out,
-                          B => p2_out, 
+                          B => p2_out,
                           C => p3_out,
-                          F => EQ_OUT); 
+                          F => EQ_OUT);
 end ckt1;
 \end{lstlisting}
 \end{minipage}
 
-It is worth noting that the solution shown in Listing \ref{ex22_code_final} is not the only approach to use for the mapping process. The approach shown in Listing \ref{ex22_code_final} uses what is referred to as a \texttt{direct mapping} of components. In this manner, each of the signals in the interface of the design units are listed and are directly associated with the signals they connect to in the higher-level design by use of the $=>$ operator. This approach has several potential advantages: it is explicit, complete, orderly and allows signals to be listed in any order. The only possible downside of this approach is that it uses up more space in your VHDL source code. 
+It is worth noting that the solution shown in Listing~\ref{ex22_code_final} is not the only approach to use for the mapping process. The approach shown in Listing~\ref{ex22_code_final} uses what is referred to as a \texttt{direct mapping} of components. In this manner, each of the signals in the interface of the design units are listed and are directly associated with the signals they connect to in the higher-level design by use of the $=>$ operator. This approach has several potential advantages: it is explicit, complete, orderly and allows signals to be listed in any order. The only possible downside of this approach is that it uses up more space in your VHDL source code.
 
-The alternative approach to mapping is to use \texttt{implied mapping}. In this approach, connections between external signals from the design units are associated with signals in the design unit by order of their appearance in the mapping statement. This differs from direct mapping because only signals from the higher-level design appear in the mapping statement instead. The association between signals in the design units and the higher-level design are implied by the ordering of the signal as they appear in the component or entity declaration. This approach uses less space in the source code but requires signals to be placed in the proper order. An alternative but equivalent architecture for the previous example using implied mapping is shown in Listing \ref{ex22_code_final_alt}. 
+The alternative approach to mapping is to use \texttt{implied mapping}. In this approach, connections between external signals from the design units are associated with signals in the design unit by order of their appearance in the mapping statement. This differs from direct mapping because only signals from the higher-level design appear in the mapping statement instead. The association between signals in the design units and the higher-level design are implied by the ordering of the signal as they appear in the component or entity declaration. This approach uses less space in the source code but requires signals to be placed in the proper order. An alternative but equivalent architecture for the previous example using implied mapping is shown in Listing~\ref{ex22_code_final_alt}.
 
 To successfully simulate and synthesize the design shown in Listing~\ref{ex22_code_final}, the code of Listing~\ref{ex22_code} needs to be included in your VHDL project as well. It is normal practice to keep the two listings in two distinctive files. The same is true for the implementation of Listing~\ref{ex22_code_final_alt}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ex22_code_final_alt, caption=Alternative architecture for Example 22 using implied mapping.]
+\begin{lstlisting}[label=ex22_code_final_alt, caption=Alternative architecture for Example~22 using implied mapping.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -256,7 +256,7 @@ entity my_compare is
            EQ_OUT : out std_logic);
 end my_compare;
 -- architecture
-architecture ckt2 of my_compare is 
+architecture ckt2 of my_compare is
    component big_xnor is
       Port ( A,B : in  std_logic;
                F : out std_logic);
@@ -266,24 +266,24 @@ architecture ckt2 of my_compare is
       Port ( A,B,C : in  std_logic;
                  F : out std_logic);
    end component;
-   signal p1_out,p2_out,p3_out : std_logic; 
+   signal p1_out,p2_out,p3_out : std_logic;
 
 begin
-   x1: big_xnor port map (A_IN(2),B_IN(2),p1_out); 
-   x2: big_xnor port map (A_IN(1),B_IN(1),p2_out); 
-   x3: big_xnor port map (A_IN(0),B_IN(0),p3_out);   
-   a1: big_and3 port map (p1_out,p2_out,p3_out,EQ_OUT); 
+   x1: big_xnor port map (A_IN(2),B_IN(2),p1_out);
+   x2: big_xnor port map (A_IN(1),B_IN(1),p2_out);
+   x3: big_xnor port map (A_IN(0),B_IN(0),p3_out);
+   a1: big_and3 port map (p1_out,p2_out,p3_out,EQ_OUT);
 end ckt2;
 \end{lstlisting}
 \end{minipage}
 
-Due to the fact that this design was relatively simple, it was possible to bypass one of the interesting issues that arises when using structural modeling. Often when dealing with structural designs, different levels of the design will contain the same signal name. The question arises as to whether the synthesizer is able to differentiate between the signal names across the hierarchy. VHDL synthesizers, like compilers for higher-level languages, are able to handle such instances. Signals with the same names are mapped according to the mapping presented in the component instantiation statement. Probably the most common occurrence of this is with clock signals. In this case, a component instantiation such as the one shown in Listing \ref{ex22_code_same_sig} is both valid and commonly seen in designs containing a system clock. Name collision does not occur because the signal name on the left-hand side of the $=>$ operator is understood to be internal to the component while the signal on the right-hand side is understood to reside in the next level up in the hierarchy.
+Due to the fact that this design was relatively simple, it was possible to bypass one of the interesting issues that arises when using structural modeling. Often when dealing with structural designs, different levels of the design will contain the same signal name. The question arises as to whether the synthesizer is able to differentiate between the signal names across the hierarchy. VHDL synthesizers, like compilers for higher-level languages, are able to handle such instances. Signals with the same names are mapped according to the mapping presented in the component instantiation statement. Probably the most common occurrence of this is with clock signals. In this case, a component instantiation such as the one shown in Listing~\ref{ex22_code_same_sig} is both valid and commonly seen in designs containing a system clock. Name collision does not occur because the signal name on the left-hand side of the $=>$ operator is understood to be internal to the component while the signal on the right-hand side is understood to reside in the next level up in the hierarchy.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=ex22_code_same_sig, caption=Example of the same signal name crossing hierarchical boundaries.]
 x5: some_component port map (CLK => CLK,
-                              CS => CS); 
+                              CS => CS);
 \end{lstlisting}
 \end{minipage}
 
@@ -291,7 +291,7 @@ x5: some_component port map (CLK => CLK,
 \section{Generic Map}
 As we have seen in the previous section, the use of the keyword \texttt{component} allows us to declare a VHDL module for further instantiation.
 
-Often it is desirable to write code that is generic. For instance a routine that perform a certain task on an input array of a generic size. Let us suppose that we want to implement a piece of code of a parity check routine that returns \texttt{'1'} when the input N-size array is an even number and \texttt{'0'} when the input N-size array is an odd number. The Listing \ref{gen_parity_check} shows such an implementation.
+Often it is desirable to write code that is generic. For instance a routine that perform a certain task on an input array of a generic size. Let us suppose that we want to implement a piece of code of a parity check routine that returns \texttt{'1'} when the input N-size array is an even number and \texttt{'0'} when the input N-size array is an odd number. The Listing~\ref{gen_parity_check} shows such an implementation.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -321,11 +321,11 @@ end arch;
 \end{lstlisting}
 \end{minipage}
 
-Listing \ref{gen_map} shows how the code above can be declared and instantiated in your own code via the already see \texttt{component} method. Specifically, In Listing \ref{gen_map} the above generic parity check module is used to create a 4-bit parity check module.
+Listing~\ref{gen_map} shows how the code above can be declared and instantiated in your own code via the already see \texttt{component} method. Specifically, In Listing~\ref{gen_map} the above generic parity check module is used to create a 4-bit parity check module.
 
 To achieve the mentioned modularity the keyword \texttt{generic} was used inside the \texttt{entity} field in the code above and again inside the \texttt{component} field during its declaration in the code below. The \texttt{generic} field it is used to allow you to control all generic variables.
 
-Notice how during instantiation, Listing \ref{gen_map} line 20, the keyword \texttt{generic map} was used in conjunction with the keyword \texttt{port map} to define the generic variables.
+Notice how during instantiation, Listing~\ref{gen_map} line 20, the keyword \texttt{generic map} was used in conjunction with the keyword \texttt{port map} to define the generic variables.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -340,7 +340,7 @@ entity my_parity_chk is
 end my_parity_chk;
 
 -- architecture
-architecture arch of my_parity_chk is 
+architecture arch of my_parity_chk is
    --------------- component declaration --------------------
    component gen_parity_check is
       generic ( std_logic : positive);
@@ -365,7 +365,7 @@ Once again, to successfully simulate and synthesize the design shown in Listing~
 
 \item The VHDL structural model supports the reuse of design units. This includes units you have previously designed as well as the ability to use predefined module libraries.
 
-\item If you use one FPGA software development tool from one of the major FPGA players in the market, you will be able to use digital blocks already developed once you declare them. In this case the entity declaration is not the one of Listing \ref{ex22_code_ent} but instead a simple library inclusion in your VHDL code that looks like:
+\item If you use one FPGA software development tool from one of the major FPGA players in the market, you will be able to use digital blocks already developed once you declare them. In this case the entity declaration is not the one of Listing~\ref{ex22_code_ent} but instead a simple library inclusion in your VHDL code that looks like:
 
 \vspace*{5pt}
 \noindent

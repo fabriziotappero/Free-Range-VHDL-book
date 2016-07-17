@@ -46,14 +46,14 @@ constant       &  is        &  package  &  sll       &              \\
 \mbox{}
 
 \chapter{Standard VHDL Packages}
-After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardization of the language. 
+After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardization of the language.
 
 After three main language standardization steps that took place in 1987, 1993 and in 2002, VHDL now includes a large set of packages that, once included in your code, give you the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
 
 The main VHDL language library packages that you will probably need to use in your career as an engineer can be included in your code via the following statements:
 
 {\scriptsize
-\begin{verbatim}
+\begin{lstlisting}
 library IEEE;
 -- essential IEEE libraries
 use IEEE.std_logic_1164.all;
@@ -61,12 +61,12 @@ use IEEE.numeric_std.all;
 
 -- more IEEE libraries
 use IEEE.numeric_signed.all;
-use IEEE.numberic_unsigned.all;
+use IEEE.numeric_unsigned.all;
 
 use IEEE.numeric_bit.all;
 use IEEE.math_real.all;
 use IEEE.math_complex.all;
-\end{verbatim}
+\end{lstlisting}
 }
 
 For instance, the inclusion of the package \texttt{std\_logic\_1164} in your code, will give you the ability to use the several data types like the \texttt{std\_logic} or the \texttt{std\_logic\_vector}. The following listing shows a simple coding example of some of the many advantages of using these libraries.
@@ -80,10 +80,10 @@ use ieee.std_logic_1164.all ;
 use ieee.numeric_std.all ;
 
 -- entity
-entity my_blk is 
+entity my_blk is
     port (  IN1, IN2  : in  std_logic;
-            CLK, CLR  : in  std_logic; 
-            OUT1      : out std_logic); 
+            CLK, CLR  : in  std_logic;
+            OUT1      : out std_logic);
 end my_blk;
 
 -- architecture
@@ -96,19 +96,19 @@ signal X  : integer range 0 to 255;
 begin
    sync_proc: process(CLK,CLR)
    begin
-     if CLR = '1' then 
-        OUT1 <= '0';  
+     if CLR = '1' then
+        OUT1 <= '0';
      elsif rising_edge(CLK) then --std_logic_1164 gives rising_edge()
        Y1 <= A + B + unsigned("0" & IN1);--numeric_std defines addition
                                          --for unsigned types.
 
        Y2<= resize(A, Y2'length) + B + ("0" & IN1);
-  
+
        X <= to_integer(A); --numeric_std gives to_integer()
 
-        OUT1 <= IN1 AND IN2; 
-     end if; 
-   end process sync_proc; 
+        OUT1 <= IN1 AND IN2;
+     end if;
+   end process sync_proc;
 end arch;
 \end{lstlisting}
 \end{minipage}
@@ -133,7 +133,7 @@ Alternatively, the same VHDL libraries can be browsed and downloaded from the GH
 \url{http://ghdl.free.fr}
 
 \noindent
-Finally, the software development tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from: 
+Finally, the software development tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from:
 
 \noindent
 \url{http://standards.ieee.org}
@@ -146,7 +146,7 @@ In VHDL, basic arithmetics is defined for the \texttt{integer} data type and for
 
 The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the Synopsys \texttt{std\_logic\_arith} library.
 
-As a natural consequence, we recommend using the types \texttt{unsigned}, \texttt{signed} and \texttt{integer} instead of the simpler \texttt{std\_logic\_vector} type for the many needs you might have. Refer to listing \ref{good_lib_ex} for en example of the wise use of the type \texttt{unsigned} or the type \texttt{integer} over the type \texttt{std\_logic\_vector}.
+As a natural consequence, we recommend using the types \texttt{unsigned}, \texttt{signed} and \texttt{integer} instead of the simpler \texttt{std\_logic\_vector} type for the many needs you might have. Refer to Listing~\ref{good_lib_ex} for en example of the wise use of the type \texttt{unsigned} or the type \texttt{integer} over the type \texttt{std\_logic\_vector}.
 
 \section{Non-standard Libraries}
 If {you often use google for learning purposes}, you will soon discover that the use of the non-standard library:\\
@@ -156,7 +156,7 @@ If {you often use google for learning purposes}, you will soon discover that the
 \texttt{ieee.std\_logic\_arith.all;}
 
 \noindent
-is amazingly common among VHDL programmers. 
+is amazingly common among VHDL programmers.
 
 The \texttt{std\_logic\_arith} library, as well as the \texttt{std\_logic\_unsigned} and the \texttt{std\_logic\_signed} libraries, were written and packaged by Synopsys to provide extended VHDL programming functionalities. Using these libraries eliminates the need for data conversion and, for instance, it allows you to write:\\
 \texttt{a\_logic\_vector <= a\_logic\_vector + 1;}\\

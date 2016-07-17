@@ -63,7 +63,7 @@ Available from \texttt{ieee.numeric\_std} or \texttt{ieee.numeric\_bit}, there a
 \begin{table}
 \centering
 \footnotesize\textsf{\begin{tabular}{l|l|l|l|l}
-Operator & \multicolumn{2}{c|}{Name} & Example & Result \\
+Operator & \multicolumn{2}{c|}{Name} & Example~& Result \\
 \hline
 \multirow{2}{*}{logical} & sll & shift  left logical & result $<=$ "10010101" sll 2 & "01010100" \\
 & srl & shift right logical & result $<=$ "10010101" srl 3 & "00010010" \\
@@ -108,7 +108,7 @@ The other groups of operators are generally used with numeric types. Since this 
 \end{table}
 
 \section{Concatenation Operator}
-The concatenation operator \texttt{\&} is often a useful operator when dealing with digital circuits. There are many times when you will find a need to tack together two separate values. The concatenation operator has been seen in some previous example solutions. Some more examples of the concatenation operators are presented in Listing \ref{concat_operator}. 
+The concatenation operator \texttt{\&} is often a useful operator when dealing with digital circuits. There are many times when you will find a need to tack together two separate values. The concatenation operator has been seen in some previous example solutions. Some more examples of the concatenation operators are presented in Listing~\ref{concat_operator}. 
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -162,7 +162,7 @@ Operator & Name & Satisfies this Conditions & Comment\\
 -8 rem -5 = -3 & -8 mod -5 = -3 \\
 \hline
 \end{tabular}}
-\caption{Example of \texttt{rem} and \texttt{mod} operators.}
+\caption{Example~of \texttt{rem} and \texttt{mod} operators.}
 \label{rem_mod_example}
 \end{table}
 
@@ -171,26 +171,26 @@ VHDL is a language used to design, test and implement digital circuits. The basi
 
 The VHDL architecture is made of statements that describe the behavior of the digital circuit. Because this is a hardware description language, statements in VHDL are primarily considered to execute concurrently. The idea of concurrency is one of the main themes of VHDL as one would expect since a digital circuit can be modeled as a set of logic gates that operate concurrently. 
 
-The main concurrent statement types in VHDL are the concurrent signal assignment statement, the conditional signal assignment statement, the selected signal assignment statement and the process statement. The process statement is a concurrent statement which is constituted of sequential statements exclusively. The main types of sequential statements are the signal assignment statement, the  \texttt{if} statement and the  \texttt{case} statement. The  \texttt{if} statement is a sequential version of conditional signal assignment statement while the  \texttt{case} statement is a sequential version of the selected signal assignment statement. The syntax of these statements and examples are given in the following table.
+The main concurrent statement types in VHDL are the concurrent signal assignment statement, the conditional signal assignment statement, the selected signal assignment statement and the process statement. The process statement is a concurrent statement which is constituted of sequential statements exclusively. The main types of sequential statements are the signal assignment statement, the  \texttt{if} statement and the  \texttt{case} statement. The  \texttt{if} statement is a sequential version of conditional signal assignment statement while the  \texttt{case} statement is a sequential version of the selected signal assignment statement.
 
 Coding styles in VHDL fall under the category of data-flow, behavioral and structural models. Exclusive use of process statements indicates a   behavioral model. The use of concurrent, conditional and selective signal assignment indicate the use of a data-flow model. VHDL code describing more complex digital circuits will generally contain both features of all of these types of modeling. 
 
 Since you should make no effort whatsoever to memorize VHDL syntax, it is recommended that a cheat sheet always be kept next to you as you perform VHDL modeling. Developing a true understanding of VHDL is what is going to make you into a good hardware designer. The ability to memorize VHDL syntax proves almost nothing. 
 
 \section{Using VHDL for Sequential Circuits}
-All the circuits we have examined up until now have been combinatorial logic circuits. In other words, none of the circuits we have examined so far are actually able to store information. This section shows some of the various methods used to describe sequential circuits. We limit our discussion to VHDL behavioral models for several different flavors of D flip-flops. It is possible and in some cases desirable to use data-flow models to describe storage elements in VHDL, but it is much easier to use behavior models.   
+All the circuits we have examined up until now have been combinatorial logic circuits. In other words, none of the circuits we have examined so far are actually able to store information. This section shows some of the various methods used to describe sequential circuits. We limit our discussion to VHDL behavioral models for several different flavors of D~flip-flops. It is possible and in some cases desirable to use data-flow models to describe storage elements in VHDL, but it is much easier to use behavior models.   
 
-The few approaches for designing flip-flops shown in the next section cover just about all the possible functionality you could imagine when you make use of a D flip-flop. Once you understand these basics, you will be on your way to understand how to use VHDL to design Finite State Machines (FSMs). This book will examine FSMs in a later chapter.
+The few approaches for designing flip-flops shown in the next section cover just about all the possible functionality you could imagine when you make use of a D~flip-flop. Once you understand these basics, you will be on your way to understand how to use VHDL to design Finite State Machines (FSMs). This book will examine FSMs in a later chapter.
 
 \section{Simple Storage Elements Using VHDL}
 The general approach for learning how to implement storage elements in digital design is to study the properties of a basic cross-coupled cell. The cross coupled cell forms what is referred to as \textbf{a latch}. The concept of a clocking signal is added to the device in order to enhance its controllability. Finally, some type of pulse narrowing circuitry is added to the clocking signal to get to the flip-flop. The flip-flop is nothing more than an edge-sensitive bit-storage device.
 
-The study of a VHDL implementation of storage elements starts with the edge-triggered D flip-flop. The VHDL examples presented are the basic edge-triggered D flip-flop with an assortment of added functionality. 
+The study of a VHDL implementation of storage elements starts with the edge-triggered D~flip-flop. The VHDL examples presented are the basic edge-triggered D~flip-flop with an assortment of added functionality. 
 \begin{leftbar}
 \begin{minipage}{0.5\linewidth}
 \noindent
 \textbf{EXAMPLE 14.}
-Write the VHDL code that describes a D flip-flop shown on the right. Use a behavioral model in your description.
+Write the VHDL code that describes a D~flip-flop shown on the right. Use a behavioral model in your description.
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
@@ -212,7 +212,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 14 is shown in Listing \ref{exe_14}. Listed below are a few interesting things to note about the solution.
+\textbf{SOLUTION.} The solution to Example~14 is shown in Listing~\ref{exe_14}. Listed below are a few interesting things to note about the solution.
 \begin{my_list}
 \item The given architecture body describes the \texttt{my\_d\_ff} version of the \texttt{d\_ff} entity.
 \item Because this example requires the use of a behavioral model, the architecture body includes primarily a process statement. The statements within the process are executed sequentially. The process is executed each time a change is detected in any of the signals in the process' sensitivity list.  In this case, the statements within the process are executed each time there is a change in logic level of the \texttt{CLK} signal.
@@ -225,7 +225,7 @@ Please keep this in mind.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_14, caption=Solution to Example 14.]
+\begin{lstlisting}[label=exe_14, caption=Solution to Example~14.]
 -----------------------------------
 -- Model of a simple D Flip-Flop --
 -----------------------------------
@@ -251,9 +251,9 @@ end my_d_ff;
 \end{lstlisting}
 \end{minipage}
 
-The D flip-flop is best known and loved for its ability to store (save, remember) a single bit. The way that the VHDL code in Listing \ref{exe_14} is able to store a bit is not however obvious. The bit-storage capability in VHDL is implied by the way the VHDL code is interpreted. The implied storage capability comes about as a result of not providing a condition that indicates what should happen if the listed \texttt{if} condition is not met. In other words, if the \texttt{if} condition is not met, the device does not change the value of \texttt{Q} and therefore it must remember the current value. The memory feature of the current value, or state, constitutes the famous bit storage quality of a flip-flop. If you have not specified what the output should be for every possible set of input conditions, the option taken by VHDL is to not change the current output. By definition, if the input changes to an unspecified state, the output remains unchanged. In this case, the output associated with the previous set of input can be thought of as being remembered. It is this mechanism, as strange and interesting as it is, that is used to induce memory in the VHDL code. 
+The D~flip-flop is best known and loved for its ability to store (save, remember) a single bit. The way that the VHDL code in Listing~\ref{exe_14} is able to store a bit is not however obvious. The bit-storage capability in VHDL is implied by the way the VHDL code is interpreted. The implied storage capability comes about as a result of not providing a condition that indicates what should happen if the listed \texttt{if} condition is not met. In other words, if the \texttt{if} condition is not met, the device does not change the value of \texttt{Q} and therefore it must remember the current value. The memory feature of the current value, or state, constitutes the famous bit storage quality of a flip-flop. If you have not specified what the output should be for every possible set of input conditions, the option taken by VHDL is to not change the current output. By definition, if the input changes to an unspecified state, the output remains unchanged. In this case, the output associated with the previous set of input can be thought of as being remembered. It is this mechanism, as strange and interesting as it is, that is used to induce memory in the VHDL code. 
 
-In terms of the D flip-flop shown in Example 14, the only time the output is specified is for that delta time associated with the rising edge of the clock. The typical method used to provide a catch-all condition in case the if condition is not met is with an \texttt{else} clause. Generally speaking, a quick way to tell if you have induced a memory element is to look for the presence of an \texttt{else} clause associated with the \texttt{if} statement. 
+In terms of the D flip-flop shown in Example~14, the only time the output is specified is for that delta time associated with the rising edge of the clock. The typical method used to provide a catch-all condition in case the if condition is not met is with an \texttt{else} clause. Generally speaking, a quick way to tell if you have induced a memory element is to look for the presence of an \texttt{else} clause associated with the \texttt{if} statement. 
 
 The previous two paragraphs are vastly important for understanding VHDL; the concept of inducing memory in VHDL is very important to digital circuit design. The design of sequential circuits is dependent on this concept. This somewhat cryptic method used by VHDL to induce memory elements is a byproduct of behavioral modeling based solely on the interpretation of the VHDL source code. Even if you will only be using VHDL to design combinatorial circuits, you will most likely be faced with the comprehension of these concepts. One of the classic warnings generated by the VHDL synthesizer is the notification that your VHDL code has generated a \texttt{latch}. Despite the fact that this is only a warning, if you did not intend to generate a latch, you should strive to modify your VHDL code in such as way as to remove this warning. Assuming you did not intend to generate a latch, the cause of your problem is that you have not explicitly provided an output state for all the possible input conditions. Because of this, your circuit will need to remember the previous output state so that it can provide an output in the case where you have not explicitly listed the current input condition. 
 
@@ -261,7 +261,7 @@ The previous two paragraphs are vastly important for understanding VHDL; the con
 \begin{minipage}{0.5\linewidth}
 \noindent
 \textbf{EXAMPLE 15.}
-Write the VHDL code that describes a D flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{S} input to be an active-low, synchronous input that sets the \texttt{D} flip-flop outputs when asserted.
+Write the VHDL code that describes a D~flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{S} input to be an active-low, synchronous input that sets the \texttt{D}~flip-flop outputs when asserted.
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
@@ -286,7 +286,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 15 is shown in Listing \ref{exe_15}. There are a few things of interest regarding this solution.
+\textbf{SOLUTION.} The solution to Example~15 is shown in Listing~\ref{exe_15}. There are a few things of interest regarding this solution.
 \begin{my_list}
 \item The \texttt{S} input to the flip-flop is made synchronous by only allowing it to affect the operation of the flip-flop on the rising edge of the system clock. 
 \item On the rising edge of the clock, the \texttt{S} input takes precedence over the \texttt{D} input because the state of the \texttt{S} input is checked prior to examining the state of the \texttt{D} input. In an \texttt{if-else} statement, once one condition evaluates as true, none of the other conditions is checked. In other words, the \texttt{D} input is transferred to the output only the rising edge of the clock and only if the \texttt{S} input is not asserted.
@@ -294,7 +294,7 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_15, caption=Solution to Example 15.]
+\begin{lstlisting}[label=exe_15, caption=Solution to Example~15.]
 ------------------------------------------------------------------
 -- RET D Flip-flop model with active-low synchronous set input. --
 ------------------------------------------------------------------
@@ -328,7 +328,7 @@ end my_d_ff_ns;
 \begin{minipage}{0.5\linewidth}
 \noindent
 \textbf{EXAMPLE 16.}
-Write the VHDL code that describes a D flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{R} input to be an active-high, asynchronous input that resets the \texttt{D} flip-flop outputs when asserted.
+Write the VHDL code that describes a D~flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{R} input to be an active-high, asynchronous input that resets the \texttt{D}~flip-flop outputs when asserted.
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
@@ -352,15 +352,15 @@ Write the VHDL code that describes a D flip-flop shown on the right. Use a behav
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 16 is shown in Listing \ref{exe_16}. You can probably glean the most information about asynchronous input and synchronous inputs by comparing the solutions to Example 15 and Example 16. A couple of interesting points are listed below. 
+\textbf{SOLUTION.} The solution to Example~16 is shown in Listing~\ref{exe_16}. You can probably glean the most information about asynchronous input and synchronous inputs by comparing the solutions to Example~15 and Example~16. A couple of interesting points are listed below. 
 \begin{my_list}
 \item The reset input is independent of the clock and takes priority over the clock. This prioritization is done by making the reset condition the first condition in the \texttt{if} statement. Evaluation of the other conditions continues if the \texttt{R} input does not evaluate to a '1'.
-\item The \texttt{falling\_edge()} function is used to make the D flip-flop falling-edge-triggered. Once again, this function is defined in one of the included libraries. 
+\item The \texttt{falling\_edge()} function is used to make the D~flip-flop falling-edge-triggered. Once again, this function is defined in one of the included libraries. 
 \end{my_list}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_16, caption=Solution to Example 16.]
+\begin{lstlisting}[label=exe_16, caption=Solution to Example~16.]
 ----------------------------------------------------------------------
 -- FET D Flip-flop model with active-high asynchronous reset input. --
 ----------------------------------------------------------------------
@@ -388,13 +388,13 @@ end my_d_ff_r;
 \end{lstlisting}
 \end{minipage}
   
-The solutions of Example 15 and Example 16 represent what can be considered the standard VHDL approaches to handling synchronous and asynchronous inputs, respectively. The general forms of these solutions are actually considered templates for synchronous and asynchronous inputs by several VHDL references. As you will see later, these solutions form the foundation to finite state machine design using VHDL.
+The solutions of Example~15 and Example~16 represent what can be considered the standard VHDL approaches to handling synchronous and asynchronous inputs, respectively. The general forms of these solutions are actually considered templates for synchronous and asynchronous inputs by several VHDL references. As you will see later, these solutions form the foundation to finite state machine design using VHDL.
 
 \begin{leftbar}
 \begin{minipage}{0.5\linewidth}
 \noindent
 \textbf{EXAMPLE 17.}
-Write the VHDL code that describes a T flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{S} input to be an active-low, asynchronous input that sets the T flip-flop outputs when asserted.
+Write the VHDL code that describes a T~flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{S} input to be an active-low, asynchronous input that sets the T~flip-flop outputs when asserted.
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
@@ -418,17 +418,17 @@ Write the VHDL code that describes a T flip-flop shown on the right. Use a behav
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 17 is shown in Listing \ref{exe_17}. This example has some very important techniques associated with it that are well worth mentioning below.
+\textbf{SOLUTION.} The solution to Example~17 is shown in Listing~\ref{exe_17}. This example has some very important techniques associated with it that are well worth mentioning below.
 \begin{my_list}
-\item A unique quality of the D flip-flop is demonstrated in this implementation of a T flip-flop. The output of a D flip-flop is only dependent upon the \texttt{D} input and is not a function of the present output of the flip-flop. The output of a T flip-flop is dependent upon both the \texttt{T} input and the current output of the flip-flop. This adds a certain amount of extra complexity to the T flip-flop model as compared to the D flip-flop as is shown in Listing \ref{exe_17}. The T flip-flop model in Listing \ref{exe_17} uses a temporary signal in order to use the current state of the flip-flop as in input. In other words, since \texttt{Q} appears as a port to the entity it must be assigned a mode specifier and in this case, it has been assigned a mode specifier of ``out''. \textbf{Signals that are declared as outputs can therefore not appear on the right-hand side of a signal assignment operator}. The standard approach to bypassing this apparent limitation in VHDL is to \textbf{use intermediate signals} which, as opposed to port signals, do not have mode specifications and can thus be used as either inputs or outputs (can appear on both sides of the signal assignment operator) in the body of the architecture. The approach is to manipulate the intermediate signal in the body of the architecture but to also use a concurrent signal assignment statement to assign the intermediate signal to the appropriate output. Note that in the key statement in the solution shown in \ref{exe_17} that the intermediate signal appears on both sides of the signal assignment operator. This is a widely used approach in VHDL: please take time to understand and absorb it. And lastly on this note, there are other mode specifications that would allow you a different approach to bypassing this problem (namely, the use of the ``buffer'' mode specification), but you should never use these in VHDL. The approach presented here is considered a good use of VHDL. 
+\item A unique quality of the D~flip-flop is demonstrated in this implementation of a T~flip-flop. The output of a D~flip-flop is only dependent upon the \texttt{D} input and is not a function of the present output of the flip-flop. The output of a T~flip-flop is dependent upon both the \texttt{T} input and the current output of the flip-flop. This adds a certain amount of extra complexity to the T~flip-flop model as compared to the D~flip-flop as is shown in Listing~\ref{exe_17}. The T~flip-flop model in Listing~\ref{exe_17} uses a temporary signal in order to use the current state of the flip-flop as in input. In other words, since \texttt{Q} appears as a port to the entity it must be assigned a mode specifier and in this case, it has been assigned a mode specifier of ``out''. \textbf{Signals that are declared as outputs can therefore not appear on the right-hand side of a signal assignment operator}. The standard approach to bypassing this apparent limitation in VHDL is to \textbf{use intermediate signals} which, as opposed to port signals, do not have mode specifications and can thus be used as either inputs or outputs (can appear on both sides of the signal assignment operator) in the body of the architecture. The approach is to manipulate the intermediate signal in the body of the architecture but to also use a concurrent signal assignment statement to assign the intermediate signal to the appropriate output. Note that in the key statement in the solution shown in \ref{exe_17} that the intermediate signal appears on both sides of the signal assignment operator. This is a widely used approach in VHDL: please take time to understand and absorb it. And lastly on this note, there are other mode specifications that would allow you a different approach to bypassing this problem (namely, the use of the ``buffer'' mode specification), but you should never use these in VHDL. The approach presented here is considered a good use of VHDL. 
 
-\item This code uses the characteristics equation of a T flip-flop in its implementation. We technically used a characteristic equation when we implemented the D flip-flop but since the characteristic equation of a D flip-flop is relatively trivial, you may not have been aware of it.
-\item There are certain advantages to using T flip-flops in some conditions, D flip-flops are generally the storage element of choice using VHDL. If you do not have a specific reason for using some type of flip-flop other than a D flip-flop, you probably should not. 
+\item This code uses the characteristics equation of a T~flip-flop in its implementation. We technically used a characteristic equation when we implemented the D~flip-flop but since the characteristic equation of a D~flip-flop is relatively trivial, you may not have been aware of it.
+\item There are certain advantages to using T~flip-flops in some conditions, D~flip-flops are generally the storage element of choice using VHDL. If you do not have a specific reason for using some type of flip-flop other than a D~flip-flop, you probably should not. 
 \end{my_list}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_17, caption=Solution to Example 17.]
+\begin{lstlisting}[label=exe_17, caption=Solution to Example~17.]
 -------------------------------------------------------------------
 -- RET T Flip-flop model with active-low asynchronous set input. --
 -------------------------------------------------------------------
@@ -483,7 +483,7 @@ One common approach for learning the syntax and mechanics of new computer langua
 %%%%%% EXERCISE 1 %%%%%%
 \begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 1.}
-Provide a VHDL behavioral model of the D flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously. 
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously. 
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
@@ -516,7 +516,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 %%%%%% EXERCISE 2 %%%%%%
 \begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 2.}
-Provide a VHDL behavioral model of the D flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume the \texttt{S} input takes precedence over the \texttt{R} input in the case where both are asserted simultaneously. 
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume the \texttt{S} input takes precedence over the \texttt{R} input in the case where both are asserted simultaneously. 
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
@@ -549,7 +549,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 %%%%%% EXERCISE 3 %%%%%%
 \begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 3.}
-Provide a VHDL behavioral model of the D flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are synchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.  
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are synchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.  
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
@@ -582,7 +582,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 %%%%%% EXERCISE 4 %%%%%%
 \begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 4.}
-Provide a VHDL behavioral model of the D flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. If both the \texttt{S} and \texttt{R} inputs are asserted simultaneously, the output of the flip-flop will toggle.   
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. If both the \texttt{S} and \texttt{R} inputs are asserted simultaneously, the output of the flip-flop will toggle.   
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
@@ -615,7 +615,7 @@ Provide a VHDL behavioral model of the D flip-flop shown on the right. The \text
 %%%%%% EXERCISE 5 %%%%%%
 \begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 5.}
-Provide a VHDL behavioral model of the T flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously. Implement this flip-flop first using an equation description of the outputs and then using a behavioral description of the outputs.  
+Provide a VHDL behavioral model of the T~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously. Implement this flip-flop first using an equation description of the outputs and then using a behavioral description of the outputs.  
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}
@@ -648,7 +648,7 @@ Provide a VHDL behavioral model of the T flip-flop shown on the right. The \text
 %%%%%% EXERCISE 6 %%%%%%
 \begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 6.}
-Provide a VHDL behavioral model of the T flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.  
+Provide a VHDL behavioral model of the T~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.  
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushleft}

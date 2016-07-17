@@ -24,9 +24,9 @@ In comparison to the data-flow style architecture, the behavioral style architec
 The heart of the behavioral style architecture is the \textit{process statement}. This is the fourth type of concurrent statement that we will work with. As you will see, the process statement is significantly different from the other three concurrent statements in several ways. The major difference lies in the process statement's approach to concurrency, which is the major sticking point when you deal with this new concurrent statement.
 
 \section{Process Statement}
-The process statement itself is a concurrent statement identified by its label, its sensitivity list, a declaration area and a begin-end area containing instructions executed sequentially. An example of the process statement is shown in Listing \ref{process_statement}. 
+The process statement itself is a concurrent statement identified by its label, its sensitivity list, a declaration area and a begin-end area containing instructions executed sequentially. An example of the process statement is shown in Listing~\ref{process_statement}. 
 
-The main point to remember about the process statement is that its body is constituted of sequential statements. The main difference between concurrent signal assignment statements and process statements lies with these sequential statements. But once again, let us stick to the similarities before we dive into the differences. The process label, listed in Listing \ref{process_statement} is optional but should always be included to promote the self-description of your VHDL code.
+The main point to remember about the process statement is that its body is constituted of sequential statements. The main difference between concurrent signal assignment statements and process statements lies with these sequential statements. But once again, let us stick to the similarities before we dive into the differences. The process label, listed in Listing~\ref{process_statement} is optional but should always be included to promote the self-description of your VHDL code.
 
 \begin{lstlisting}[float, label=process_statement, caption=Syntax for the process statement.]
 -- this is my first process
@@ -37,7 +37,7 @@ begin
 end process my_label;
 \end{lstlisting}
 
-Listings \ref{process_statement_compl_1} and \ref{process_statement_compl_2} show a data-flow architecture and a behavioral style architecture for the same XOR entity. The main difference between the two architectures is the presence of the process statement in the listed code. 
+Listings~\ref{process_statement_compl_1} and \ref{process_statement_compl_2} show a data-flow architecture and a behavioral style architecture for the same XOR entity. The main difference between the two architectures is the presence of the process statement in the listed code. 
 
 Let us remember that the concurrent signal assignment statement in the data-flow description operates as follows. Since it is a concurrent statement, any time there is a change in any of the signals listed on the right-hand side of the signal assignment operator, the signal on the left-hand side of the operator is re-evaluated. For the behavioral architecture description, any time there is a change in signals in the process sensitivity list, all of the sequential statements in the process are re-evaluated. Evaluation of the process statement is controlled by the signals that are placed in the process sensitivity list. These two approaches are effectively the same except the syntax is significantly different. 
 
@@ -88,7 +88,7 @@ end behav;
 
 The process statement should be considered a way the programmer has at his disposal to execute a series of sequential statements (i.e. in a behavioral manner); never forget that the process statement is itself a concurrent statement; therefore when you place two processes inside the architecture body, their execution will be concurrent.
 
-In Listing \ref{process_stat_complete}, you can see what a complete process statement looks like. Remember that all variables defined inside the process body will only be visible within the process body itself. Furthermore, notice that the statement at line 24 is placed inside the architecture body but outside the process body; therefore its execution happens concurrently with the process statement.
+In Listing~\ref{process_stat_complete}, you can see what a complete process statement looks like. Remember that all variables defined inside the process body will only be visible within the process body itself. Furthermore, notice that the statement at line 24 is placed inside the architecture body but outside the process body; therefore its execution happens concurrently with the process statement.
 
 \begin{lstlisting}[float, numbers=left,label=process_stat_complete, caption=Use of the process statement.]
 -- library declaration
@@ -129,10 +129,10 @@ There are three types of sequential statements that we will be discussing. The f
 the ``{\footnotesize$<=$}''. We will not say too much about the first type though because we have already been dealing with its analogue in the data-flow models. The other two types of statements are the \textbf{if statement} and the \textbf{case statement}. The nice part about all of these statements is that you have worked with them before in algorithmic programming languages. The structure and function of the VHDL \texttt{if} and \texttt{case} statements is strikingly similar. Keep this in mind when you read the descriptions that follow.
 
 \subsection{Signal Assignment Statement}
-The sequential style of a signal assignment statement is syntactically equivalent to the concurrent signal assignment statement. Another way to look at it is that if a signal assignment statement appears inside of a process then it is a sequential statement; otherwise, it is a concurrent signal assignment statement. To drive the point home, the signal assignment statement ``{\footnotesize$F <= A~XOR~B;$}'' in the data-flow style architecture of Listing \ref{process_statement_compl_1} is a concurrent signal assignment statement while the same statement in the behavioral style architecture, Listing \ref{process_statement_compl_2}, is a sequential signal assignment statement. The functional differences were already covered in the discussion regarding process statements.
+The sequential style of a signal assignment statement is syntactically equivalent to the concurrent signal assignment statement. Another way to look at it is that if a signal assignment statement appears inside of a process then it is a sequential statement; otherwise, it is a concurrent signal assignment statement. To drive the point home, the signal assignment statement ``{\footnotesize$F <= A~XOR~B;$}'' in the data-flow style architecture of Listing~\ref{process_statement_compl_1} is a concurrent signal assignment statement while the same statement in the behavioral style architecture, Listing~\ref{process_statement_compl_2}, is a sequential signal assignment statement. The functional differences were already covered in the discussion regarding process statements.
 
 \subsection{\texttt{if} Statement}
-The \texttt{if} statement is used to create a branch in the execution flow of the sequential statements. Depending on the conditions listed in the body of the \texttt{if} statement, either the instructions associated with one or none of the branches is executed when the \texttt{if} statement is processed. The general form of the \texttt{if} statement is shown in Listing \ref{if_stat}.
+The \texttt{if} statement is used to create a branch in the execution flow of the sequential statements. Depending on the conditions listed in the body of the \texttt{if} statement, either the instructions associated with one or none of the branches is executed when the \texttt{if} statement is processed. The general form of the \texttt{if} statement is shown in Listing~\ref{if_stat}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -153,7 +153,7 @@ Yet again, there are a couple of interesting things to note about the listed syn
 \begin{my_list}
 \item The parentheses placed around the condition expressions are optional. They should be included in most cases to increase the readability of the VHDL source code.
 \item Each \texttt{if}-type statement contains an associated \texttt{then} keyword. The final \texttt{else} clause does not have the \texttt{then} keyword associated with it.
-\item As written in Listing \ref{if_stat}, the \texttt{else} clause is a catch-all statement. If none of the previous conditions is evaluated as true, then the sequence of statements associated with the final \texttt{else} clause is executed. The way the \texttt{if} statement is shown in Listing \ref{if_stat} guarantees that at least one of the listed sequence of statements will be executed.
+\item As written in Listing~\ref{if_stat}, the \texttt{else} clause is a catch-all statement. If none of the previous conditions is evaluated as true, then the sequence of statements associated with the final \texttt{else} clause is executed. The way the \texttt{if} statement is shown in Listing~\ref{if_stat} guarantees that at least one of the listed sequence of statements will be executed.
 \item The final \texttt{else} clause is optional. Not including the final \texttt{else} clause presents the possibility that none of the sequence of statements associated with the \texttt{if} statement will be evaluated. This has deep ramifications that we will discuss later.
 \end{my_list}
 Let us see now some examples that will help us to better understand how to use the \texttt{if} statement.
@@ -165,11 +165,11 @@ Write some VHDL code  using an \texttt{if} statement that implements the followi
 $F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} Although it is not directly stated in the problem description, the VHDL code for this solution must use a behavioral architecture. This is because the problem states that an \texttt{if} statement should be used. The VHDL code for the solution is shown in Listing \ref{exe_9}. We have opted to leave out the black-box diagram in this case since the problem is relatively simple and thus does not really demonstrate the power of behavioral modeling.
+\textbf{SOLUTION.} Although it is not directly stated in the problem description, the VHDL code for this solution must use a behavioral architecture. This is because the problem states that an \texttt{if} statement should be used. The VHDL code for the solution is shown in Listing~\ref{exe_9}. We have opted to leave out the black-box diagram in this case since the problem is relatively simple and thus does not really demonstrate the power of behavioral modeling.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_9, caption=Solution to Example 9.]
+\begin{lstlisting}[label=exe_9, caption=Solution to Example~9.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -195,11 +195,11 @@ end silly_example;
 \end{lstlisting}
 \end{minipage}
 
-This is probably not the best way to implement a logic function but it does show an \texttt{if} statement in action. An alternate architecture for the solution of Example 9 is shown in Listing \ref{exe_9_1}.
+This is probably not the best way to implement a logic function but it does show an \texttt{if} statement in action. An alternate architecture for the solution of Example~9 is shown in Listing~\ref{exe_9_1}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_9_1, caption=Alternative solution to Example 9.]
+\begin{lstlisting}[label=exe_9_1, caption=Alternative solution to Example~9.]
 -- architecture
 architecture bad_example of my_ex_7 is
 begin
@@ -243,11 +243,11 @@ Write some VHDL code that implements the 8:1 MUX shown below. Use an \texttt{if}
 
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 10 is shown in Listing \ref{exe_10}.
+\textbf{SOLUTION.} The solution to Example~10 is shown in Listing~\ref{exe_10}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_10, caption=Solution to Example 10.]
+\begin{lstlisting}[label=exe_10, caption=Solution to Example~10.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -277,15 +277,15 @@ end mux_8t1_arc;
 \end{lstlisting}
 \end{minipage}
 
-The solution to Example 10 shown in Listing \ref{exe_10} uses some new syntax. The entity uses bundle signals, but the associated architecture needs to access individual elements of these bundles. The solution is to use the bus index operator to access internal signals of the bus. This is done via the use of a number representing an index placed inside parentheses (for example \texttt{Data\_in(7)}). Bus index operators are used extensively in VHDL and were previously mentioned. The solution to Example 10 shows a more typical use of the operator than was previously mentioned.
+The solution to Example~10 shown in Listing~\ref{exe_10} uses some new syntax. The entity uses bundle signals, but the associated architecture needs to access individual elements of these bundles. The solution is to use the bus index operator to access internal signals of the bus. This is done via the use of a number representing an index placed inside parentheses (for example \texttt{Data\_in(7)}). Bus index operators are used extensively in VHDL and were previously mentioned. The solution to Example~10 shows a more typical use of the operator than was previously mentioned.
 
-One other thing to notice about the solution in Example 10 is that every possible combination of the select variable is accounted for in the code. It would be possible to remove the final \texttt{elsif} statement in the code shown in Listing \ref{exe_10} and place the associated signal assignment in the \texttt{else} clause. But this is not considered good VHDL practice and should be avoided at all costs. The justification for this is that it will modify the readability of the code but not alter the hardware generated by the code.
+One other thing to notice about the solution in Example~10 is that every possible combination of the select variable is accounted for in the code. It would be possible to remove the final \texttt{elsif} statement in the code shown in Listing~\ref{exe_10} and place the associated signal assignment in the \texttt{else} clause. But this is not considered good VHDL practice and should be avoided at all costs. The justification for this is that it will modify the readability of the code but not alter the hardware generated by the code.
 
 \begin{leftbar}
 \noindent
 \begin{minipage}{0.52\linewidth}
 \textbf{EXAMPLE 11.}
-Write some VHDL code that implements the 8:1 MUX shown here. Use as many \texttt{if} statements as you deem necessary to implement your design. In the black-box diagram, the  \texttt{CE} input is a chip enable. When \texttt{CE = '1'}, the output acts like the  MUX of Example 10. When  \texttt{CE} is  \texttt{'0'}, the output of the MUX is  \texttt{'0'}.
+Write some VHDL code that implements the 8:1 MUX shown here. Use as many \texttt{if} statements as you deem necessary to implement your design. In the black-box diagram, the  \texttt{CE} input is a chip enable. When \texttt{CE = '1'}, the output acts like the  MUX of Example~10. When  \texttt{CE} is  \texttt{'0'}, the output of the MUX is  \texttt{'0'}.
 \end{minipage}
 \begin{minipage}{0.45\linewidth}
 \begin{flushright}
@@ -308,11 +308,11 @@ Write some VHDL code that implements the 8:1 MUX shown here. Use as many \texttt
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The solution to Example 11 is strangely similar to the solution of Example 10. Note that in this solution the \texttt{if} statements can be nested to attain various effects. The solution to Example 11 is shown in Listing \ref{exe_11}.
+\textbf{SOLUTION.} The solution to Example~11 is strangely similar to the solution of Example~10. Note that in this solution the \texttt{if} statements can be nested to attain various effects. The solution to Example~11 is shown in Listing~\ref{exe_11}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_11, caption=Solution to Example 11.]
+\begin{lstlisting}[label=exe_11, caption=Solution to Example~11.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -348,7 +348,7 @@ end mux_8to1_ce_arch;
 \end{minipage}
 
 \subsection{\texttt{case} Statement}
-The \texttt{case} statement is somewhat similar to the \texttt{if} statement in that a sequence of statements is executed if an associated expression is true. The \texttt{case} statement differs from the \texttt{if} statement in that the resulting choice is made depending upon the value of the single control expression. Only one set of sequential statements is executed for each execution of the case statement. The statements executed are determined by the first \texttt{when} branch to evaluate as true. The syntax for the case statement is shown in Listing \ref{case_stat}.
+The \texttt{case} statement is somewhat similar to the \texttt{if} statement in that a sequence of statements is executed if an associated expression is true. The \texttt{case} statement differs from the \texttt{if} statement in that the resulting choice is made depending upon the value of the single control expression. Only one set of sequential statements is executed for each execution of the case statement. The statements executed are determined by the first \texttt{when} branch to evaluate as true. The syntax for the case statement is shown in Listing~\ref{case_stat}.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -381,11 +381,11 @@ $F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC (A+\overline{A})$
 
 $F\_OUT(A,B,C)=A\overline{B}\overline{C}+ABC+\overline{A}BC$
 
-The solution is shown in Listing \ref{exe_12}. An interesting feature of this solution is the grouping of the three input signals which allows the use of a \texttt{case} statement in the solution. This approach requires the declaration of an intermediate signal which is appropriately labeled ``ABC''. Once again, this is probably not the most efficient method to implement a function but it does highlight the need to be resourceful and creative when describing the behavior of digital circuits.
+The solution is shown in Listing~\ref{exe_12}. An interesting feature of this solution is the grouping of the three input signals which allows the use of a \texttt{case} statement in the solution. This approach requires the declaration of an intermediate signal which is appropriately labeled ``ABC''. Once again, this is probably not the most efficient method to implement a function but it does highlight the need to be resourceful and creative when describing the behavior of digital circuits.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_12, caption=Solution to Example 12.]
+\begin{lstlisting}[label=exe_12, caption=Solution to Example~12.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -412,11 +412,11 @@ end my_soln_exam;
 \end{lstlisting}
 \end{minipage}
 
-Another similar approach to Example 12 is to use the \textit{don't care} feature built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example 12 is shown in Listing \ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more definitive method of modeling the circuits I am dealing with.
+Another similar approach to Example~12 is to use the \textit{don't care} feature built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example~12 is shown in Listing~\ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more definitive method of modeling the circuits I am dealing with.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_12_1, caption=Alternative solution to Example 12.]
+\begin{lstlisting}[label=exe_12_1, caption=Alternative solution to Example~12.]
 architecture my_soln_exam2 of my_example is
 	signal ABC: std_logic_vector(2 downto 0);
 begin
@@ -433,13 +433,13 @@ end my_soln_exam2;
 \end{lstlisting}
 \end{minipage}
 
-One of the main points that should be emphasized in any VHDL program is readability. In the next problem, we will redo Example 11 using a \texttt{case} statement instead of \texttt{if} statements.
+One of the main points that should be emphasized in any VHDL program is readability. In the next problem, we will redo Example~11 using a \texttt{case} statement instead of \texttt{if} statements.
 
 \begin{leftbar}
 \begin{minipage}{0.5\linewidth}
 \noindent
 \textbf{EXAMPLE 13.}
-Write some VHDL code that implements the 8:1 MUX shown below. Use a case statement in your design. In the black-box diagram shown below, the CE input is a chip enable. When CE = '1', the output acts like the MUX of Example 10. When CE is '0', the output of the MUX is '0'.
+Write some VHDL code that implements the 8:1 MUX shown below. Use a case statement in your design. In the black-box diagram shown below, the CE input is a chip enable. When CE = '1', the output acts like the MUX of Example~10. When CE is '0', the output of the MUX is '0'.
 \end{minipage}
 \begin{minipage}{0.47\linewidth}
 \begin{flushright}
@@ -462,11 +462,11 @@ Write some VHDL code that implements the 8:1 MUX shown below. Use a case stateme
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This solution to Example 13 is shown in Listing \ref{exe_13}. The entity declaration is repeated below for your convenience. This solution places the \texttt{case} statement in the body of an \texttt{if} construct. In case you have not noticed it yet, the number of possible solutions to a given problem increases as the circuits you are implementing become more complex.
+\textbf{SOLUTION.} This solution to Example~13 is shown in Listing~\ref{exe_13}. The entity declaration is repeated below for your convenience. This solution places the \texttt{case} statement in the body of an \texttt{if} construct. In case you have not noticed it yet, the number of possible solutions to a given problem increases as the circuits you are implementing become more complex.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_13, caption=Solution to Example 13.]
+\begin{lstlisting}[label=exe_13, caption=Solution to Example~13.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -502,7 +502,7 @@ end my_case_ex;
 \end{lstlisting}
 \end{minipage}
 
-One very important point in the solution to Example 13 is the fact that a \texttt{case} statement was embedded into an \texttt{if} statement. The technical term for this style of coding is, as you would guess, nesting. Nesting sequential statements is typical in behavioral models and is used often. This is actually one of the features that make behavioral modeling so much more powerful than data-flow modeling. The reality is that conditional and selective signal assignment statements cannot be nested.
+One very important point in the solution to Example~13 is the fact that a \texttt{case} statement was embedded into an \texttt{if} statement. The technical term for this style of coding is, as you would guess, nesting. Nesting sequential statements is typical in behavioral models and is used often. This is actually one of the features that make behavioral modeling so much more powerful than data-flow modeling. The reality is that conditional and selective signal assignment statements cannot be nested.
 
 \section{Caveats Regarding Sequential Statements}
 As you begin to work with sequential statements, you tend to start getting the feeling that you are doing algorithmic programming using a higher-level language. This is due to the fact that sequential statements have a similar look and feel to some of the programming constructs in higher-level languages. The bad part of this tendency is when and if your VHDL coding approach becomes similar to that of the higher-level language. Since this happens very often with people who are learning VHDL, it is appropriate to remind once again that \textbf{VHDL is not programming: VHDL is hardware design}. You are, generally speaking, not implementing algorithms in VHDL, you are describing hardware: this is a totally different paradigm.

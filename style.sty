@@ -132,6 +132,30 @@ urlcolor=darkgray}      % external links
 
 \usepackage{upquote} % this fix listings accents and aphostrophies
 \usepackage{courier}
+
+\lstdefinelanguage{VHDL}{
+  	morekeywords=[1]{
+  		ACCESS,ATTRIBUTE,BEGIN,BODY,BUS,BLOCK,BUFFER,CONSTANT,CASE,%
+  		COMPONENT,CONFIGURATION,DOWNTO,ELSE,ELSIF,END,ENTITY,EXIT,%
+  		FUNCTION,FOR,FILE,GENERIC,GENERATE,GUARDED,GROUP,IF,IN,INOUT,IS,%
+  		INERTIAL,IMPURE,LIBRARY,LOOP,LABEL,LITERAL,LINKAGE,MAP,MOD,NOT,%
+  		NOR,NAND,NULL,NEXT,NEW,OUT,OF,OR,OTHERS,ON,OPEN,PROCESS,PORT,%
+  		PACKAGE,PURE,PROCEDURE,POSTPONED,RANGE,REM,ROL,ROR,REPORT,RECORD,%
+  		RETURN,REGISTER,REJECT,SIGNAL,SUBTYPE,SLL,SRL,SLA,SRA,SEVERITY,%
+  		SELECT,THEN,TYPE,TRANSPORT,TO,USE,UNITS,UNTIL,VARIABLE,WHEN,WAIT,%
+  		WHILE,XOR,XNOR,%
+  		DISCONNECT,ELIF,WITH},% Arnaud Tisserand
+  	sensitive=f,% 1998 Gaurav Aggarwal
+  	morestring=[d]{"},%
+	morekeywords=[2]{
+		std_logic_vector,std_logic,std_logic_1164,numeric_std,numeric_signed,numeric_unsigned,numeric_bit,math_real,math_complex,
+		unsigned,integer,
+		rising_edge,to_integer,resize
+	},
+	morecomment=[l]--
+}
+\colorlet{STD}{Lavender}
+
 \lstset{
 	language=VHDL,
 	basicstyle=\scriptsize\ttfamily, % font size for code
@@ -149,6 +173,7 @@ urlcolor=darkgray}      % external links
     morecomment=[s][\textit]{my_lab}{el}, % make the label word italics
 	otherkeywords={<=,:=, shared,=>,'}, % add <=, shared
 	keywordstyle=\color{blue},
+   	keywordstyle = [2]\color{STD}\bfseries,
 	commentstyle=\color[RGB]{10,140,20}, % green color
 	frame=b, % turn on end line
 	rulecolor=\color{dark-gray}, % end line color
@@ -164,7 +189,6 @@ urlcolor=darkgray}      % external links
 	framexbottommargin=1pt,
 	backgroundcolor=\color{light-gray},
 	showstringspaces=false}
-
 
 
 \usepackage[hang, bf, small]{caption}
@@ -232,4 +256,7 @@ urlcolor=darkgray}      % external links
 \newpage 
 \if@twocolumn\hbox{}\newpage\fi\fi\fi} 
 \makeatother
+
+\usepackage{pageslts}  % count pages in document and more
+\usepackage{microtype} % make LaTeX typesetting beautiful
 

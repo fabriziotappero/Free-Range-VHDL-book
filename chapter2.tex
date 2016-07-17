@@ -10,7 +10,7 @@
 There are several features of VHDL that you should know before moving forward. Although it is rarely a good idea for people to memorize anything, you should memorize the basic concepts presented in this section. This should help eliminate some of the drudgery involved in learning a new programming language and lay the foundation that will enable you to create visually pleasing and good VHDL source code.
 
 \section{Case Sensitivity}
-\textbf{VHDL is not case sensitive}. This means that the two statements shown in Listing \ref{case_sens} have the exact same meaning (don't worry about what the statement actually means though). Keep in mind that Listing \ref{case_sens} shows an example of VHDL case sensitivity and not good VHDL coding practices.
+\textbf{VHDL is not case sensitive}. This means that the two statements shown in Listing~\ref{case_sens} have the exact same meaning (don't worry about what the statement actually means though). Keep in mind that Listing~\ref{case_sens} shows an example of VHDL case sensitivity and not good VHDL coding practices.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -20,7 +20,7 @@ Dout <= A and B;								doUt <= a AnD b;
 \end{minipage}
 
 \section{White Space}
-\textbf{VHDL is not sensitive to white space} (spaces and tabs) in the source document. The two statements in Listing \ref{white_spaces} have the exact same meaning. Once again, Listing \ref{white_spaces} is not an example of good VHDL coding style. Note that Listing \ref{white_spaces} once again indicates that VHDL is not case sensitive.
+\textbf{VHDL is not sensitive to white space} (spaces and tabs) in the source document. The two statements in Listing~\ref{white_spaces} have the exact same meaning. Once again, Listing~\ref{white_spaces} is not an example of good VHDL coding style. Note that Listing~\ref{white_spaces} once again indicates that VHDL is not case sensitive.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -30,7 +30,7 @@ nQ <= In_a or In_b;						nQ   <=in_a OR       in_b;
 \end{minipage}
 
 \section{Comments}
-Comments in VHDL begin with the symbol ``\texttt{--}'' (two consecutive dashes). The VHDL synthesizer ignores anything after the two dashes and up to the end of the line in which the dashes appear. Listing \ref{comments} shows two types of commenting styles. Unfortunately, there are no block-style comments (comments that span multiple lines but do not require comment marks on every line) available in VHDL.
+Comments in VHDL begin with the symbol ``\texttt{--}'' (two consecutive dashes). The VHDL synthesizer ignores anything after the two dashes and up to the end of the line in which the dashes appear. Listing~\ref{comments} shows two types of commenting styles. Unfortunately, there are no block-style comments (comments that span multiple lines but do not require comment marks on every line) available in VHDL.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -44,7 +44,7 @@ PS_reg <= NS_reg; -- Assign next_state value to present_state
 Appropriate use of comments increases both the readability and the understandability of VHDL code. The general rule is to comment any line or section of code that may not be clear to a reader of your code besides yourself. The only inappropriate use of a comment is to state something that is patently obvious. It is hard to imagine code that has too few comments so don't be shy: use lots of comments. Research has shown that using lots of appropriate comments is actually a sign of high intelligence.
 
 \section{Parentheses}
-VHDL is relatively lax on its requirement for using parentheses. Like other computer languages, there are a few precedence rules associated with the various operators in the VHDL language. Though it is possible to learn all these rules and write clever VHDL source code that will ensure the readers of your code are left scratching their heads, a better idea is to practice liberal use of parentheses to ensure the human reader of your source code understands the purpose of the code. Once again, the two statements appearing in Listing \ref{parenthesis} have the same meaning. Note that extra white space has been added along with the parentheses to make the lower statement clearer.
+VHDL is relatively lax on its requirement for using parentheses. Like other computer languages, there are a few precedence rules associated with the various operators in the VHDL language. Though it is possible to learn all these rules and write clever VHDL source code that will ensure the readers of your code are left scratching their heads, a better idea is to practice liberal use of parentheses to ensure the human reader of your source code understands the purpose of the code. Once again, the two statements appearing in Listing~\ref{parenthesis} have the same meaning. Note that extra white space has been added along with the parentheses to make the lower statement clearer.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -86,7 +86,7 @@ An identifier refers to the name given to various items in VHDL. Examples of ide
 \item The best identifier for a function that calculates the position of the Earth is \textbf{CalcEarthPosition} or \textbf{calc\_earth\_position}. Try to be consistent.
 \item The best identifier for a variable that stores the age of your car is \textbf{AgeMyCar} or \textbf{age\_my\_car}. Again, try to be consistent.
 \end{my_list}
-Remember, intelligent choices for identifiers make your VHDL code more readable, understandable and more impressive to coworkers, superiors, family and friends. A few examples of both good and bad choices for identifier names appear in Listing \ref{valid_identif} and in Listing \ref{invalid_identif}.
+Remember, intelligent choices for identifiers make your VHDL code more readable, understandable and more impressive to coworkers, superiors, family and friends. A few examples of both good and bad choices for identifier names appear in Listing~\ref{valid_identif} and in Listing~\ref{invalid_identif}.
 
 \noindent
 \begin{minipage}[lt]{0.49\linewidth}
@@ -127,7 +127,7 @@ DDE_SUX  -- no comment
 \end{minipage}
 
 \section{Reserved Words}
-There is a list of words that have been assigned special meaning by the VHDL language. These special words, usually referred to as reserved words, cannot be used as identifiers when writing VHDL code. A partial list of reserved words that you may be inclined to use appears in Listing \ref{reserved_words_short}. A complete list of reserved words appears in the Appendix. Notably missing from Listing \ref{reserved_words_short} are standard operator names such as AND, OR, XOR, etc.
+There is a list of words that have been assigned special meaning by the VHDL language. These special words, usually referred to as reserved words, cannot be used as identifiers when writing VHDL code. A partial list of reserved words that you may be inclined to use appears in Listing~\ref{reserved_words_short}. A complete list of reserved words appears in the Appendix. Notably missing from Listing~\ref{reserved_words_short} are standard operator names such as AND, OR, XOR, etc.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
