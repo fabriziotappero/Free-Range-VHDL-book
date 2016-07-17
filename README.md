@@ -4,7 +4,7 @@ If you want to know who made this book or if you want to have more info: http://
 
 Buy the Free Range VHDL Paperback edition: http://freerangefactory.org/shop.html#FreeRangeVHDL-Book
 
-Download the Free Range VHDL PDF: http://freerangefactory.org/pdf/free_range_vhdl.pdf
+Download the Free Range VHDL PDF: http://freerangefactory.org
 
 If you want to contribute please have a look at the "contribiute" file.
 
