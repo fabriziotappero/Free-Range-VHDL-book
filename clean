@@ -2,7 +2,7 @@
 
 #rm *.pdf
 
-rm *.aux *.toc *.log *.dvi
+rm *.aux *.toc *.log *.out *.dvi
 
 rm .*.xml ._* .DS_Store
 

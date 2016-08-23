@@ -1,6 +1,6 @@
 REM del *.pdf
 
-del *.aux *.toc *.log *.dvi
+del *.aux *.toc *.log *.out *.dvi
 
 del .*.xml ._* .DS_Store
 

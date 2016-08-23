@@ -5,6 +5,3 @@ pdflatex ./master.tex
 pdflatex ./master.tex
 cp master.pdf free_range_vhdl.pdf
 rm master.pdf
-
-# remove auxiliary files
-rm *.aux *.toc *.log *.out *.dvi
