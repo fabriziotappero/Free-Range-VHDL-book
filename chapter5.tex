@@ -162,7 +162,7 @@ Let us see now some examples that will help us to better understand how to use t
 \noindent
 \textbf{EXAMPLE 9.}
 Write some VHDL code  using an \texttt{if} statement that implements the following logic function: 
-$F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
+$F\_OUT(A,B,C)=A\overline{B}~\!\overline{C}+BC$
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} Although it is not directly stated in the problem description, the VHDL code for this solution must use a behavioral architecture. This is because the problem states that an \texttt{if} statement should be used. The VHDL code for the solution is shown in Listing~\ref{exe_9}. We have opted to leave out the black-box diagram in this case since the problem is relatively simple and thus does not really demonstrate the power of behavioral modeling.
@@ -370,16 +370,16 @@ Once again, the concept of the \texttt{case} statement should be familiar to you
 \noindent
 \textbf{EXAMPLE 12.}
 Write some VHDL code that implements the following function using the \texttt{case} statement:
-$F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
+$F\_OUT(A,B,C)=A\overline{B}~\!\overline{C}+BC$
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} This solution falls into the category of not being the best way to implement a circuit using VHDL. It does, however, illustrate another useful feature in the VHDL. The first part of this solution requires that we list the function as a sum of minterms. This is done by multiplying the non-minterm product term given in the example by 1. In this case, 1 is equivalent to ($A+\overline{A}$). This factoring operation is shown as:
 
-$F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC$
+$F\_OUT(A,B,C)=A\overline{B}~\!\overline{C}+BC$
 
-$F\_OUT(A,B,C)=A\overline{B}\overline{C}+BC (A+\overline{A})$
+$F\_OUT(A,B,C)=A\overline{B}~\!\overline{C}+BC (A+\overline{A})$
 
-$F\_OUT(A,B,C)=A\overline{B}\overline{C}+ABC+\overline{A}BC$
+$F\_OUT(A,B,C)=A\overline{B}~\!\overline{C}+ABC+\overline{A}BC$
 
 The solution is shown in Listing~\ref{exe_12}. An interesting feature of this solution is the grouping of the three input signals which allows the use of a \texttt{case} statement in the solution. This approach requires the declaration of an intermediate signal which is appropriately labeled ``ABC''. Once again, this is probably not the most efficient method to implement a function but it does highlight the need to be resourceful and creative when describing the behavior of digital circuits.
 
