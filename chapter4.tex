@@ -526,7 +526,15 @@ The final comment regarding the selected signal assignment is similar to the fin
 Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$.
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$ and its Karnaugh map is shown below. The solution of Example~8 in shown in Listing~\ref{example_8}.\\
+\textbf{SOLUTION.} This is the same problem examined before. The problem
+with the previous solutions to this example is that they required the user
+to somehow reduce the function before it was implemented. In this modern
+day of digital circuit design, you score the most points when you allow the
+VHDL synthesizer to do the work for you. The solution to this example
+hopefully absolves you from ever again having to use a Karnaugh map, or God
+forbid, boolean algebra, to reduce a function. The equivalent expression
+for $F3(L,M,N)=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$ and its
+Truth Table is shown below. The solution of Example~8 in shown in Listing~\ref{example_8}.\\
 \vspace{5pt}
 
 \noindent
