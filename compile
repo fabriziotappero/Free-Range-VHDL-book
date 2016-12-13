@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# compile twice and rename
+# compile and rename
+pdflatex -synctex=1 ./master.tex
 pdflatex -synctex=1 ./master.tex
 pdflatex -synctex=1 ./master.tex
 cp master.pdf free_range_vhdl.pdf

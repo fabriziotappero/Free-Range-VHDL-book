@@ -1,4 +1,6 @@
-REM compile twice and rename
+@echo off
+REM compile and rename
+pdflatex -synctex=1 ./master.tex
 pdflatex -synctex=1 ./master.tex
 pdflatex -synctex=1 ./master.tex
 copy master.pdf free_range_vhdl.pdf
