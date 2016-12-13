@@ -38,20 +38,20 @@ The logical operators are generally self-explanatory in nature. They have also b
 The relational operators are generally self-explanatory in nature too. Many of them have been used in this book. A complete list of relational operators is provided in Table \ref{relational_operators_table}.
 
 \begin{table}
-\centering
-\footnotesize\textsf{\begin{tabular}{l|l|l}
-Operator & Name & Explanation\\
-\hline
-\rowcolor{light-gray} $=$ & equivalence & is some value equivalent to some other value? \\
-$/=$ & non-equivalence & is some value not equivalent to some other value? \\
-\rowcolor{light-gray} $<$ & less than & is some value less than some other value? \\
-$<=$ &less than or equal & is some value less than or equal to some other value? \\
-\rowcolor{light-gray} $>$ & greater than & is some value greater than some other value? \\
-$>=$ & greater than or equal & is some value greater than or equal to some other value? \\
-\hline
-\end{tabular}}
-\caption{VHDL relational operators with brief explanations.}
-\label{relational_operators_table}
+	\centering
+	\footnotesize\textsf{\begin{tabular}{l|l|l}
+		Operator & Name & Explanation\\
+		\hline
+		\rowcolor{light-gray} \texttt{A = B} & equivalence & is A equivalent to B? \\
+		\texttt{A /= B} & non-equivalence & is A not equivalent to B? \\
+		\rowcolor{light-gray} \texttt{A < B} & less than & is A less than B? \\
+		\texttt{A <= B} &less than or equal & is A less than or equal to B? \\
+		\rowcolor{light-gray} \texttt{A > B} & greater than & is A greater than B? \\
+		\texttt{A >= B} & greater than or equal & is A greater than or equal to B? \\
+		\hline
+	\end{tabular}}
+	\caption{VHDL relational operators with brief explanations.}
+	\label{relational_operators_table}
 \end{table}
 
 \section{Shift Operator}
@@ -129,22 +129,22 @@ D_val <= A_val & B_val;
 Both the remainder operator \texttt{rem} and the modulus operator \texttt{mod} are applied to integers types and both give back an integer type. There is often confusion about the differences between the two operators and the difference in their operation on negative and positive numbers. The definitions that VHDL uses for these operators are shown in Table \ref{rem_mod_def} while a few examples of these operators are provided in Table \ref{rem_mod_example}. A general rule followed by many programmers is to avoid using the \texttt{mod} operator when dealing with negative numbers. As you can see from the examples below, answers are sometime counter-intuitive. 
 
 \begin{table}
-\centering
-\footnotesize\textsf{\begin{tabular}{l|l|l|l}
-Operator & Name & Satisfies this Conditions & Comment\\
-\hline
-\multicolumn{1}{c|}{\texttt{rem}} & \multicolumn{1}{c|}{remainder} & 1. sign of (X \texttt{rem} Y) is the same as X \\
-&& 2. abs (X \texttt{rem} Y) $<$ \texttt{abs} (Y) & \texttt{abs} = absolute value\\
-&& 3. (X \texttt{rem} Y) = (X - (X / Y) * Y) \\
-\hline
-\multicolumn{1}{c|}{\texttt{mod}} & \multicolumn{1}{c|}{modulus} & 1. sign of (X \texttt{mod} Y) is the same as Y \\
-&& 2. abs (X \texttt{mod} Y) $<$ \texttt{abs} (Y) & \texttt{abs} = absolute value\\
-&& 3. (X \texttt{mod} Y) = ( X * ( Y - N )) \\ 
-&&   for some integer N\\
-\hline
-\end{tabular}}
-\caption{Definitions of \texttt{rem} and \texttt{mod} operators.}
-\label{rem_mod_def}
+	\centering
+	\footnotesize\textsf{\begin{tabular}{l|l|l}
+		Operator & Name & Satisfies this Conditions \\
+		\hline
+		\multicolumn{1}{c|}{\texttt{rem}} & \multicolumn{1}{c|}{remainder} & 1. sign of (X \texttt{rem} Y) is the same as X \\
+		&& 2. abs (X \texttt{rem} Y) $<$ \texttt{abs} (Y) \\
+		&& 3. (X \texttt{rem} Y) = (X - (X / Y) * Y) \\
+		\hline
+		\multicolumn{1}{c|}{\texttt{mod}} & \multicolumn{1}{c|}{modulus} & 1. sign of (X \texttt{mod} Y) is the same as Y \\
+		&& 2. abs (X \texttt{mod} Y) $<$ \texttt{abs} (Y) \\
+		&& 3. (X \texttt{mod} Y) = ( X * ( Y - N )) \\ 
+		&&   for some integer N\\
+		\hline
+	\end{tabular}}
+	\caption{Definitions of \texttt{rem} and \texttt{mod} operators. (\texttt{abs} = absolute value)}
+	\label{rem_mod_def}
 \end{table}
 
 
@@ -485,16 +485,16 @@ One common approach for learning the syntax and mechanics of new computer langua
 \textbf{EXERCISE 1.}
 Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously. 
 \end{minipage}
-\begin{minipage}{0.47\linewidth}
+\begin{minipage}{0.39\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.65,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 % GRID
-%\draw[help lines] (0,0) grid (50,30);
+% \draw[help lines] (0,0) grid (50,30);
 % BOX
-\draw (20,5) rectangle (35,25);
+\draw (15,5) rectangle (30,25);
 % INPUTS
 \small
-\node (a) at (20,2.5) {} circle (40pt); % this is the reference point
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
 %\draw[red] ($(a)) circle (1pt);
 \draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
 \draw ($(a)+(8.5,23.2)$) circle (2pt);
@@ -518,16 +518,16 @@ Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \text
 \textbf{EXERCISE 2.}
 Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume the \texttt{S} input takes precedence over the \texttt{R} input in the case where both are asserted simultaneously. 
 \end{minipage}
-\begin{minipage}{0.47\linewidth}
+\begin{minipage}{0.39\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.65,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
-\draw (20,5) rectangle (35,25);
+\draw (15,5) rectangle (30,25);
 % INPUTS
 \small
-\node (a) at (20,2.5) {} circle (40pt); % this is the reference point
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
 %\draw[red] ($(a)) circle (1pt);
 \draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
 \draw ($(a)+(8.5,23.2)$) circle (2pt);
@@ -551,16 +551,16 @@ Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \text
 \textbf{EXERCISE 3.}
 Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are synchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.  
 \end{minipage}
-\begin{minipage}{0.47\linewidth}
+\begin{minipage}{0.39\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.65,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
-\draw (20,5) rectangle (35,25);
+\draw (15,5) rectangle (30,25);
 % INPUTS
 \small
-\node (a) at (20,2.5) {} circle (40pt); % this is the reference point
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
 %\draw[red] ($(a)) circle (1pt);
 \draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
 \draw ($(a)+(8.5,23.2)$) circle (2pt);
@@ -584,16 +584,16 @@ Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \text
 \textbf{EXERCISE 4.}
 Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. If both the \texttt{S} and \texttt{R} inputs are asserted simultaneously, the output of the flip-flop will toggle.   
 \end{minipage}
-\begin{minipage}{0.47\linewidth}
+\begin{minipage}{0.39\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.65,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
-\draw (20,5) rectangle (35,25);
+\draw (15,5) rectangle (30,25);
 % INPUTS
 \small
-\node (a) at (20,2.5) {} circle (40pt); % this is the reference point
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
 %\draw[red] ($(a)) circle (1pt);
 \draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
 \draw ($(a)+(8.5,23.2)$) circle (2pt);
@@ -617,16 +617,16 @@ Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \text
 \textbf{EXERCISE 5.}
 Provide a VHDL behavioral model of the T~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously. Implement this flip-flop first using an equation description of the outputs and then using a behavioral description of the outputs.  
 \end{minipage}
-\begin{minipage}{0.47\linewidth}
+\begin{minipage}{0.39\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.65,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
-\draw (20,5) rectangle (35,25);
+\draw (15,5) rectangle (30,25);
 % INPUTS
 \small
-\node (a) at (20,2.5) {} circle (40pt); % this is the reference point
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
 %\draw[red] ($(a)) circle (1pt);
 \draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
 \draw ($(a)+(8.5,23.2)$) circle (2pt);
@@ -650,16 +650,16 @@ Provide a VHDL behavioral model of the T~flip-flop shown on the right. The \text
 \textbf{EXERCISE 6.}
 Provide a VHDL behavioral model of the T~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.  
 \end{minipage}
-\begin{minipage}{0.47\linewidth}
+\begin{minipage}{0.39\linewidth}
 \begin{flushleft}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.65,framed]
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
 % GRID
 %\draw[help lines] (0,0) grid (50,30);
 % BOX
-\draw (20,5) rectangle (35,25);
+\draw (15,5) rectangle (30,25);
 % INPUTS
 \small
-\node (a) at (20,2.5) {} circle (40pt); % this is the reference point
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
 %\draw[red] ($(a)) circle (1pt);
 \draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
 \draw ($(a)+(8.5,23.2)$) circle (2pt);

@@ -54,10 +54,10 @@ Let us now use these principles in a practical example. Our approach is to descr
 \textbf{EXAMPLE 22.}
 Design a 3-bit comparator using a VHDL structural modeling. The interface to this circuit is described in the diagram below.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
+\begin{minipage}[t]{0.45\textwidth}
 \vspace{0pt}\raggedright
     \centering
-	\includegraphics[width=5.2cm]{smu_vhdl/ex22.png}
+	\includegraphics[width=\textwidth]{smu_vhdl/ex22.png}
 \end{minipage}
 \end{leftbar}
 
@@ -325,7 +325,7 @@ Listing~\ref{gen_map} shows how the code above can be declared and instantiated 
 
 To achieve the mentioned modularity the keyword \texttt{generic} was used inside the \texttt{entity} field in the code above and again inside the \texttt{component} field during its declaration in the code below. The \texttt{generic} field it is used to allow you to control all generic variables.
 
-Notice how during instantiation, Listing~\ref{gen_map} line 20, the keyword \texttt{generic map} was used in conjunction with the keyword \texttt{port map} to define the generic variables.
+Notice how during instantiation (see Listing~\ref{gen_map}, line 20) the keyword \texttt{generic map} was used in conjunction with the keyword \texttt{port map} to define the generic variables.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -369,10 +369,11 @@ Once again, to successfully simulate and synthesize the design shown in Listing~
 
 \vspace*{5pt}
 \noindent
-\begin{minipage}{0.99\textwidth}
+\begin{minipage}{0.95\textwidth}
 \texttt{library UNISIM;}\\
-\texttt{use UNISIM.VComponents.all;}\\
+\texttt{use UNISIM.VComponents.all;}
 \end{minipage}
+
 All digital blocks available from this library package are described in the documentation of the FPGA software development tool (e.g. Xilinx ISE).
 \end{my_list}
 
