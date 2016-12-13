@@ -30,7 +30,6 @@
 \usepackage[absolute]{textpos}
 \textblockorigin{0mm}{0mm}
 \setlength{\parindent}{0pt}
-\usepackage{hyperref}
 \usepackage{listings}
 \usepackage{changepage}
 \usepackage{tabularx,colortbl}
@@ -51,21 +50,6 @@
 %\tikzset{background rectangle/.style={fill=red!8, rounded corners}, tight background}
 \tikzset{background rectangle/.style={fill=white, rounded corners}, tight background}
 \tikzset{every node/.style={font=\sffamily\footnotesize}} % font size in all drawings
-
-% PDF tags
-\hypersetup{
-pdfauthor = {Bryan Mealy, Fabrizio Tappero},
-pdftitle = {FREE RANGE VHDL},
-pdfsubject = {vhdl book},
-pdfkeywords = {computer, language, vhdl, verilog, fpga, cpld, },
-pdfcreator = {Latex and Linux},
-pdfproducer = {Latex},
-pdfnewwindow=true,      % links in new window
-colorlinks=true,        % false: boxed links; true: colored links
-linkcolor=black,        % internal links
-citecolor=green,        % links to bibliography
-filecolor=magenta,      % file links
-urlcolor=darkgray}      % external links
 
 \graphicspath{{./pics/}}
 \title{free range vhdl}
@@ -259,4 +243,20 @@ urlcolor=darkgray}      % external links
 
 \usepackage{pageslts}  % count pages in document and more
 \usepackage{microtype} % make LaTeX typesetting beautiful
+
+\usepackage{hyperref}
+% PDF tags
+\hypersetup{
+pdfauthor = {Bryan Mealy, Fabrizio Tappero},
+pdftitle = {FREE RANGE VHDL},
+pdfsubject = {vhdl book},
+pdfkeywords = {computer, language, vhdl, verilog, fpga, cpld, },
+pdfcreator = {Latex and Linux},
+pdfproducer = {Latex},
+pdfnewwindow=true,      % links in new window
+colorlinks=true,        % false: boxed links; true: colored links
+linkcolor=black,        % internal links
+citecolor=green,        % links to bibliography
+filecolor=magenta,      % file links
+urlcolor=darkgray}      % external links
 
