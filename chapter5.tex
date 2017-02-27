@@ -104,12 +104,12 @@ architecture behav of my_system is
 	signal A1 : std_logic;
 begin
 	some_proc: process(A,B,C) is
-	  variable a,b : integer;
+	  variable x,y : integer;
 	begin
-		a:=74;
-		b:=67;
+		x:=74;
+		y:=67;
 		A1 <= A and B and C;
-		if a>b then
+		if x>y then
             F <= A1 or B;
 		end if;
 	end process some_proc;
