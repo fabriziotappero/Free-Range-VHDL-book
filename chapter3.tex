@@ -31,9 +31,9 @@ end my_entity; -- do not forget this semicolon either
 When you attempt to write fairly complicated VHDL code, you will need to split your code into different files, functions and packages constructors which will help you better deal with your code. In this scenario, the entity body will not only host the port definition statements but, most likely, other procedures as well. We will talk about this later in the book.
 
 \noindent
-\begin{minipage}{0.51\linewidth}
-\vspace{5pt}
-\begin{lstlisting}[label=entity_2, caption=VHDL entity declaration.]
+\begin{minipage}{0.5\linewidth}
+	\vspace{5pt}
+	\begin{lstlisting}[label=entity_2, caption=VHDL entity declaration.]
 ------------------------------
 --  interface description   --
 --  of killer_ckt           --
@@ -46,27 +46,27 @@ crtl_a, ctrl_b : in  std_logic;
 kill_a         : out std_logic;
 kill_b, kill_c : out std_logic);
 end killer_ckt;
-\end{lstlisting}
+	\end{lstlisting}
 \end{minipage}
 \begin{minipage}{0.49\linewidth}
-\begin{flushright}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,0) rectangle (37,35) node[midway]{killer\_ckt};
-% INPUTS
-\small
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{life\_in1};
-\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{life\_in2};
-\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{ctrl\_a};
-\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_b};
-% OUTPUTS
-\draw [-latex] ($(a)+(17,25)$) -- ++(10,0) node[right]{kill\_a};
-\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{kill\_b};
-\draw [-latex] ($(a)+(17,15)$) -- ++(10,0) node[right]{kill\_c};
-\end{tikzpicture}
-\end{flushright}
+	\begin{flushright}
+		\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+			%\draw[help lines] (0,0) grid (50,50);
+			% BOX
+			\draw (20,0) rectangle (37,35) node[midway]{killer\_ckt};
+			% INPUTS
+			\small
+			\node (a) at (20,-2.5) {}; % this is the reference point
+			\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{life\_in1};
+			\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{life\_in2};
+			\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{ctrl\_a};
+			\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_b};
+			% OUTPUTS
+			\draw [-latex] ($(a)+(17,25)$) -- ++(10,0) node[right]{kill\_a};
+			\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{kill\_b};
+			\draw [-latex] ($(a)+(17,15)$) -- ++(10,0) node[right]{kill\_c};
+		\end{tikzpicture}
+	\end{flushright}
 \end{minipage}
 
 Listing~\ref{entity_2} shows an example of a black box and the VHDL code used to describe it. Listed below are a few points to note about the code in Listing~\ref{entity_2}. Most of the points deal with the readability and understandability of the VHDL code.
@@ -252,43 +252,43 @@ As a final note, let us to remind that the type \texttt{std\_logic} only exists 
 
 \noindent
 \begin{minipage}{0.5\linewidth}
-\vspace{5pt}
-a)\\
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,5) rectangle (37,25) node[midway]{sys1};
-% INPUTS
-\small
-\node (hide) at (0,30) {}; % just to expand background
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{a\_in1};
-\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{b\_in2};
-\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{clk};
-\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_int};
-% OUTPUTS
-\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{out\_b};
-\end{tikzpicture}
+	\vspace{5pt}
+	a)\\
+	\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+		%\draw[help lines] (0,0) grid (50,50);
+		% BOX
+		\draw (20,5) rectangle (37,25) node[midway]{sys1};
+		% INPUTS
+		\small
+		\node (hide) at (0,30) {}; % just to expand background
+		\node (a) at (20,-2.5) {}; % this is the reference point
+		\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{a\_in1};
+		\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{b\_in2};
+		\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{clk};
+		\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_int};
+		% OUTPUTS
+		\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{out\_b};
+	\end{tikzpicture}
 \end{minipage}
-\begin{minipage}{0.5\linewidth}
-\vspace{5pt}
-b)\\
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,0) rectangle (37,25) node[midway]{sys2};
-% INPUTS
-\small
-\node (hide) at (0,30) {}; % just to expand background
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,24)$) -- ++(-10,0) node[left]{input\_w};
-\draw [latex-] ($(a)+(0,18)$) -- ++(-10,0) node[left]{a\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
-\draw [latex-] ($(a)+(0,11)$) -- ++(-10,0) node[left]{b\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
-\draw [latex-] ($(a)+(0, 5)$) -- ++(-10,0) node[left]{clk};
-% OUTPUTS
-\draw [-latex] ($(a)+(17,19)$) -- ++(10,0) node[right]{dat\_4} node[pos=0.6,above]{8} node[pos=0.4]{/};
-\draw [-latex] ($(a)+(17,10)$) -- ++(10,0) node[right]{dat\_5} node[pos=0.6,above]{3} node[pos=0.4]{/};
-\end{tikzpicture}
+\begin{minipage}{0.49\linewidth}
+	\vspace{5pt}
+	b)\\
+	\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+		%\draw[help lines] (0,0) grid (50,50);
+		% BOX
+		\draw (20,0) rectangle (37,25) node[midway]{sys2};
+		% INPUTS
+		\small
+		\node (hide) at (0,30) {}; % just to expand background
+		\node (a) at (20,-2.5) {}; % this is the reference point
+		\draw [latex-] ($(a)+(0,24)$) -- ++(-10,0) node[left]{input\_w};
+		\draw [latex-] ($(a)+(0,18)$) -- ++(-10,0) node[left]{a\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,11)$) -- ++(-10,0) node[left]{b\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0, 5)$) -- ++(-10,0) node[left]{clk};
+		% OUTPUTS
+		\draw [-latex] ($(a)+(17,19)$) -- ++(10,0) node[right]{dat\_4} node[pos=0.6,above]{8} node[pos=0.4]{/};
+		\draw [-latex] ($(a)+(17,10)$) -- ++(10,0) node[right]{dat\_5} node[pos=0.6,above]{3} node[pos=0.4]{/};
+	\end{tikzpicture}
 \end{minipage}
 
 \item Provide black-box diagrams that are defined by the following VHDL entity declarations:

@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# compile twice and rename
-pdflatex ./master.tex
-pdflatex ./master.tex
+# compile and rename
+pdflatex -synctex=1 ./master.tex
+pdflatex -synctex=1 ./master.tex
+pdflatex -synctex=1 ./master.tex
 cp master.pdf free_range_vhdl.pdf
+cp master.synctex.gz free_range_vhdl.synctex.gz
 rm master.pdf
-
-# remove auxiliary files
-rm *.aux *.toc *.log *.out *.dvi
+rm master.synctex.gz

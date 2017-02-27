@@ -24,7 +24,7 @@
 	\thispagestyle{empty}
 	\begin{textblock*}{160mm}(-3mm,0mm)
 	%\textblockcolour{red}
-    \includegraphics[width=160mm]{pics/cover.png}  % full-page picture for 160x240 format
+	\noindent\makebox[\textwidth]{\includegraphics[width=\paperwidth]{pics/cover.png}}  % full-page picture for 160x240 format
 	\end{textblock*}
 	\null\newpage % latex might neglect \newpage because the page is empty, 
 
@@ -61,7 +61,6 @@
 	\null\newpage
 
 	% table of contents page %
-	\setcounter{page}{5}
 	\renewcommand\contentsname{Table of Contents} % rename title
 	\pagenumbering{roman}
 	\tableofcontents

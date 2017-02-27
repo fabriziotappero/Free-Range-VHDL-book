@@ -278,11 +278,11 @@ The \texttt{std\_logic} type uses the VHDL character type in its definition. Alt
 \textbf{EXAMPLE 26.}
 Design a clock divider circuit that reduces the frequency of the input signal by a factor of 64. The circuit has two inputs as shown in the diagram. The  \texttt{div\_en} input allows the  \texttt{clk} signal to be divided when asserted and the  \texttt{sclk} output will exhibit a frequency 1/64 that of the  \texttt{clk} signal. When  \texttt{div\_en} is not asserted, the  \texttt{sclk} output remains low. Frequency division resets when the  \texttt{div\_en} signal is reasserted.
 \end{minipage}
-\begin{minipage}[t]{0.4\linewidth}
+\begin{minipage}[t]{0.45\linewidth}
 \vspace{10pt}
 \begin{flushright}
 \begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
+[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
 % BOX
 \draw (20,5) rectangle (35,20) node[midway]{$clk\_div$};
 % INPUTS

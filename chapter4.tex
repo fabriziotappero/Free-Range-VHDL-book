@@ -99,7 +99,7 @@ C_out <= (not D_1) and B_2;
 \end{lstlisting}
 \end{minipage}
 
-\section{Signal Assignment Operator ``$<=$''}
+\section{Signal Assignment Operator \texorpdfstring{``$<=$''}{<=}}
 Algorithmic programming languages always have some type of assignment operator. In C or Java, this is the well-known ``='' sign. In these languages, the assignment operator signifies a transfer of data from the right-hand side of the operator to the left-hand side. VHDL uses two consecutive characters to represent the assignment operator: ``\texttt{$<=$}''. This combination was chosen because it is different from the assignment operators in most other common algorithmic programming languages. The operator is officially known as a signal assignment operator to highlight its true purpose. The signal assignment operator specifies a relationship between signals. In other words, the signal on the left-hand side of the signal assignment operator is dependent upon the signals on the right-hand side of the operator.
 
 With these new insights into VHDL, you should be able to understand the code of Listing~\ref{parallel_code} and its relationship to its schematic shown in Figure~\ref{concurrent_circuit}. The statement ``\texttt{G~$<=$~A~AND~B;}'' indicates that the value of the signal named \texttt{G} represents an AND logic operation between the signals \texttt{A} and \texttt{B}.
@@ -302,7 +302,7 @@ Write the VHDL code that implements a 4:1 MUX using a single conditional signal 
 
 \noindent
 \begin{minipage}{0.62\linewidth}
-\begin{lstlisting}[label=example_4, caption=Solution of Example~4.]
+	\begin{lstlisting}[label=example_4, caption=Solution of Example~4.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -321,28 +321,27 @@ begin
 	          D0 when (SEL = "00") else
 	          '0';
 end mux4t1;
-
-\end{lstlisting}
+	\end{lstlisting}
 \end{minipage}
-\begin{minipage}{0.2\linewidth}
-\begin{flushright}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,0) rectangle (30,25) node[above]{my\_4to1\_mux};
-% INPUTS
-\small
-\node (b) at (20,25) {}; % this is to extend the pink area
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,25)$) -- ++(-5,0) node[left]{D3};
-\draw [latex-] ($(a)+(0,20)$) -- ++(-5,0) node[left]{D2};
-\draw [latex-] ($(a)+(0,15)$) -- ++(-5,0) node[left]{D1};
-\draw [latex-] ($(a)+(0,10)$) -- ++(-5,0) node[left]{D0};
-\draw [latex-] ($(a)+(0,5)$) -- ++(-5,0) node[left]{SEL} node[pos=0.7,above]{2} node[pos=0.6]{/};
-% OUTPUTS
-\draw [-latex] ($(a)+(10,15)$) -- ++(5,0) node[above, pos=1.6]{MX\_OUT};
-\end{tikzpicture}
-\end{flushright}
+\begin{minipage}{0.3\linewidth}
+	\begin{flushright}
+		\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+			%\draw[help lines] (0,0) grid (50,50);
+			% BOX
+			\draw (20,0) rectangle (30,25) node[above]{my\_4to1\_mux};
+			% INPUTS
+			\small
+			\node (b) at (20,25) {}; % this is to extend the pink area
+			\node (a) at (20,-2.5) {}; % this is the reference point
+			\draw [latex-] ($(a)+(0,25)$) -- ++(-5,0) node[left]{D3};
+			\draw [latex-] ($(a)+(0,20)$) -- ++(-5,0) node[left]{D2};
+			\draw [latex-] ($(a)+(0,15)$) -- ++(-5,0) node[left]{D1};
+			\draw [latex-] ($(a)+(0,10)$) -- ++(-5,0) node[left]{D0};
+			\draw [latex-] ($(a)+(0,5)$) -- ++(-5,0) node[left]{SEL} node[pos=0.7,above]{2} node[pos=0.6]{/};
+			% OUTPUTS
+			\draw [-latex] ($(a)+(10,15)$) -- ++(5,0) node[above, pos=1.6]{MX\_OUT};
+		\end{tikzpicture}
+	\end{flushright}
 \end{minipage}
 
 There are a couple of things to note in the solution provided in Listing~\ref{example_4}.
