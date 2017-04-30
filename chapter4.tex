@@ -193,7 +193,7 @@ end my_ckt_f3;
 -- architecture
 architecture f3_2 of my_ckt_f3 is
 begin
-F3<=((NOT L)AND(NOT M)AND N)OR(L AND M);
+     F3<=((NOT L)AND(NOT M)AND N)OR(L AND M);
 end f3_2;
 \end{lstlisting}
 \end{minipage}
@@ -276,9 +276,9 @@ Write the VHDL code to implement the function expressed in Example~2. Use only c
 \begin{lstlisting}[label=example_3, caption=Solution of Example~3.]
 architecture f3_3 of my_ckt_f3 is
 begin
-F3 <= '1' when (L= '0' AND M = '0' AND N = '1') else
-      '1' when (L= '1' AND M = '1') else
-      '0';
+     F3 <= '1' when (L= '0' AND M = '0' AND N = '1') else
+           '1' when (L= '1' AND M = '1') else
+           '0';
 end f3_3;
 \end{lstlisting}
 \end{minipage}
@@ -409,9 +409,9 @@ Write VHDL code to implement the function expressed by the following logic equat
 architecture f3_4 of my_ckt_f3 is
 begin
    with ((L ='0' and M ='0'and N ='1')or(L='1' and M='1')) select
-	F3 <= '1' when '1',
-	      '0' when '0',
-	      '0' when others;
+      F3 <= '1' when '1',
+            '0' when '0',
+            '0' when others;
 end f3_4;
 \end{lstlisting}
 \end{minipage}
@@ -438,12 +438,12 @@ end my_4t1_mux;
 -- architecture
 architecture mux4t1_2 of my_4t1_mux is
 begin
-with SEL select
-	MX_OUT <= D3  when "11",
-	          D2  when "10",
-	          D1  when "01",
-	          D0  when "00",
-	          '0' when others;
+   with SEL select
+      MX_OUT <= D3  when "11",
+                D2  when "10",
+                D1  when "01",
+                D0  when "00",
+                '0' when others;
 end mux4t1_2;
 \end{lstlisting}
 
@@ -505,10 +505,10 @@ end my_sz_ckt;
 architecture spec_dec of my_sz_ckt is
 begin
    with D_IN select
-SX_OUT <= "100" when "0000"|"0001"|"0010"|"0011", 
-          "010" when "0100"|"0101"|"0110"|"0111"|"1000"|"1001", 
-          "001" when "1010"|"1011"|"1100"|"1101"|"1110"|"1111", 
-          "000" when others;  
+      SX_OUT <= "100" when "0000"|"0001"|"0010"|"0011", 
+                "010" when "0100"|"0101"|"0110"|"0111"|"1000"|"1001", 
+                "001" when "1010"|"1011"|"1100"|"1101"|"1110"|"1111", 
+                "000" when others;  
 end spec_dec;
 \end{lstlisting}
 \end{minipage}
@@ -569,11 +569,11 @@ end my_ckt_f3;
 architecture f3_8 of my_ckt_f3 is
 signal t_sig : std_logic_vector(2 downto 0); -- local bundle
 begin
-t_sig <= (L & M & N); -- concatenation operator
+     t_sig <= (L & M & N); -- concatenation operator
 
-with (t_sig) select
-    F3 <= '1' when "001" | "110" | "111",
-          '0' when others;
+     with (t_sig) select
+          F3 <= '1' when "001" | "110" | "111",
+                '0' when others;
 end f3_8;
 \end{lstlisting}
 
