@@ -43,7 +43,7 @@ There is some new lingo used in the description of signals used in Fig.~\ref{fsm
 \item The \texttt{Present State} signals are used by the \texttt{Combinatorial \\ Process} box for both next state decoding and output decoding. The diagram of Fig.~\ref{fsm_imp} also shows that the \texttt{Present State} variables can also be provided as outputs to the FSM but they are not required.
 \end{my_list}
 
-One final comment before we begin. Although there are many different methods that can be used to described FSMs using VHDL, two of the more common approaches are the dependent and independent PS/NS styles. This book only covers the dependent style because it is clearer than the independent PS/NS style. The model shown in Fig.~\ref{fsm_imp} is actually a model of the dependent PS/NS style of FSMs. Once you understand the VHDL modeling of the dependent PS/NS style of FSM, the understanding of the independent PS/NS style or any other style is relatively painless. More information on the other FSM coding styles is found in various VHDL texts or on the web.
+One final comment before we begin. There are many different methods that can be used to describe FSMs using VHDL. Once you understand the method presented here, learning any other style of FSM implementation is relatively painless. More information on the other FSM coding styles may be found in various VHDL texts or on the web.
 
 \section{VHDL Behavioral Representation of FSMs}
 
@@ -52,7 +52,7 @@ One final comment before we begin. Although there are many different methods tha
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 18.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation.
+Write the VHDL code that implements the FSM shown on the right.
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
 \vspace{0pt}\raggedright
@@ -129,7 +129,7 @@ And of course, this solution has many things worth noting in it. The more intere
 
 \item Because the two processes operate concurrently, they can be considered as working in a lock-step manner. Changes to the NS signal that are generated in the combinatorial process force an evaluation of the synchronous process. When the changes are actually instituted in the synchronous process on the next clock edge, the changes in the PS signal causes the combinatorial process to be evaluated. And so on and so forth. 
 
-\item The case statement in the combinatorial process provides a \texttt{when} clause for each state of the FSM. This is the standard approach for the dependent PS/NS coding style. A \texttt{when others} clause has also been used. The signal assignments that are part this catch-all clause are arbitrary since the code should never actually make it there. This statement is provided for a sense of completeness and represents good VHDL coding practice. 
+\item The case statement in the combinatorial process provides a \texttt{when} clause for each state of the FSM. A \texttt{when others} clause has also been used. The signal assignments that are part this catch-all clause are arbitrary since the code should never actually make it there. This statement is provided for a sense of completeness and represents good VHDL coding practice. 
 
 \item The Moore output is a function of only the present state. This is expressed by the fact that the assignment of the Z1 output is unconditionally evaluated in each when clause of the case statement in the combinatorial process. In other words, the Z1 variable is inside the \texttt{when} clause but outside of the \texttt{if} statement in the \texttt{when} clause. This is of course because the Moore outputs are only a function of the states and not the external inputs. Note that it is the external input that controls the \texttt{which} state the FSM transitions to from any given state. You will see later that Mealy outputs, due their general nature, are assigned inside the \texttt{if} statement.
 
@@ -208,7 +208,7 @@ Lastly, there are three concurrent statements in the VHDL code shown in Listing~
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 19.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the state variables as outputs of the FSM.
+Write the VHDL code that implements the FSM shown on the right. Consider the state variables as outputs of the FSM.
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
 \vspace{0pt}\raggedright
@@ -298,7 +298,7 @@ As usual, there are a couple of fun things to point out about the solution for E
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 20.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the listed state variables as output.
+Write the VHDL code that implements the FSM shown on the right. Consider the listed state variables as output.
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
 \vspace{0pt}\raggedright
@@ -406,7 +406,7 @@ The modular approach we used to implement FSMs expedites the conversion process 
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 21.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the listed state variables as output. Use one-hot encoding for the state variables. This problem is Example~20 all over again but uses true one-hot encoding for the state variables. 
+Write the VHDL code that implements the FSM shown on the right. Consider the listed state variables as output. Use one-hot encoding for the state variables. This problem is Example~20 all over again but uses true one-hot encoding for the state variables. 
 \vspace{50px}
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
