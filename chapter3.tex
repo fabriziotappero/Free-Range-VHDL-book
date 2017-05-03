@@ -31,7 +31,7 @@ end my_entity; -- do not forget this semicolon either
 When you attempt to write fairly complicated VHDL code, you will need to split your code into different files, functions and packages constructors which will help you better deal with your code. In this scenario, the entity body will not only host the port definition statements but, most likely, other procedures as well. We will talk about this later in the book.
 
 \noindent
-\begin{minipage}{0.5\linewidth}
+\begin{minipage}{0.51\linewidth}
 	\vspace{5pt}
 	\begin{lstlisting}[label=entity_2, caption=VHDL entity declaration.]
 ------------------------------
@@ -39,12 +39,12 @@ When you attempt to write fairly complicated VHDL code, you will need to split y
 --  of killer_ckt           --
 ------------------------------
 entity killer_ckt is
-port (
-life_in1       : in  std_logic;
-life_in2       : in  std_logic;
-crtl_a, ctrl_b : in  std_logic;
-kill_a         : out std_logic;
-kill_b, kill_c : out std_logic);
+  port (
+    life_in1       : in  std_logic;
+    life_in2       : in  std_logic;
+    crtl_a, ctrl_b : in  std_logic;
+    kill_a         : out std_logic;
+    kill_b, kill_c : out std_logic);
 end killer_ckt;
 	\end{lstlisting}
 \end{minipage}
