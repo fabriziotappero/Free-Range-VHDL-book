@@ -27,12 +27,12 @@ multiplying & * & / & mod & rem \\
 \label{vhdl_operators_table}
 \end{table}
 
-Operators in VHDL are grouped into seven different types: logical, relational, shift, addition, unary, multiplying and others. The ordering of this operator list is somewhat important because it presents the operators in order from lowest to highest precedence. We said somewhat because your VHDL code should never rely on operator precedence to describe circuit behavior. Reliance on obscure precedence rules tends to make the VHDL code cryptic and hard to understand. A liberal use of parentheses is a better approach to VHDL coding.
+Operators in VHDL are grouped into seven different types: logical, relational, shift, adding, sign, multiplying, and miscellaneous. The ordering of this operator list is somewhat important because it presents the operators in the order of increasing precedence. We said somewhat because your VHDL code should never rely on operator precedence to describe circuit behavior. Reliance on obscure precedence rules tends to make the VHDL code cryptic and hard to understand. A liberal use of parentheses is a better approach to VHDL coding.
 
-The first column of Table \ref{vhdl_operators_table} lists the operators in precedence order with the logical operators having the highest precedence. Although there is a precedence order in the types of operators, there is no precedence order within each type of operator. In other words, the operators appearing in the rows are presented in no particular order. This means that the operators are applied to the given operands in the order they appear in the associated VHDL code.
+The first column of Table \ref{vhdl_operators_table} lists the operators from lowest to highest precedence, where logical operators have the lowest precedence. Although there is a precedence order in the types of operators, there is no precedence order within each type of operator. In other words, the operators appearing in the rows are presented in no particular order. This means that the operators are applied to the given operands in the order they appear in the associated VHDL code.
 
 \section{Logical Operators}
-The logical operators are generally self-explanatory in nature. They have also been used throughout this book. The only thing worthy to note here is that the \texttt{not} operator has been included in the group of logical operators despite the fact that it is not technically a logic operation.
+The logical operators are generally self-explanatory in nature. They have also been used throughout this book. The only thing worthy of note is that the \texttt{not} operator is not technically a logical operator and is grouped among the miscellaneous operators, which have the highest precedence.
 
 \section{Relational Operators}
 The relational operators are generally self-explanatory in nature too. Many of them have been used in this book. A complete list of relational operators is provided in Table \ref{relational_operators_table}.
@@ -55,7 +55,7 @@ The relational operators are generally self-explanatory in nature too. Many of t
 \end{table}
 
 \section{Shift Operator}
-Available from \texttt{ieee.numeric\_std} or \texttt{ieee.numeric\_bit}, there are three types of shift operators: logical shift, arithmetic shift and rotations. Although these operators basically shift bits either left-to-right or right-to-left, there are a few basic differences which are listed below. The shift operators are listed in Table \ref{shift_operators_table}.
+Available from \texttt{ieee.numeric\_std} or \texttt{ieee.numeric\_bit}, there are three types of shift operators: logical shift, arithmetic shift, and rotations. Although these operators basically shift bits either left-to-right or right-to-left, there are a few basic differences which are listed below. The shift operators are listed in Table \ref{shift_operators_table}.
 \begin{my_list}
 \item Both logical shifts introduce zeros into one end of the operand that is affected by the shift operation. In other words, zeros are fed into one end of the operand while bits are essentially lost from the other end. The difference between logical and arithmetic shifts is that in arithmetic shift, the sign-bit is never changed and the bit that is fed into one end can differ. Hence,  for arithmetic shift lefts, the last right bit is stuffed to the right end of the operand. For arithmetic shift rights, the sign-bit (the left-most bit) is propagated right (the value of the left-most bit is fed into the left end of the operand).
 \item Rotate operators grab a bit from one end of the word and stuff it into the other end. This operation is done independently of the value of the individual bits in the operand.
@@ -80,15 +80,16 @@ Operator & \multicolumn{2}{c|}{Name} & Example~& Result \\
 \end{table}
 
 \section{Other Operators}
-The other groups of operators are generally used with numeric types. Since this section does not present numerical operations in detail, the operators are briefly listed below in Table \ref{shift_other_operators_table}. Special attention is given to the \texttt{mod}, \texttt{rem} and \texttt{\&} operators. These operators are also limited to operating on specific types which are also not listed here.
+The other groups of operators are generally used with numeric types. Since this section does not present numerical operations in detail, the operators are briefly listed below in Table \ref{shift_other_operators_table}. Special attention is given to the \texttt{\&}, \texttt{mod}, and \texttt{rem} operators. These operators are also limited to operating on specific types, which are also not listed here.
 
 \begin{table}[!b]
 \centering
 \footnotesize\textsf{\begin{tabular}{l|l|l|l}
 \multicolumn{2}{c|}{Operator} & Name & Comment \\
 \hline
-\multirow{2}{*}{adding} & \texttt{+} & addition & \\
+\multirow{3}{*}{adding} & \texttt{+} & addition & \\
 & \texttt{-} & subtraction &  \\
+& \texttt{\&} & concatenation & can operate only on specific types\\
 \hline
 \multirow{2}{*}{sign} & \texttt{+} & identity & unary operator\\
 & \texttt{-} & negation & unary operator \\
@@ -98,9 +99,8 @@ The other groups of operators are generally used with numeric types. Since this 
 & \texttt{mod} & modulus & can operate only on specific types\\
 & \texttt{rem} & remainder & can operate only on specific types\\
 \hline
-\multirow{3}{*}{other} & \texttt{**} & exponentiation & often limited to powers of two\\
+\multirow{2}{*}{other} & \texttt{**} & exponentiation & often limited to powers of two\\
 & \texttt{abs} & absolute value & \\
-& \texttt{\&} & concatenation & can operate only on specific types\\
 \hline
 \end{tabular}}
 \caption{All the other VHDL operators not listed so far.}
