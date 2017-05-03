@@ -515,7 +515,7 @@ end spec_dec;
 
 The only comment for the solution of Example~7 is that the vertical bar is used as a selection character in the choices section of the selected signal assignment statement. This increases the readability of the code as do the similar constructs in algorithmic programming languages.
 
-Once again, the selected signal assignment statement is one form of a concurrent statement. This is verified by the fact that there is only one signal assignment statement in the body of the selected signal assignment statement. The selected signal assignment statement is evaluated each time there is a change in the \textit{chooser\_expression} listed in the first line of the selected signal assignment statement.
+Once again, the selected signal assignment statement is one form of a concurrent statement. This is verified by the fact that there is only one signal assignment statement in the body of the selected signal assignment statement. The selected signal assignment statement is evaluated each time there is a change in the \textit{chooser\_expression} listed in the first line of the selected signal assignment statement. Re-evaluation also occurs any time there is a change in a conditional signal on the right-hand side of the signal assignment operator.
 
 The final comment regarding the selected signal assignment is similar to the final comment regarding conditional signal assignment. You should recognize the general form of the selected signal assignment statement as being similar to the \textit{switch} statements in algorithmic programming languages such as C and Java. Once again, this relationship is examined in much more depth once we are ready to talk about sequential statements.
 
