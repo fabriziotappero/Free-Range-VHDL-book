@@ -14,20 +14,20 @@ So far we have only implicitly mentioned the operators available in VHDL. This s
 \footnotesize\textsf{\begin{tabular}{l|lllllll}
 Operator type\\
 \hline
-\rowcolor{light-gray} exponential, absolute value & ** & abs & & & & & \\
-logical & and & or & nand & nor & xor & xnor & not \\
-\rowcolor{light-gray} multip., division, module, remainer & * & / & mod & rem\\
-addition, subtraction  & $+$ & $-$ & & & & &   \\
-\rowcolor{light-gray} identity, negation & $+$ & $-$ & & & & & \\
-\rowcolor{light-gray} concatenate, shift, rotate & \& & sll & srl & sla & sra & rol & ror \\
-relational & = & /= & $<$ & $<=$ & $>$ & $>=$ & \\
+\rowcolor{light-gray} logical & and & or & nand & nor & xor & xnor \\
+relational & = & /= & $<$ & $<=$ & $>$ & $>=$ \\
+\rowcolor{light-gray} shift & sll & srl & sla & sra & rol & ror \\
+adding & $+$ & $-$ & \& & & & \\
+\rowcolor{light-gray} sign & $+$ & $-$ & & & & \\
+multiplying & * & / & mod & rem \\
+\rowcolor{light-gray} miscellaneous & ** & abs & not & & & \\
 \hline
 \end{tabular}}
 \caption{VHDL operators.}
 \label{vhdl_operators_table}
 \end{table}
 
-Operators in VHDL are grouped into seven different types: logical, relational, shift, addition, unary, multiplying and others. The ordering of this operator list is somewhat important because it presents the operators in the order of precedence. We said somewhat because your VHDL code should never rely on operator precedence to describe circuit behavior. Reliance on obscure precedence rules tends to make the VHDL code cryptic and hard to understand. A liberal use of parentheses is a better approach to VHDL coding.
+Operators in VHDL are grouped into seven different types: logical, relational, shift, addition, unary, multiplying and others. The ordering of this operator list is somewhat important because it presents the operators in order from lowest to highest precedence. We said somewhat because your VHDL code should never rely on operator precedence to describe circuit behavior. Reliance on obscure precedence rules tends to make the VHDL code cryptic and hard to understand. A liberal use of parentheses is a better approach to VHDL coding.
 
 The first column of Table \ref{vhdl_operators_table} lists the operators in precedence order with the logical operators having the highest precedence. Although there is a precedence order in the types of operators, there is no precedence order within each type of operator. In other words, the operators appearing in the rows are presented in no particular order. This means that the operators are applied to the given operands in the order they appear in the associated VHDL code.
 
