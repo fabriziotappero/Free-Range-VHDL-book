@@ -58,8 +58,8 @@ use IEEE.std_logic_1164.all;
 
 -- entity
 entity my_circuit is
-port ( A_1,A_2,B_1,B_2,D_1	: in  std_logic;
-       E_out				: out std_logic);
+	port ( A_1,A_2,B_1,B_2,D_1 : in  std_logic;
+	       E_out               : out std_logic);
 end my_circuit;
 
 -- architecture
@@ -180,20 +180,20 @@ Write the VHDL code to implement the function expressed by the following logic e
 \textbf{SOLUTION.} The black box diagram and associated VHDL code is shown in Listing~\ref{example_2}.
 
 \noindent
-\begin{minipage}{0.57\linewidth}
+\begin{minipage}{0.6\linewidth}
 \begin{lstlisting}[label=example_2, caption=Solution of Example~2.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
-port ( L,M,N : in  std_logic;
-       F3    : out std_logic);
+   port ( L,M,N : in  std_logic;
+          F3    : out std_logic);
 end my_ckt_f3;
 -- architecture
 architecture f3_2 of my_ckt_f3 is
 begin
-F3<=((NOT L)AND(NOT M)AND N)OR(L AND M);
+   F3<=((NOT L)AND(NOT M)AND N)OR(L AND M);
 end f3_2;
 \end{lstlisting}
 \end{minipage}
@@ -228,8 +228,8 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
-port ( L,M,N : in  std_logic;
-       F3    : out std_logic);
+	port ( L,M,N : in  std_logic;
+	       F3    : out std_logic);
 end my_ckt_f3;
 -- architecture
 architecture f3_1 of my_ckt_f3 is
@@ -276,9 +276,9 @@ Write the VHDL code to implement the function expressed in Example~2. Use only c
 \begin{lstlisting}[label=example_3, caption=Solution of Example~3.]
 architecture f3_3 of my_ckt_f3 is
 begin
-F3 <= '1' when (L= '0' AND M = '0' AND N = '1') else
-      '1' when (L= '1' AND M = '1') else
-      '0';
+	F3 <= '1' when (L = '0' AND M = '0' AND N = '1') else
+	      '1' when (L = '1' AND M = '1') else
+	      '0';
 end f3_3;
 \end{lstlisting}
 \end{minipage}
@@ -301,16 +301,16 @@ Write the VHDL code that implements a 4:1 MUX using a single conditional signal 
 \textbf{SOLUTION.} For this example we need to start from scratch. This of course includes the now famous black-box diagram and the associated entity statement. The VHDL portion of the solution is shown in Listing~\ref{example_4}.
 
 \noindent
-\begin{minipage}{0.62\linewidth}
+\begin{minipage}{0.69\linewidth}
 	\begin{lstlisting}[label=example_4, caption=Solution of Example~4.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
-port(D3,D2,D1,D0 : in std_logic;
-     SEL: in std_logic_vector(1 downto 0);
-     MX_OUT	: out std_logic);
+	port(D3,D2,D1,D0 : in std_logic;
+	     SEL : in std_logic_vector(1 downto 0);
+	     MX_OUT : out std_logic);
 end my_4t1_mux;
 -- architecture
 architecture mux4t1 of my_4t1_mux is
@@ -363,9 +363,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
-port	(D3,D2,D1,D0   : in  std_logic;
-         SEL           : in  std_logic_vector(1 downto 0);
-         MX_OUT        : out std_logic);
+	port (D3,D2,D1,D0 : in  std_logic;
+	      SEL         : in  std_logic_vector(1 downto 0);
+	      MX_OUT      : out std_logic);
 end my_4t1_mux;
 -- architecture
 architecture mux4t1 of my_4t1_mux is
@@ -408,10 +408,10 @@ Write VHDL code to implement the function expressed by the following logic equat
 -- yet another solution to the previous example
 architecture f3_4 of my_ckt_f3 is
 begin
-   with ((L ='0' and M ='0'and N ='1')or(L='1' and M='1')) select
-	F3 <= '1' when '1',
-	      '0' when '0',
-	      '0' when others;
+   with ((L ='0' and M ='0' and N ='1') or (L ='1' and M ='1')) select
+      F3 <= '1' when '1',
+            '0' when '0',
+            '0' when others;
 end f3_4;
 \end{lstlisting}
 \end{minipage}
@@ -431,19 +431,19 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
-port (D3,D2,D1,D0 : in  std_logic;
-      SEL         : in  std_logic_vector(1 downto 0);
-      MX_OUT      : out std_logic);
+	port (D3,D2,D1,D0 : in  std_logic;
+	      SEL         : in  std_logic_vector(1 downto 0);
+	      MX_OUT      : out std_logic);
 end my_4t1_mux;
 -- architecture
 architecture mux4t1_2 of my_4t1_mux is
 begin
-with SEL select
-	MX_OUT <= D3  when "11",
-	          D2  when "10",
-	          D1  when "01",
-	          D0  when "00",
-	          '0' when others;
+	with SEL select
+		MX_OUT <= D3  when "11",
+		          D2  when "10",
+		          D1  when "01",
+		          D0  when "00",
+		          '0' when others;
 end mux4t1_2;
 \end{lstlisting}
 
@@ -498,17 +498,17 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_sz_ckt is
-    port ( D_IN   : in  std_logic_vector(3 downto 0);
-           SX_OUT : out std_logic_vector(2 downto 0)); 
+	port ( D_IN   : in  std_logic_vector(3 downto 0);
+	       SZ_OUT : out std_logic_vector(2 downto 0)); 
 end my_sz_ckt;
 -- architecture
 architecture spec_dec of my_sz_ckt is
 begin
-   with D_IN select
-SX_OUT <= "100" when "0000"|"0001"|"0010"|"0011", 
-          "010" when "0100"|"0101"|"0110"|"0111"|"1000"|"1001", 
-          "001" when "1010"|"1011"|"1100"|"1101"|"1110"|"1111", 
-          "000" when others;  
+	with D_IN select
+		SZ_OUT <= "100" when "0000"|"0001"|"0010"|"0011", 
+		          "010" when "0100"|"0101"|"0110"|"0111"|"1000"|"1001", 
+		          "001" when "1010"|"1011"|"1100"|"1101"|"1110"|"1111", 
+		          "000" when others;  
 end spec_dec;
 \end{lstlisting}
 \end{minipage}
@@ -562,18 +562,18 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
-port ( L,M,N : in  std_logic;
-       F3    : out std_logic);
+	port ( L,M,N : in  std_logic;
+	       F3    : out std_logic);
 end my_ckt_f3;
 -- architecture
 architecture f3_8 of my_ckt_f3 is
-signal t_sig : std_logic_vector(2 downto 0); -- local bundle
+	signal t_sig : std_logic_vector(2 downto 0); -- local bundle
 begin
-t_sig <= (L & M & N); -- concatenation operator
+	t_sig <= (L & M & N); -- concatenation operator
 
-with (t_sig) select
-    F3 <= '1' when "001" | "110" | "111",
-          '0' when others;
+	with (t_sig) select
+	    F3 <= '1' when "001" | "110" | "111",
+	          '0' when others;
 end f3_8;
 \end{lstlisting}
 
