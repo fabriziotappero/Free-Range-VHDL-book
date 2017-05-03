@@ -83,7 +83,7 @@ Hopefully, you are not finding these entity specifications too challenging. In f
 
 Bundles are easily described in the VHDL entity. All that is needed is a new data type and a special notation to indicate when a signal is a bundle or not. A few examples are shown in Listing~\ref{entity_3}. In these examples note that the mode remains the same but the type has changed. The \texttt{std\_logic} data type has now been replaced by the word \texttt{std\_logic\_vector} to indicate that each signal name contains more than one signal. There are ways to reference individual members of each bundle, but we will get to those details later.
 
-As you can see by examining Listing~\ref{entity_3}, there are two possible methods to describe the signals in a bundle. These two methods are shown in the argument lists that follow the data type declaration. The signals in the bus can be listed in one of two orders which are specified by the \textbf{to} and \textbf{downto} keywords. If you want the most significant bit of your bundle to be on the the first bit on the left you use \textbf{downto} keyword. Be sure not to forget the orientation of signals when you are using this notation in your VHDL model.
+As you can see by examining Listing~\ref{entity_3}, there are two possible methods to describe the signals in a bundle. These two methods are shown in the argument lists that follow the data type declaration. The signals in the bundle can be listed in one of two orders which are specified by the \textbf{to} and \textbf{downto} keywords. If you want the most significant bit of your bundle to be on the the first bit on the left you use \textbf{downto} keyword. Be sure not to forget the orientation of signals when you are using this notation in your VHDL model.
 
 In the black box of Listing~\ref{entity_3} you can see the formal notation for a bundle. Note that the black box uses a slash-and-number notation. The slash across the signal line indicates the signal is a bundle and the associated number specifies the number of signals in the bundle. Worthy of mention regarding the black box relative to Listing~\ref{entity_3} is that the input lines \texttt{sel1} and \texttt{sel0} could have been made into one bundle containing the two signals.
 
@@ -123,7 +123,7 @@ port (  a_data    : in     std_logic_vector(0 to 7);
         c_data    : in     std_logic_vector(0 to 7);
         d_data    : in     std_logic_vector(0 to 7);
         sel1,sel0 : in     std_logic;
-        data_out  : out    std_logic_vector(0 to 7));
+        data_out  : out    std_logic_vector(7 downto 0));
 end mux4;
 \end{lstlisting}
 \end{minipage}
