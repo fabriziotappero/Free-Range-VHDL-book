@@ -85,7 +85,7 @@ Use VHDL behavioral modeling to design the circuit shown on the right. Consider 
 
 \item There is a separate process for each of the two registers. Although it would have been possible to represent both registers using one process, it would have been somewhat complicated and somewhat hard to understand. The better approach in VHDL is always to break tasks down into their logically separate functions and use the various VHDL modeling techniques as tools to keep the tasks separate and simple. The reality is that the synthesizer becomes your friend if you provide it with simple models. The quantity of VHDL code describing a certain design is immaterial; the complexity of any given model is determined by the most complex piece of code in the model. Simple is always better in VHDL.
 
-\item All of signals shown in the Example~24 have external linkage except for the output of the MUX. The MUX output is connected to the inputs of both registers. The final approach taken in this solution is typical in VHDL: many processes that communicate with each other through shared signals. In this example, there is only one shared signal but this is a fairly simple program. The same inter-process communication model is used in more complicated circuits.
+\item All of the signals shown in the Example~24 have external linkage except for the output of the MUX. The MUX output is connected to the inputs of both registers. The final approach taken in this solution is typical in VHDL: many processes that communicate with each other through shared signals. In this example, there is only one shared signal but this is a fairly simple program. The same inter-process communication model is used in more complicated circuits.
 
 \item The model for the 2:1 MUX uses the terminology \texttt{(others => '0')}. This is a short-hand terminology for assigning all of the outputs to '0'. The real nice part about this instruction is that you do not need to know how many 0’s you need to write. This is a nice feature in that if the width of the associated bundle were to change, this particular line of code would not need to be modified.
 \end{my_list}
@@ -154,7 +154,7 @@ Use VHDL structural modeling to design the circuit shown on the right. Consider 
 \begin{my_list}
 \item The very important thing to note about the solution in Listing~\ref{ex25_code} is to not be intimidated by the sheer quantity of code listed. The code is well structured; if you are able to recognize this structure, you will be more apt to understand the solution. And better yet, you will be more on your way to being able to write your own amazing chunks of VHDL code.
 
-\item The VHDL source code shown in Listing~\ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indentation. No surprise here but properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is as actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
+\item The VHDL source code shown in Listing~\ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indentation. No surprise here but properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
 \end{my_list}
 
 \noindent
@@ -231,7 +231,7 @@ end rtl_structural;
 \section{Important Points}
 
 \begin{my_list}
-\item VHDL can be used to easily implement circuits at the register transfer level. The corresponding VHDL models can be implemented in either structural of full behavioral format.
+\item VHDL can be used to easily implement circuits at the register transfer level. The corresponding VHDL models can be implemented in either structural or full behavioral format.
 
 \item RTL level VHDL models should strive for simplicity in their designs. If the behavioral models in the RTL design become complicated, the chances that your circuit works correctly greatly diminish due to the synthesis of the complicated circuit.
 \end{my_list}

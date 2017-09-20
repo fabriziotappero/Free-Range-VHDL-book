@@ -214,7 +214,7 @@ A \texttt{signed} value ranges from $-2^{N-1}$ to $2^{N-1}-1$ and an \texttt{uns
 \begin{quotation}\ttfamily
 Why would I need to use a \textbf{\color{gray}signed} or \textbf{\color{gray}unsigned} type in place of a \textbf{\color{gray}std\_logic\_vector} type?
 \end{quotation}
-The answer to this question is in Listing~\ref{my_sum}, specifically in line 17 and in line 18. The \texttt{std\_logic\_vector} type should not be used to define a numerically meaningful\footnote{Numerically meaningful signal: a signal that looks and behave like a number.} signal or variable. The \texttt{std\_logic\_vector} type should be only employed for defining ``bags of bits''.
+The answer to this question is in Listing~\ref{my_sum}, specifically in line 17 and in line 18. The \texttt{std\_logic\_vector} type should not be used to define a numerically meaningful\footnote{Numerically meaningful signal: a signal that looks and behaves like a number.} signal or variable. The \texttt{std\_logic\_vector} type should be only employed for defining ``bags of bits''.
 
 The use of \texttt{signed/unsigned} types is desirable any time your bags of bits (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers.
 
@@ -251,7 +251,7 @@ As final note, we should mention that the inclusion of the non-standard \texttt{
 \section{\texttt{std\_logic} Types}
 For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types, similar to \texttt{std\_logic}, neither used nor endorsed in this book is the \texttt{bit} type. This type can take on only the values of \texttt{'1'} or \texttt{'0'}. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is defined in the VHDL package \texttt{ieee.std\_logic\_1164} and provides a common standard that can be used by all VHDL programmers.
 
-The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include \texttt{'1'} and \texttt{'0'}. The actual definition is shown in the Listing~\ref{logic_type}. The \texttt{std\_logic} type is a resolved version of the \texttt{std\_ulogic} type. Resolved means that unlike for \texttt{std\_ulogic} types, when you use \texttt{std\_logic} type signals, you can use multiple assignments to the same signal without having the compile to complain about it.
+The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include \texttt{'1'} and \texttt{'0'}. The actual definition is shown in the Listing~\ref{logic_type}. The \texttt{std\_logic} type is a resolved version of the \texttt{std\_ulogic} type. Resolved means that unlike for \texttt{std\_ulogic} types, when you use \texttt{std\_logic} type signals, you can use multiple assignments to the same signal without having the compiler to complain about it.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -353,7 +353,7 @@ end my_clk_div;
 \end{lstlisting}
 \end{minipage}
 
-The VHDL implementation of frequency divider that takes a certain clock signal and generates a second clock signal of higher or lower frequency is quite common practise in VHDL. Such an implementation is normally done using clock management blocks built in the FPGA fabric specifically for this purpose. Digital Clock Managers (DCM), Mixed Mode Clock Managers (MMCM) or Phase Locked Loops (PLL) are just some examples.
+The VHDL implementation of frequency divider that takes a certain clock signal and generates a second clock signal of higher or lower frequency is quite common practice in VHDL. Such an implementation is normally done using clock management blocks built in the FPGA fabric specifically for this purpose. Digital Clock Managers (DCM), Mixed Mode Clock Managers (MMCM) or Phase Locked Loops (PLL) are just some examples.
 
 The use of clock management blocks will guarantee your design meets timing requirements or clock phase noise constraints that will make your job a lot easier in the long run. Try to remember this.
 

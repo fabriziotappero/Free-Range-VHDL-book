@@ -323,7 +323,7 @@ end arch;
 
 Listing~\ref{gen_map} shows how the code above can be declared and instantiated in your own code via the already see \texttt{component} method. Specifically, In Listing~\ref{gen_map} the above generic parity check module is used to create a 4-bit parity check module.
 
-To achieve the mentioned modularity the keyword \texttt{generic} was used inside the \texttt{entity} field in the code above and again inside the \texttt{component} field during its declaration in the code below. The \texttt{generic} field it is used to allow you to control all generic variables.
+To achieve the mentioned modularity the keyword \texttt{generic} was used inside the \texttt{entity} field in the code above and again inside the \texttt{component} field during its declaration in the code below. The \texttt{generic} field is used to allow you to control all generic variables.
 
 Notice how during instantiation (see Listing~\ref{gen_map}, line 20) the keyword \texttt{generic map} was used in conjunction with the keyword \texttt{port map} to define the generic variables.
 
