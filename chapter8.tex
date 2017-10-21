@@ -48,16 +48,29 @@ One final comment before we begin. There are many different methods that can be 
 \section{VHDL Behavioral Representation of FSMs}
 
 \begin{leftbar}
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 18.}
 Write the VHDL code that implements the FSM shown on the right.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-    \centering
-	\includegraphics[width=5.3cm]{fsm/ex18.png}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+  \centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		%states
+	  \node[initial,state with output,initial text=CLR] (ST0)   {ST0 \nodepart{lower} 0};
+  	\node[state with output]  (ST1) [below of=ST0] {ST1  \nodepart{lower} 1};
+	
+		% FSM workings
+		\path[->]          (ST0)  edge [loop above] node (helper) {\NOTT{TOG\_EN}} (ST0);
+		\path[->]          (ST1)  edge [loop below] node {\NOTT{TOG\_EN}} (ST1);
+		\path[->]  (ST0)  		edge[bend left]    node {TOG\_EN} (ST1);
+		\path[->]  (ST1)  		edge[bend left]    node {TOG\_EN} (ST0);
+		% legend
+		\node[state with output]  (legend) [right = of helper,font=\scriptsize] {state \nodepart{lower} Z1};
+		\node[below =.1cm of legend,font=\scriptsize] (S) {legend};
+	\end{tikzpicture}
 \end{minipage}
 \end{leftbar}
 \noindent
@@ -213,7 +226,25 @@ Write the VHDL code that implements the FSM shown on the right. Consider the sta
 \begin{minipage}[t]{0.47\textwidth}
 \vspace{0pt}\raggedright
 \centering
-\includegraphics[width=5cm]{fsm/ex19.png}
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.5cm]
+		% states
+		\node[state] (ST0)      {00};
+  	\node[state]  (ST1) [below of=ST0] {10};
+	  \node[initial,initial text=SET,state]  (ST2) [below of=ST1] {11};
+
+		% legend
+		\node[state]  (legend) [right = of ST0.north,font=\scriptsize] {State};
+		\node[below = of legend.east,font=\scriptsize] (S) {input(x)/output(Z2)};
+
+		% state changes
+		\path[->]          (ST0)  edge [loop above] node {0/0} (ST0);
+		\path[->]          (ST2)  edge [loop below] node {1/1} (ST2);
+		\path[->]  (ST0)  		edge[bend left]    node {1/0} (ST1);
+		\path[->]  (ST1)  		edge[bend left]    node (variables) {1/0} (ST2);
+		\path[->]  (ST1)  		edge[bend left=10]    node {0/0} (ST0);
+		\path[->]  (ST2)  		edge[bend left=65]    node {0/0} (ST0);
+		\path[->]  (S)  			edge[bend left] (variables);
+	\end{tikzpicture}
 \end{minipage}
 \end{leftbar}
 \noindent
@@ -294,16 +325,37 @@ As usual, there are a couple of fun things to point out about the solution for E
 \end{my_list}
 
 \begin{leftbar}
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 20.}
 Write the VHDL code that implements the FSM shown on the right. Consider the listed state variables as output.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
+\begin{minipage}[t]{0.57\textwidth}
 \vspace{0pt}\raggedright
 \centering
-\includegraphics[width=5.2cm]{fsm/ex20.png}
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.5cm]
+		% states
+		\node[initial,initial text=RESET,state with output] (ST0) {00 \nodepart{lower} 1};
+  	\node[state with output]  (ST1) [below of=ST0] {01 \nodepart{lower} 1};
+	  \node[state with output]  (ST2) [below of=ST1] {10 \nodepart{lower} 0};
+  	\node[state with output]  (ST3) [below of=ST2] {11 \nodepart{lower} 1};
+
+		%legend
+		\node[state with output]  (legend) [right = of ST0.north,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[below = of legend.east,font=\scriptsize] (S) {input(x)/output(Z2)};
+
+		% state connections
+		\path[->]  (ST0)  edge [loop right] node[above,pos=0.2] {1/1} (ST0);
+		\path[->]  (ST1)  edge [loop left] node[above,pos=0.8] {1/1} (ST1);
+		\path[->]  (ST2)  edge [loop left] node[above,pos=0.8] {1/1} (ST2);
+		\path[->]  (ST3)  edge [loop right] node[below,pos=0.8] {1/1} (ST3);
+		\path[->]  (ST0) 	edge [bend left]    node {0/0} (ST1);
+		\path[->]  (ST1)  edge [bend left]    node (variables) {0/0} (ST2);
+		\path[->]  (ST2)  edge [bend left]    node {0/0} (ST3);
+		\path[->]  (ST3)  edge [bend left=75]    node {0/0} (ST0);
+		\path[->]  (S)  	edge [bend left] (variables);
+	\end{tikzpicture}
 \end{minipage}
 \end{leftbar}
 
@@ -402,17 +454,38 @@ The question naturally arises as to how VHDL can be used to implement one-hot en
 The modular approach we used to implement FSMs expedites the conversion process from using enumeration types to actually specifying how the state variables are represented. The changes from our previous approach are limited to how the outputs are assigned to the state variables and how the state variables are forced to be represented by certain bit patterns. Modifications to the fully encoded approach are thus limited to the entity declaration (you will need more variables to represent the states), the declaration of the state variables (you will need to explicitly declare the bit patterns associated with each state) and the assignment of the state variables to the outputs (in this case, we are actually not faking it like we were in other examples). 
 
 \begin{leftbar}
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \vspace{10pt}
 \noindent
 \textbf{EXAMPLE 21.}
 Write the VHDL code that implements the FSM shown on the right. Consider the listed state variables as output. Use one-hot encoding for the state variables. This problem is Example~20 all over again but uses true one-hot encoding for the state variables. 
 \vspace{50px}
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-    \centering
-	\includegraphics[width=5cm]{fsm/ex21.png}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+  \centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.6cm]
+		% states
+		\node[initial,initial text=RESET,state with output] (ST0)      {1000 \nodepart{lower} 1};
+  	\node[state with output]  (ST1) [below of=ST0] {0100 \nodepart{lower} 1};
+	  \node[state with output]  (ST2) [below of=ST1] {0010 \nodepart{lower} 0};
+  	\node[state with output]  (ST3) [below of=ST2] {0001 \nodepart{lower} 1};
+		
+		%legend
+		\node[state with output]  (legend) [right = of ST0.north,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[right =5mm of ST1,font=\scriptsize] (S) {input(x)/output(Z2)};
+	
+		% connections
+		\path[->]  (ST0)  edge [loop right] node[above,pos=0.2] {1/1} (ST0);
+		\path[->]  (ST1)  edge [loop left] node[above,pos=0.8] {1/1} (ST1);
+		\path[->]  (ST2)  edge [loop left] node[above,pos=0.8] {1/1} (ST2);
+		\path[->]  (ST3)  edge [loop right] node[below,pos=0.8] {1/1} (ST3);
+		\path[->]  (ST0) 	edge [bend left]    node {0/0} (ST1);
+		\path[->]  (ST1)  edge [bend left]    node (variables) {0/0} (ST2);
+		\path[->]  (ST2)  edge [bend left]    node {0/0} (ST3);
+		\path[->]  (ST3)  edge [bend left=75]    node {0/0} (ST0);
+		\path[->]  (S)  	edge [bend left] (variables);
+	\end{tikzpicture}
 \end{minipage}
 \end{leftbar}
 \noindent
@@ -619,14 +692,36 @@ end fsm;
 %%%%%% EXERCISE 2 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \textbf{EXERCISE 2.}
 Write a VHDL behavioral model that could be used to implement the state diagram as shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5.3cm]{fsm/sm_ex2.png}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.7cm]
+		%FSM states
+		\node[state] (ST0)      {10};
+  	\node[state]  (ST1) [below right = of ST0] {01};
+		\node[state]  (ST2) [below left = of ST0] {11};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above] node (helper) {\NOTT{X1}/\NOTT{Z}} (ST0);
+		\path[->]  (ST2)  edge [loop left]  node {X2/\NOTT{Z}} (ST2);
+		\path[->]  (ST0) 	edge [bend left=18]    node {X1/\NOTT{Z}} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]    node {X2/\NOTT{Z}} (ST2);
+		\path[->]  (ST1)  edge [bend left=18]    node {\NOTT{X2}/Z} (ST0);
+		\path[->]  (ST2)  edge [bend left=18]    node[pos=0.3] {\NOTT{X2}/Z} (ST0);
+
+		% additional tags
+		\node [right=1mm of ST0.north east] {(a)};
+		\node [right=1mm of ST1.north east] {(c)};
+		\node [right=1mm of ST2.north east] {(b)};
+
+		% legend
+		\node[state]  (legend) [left =of helper.north,font=\scriptsize] {Y1 Y0};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {legend:\\Z (output)\\ X1, X2 (inputs)};
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 3 %%%%%%
@@ -704,14 +799,35 @@ end my_fsmx;
 %%%%%% EXERCISE 4 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.25\textwidth}
 \textbf{EXERCISE 4.}
-Write the VHDL behavioral model code that could be used to implement the state diagram on shown in the right.
+Write the VHDL behavioral model code that could be used to implement the state diagram shown on the right.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5.7cm]{fsm/sm_ex4.png}
+\begin{minipage}[t]{0.74\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2.8cm,remember picture]
+		\newcommand{\bendAngle}{15}
+	
+		%FSM states
+		\node[state with output, initial, initial text=INIT] (ST0) {(a) \nodepart{lower} 0};
+		\node[state with output] (ST1) [below right= of ST0] {(b) \nodepart{lower} 1};
+		\node[state with output] (ST2) [below left= of ST0] {(c) \nodepart{lower} 1};
+
+		% FSM state changes/variables
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {X1/Z2} (ST1);
+		\path[->]  (ST1)  edge [bend left=\bendAngle]   node[below,anchor=east,pos=0.7] {X2/\NOTT{Z2}} (ST0);
+		\path[->]  (ST1)  edge [bend right=\bendAngle] 	node {\NOTT{X2}/Z2} (ST2);
+		\path[->]  (ST2)  edge [bend right=\bendAngle] 	node[below] {X1/Z2} (ST1);
+		\path[->]  (ST2)  edge [bend right=\bendAngle]   node[below=0.1cm,anchor=west,pos=0.4] {\NOTT{X1}/Z2} (ST0);
+		\path[->]  (ST0)  edge [bend right=\bendAngle]   node[above,anchor=east,pos=0.8] {\subnode{X1_ex4}{\NOTT{X1}}/\subnode{Z2_ex4}{\NOTT{Z2}}} (ST2);
+
+		% legend
+		\node[state with output]  (legend) [left =of ST0,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {\subnode{input_ex4}{input}/output\subnode{output_ex4}{(Z2)}};
+		\path[->] (input_ex4) edge [bend right] (X1_ex4);
+		\path[->] (output_ex4) edge [bend left] (Z2_ex4);
+	\end{tikzpicture} 
 \end{minipage}
 
 %%%%%% EXERCISE 5 %%%%%%
@@ -784,14 +900,36 @@ end my_fsm;
 %%%%%% EXERCISE 6 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.35\textwidth}
 	\textbf{EXERCISE 6.}
 	Write a VHDL behavioral model code that can be used to implement the state diagram shown on the right. All state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.49\textwidth}
+\begin{minipage}[t]{0.64\textwidth}
 	\vspace{0pt}\raggedright
 	\centering
-	\includegraphics[width=\textwidth]{fsm/sm_ex6.png}
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		\newcommand{\bendAngle}{20}
+	
+		%FSM states
+		\node[state with output] (ST0) {00 \nodepart{lower} 1};
+		\node[state with output] (ST1) [below= of ST0] {10 \nodepart{lower} 1};
+		\node[state with output] (ST2) [right= of ST0] {01 \nodepart{lower} 0};
+		\node[state with output] (ST3) [right= of ST1] {11 \nodepart{lower} 0};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above]  node {1/0} (ST0);
+		\path[->]  (ST2)  edge [loop above]  node {1/0} (ST2);
+		\path[->]  (ST0) 	edge [bend right=\bendAngle]  	node[left] {0/0} (ST1);
+		\path[->]  (ST1)  edge [bend right=\bendAngle]   node[right] {1/0} (ST0);
+		\path[->]  (ST1)  edge [bend right=\bendAngle] 	node[below,pos=0.3,anchor=north west] {0/0} (ST2);
+		\path[->]  (ST2) 	edge [bend left=\bendAngle]  	node {0/0} (ST3);
+		\path[->]  (ST3)  edge [bend left=\bendAngle]   node[right] {1/0} (ST2);
+		\path[->]  (ST3)  edge [bend right=\bendAngle]   node[right,pos=0.7,anchor=south west] {0/1} (ST0);
+
+		% legend
+		\node[state with output]  (legend) [left =of ST0.east,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(X)/output(Z2)};
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 7 %%%%%%
@@ -879,53 +1017,154 @@ end my_fsm;
 %%%%%% EXERCISE 8 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.3\textwidth}
 \textbf{EXERCISE 8.}
 Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5.3cm]{fsm/sm_ex8.png}
+\begin{minipage}[t]{0.69\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.3cm,remember picture]
+		\newcommand{\bendAngle}{20}
+	
+		%FSM states
+		\node[state with output] (ST0) {000 \nodepart{lower} 00};
+		\node[state with output] (ST1) [below= of ST0] {001 \nodepart{lower} 00};
+		\node[state with output] (ST2) [below= of ST1] {010 \nodepart{lower} 00};
+		\node[state with output] (ST3) [below= of ST2] {011 \nodepart{lower} 10};
+		\node[state with output] (ST4) [below= of ST3] {100 \nodepart{lower} 01};
+		\node[state with output] (ST5) [right=2cm of ST0] {101 \nodepart{lower} 11};
+		\node[state with output] (ST6) [below= of ST5] {110 \nodepart{lower} 11};
+		\node[state with output] (ST7) [below= of ST6] {111 \nodepart{lower} 11};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above]  node {0} (ST0);
+		\path[->]  (ST1)  edge [loop above]  node {0} (ST1);
+		\path[->]  (ST2)  edge [loop above]  node {0} (ST2);
+		\path[->]  (ST3)  edge [loop above]  node {0} (ST3);
+		\path[->]  (ST5)  edge [loop above]  node {0} (ST5);
+		\path[->]  (ST6)  edge [loop above]  node {0} (ST6);
+		\path[->]  (ST7)  edge [loop above]  node {0} (ST7);
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {1} (ST1);
+		\path[->]  (ST1)  edge [bend left=\bendAngle] 	node {1} (ST2);
+		\path[->]  (ST2) 	edge [bend left=\bendAngle]  	node {1} (ST3);
+		\path[->]  (ST3) 	edge [bend right=\bendAngle]  	node {1} (ST4);
+		\path[->]  (ST4) 	edge [bend left=0]  	node[pos=0.9] {1} (ST5);
+		\path[->]  (ST4) 	edge [bend left]  	node {0} (ST0);
+		\path[->]  (ST5) 	edge [bend left=\bendAngle]  	node (input_ex8) {1} (ST6);
+		\path[->]  (ST6) 	edge [bend left=\bendAngle]  	node {1} (ST7);
+		\path[->]  (ST7) 	edge [bend left=0]  	node[near end,above,anchor=south west] {1} (ST0);
+
+		% legend
+		\node[state with output]  (legend) [right =5mm of ST5,font=\scriptsize] {State \nodepart{lower} Z1 Z2};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(\subnode{X_ex8}{X})};
+		\path[->] (X_ex8) edge [bend left] (input_ex8);
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 9 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.35\textwidth}
 \textbf{EXERCISE 9.}
 Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=4.2cm]{fsm/sm_ex9.png}
+\begin{minipage}[t]{0.64\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1cm,remember picture]
+		\newcommand{\bendAngle}{20}
+	
+		%FSM states
+		\node[state with output] (ST0) {00 \nodepart{lower} 0};
+		\node[state with output] (ST1) [below= of ST0] {01 \nodepart{lower} 0};
+		\node[state with output] (ST2) [below= of ST1] {10 \nodepart{lower} 0};
+		\node[state with output] (ST3) [below= of ST2] {11 \nodepart{lower} 1};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above]  node {0/0} (ST0);
+		\path[->]  (ST3)  edge [loop below]  node {1/1} (ST3);
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {1/0} (ST1);
+		\path[->]  (ST1) 	edge [bend left=\bendAngle]  	node[pos=0.3] {0/0} (ST0);
+		\path[->]  (ST1)  edge [bend left=\bendAngle] 	node (XZ2_var_ex9) {1/0} (ST2);
+		\path[->]  (ST2) 	edge [bend left=\bendAngle]  	node {1/0} (ST3);
+		\path[->]  (ST2) 	edge [bend left=50]  	node[pos=0.2] {0/0} (ST0);
+		\path[->]  (ST3) 	edge [bend left=60]  	node[pos=0.2] {0/0} (ST0);
+
+		% legend
+		\node[state with output]  (legend) [right=1.5cm of ST0,font=\scriptsize] {State \nodepart{lower} Z1 Z2};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(X)\subnode{XZ2_ex9}{/}output(Z2)};
+		\path[->] (XZ2_ex9) edge [bend left] (XZ2_var_ex9);
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 10 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \textbf{EXERCISE 10.}
 Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=\textwidth]{fsm/sm_ex10.png}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.5cm]
+		%FSM states
+		\node[state] (ST0)      {100};
+  	\node[state]  (ST1) [below right = of ST0] {010};
+		\node[state]  (ST2) [below left = of ST0] {001};
+
+		% FSM state changes/variables
+		\path[->]  (ST0) 	edge [bend left=18]    node {-/Z} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]    node {X/\NOTT{Z}} (ST2);
+		\path[->]  (ST1)  edge [bend left=18]    node {X/\NOTT{Z}} (ST0);
+		\path[->]  (ST2)  edge [bend left=18]    node (XZvarex10) {-/Z} (ST0);
+
+		% additional tags
+		\node [right=1mm of ST0.north east] {(a)};
+		\node [right=1mm of ST1.north east] {(b)};
+		\node [right=1mm of ST2.north east] {(c)};
+
+		% legend
+		\node[state]  (legend) [left =of helper.north,font=\scriptsize] {Y1 Y2 Y3};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(X)/output(Z)};
+  	\draw[->] (S) -- (XZvarex10);
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 11 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \textbf{EXERCISE 11.}
 Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=\textwidth]{fsm/sm_ex11.png}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		%FSM states
+		\node[state] (ST0)      {001};
+  	\node[state]  (ST1) [below right = of ST0] {100};
+		\node[state]  (ST2) [below left = of ST0] {010};
+
+		% FSM state changes/variables
+		\path[->]  (ST1)  edge [loop below]  node {X2/Z} (ST1);
+		\path[->]  (ST2)  edge [loop below]  node {X1/\NOTT{Z}} (ST2);
+		\path[->]  (ST0) 	edge [bend right=18]    node[left] {X1/Z} (ST1);
+		\path[->]  (ST0)  edge [bend right=18]    node[left,pos=0.4] {\NOTT{X1}/Z} (ST2);
+		\path[->]  (ST1)  edge [bend right=18]    node[right,pos=0.3] {\NOTT{X2}/\NOTT{Z}} (ST0);
+		\path[->]  (ST2)  edge [bend right=18]    node[below] {\NOTT{X1}/\NOTT{Z}} (ST1);
+
+		% additional tags
+		\node [right=1mm of ST0.north east] {(a)};
+		\node [right=1mm of ST1.north east] {(c)};
+		\node [right=1mm of ST2.north east] {(b)};
+
+		% legend
+		\node[state]  (legend) [left =of helper.north,font=\scriptsize] {Y2 Y1 Y0};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {Z (output)\\ X1,X2 (outputs)};
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 12 %%%%%%
@@ -936,36 +1175,107 @@ Write the VHDL behavioral model code that can be used to implement the state dia
 Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
 \begin{minipage}[t]{1\textwidth}
-\vspace{10pt}
-\centering
-\includegraphics[width=11cm]{fsm/sm_ex12.png}
+	\vspace{10pt}
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm, remember picture]
+		%FSM states
+		\node[state with output] 	(ST0) {11 \nodepart{lower} 1};
+  	\node[state with output]  (ST1) [right = of ST0] {01 \nodepart{lower} 0};
+		\node[state with output]  (ST2) [right = of ST1] {00 \nodepart{lower} 1};
+
+		% legend
+		\node[state with output]  (legend) [left =of ST0,font=\scriptsize] {Y2 Y1 \nodepart{lower} Z2};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {inputs: X1, X2\\outputs: \subnode{Z1}{Z1}, Z2};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop left]   node (variables) {\NOTT{X1}/0} (ST0);
+		\path[->]  (ST2)  edge [loop below]  node {X2/1} (ST2);
+		\path[->]  (ST0) 	edge [bend left=18]   node {X1/1} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]   node {X2/0} (ST0);
+		\path[->]  (ST1)  edge [bend left=18]   node {\NOTT{X2}/1} (ST2);
+		\path[->]  (ST2)  edge [bend left=50]   node[left,pos=0.88] {\NOTT{X2}/\subnode{outputZ1}{0} } (ST0);
+		\path[->]  (Z1) 	edge [bend right=50] (outputZ1);
+
+		% additional tags
+		\node [above=0.5mm of ST0.north east] {(a)};
+		\node [above=0.5mm of ST1.north east] {(b)};
+		\node [above=0.5mm of ST2.north east] {(c)};
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 13 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.3\textwidth}
 \textbf{EXERCISE 13.}
 Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=\textwidth]{fsm/sm_ex13.png}
+\begin{minipage}[t]{0.69\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm,remember picture]
+		%FSM states
+		\node[state] (ST0)      {001};
+  	\node[state]  (ST1) [below right = of ST0] {010};
+		\node[state]  (ST2) [below left = of ST0] {100};
+
+		% FSM state changes/variables
+		\path[->]  (ST2)  edge [loop left]  node {X2/\NOTT{CS},RD} (ST2);
+		\path[->]  (ST0) 	edge [bend left=18]    	node {\NOTT{X1}/\NOTT{CS},RD} (ST1);
+		\path[->]  (ST0)  edge [bend right=18]    node[anchor=east] {\subnode{input}{X1}/\subnode{output}{CS,\NOTT{RD}}}  (ST2);
+		\path[->]  (ST2)  edge [bend right=18]  node[anchor=west] {\NOTT{X2}/\NOTT{CS},\NOTT{RD}}  (ST0);
+		\path[->]  (ST1)  edge [bend left=18]    node[below] {-/CS,RD} (ST2);
+
+		% additional tags
+		\node (helper) [above=1mm of ST0] {(a)};
+		\node [below=1mm of ST1] {(b)};
+		\node [below=1mm of ST2] {(c)};
+
+		% legend
+		\node[state]  (legend) [left =3cm of helper.north,font=\scriptsize] {Y3 Y2 Y1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {\subnode{inLabel}{input}/\subnode{outLabel}{outputs(CS,RD)}};
+		\path[->]  (inLabel)  edge [bend right]   (input);
+		\path[->]  (outLabel)  edge [bend left]  (output);
+	\end{tikzpicture}
 \end{minipage}
 
 %%%%%% EXERCISE 14 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}[t]{0.3\textwidth}
 \textbf{EXERCISE 14.}
 Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=\textwidth]{fsm/sm_ex14.png}
-\end{minipage}
+\begin{minipage}[t]{0.69\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=3cm, remember picture]
+		\newcommand{\bendAngle}{20}
+	
+		%FSM states
+		\node[state with output] (ST0) {001 \nodepart{lower} 0};
+		\node[state with output] (ST1) [below right= of ST0] {010 \nodepart{lower} 1};
+		\node[state with output] (ST2) [below left= of ST0] {100 \nodepart{lower} 1};
 
+		% FSM state changes/variables
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {X1/Z2} (ST1);
+		\path[->]  (ST1)  edge [bend left=\bendAngle]   node[anchor=east,pos=0.6] {X2/\NOTT{Z2}} (ST0);
+		\path[->]  (ST1)  edge [bend right=\bendAngle] 	node {\NOTT{X2}/Z2} (ST2);
+		\path[->]  (ST2)  edge [bend right=\bendAngle] 	node[below] {X1/Z2} (ST1);
+		\path[->]  (ST2)  edge [bend right=\bendAngle]   node[pos=0.7,anchor=east] {\NOTT{X1}/Z2} (ST0);
+		\path[->]  (ST0)  edge [bend right=\bendAngle]   node[pos=0.8,anchor=east] {\subnode{input14}{\NOTT{X1}}/\subnode{output14}{\NOTT{Z2}}} (ST2);
+
+		% additional tags
+		\node (helper) [above=1mm of ST0] {(a)};
+		\node [below=1mm of ST1] {(b)};
+		\node [below=1mm of ST2] {(c)};
+
+		% legend
+		\node[state with output]  (legend) [left =2cm of helper.north,font=\scriptsize] {Y3 Y2 Y1 \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {\subnode{inLabel14}{input}/\subnode{outLabel14}{output(Z2)}};
+		\path[->]  (inLabel14)  edge [bend right]   (input14);
+		\path[->]  (outLabel14)  edge [bend left]  (output14);
+	\end{tikzpicture}
+\end{minipage}
 
 

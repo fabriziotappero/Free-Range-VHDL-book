@@ -44,12 +44,15 @@
 
 % for drawing diagrams
 \usepackage{tikz}
-\usetikzlibrary{shapes.gates.logic.US,trees,positioning,arrows}
-\usetikzlibrary{calc}
-\usetikzlibrary{backgrounds}
+\usetikzlibrary{shapes.gates.logic.US,trees,positioning,arrows,calc,automata,tikzmark,backgrounds}
 %\tikzset{background rectangle/.style={fill=red!8, rounded corners}, tight background}
 \tikzset{background rectangle/.style={fill=white, rounded corners}, tight background}
 \tikzset{every node/.style={font=\sffamily\footnotesize}} % font size in all drawings
+
+% for formulae using NOT
+\newcommand{\NOT}[1]{$\overline{#1}$}
+\newcommand{\NOTT}[1]{$\overline{\mbox{#1}}$}
+
 
 % including PDFs
 \usepackage{pdfpages}
