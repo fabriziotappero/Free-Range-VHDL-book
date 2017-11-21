@@ -118,7 +118,7 @@ Obviously it is possible to define more complex data structures. For instance it
 \begin{lstlisting}
 
 -- typical custom data type for a 20-byte ROM
-type memory is array (0 to 19 of std_logic_vector(7 downto 0);
+type memory is array (0 to 19) of std_logic_vector(7 downto 0);
 constant my_rom : memory := (
         1 => "11111111"
         2 => "11110111"

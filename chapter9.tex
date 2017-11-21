@@ -291,7 +291,7 @@ x5: some_component port map (CLK => CLK,
 \section{Generic Map}
 As we have seen in the previous section, the use of the keyword \texttt{component} allows us to declare a VHDL module for further instantiation.
 
-Often it is desirable to write code that is generic. For instance a routine that perform a certain task on an input array of a generic size. Let us suppose that we want to implement a piece of code of a parity check routine that returns \texttt{'1'} when the input N-size array is an even number and \texttt{'0'} when the input N-size array is an odd number. The Listing~\ref{gen_parity_check} shows such an implementation.
+Often it is desirable to write code that is generic. For instance a routine that performs a certain task on an input array of a generic size. Let us suppose that we want to implement a piece of code of a parity check routine that returns \texttt{'1'} when the input N-size array is an even number and \texttt{'0'} when the input N-size array is an odd number. The Listing~\ref{gen_parity_check} shows such an implementation.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
@@ -321,7 +321,7 @@ end arch;
 \end{lstlisting}
 \end{minipage}
 
-Listing~\ref{gen_map} shows how the code above can be declared and instantiated in your own code via the already see \texttt{component} method. Specifically, In Listing~\ref{gen_map} the above generic parity check module is used to create a 4-bit parity check module.
+Listing~\ref{gen_map} shows how the code above can be declared and instantiated in your own code via the already seen \texttt{component} method. Specifically, in Listing~\ref{gen_map} the above generic parity check module is used to create a 4-bit parity check module.
 
 To achieve the mentioned modularity the keyword \texttt{generic} was used inside the \texttt{entity} field in the code above and again inside the \texttt{component} field during its declaration in the code below. The \texttt{generic} field is used to allow you to control all generic variables.
 
