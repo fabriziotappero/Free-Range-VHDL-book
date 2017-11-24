@@ -9,7 +9,7 @@
 \chapter{VHDL Programming Paradigm}
 The previous chapter introduced the idea of the basic design units of VHDL: the entity and the architecture. Most of the time was spent describing the entity simply because there is so much less involved compared to the architecture. Remember, the entity declaration is used to describe the interface of a circuit to the outside world. The architecture is used to describe how the circuit is intended to function.
 
-Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realizing this is very important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is a not a good idea. 
+Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realizing this is very important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is not a good idea. 
 
 When viewed correctly, VHDL represents a completely different approach to programming while still having many similarities to other programming languages. The main similarity is that they both use a syntactical and rule-based language to describe something abstract. But, the difference is that they are describing two different things. Most programming languages are used to implement functionalities in a sequential manner, one instruction at a time. VHDL however describes hardware and so instructions are executed in a concurrent manner\footnote{In VHDL, there are ways to obtain sequential execution as well.}, meaning that all instructions are executed at once. Realizing this fact will help you to truly understand the VHDL programming paradigm and language.
 
@@ -354,7 +354,7 @@ Remember, a conditional signal assignment is a type of concurrent statement. In 
 
 \begin{lstlisting}[float, label=example_4_bis, caption=Alternative solution to Example~4 accessing individual signals.]
 -----------------------------------------------------------------
--- entity and architecture of 4:1 Multiplexor implemented using
+-- entity and architecture of 4:1 Multiplexer implemented using
 -- conditional signal assignment. The conditions access the
 -- individual signals of the SEL bundle in this model.
 -----------------------------------------------------------------
@@ -456,7 +456,7 @@ Once again, there are a few things of interest in the solution for Example~6 whi
 
 \begin{leftbar}
 \noindent
-\textbf{EXAMPLE 7.} Write the VHDL code that implements the following circuit. The circuit contains an input bundle of four signals and an output bundle of three signals. The input bundle, D\_IN, represents a 4-bit binary number. The output bus, SZ\_OUT, is used to indicate the magnitude of the 4-bit binary input number. The relationship between the input and output is shown in the table below. Use a selected signal assignment statement in the solution.
+\textbf{EXAMPLE 7.} Write the VHDL code that implements the following circuit. The circuit contains an input bundle of four signals and an output bundle of three signals. The input bundle, D\_IN, represents a 4-bit binary number. The output bundle, SZ\_OUT, is used to indicate the magnitude of the 4-bit binary input number. The relationship between the input and output is shown in the table below. Use a selected signal assignment statement in the solution.
 
 \centering\vspace{5pt}
 \begin{tabular}{c*{2}{c}r}
@@ -515,7 +515,7 @@ end spec_dec;
 
 The only comment for the solution of Example~7 is that the vertical bar is used as a selection character in the choices section of the selected signal assignment statement. This increases the readability of the code as do the similar constructs in algorithmic programming languages.
 
-Once again, the selected signal assignment statement is one form of a concurrent statement. This is verified by the fact that there is only one signal assignment statement in the body of the selected signal assignment statement. The selected signal assignment statement is evaluated each time there is a change in the \textit{chooser\_expression} listed in the first line of the selected signal assignment statement. Re-evaluation also occurs any time there is a change in a conditional signal on the right-hand side of the signal assignment operator.
+Once again, the selected signal assignment statement is one form of a concurrent statement. This is verified by the fact that there is only one signal assignment statement in the body of the selected signal assignment statement. The selected signal assignment statement is evaluated each time there is a change in the \textit{chooser\_expression} listed in the first line of the selected signal assignment statement. Re-evaluation also occurs every time there is a change in a conditional signal on the right-hand side of the signal assignment operator.
 
 The final comment regarding the selected signal assignment is similar to the final comment regarding conditional signal assignment. You should recognize the general form of the selected signal assignment statement as being similar to the \textit{switch} statements in algorithmic programming languages such as C and Java. Once again, this relationship is examined in much more depth once we are ready to talk about sequential statements.
 
@@ -525,7 +525,7 @@ The final comment regarding the selected signal assignment is similar to the fin
 Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$.
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$ and its Karnaugh map is shown below. The solution of Example~8 in shown in Listing~\ref{example_8}.\\
+\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$ and its Karnaugh map is shown below. The solution of Example~8 is shown in Listing~\ref{example_8}.\\
 \vspace{5pt}
 
 \noindent
