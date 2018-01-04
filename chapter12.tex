@@ -1,15 +1,15 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: Feb, 2013
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
 \chapter{Looping Constructs}
-As the circuits you are required to design become more and more complex, you will find yourself searching for more functionality and versatility from VHDL. You will probably find what you are looking for in various looping constructs which are yet another form of VHDL statement. This chapter provides descriptions of several types of looping constructs and some details regarding their use. 
+As the circuits you are required to design become more and more complex, you will find yourself searching for more functionality and versatility from VHDL. You will probably find what you are looking for in various looping constructs which are yet another form of VHDL statement. This chapter provides descriptions of several types of looping constructs and some details regarding their use.
 
-There are two types of loops in VHDL: \texttt{for} loops and \texttt{while} loops. The names of these loops should seem familiar from your experience with higher-level computer programming languages. Generally speaking, you can leverage your previous experience with these loop types when describing the behavior of digital circuits. The comforting part is that since these two types of loops are both sequential statements, they can only appear inside processes. You will also be able to apply to the circuits you will be describing using VHDL the algorithmic thinking and designing skills you developed in coding with higher-level computer languages. The syntax is slightly different but the basic structured programming concepts are the same. 
+There are two types of loops in VHDL: \texttt{for} loops and \texttt{while} loops. The names of these loops should seem familiar from your experience with higher-level computer programming languages. Generally speaking, you can leverage your previous experience with these loop types when describing the behavior of digital circuits. The comforting part is that since these two types of loops are both sequential statements, they can only appear inside processes. You will also be able to apply to the circuits you will be describing using VHDL the algorithmic thinking and designing skills you developed in coding with higher-level computer languages. The syntax is slightly different but the basic structured programming concepts are the same.
 
 \section{\texttt{for} and \texttt{while} Loops}
 The purpose of a loop construct is to allow some coding instructions to happen iteratively (over and over again). These two types of loops of course share this functionality. As you probably remember from higher-level language programming, the syntax of the language is such that you can use either type of loop in any given situation by some modification of the code. The same is true in VHDL. But although you can be clever in the way you design your VHDL code, the best approach is to make the code readable and understandable. Keeping this concept in mind lets us see the functional differences between \texttt{for} and \texttt{while} loops. This basic difference can be best highlighted by examining the code provided in Listing~\ref{for_while_code}.
@@ -24,9 +24,9 @@ end loop my_label;					|  end loop my_label;
 \end{lstlisting}
 \end{minipage}
 
-The major difference between these two loops lies in the number of iterations the loops will perform. This difference can be classified as under what conditions the circuit will terminate its iterations. If you know the number of iterations the loop requires, you should use a \texttt{for} loop. As you will see in the examples that follow, the \texttt{for} loop allows you to explicitly state the number of iterations that the loop performs. 
+The major difference between these two loops lies in the number of iterations the loops will perform. This difference can be classified as under what conditions the circuit will terminate its iterations. If you know the number of iterations the loop requires, you should use a \texttt{for} loop. As you will see in the examples that follow, the \texttt{for} loop allows you to explicitly state the number of iterations that the loop performs.
 
-The \texttt{while} loop should be used when you do not know the number of iterations the loop needs to perform. In this case, the loop stops iterating when the terms stated in the condition clause are not met. Using these loops in this manner constitutes a good programming practice. The loop labels are listed in italics to indicate that they are optional. These labels should be always used to clarify the associated VHDL code. Use of loop labels is an especially good idea when nested loops are used and when loop control statements are applied. 
+The \texttt{while} loop should be used when you do not know the number of iterations the loop needs to perform. In this case, the loop stops iterating when the terms stated in the condition clause are not met. Using these loops in this manner constitutes a good programming practice. The loop labels are listed in italics to indicate that they are optional. These labels should be always used to clarify the associated VHDL code. Use of loop labels is an especially good idea when nested loops are used and when loop control statements are applied.
 
 \subsection{\texttt{for} Loops}
 The basic form of the \texttt{for} loop was shown in Listing~\ref{for_while_code}. This loop uses some type of index value to iterate through a range of discrete values. There are two options that can be applied as to the range of discrete values: 1) the range can be specified in the \texttt{for} loop statement or 2) the loop can use a previously declared range. Hereafter you find  an example.
@@ -40,17 +40,17 @@ The basic form of the \texttt{for} loop was shown in Listing~\ref{for_while_code
 
 for cnt_val in 0 to 24 loop
    -- sequential_statements
-end loop; 
+end loop;
 \end{lstlisting}
 \end{minipage}
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
 
-type my_range is range 0 to 24; 
+type my_range is range 0 to 24;
 --
 for cnt_val in my_range loop
    -- sequential_statements
-end loop; 
+end loop;
 \end{lstlisting}
 \end{minipage}
 
@@ -62,13 +62,13 @@ end loop;
 
 for cnt_val in 24 downto 0 loop
    -- sequential_statements
-end loop; 
+end loop;
 \end{lstlisting}
 \end{minipage}
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
 
-type my_range is range 24 downto 0; 
+type my_range is range 24 downto 0;
 --
 for cnt_val in my_range loop
    -- sequential_statements
@@ -76,23 +76,23 @@ end loop
 \end{lstlisting}
 \end{minipage}
 
-The index variable used in the \texttt{for} loop contains some strange qualities which are listed below. Although your VHDL synthesizer should be able to flag these errors, you should still keep these in mind when you use a \texttt{for} loop and you will save yourself a bunch of debugging time. Also note that the loop body has been indented to make the code more readable. Enhanced readability of the code is always a good thing. 
+The index variable used in the \texttt{for} loop contains some strange qualities which are listed below. Although your VHDL synthesizer should be able to flag these errors, you should still keep these in mind when you use a \texttt{for} loop and you will save yourself a bunch of debugging time. Also note that the loop body has been indented to make the code more readable. Enhanced readability of the code is always a good thing.
 \begin{my_list}
-\item The index variable does not need to be declared, it is in fact done implicitly. 
+\item The index variable does not need to be declared, it is in fact done implicitly.
 
-\item Assignments cannot be made to the index variable. The index variable can, however, be used in calculations within the loop body. 
+\item Assignments cannot be made to the index variable. The index variable can, however, be used in calculations within the loop body.
 
-\item The index variable can only step through the loop in increments of one. 
+\item The index variable can only step through the loop in increments of one.
 
-\item The identifier used for the index variable can be the same as another variable or signal; no name collisions will occur. The index variable will effectively hide identifiers with the same name inside the body of the loop. Using the same identifier for two different values constitutes bad programming practice and should be avoided. 
+\item The identifier used for the index variable can be the same as another variable or signal; no name collisions will occur. The index variable will effectively hide identifiers with the same name inside the body of the loop. Using the same identifier for two different values constitutes bad programming practice and should be avoided.
 
 \item The specified range for the index (when specified outside of the loop declaration) can be of any enumerated type.
 \end{my_list}
 
-And lastly, as shown in the previous listing, \texttt{for} loops can also be implemented using the \texttt{downto} option. This option makes more sense when the range is specified in the \texttt{for} loop declaration. 
+And lastly, as shown in the previous listing, \texttt{for} loops can also be implemented using the \texttt{downto} option. This option makes more sense when the range is specified in the \texttt{for} loop declaration.
 
 \subsection{\texttt{while} Loops}
-\texttt{while} loops are somewhat simpler than \texttt{for} loops due to the fact that they do not contain an index variable. The major difference between the \texttt{for} and \texttt{while} loops is that the \texttt{for} loop declaration contains a built-in loop termination criteria. The first thing you should remember about \texttt{while} loops is that the associated code should contain some way of exiting the loop. Examples of \texttt{while} loops are shown in the following listing. Needless to say that the VHDL code appearing in the next listing on the right should have been made with a \texttt{for} loop instead of a \texttt{while} loop because the number of iterations is actually known. 
+\texttt{while} loops are somewhat simpler than \texttt{for} loops due to the fact that they do not contain an index variable. The major difference between the \texttt{for} and \texttt{while} loops is that the \texttt{for} loop declaration contains a built-in loop termination criteria. The first thing you should remember about \texttt{while} loops is that the associated code should contain some way of exiting the loop. Examples of \texttt{while} loops are shown in the following listing. Needless to say that the VHDL code appearing in the next listing on the right should have been made with a \texttt{for} loop instead of a \texttt{while} loop because the number of iterations is actually known.
 
 \vspace{10pt}
 \noindent
@@ -114,22 +114,22 @@ end loop;
 \begin{minipage}{0.49\linewidth}
 \begin{lstlisting}
 
-constant max_num : integer := 10; 
-variable fib_sum : integer := 1; 
-variable tmp_sum : integer := 0; 
-variable int_cnt : integer := 0; 
+constant max_num : integer := 10;
+variable fib_sum : integer := 1;
+variable tmp_sum : integer := 0;
+variable int_cnt : integer := 0;
 
 while (int_cnt < max_num) loop
-   fib_sum := fib_sum + tmp_sum; 
-   tmp_sum := fib_sum; 
-   int_cnt := int_cnt + 1; 
+   fib_sum := fib_sum + tmp_sum;
+   tmp_sum := fib_sum;
+   int_cnt := int_cnt + 1;
 end loop;
 \end{lstlisting}
 \end{minipage}
 
 \subsection{Loop Control: \texttt{next} and \texttt{exit} Statements}
 
-Similarly to higher-level computer languages, VHDL provides some extra loop control options. These options include the \texttt{next} statement and the \texttt{exit} statement. These statements are similar to their counterparts in higher-level languages in the control they can exert over loops. These two loop-control constructs are available for use in either the \texttt{for} or the \texttt{while} loop. 
+Similarly to higher-level computer languages, VHDL provides some extra loop control options. These options include the \texttt{next} statement and the \texttt{exit} statement. These statements are similar to their counterparts in higher-level languages in the control they can exert over loops. These two loop-control constructs are available for use in either the \texttt{for} or the \texttt{while} loop.
 
 \subsubsection{\texttt{next} Statement}
 The next statement allows for the loop to bypass the remaining statements within the body of the loop and start immediately at the next iteration. In \texttt{for} loops, the index variable is incremented automatically before the start of the upcoming iteration. In \texttt{while} loops, it is up to the programmer to ensure that the loop operates properly when the next statement is used. There are two forms of the \texttt{next} statement and both forms are shown in the next listing. These are two examples that use the \texttt{next} statement and do not necessarily represent a good programming practice nor really contain meaningful code.
@@ -139,13 +139,13 @@ The next statement allows for the loop to bypass the remaining statements within
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
 
-variable my_sum : integer := 0; 
+variable my_sum : integer := 0;
 --
 for cnt_val in 0 to 50 loop
-   if (my_sum = 20) then 
-      next; 
-   end if; 
-   my_sum := my_sum + 1; 
+   if (my_sum = 20) then
+      next;
+   end if;
+   my_sum := my_sum + 1;
 end loop;
 \end{lstlisting}
 \end{minipage}
@@ -153,12 +153,12 @@ end loop;
 \begin{minipage}{0.49\linewidth}
 \begin{lstlisting}
 
-variable my_sum : integer := 0; 
+variable my_sum : integer := 0;
 --
 while (my_sum < 300) loop
-   next when (my_sum = 20); 
-   my_sum := my_sum + 1; 
-end loop; 
+   next when (my_sum = 20);
+   my_sum := my_sum + 1;
+end loop;
 --
 --
 \end{lstlisting}
@@ -172,29 +172,27 @@ The \texttt{exit} statement allows for the immediate termination of the loop and
 \begin{minipage}{0.5\linewidth}
 \begin{lstlisting}
 
-variable my_sum : integer := 0; 
+variable my_sum : integer := 0;
 --
 for cnt_val in 0 to 50 loop
-   if (my_sum = 20) then 
-      exit; 
-   end if; 
-   my_sum := my_sum + 1; 
-end loop; 
+   if (my_sum = 20) then
+      exit;
+   end if;
+   my_sum := my_sum + 1;
+end loop;
 \end{lstlisting}
 \end{minipage}
 \noindent
 \begin{minipage}{0.49\linewidth}
 \begin{lstlisting}
 
-variable my_sum : integer := 0; 
+variable my_sum : integer := 0;
 --
 while (my_sum < 300) loop
-   exit when (my_sum = 20); 
-   my_sum := my_sum + 1; 
-end loop; 
+   exit when (my_sum = 20);
+   my_sum := my_sum + 1;
+end loop;
 --
 --
 \end{lstlisting}
-\end{minipage} 
-
-
+\end{minipage}

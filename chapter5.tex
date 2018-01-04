@@ -1,8 +1,8 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2012 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -14,7 +14,7 @@ There are three different approaches to writing VHDL architectures. These approa
 The reason we choose to slip the discussion of the different architectures at this point is that you already have some familiarity with one of the styles. Up to this point, all of our circuits have been implemented using the data-flow style. We are now at the point of talking about the behavioral style of architectures which is primarily centered around another concurrent statement known as the process statement. If it seems confusing, some of the confusion should go away once we start dealing with actual circuits and real VHDL code.
 
 \section{Data-flow Style Architecture}
-A data-flow style architecture specifies a circuit as a concurrent representation of the flow of data through the circuit. In the data-flow approach, circuits are described by showing the input and output relationships between the various built-in components of the VHDL language. The built-in components of VHDL include operators such as AND, OR, XOR, etc. The three forms of concurrent statements we have talked about up until now (concurrent signal assignment, conditional signal assignment and selected signal assignment) are all statements that are found in data-flow style architectures. In other words, if you exclusively used concurrent, conditional and selected signal assignment statement in your VHDL models, you have used a data-flow model. If you were to re-examine some of the examples we have done so far, you can in fact sort of see how the data flows through the circuit. To put this in other words, if you have a working knowledge of digital logic, it is fairly straightforward to imagine the underlying circuitry in terms of standard logic gates. These signal assignment statements effectively describe how the data flows from the signals on the right-hand side of the assignment operator (the ``{\footnotesize$<=$}'') to the signal on the left-hand side of the operator. 
+A data-flow style architecture specifies a circuit as a concurrent representation of the flow of data through the circuit. In the data-flow approach, circuits are described by showing the input and output relationships between the various built-in components of the VHDL language. The built-in components of VHDL include operators such as AND, OR, XOR, etc. The three forms of concurrent statements we have talked about up until now (concurrent signal assignment, conditional signal assignment and selected signal assignment) are all statements that are found in data-flow style architectures. In other words, if you exclusively used concurrent, conditional and selected signal assignment statement in your VHDL models, you have used a data-flow model. If you were to re-examine some of the examples we have done so far, you can in fact sort of see how the data flows through the circuit. To put this in other words, if you have a working knowledge of digital logic, it is fairly straightforward to imagine the underlying circuitry in terms of standard logic gates. These signal assignment statements effectively describe how the data flows from the signals on the right-hand side of the assignment operator (the ``{\footnotesize$<=$}'') to the signal on the left-hand side of the operator.
 
 The data-flow style of architecture has its strong points and weak points. It is good that you can see the flow of data in the circuit by examining the VHDL code. The data-flow models also allow you to make an intelligent guess as to how the actual logic will appear when you decide to synthesize the circuit. Data-flow modeling works fine for small and relatively simple circuits. But as circuits become more complicated, it is often advantageous to switch to behavioral style models.
 
@@ -24,7 +24,7 @@ In comparison to the data-flow style architecture, the behavioral style architec
 The heart of the behavioral style architecture is the \textit{process statement}. This is the fourth type of concurrent statement that we will work with. As you will see, the process statement is significantly different from the other three concurrent statements in several ways. The major difference lies in the process statement's approach to concurrency, which is the major sticking point when you deal with this new concurrent statement.
 
 \section{Process Statement}
-The process statement itself is a concurrent statement identified by its label, its sensitivity list, a declaration area and a begin-end area containing instructions executed sequentially. An example of the process statement is shown in Listing~\ref{process_statement}. 
+The process statement itself is a concurrent statement identified by its label, its sensitivity list, a declaration area and a begin-end area containing instructions executed sequentially. An example of the process statement is shown in Listing~\ref{process_statement}.
 
 The main point to remember about the process statement is that its body is constituted of sequential statements. The main difference between concurrent signal assignment statements and process statements lies with these sequential statements. But once again, let us stick to the similarities before we dive into the differences. The process label, listed in Listing~\ref{process_statement} is optional but should always be included to promote the self-description of your VHDL code.
 
@@ -37,9 +37,9 @@ begin
 end process my_label;
 \end{lstlisting}
 
-Listings~\ref{process_statement_compl_1} and \ref{process_statement_compl_2} show a data-flow architecture and a behavioral style architecture for the same XOR entity. The main difference between the two architectures is the presence of the process statement in the listed code. 
+Listings~\ref{process_statement_compl_1} and \ref{process_statement_compl_2} show a data-flow architecture and a behavioral style architecture for the same XOR entity. The main difference between the two architectures is the presence of the process statement in the listed code.
 
-Let us remember that the concurrent signal assignment statement in the data-flow description operates as follows. Since it is a concurrent statement, every time there is a change in any of the signals listed on the right-hand side of the signal assignment operator, the signal on the left-hand side of the operator is re-evaluated. For the behavioral architecture description, every time there is a change in signals in the process sensitivity list, all of the sequential statements in the process are re-evaluated. Evaluation of the process statement is controlled by the signals that are placed in the process sensitivity list. These two approaches are effectively the same except the syntax is significantly different. 
+Let us remember that the concurrent signal assignment statement in the data-flow description operates as follows. Since it is a concurrent statement, every time there is a change in any of the signals listed on the right-hand side of the signal assignment operator, the signal on the left-hand side of the operator is re-evaluated. For the behavioral architecture description, every time there is a change in signals in the process sensitivity list, all of the sequential statements in the process are re-evaluated. Evaluation of the process statement is controlled by the signals that are placed in the process sensitivity list. These two approaches are effectively the same except the syntax is significantly different.
 
 So here is where it gets strange. Even though both of the architectures listed in \ref{process_statement_compl_1} and \ref{process_statement_compl_2} have the exact same signal assignment statement (\texttt{F $<=$ A XOR B;}), execution of the statement in the behavioral style architecture is controlled by which signals appear in the \textit{process sensitivity list}. The statement appearing in the data-flow model is re-evaluated every time there is a change in signal A or in the signal B. This is a functional difference rather than a cosmetic difference.
 
@@ -113,7 +113,7 @@ begin
             F <= A1 or B;
 		end if;
 	end process some_proc;
-	-- we are outside the process body	
+	-- we are outside the process body
 	Q <= not A;
 end behav;
 \end{lstlisting}
@@ -121,11 +121,11 @@ end behav;
 \section{Sequential Statements}
 Now that we have the process statement at our disposal, we have a way to execute some code in a sequential manner.
 
-Within a process, the execution of the sequential statements is initiated when a change in the signal contained in the process sensitivity list occurs. Generally speaking, execution of statements within the process body continues until the end of the process body is reached. The strangeness evokes a philosophical dilemma: the process statement is a concurrent statement yet it is made of sequential statements. This is actually a tough concept to grasp. After years of contemplation, I am only starting to grasp the reality of this strange contradiction. 
+Within a process, the execution of the sequential statements is initiated when a change in the signal contained in the process sensitivity list occurs. Generally speaking, execution of statements within the process body continues until the end of the process body is reached. The strangeness evokes a philosophical dilemma: the process statement is a concurrent statement yet it is made of sequential statements. This is actually a tough concept to grasp. After years of contemplation, I am only starting to grasp the reality of this strange contradiction.
 
 The key to understand sequential evaluation of statements occurring in a concurrent statement remains hidden in the interpretation of VHDL code by the synthesizer. And since the ins and outs of this interpretation are not always readily apparent, some implementation details must be taken for granted until the time comes when you really need to fully understand the process. The solution is to keep your process statements as simple as possible. The tendency is to use the process statement as a repository for a bunch of loosely-related sequential statements. Although syntactically correct, the code is not intelligible (understandable) in the context of digital circuit generation. You should strive to keep your process statements simple. Divide up your intended functionality into several process statements that communicate with each other rather than one giant, complicated, bizarre process statement. Remember, process statements are concurrent statements: they all can be executed concurrently. Try to take advantage of this feature in order to simplify your circuit descriptions.
 
-There are three types of sequential statements that we will be discussing. The first one is the \textbf{signal assignment statement}: 
+There are three types of sequential statements that we will be discussing. The first one is the \textbf{signal assignment statement}:
 the ``{\footnotesize$<=$}''. We will not say too much about the first type though because we have already been dealing with its analogue in the data-flow models. The other two types of statements are the \textbf{if statement} and the \textbf{case statement}. The nice part about all of these statements is that you have worked with them before in algorithmic programming languages. The structure and function of the VHDL \texttt{if} and \texttt{case} statements is strikingly similar. Keep this in mind when you read the descriptions that follow.
 
 \subsection{Signal Assignment Statement}
@@ -161,7 +161,7 @@ Let us see now some examples that will help us to better understand how to use t
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 9.}
-Write some VHDL code  using an \texttt{if} statement that implements the following logic function: 
+Write some VHDL code  using an \texttt{if} statement that implements the following logic function:
 $F\_OUT(A,B,C)=A\overline{B}~\!\overline{C}+BC$
 \end{leftbar}
 \noindent
@@ -255,25 +255,25 @@ use IEEE.std_logic_1164.all;
 entity mux_8t1 is
     port ( Data_in : in  std_logic_vector (7 downto 0);
                SEL : in  std_logic_vector (2 downto 0);
-            F_CTRL : out std_logic);  
+            F_CTRL : out std_logic);
 end mux_8t1;
 -- architecture
-architecture mux_8t1_arc of mux_8t1 is 
+architecture mux_8t1_arc of mux_8t1 is
 begin
    my_mux: process (Data_in,SEL)
    begin
-      if    (SEL = "111") then F_CTRL <= Data_in(7); 
-      elsif (SEL = "110") then F_CTRL <= Data_in(6); 
-      elsif (SEL = "101") then F_CTRL <= Data_in(5); 
-      elsif (SEL = "100") then F_CTRL <= Data_in(4); 
-      elsif (SEL = "011") then F_CTRL <= Data_in(3); 
-      elsif (SEL = "010") then F_CTRL <= Data_in(2); 
-      elsif (SEL = "001") then F_CTRL <= Data_in(1); 
-      elsif (SEL = "000") then F_CTRL <= Data_in(0); 
-      else  F_CTRL <= '0'; 
-      end if;    
-   end process my_mux; 
-end mux_8t1_arc; 
+      if    (SEL = "111") then F_CTRL <= Data_in(7);
+      elsif (SEL = "110") then F_CTRL <= Data_in(6);
+      elsif (SEL = "101") then F_CTRL <= Data_in(5);
+      elsif (SEL = "100") then F_CTRL <= Data_in(4);
+      elsif (SEL = "011") then F_CTRL <= Data_in(3);
+      elsif (SEL = "010") then F_CTRL <= Data_in(2);
+      elsif (SEL = "001") then F_CTRL <= Data_in(1);
+      elsif (SEL = "000") then F_CTRL <= Data_in(0);
+      else  F_CTRL <= '0';
+      end if;
+   end process my_mux;
+end mux_8t1_arc;
 \end{lstlisting}
 \end{minipage}
 
@@ -321,29 +321,29 @@ entity mux_8to1_ce is
     port ( Data_in : in  std_logic_vector (7 downto 0);
                SEL : in  std_logic_vector (2 downto 0);
                 CE : in  std_logic;
-            F_CTRL : out std_logic);  
+            F_CTRL : out std_logic);
 end mux_8to1_ce;
 -- architecture
-architecture mux_8to1_ce_arch of mux_8to1_ce is 
+architecture mux_8to1_ce_arch of mux_8to1_ce is
 begin
    my_mux: process (Data_in,SEL,CE)
    begin
-      if (CE = '0') then 
-          F_CTRL <= '0'; 
-      else 
-         if    (SEL = "111") then F_CTRL <= Data_in(7); 
-         elsif (SEL = "110") then F_CTRL <= Data_in(6); 
-         elsif (SEL = "101") then F_CTRL <= Data_in(5); 
-         elsif (SEL = "100") then F_CTRL <= Data_in(4); 
-         elsif (SEL = "011") then F_CTRL <= Data_in(3); 
-         elsif (SEL = "010") then F_CTRL <= Data_in(2); 
-         elsif (SEL = "001") then F_CTRL <= Data_in(1); 
-         elsif (SEL = "000") then F_CTRL <= Data_in(0); 
-         else  F_CTRL <= '0'; 
-         end if; 
-      end if; 
-   end process my_mux; 
-end mux_8to1_ce_arch; 
+      if (CE = '0') then
+          F_CTRL <= '0';
+      else
+         if    (SEL = "111") then F_CTRL <= Data_in(7);
+         elsif (SEL = "110") then F_CTRL <= Data_in(6);
+         elsif (SEL = "101") then F_CTRL <= Data_in(5);
+         elsif (SEL = "100") then F_CTRL <= Data_in(4);
+         elsif (SEL = "011") then F_CTRL <= Data_in(3);
+         elsif (SEL = "010") then F_CTRL <= Data_in(2);
+         elsif (SEL = "001") then F_CTRL <= Data_in(1);
+         elsif (SEL = "000") then F_CTRL <= Data_in(0);
+         else  F_CTRL <= '0';
+         end if;
+      end if;
+   end process my_mux;
+end mux_8to1_ce_arch;
 \end{lstlisting}
 \end{minipage}
 
@@ -475,29 +475,29 @@ entity mux_8to1_ce is
     port ( Data_in : in  std_logic_vector (7 downto 0);
                SEL : in  std_logic_vector (2 downto 0);
                 CE : in  std_logic;
-            F_CTRL : out std_logic);  
+            F_CTRL : out std_logic);
 end mux_8to1_ce;
 -- architecture
-architecture my_case_ex of mux_8to1_ce is 
+architecture my_case_ex of mux_8to1_ce is
 begin
    my_mux: process (SEL,Data_in,CE)
    begin
-      if (CE = '1') then 
-         case (SEL) is 
-            when "000"  =>  F_CTRL <= Data_in(0); 
-            when "001"  =>  F_CTRL <= Data_in(1); 
-            when "010"  =>  F_CTRL <= Data_in(2); 
-            when "011"  =>  F_CTRL <= Data_in(3); 
-            when "100"  =>  F_CTRL <= Data_in(4); 
-            when "101"  =>  F_CTRL <= Data_in(5); 
-            when "110"  =>  F_CTRL <= Data_in(6); 
-            when "111"  =>  F_CTRL <= Data_in(7); 
-            when others => F_CTRL <= '0'; 
-         end case; 
+      if (CE = '1') then
+         case (SEL) is
+            when "000"  =>  F_CTRL <= Data_in(0);
+            when "001"  =>  F_CTRL <= Data_in(1);
+            when "010"  =>  F_CTRL <= Data_in(2);
+            when "011"  =>  F_CTRL <= Data_in(3);
+            when "100"  =>  F_CTRL <= Data_in(4);
+            when "101"  =>  F_CTRL <= Data_in(5);
+            when "110"  =>  F_CTRL <= Data_in(6);
+            when "111"  =>  F_CTRL <= Data_in(7);
+            when others => F_CTRL <= '0';
+         end case;
       else
-          F_CTRL <= '0'; 
-      end if; 
-   end process my_mux; 
+          F_CTRL <= '0';
+      end if;
+   end process my_mux;
 end my_case_ex;
 \end{lstlisting}
 \end{minipage}
@@ -507,7 +507,7 @@ One very important point in the solution to Example~13 is the fact that a \textt
 \section{Caveats Regarding Sequential Statements}
 As you begin to work with sequential statements, you tend to start getting the feeling that you are doing algorithmic programming using a higher-level language. This is due to the fact that sequential statements have a similar look and feel to some of the programming constructs in higher-level languages. The bad part of this tendency is when and if your VHDL coding approach becomes similar to that of the higher-level language. Since this happens very often with people who are learning VHDL, it is appropriate to remind once again that \textbf{VHDL is not programming: VHDL is hardware design}. You are, generally speaking, not implementing algorithms in VHDL, you are describing hardware: this is a totally different paradigm.
 
-It is not uncommon to see many, not so good, pieces of VHDL code that attempt to use a single process statement in order to implement a relatively complex circuit. Although the code appears like it should work in terms of the provided statements, this is an illusion based on the fact that your mind is interpreting the statements in terms of a higher-level language. The reality is that VHDL is somewhat mysterious in that you are trusting the VHDL synthesizer to magically know what you are trying to describe. If you do not understand the ins and outs of VHDL at a low level, your circuit is not going to synthesize properly. Most likely you understand simple VHDL behavioral models. But once the models become complex, your understanding quickly fades away. The solution to this problem is really simple: keep your VHDL models simple, particularly your process statements. 
+It is not uncommon to see many, not so good, pieces of VHDL code that attempt to use a single process statement in order to implement a relatively complex circuit. Although the code appears like it should work in terms of the provided statements, this is an illusion based on the fact that your mind is interpreting the statements in terms of a higher-level language. The reality is that VHDL is somewhat mysterious in that you are trusting the VHDL synthesizer to magically know what you are trying to describe. If you do not understand the ins and outs of VHDL at a low level, your circuit is not going to synthesize properly. Most likely you understand simple VHDL behavioral models. But once the models become complex, your understanding quickly fades away. The solution to this problem is really simple: keep your VHDL models simple, particularly your process statements.
 
 In VHDL, the best approach is to keep your process statements centered around a single function and have several process statements that communicate with each other. The bad approach is to have one big process statement that does everything for you. The magic of VHDL is that if you provide simple code to the synthesizer, it is more than likely going to provide you with a circuit that works and with an implementation that is simple and eloquent. If you provide the synthesizer with complicated VHDL code, the final circuit may work and may even be efficient in both speed and real estate, but probably not. As opposed to higher-level languages where small amounts of code often translate directly to code of relatively high efficiency, efficiency in VHDL code is obtained by compact and simple partitioning of the VHDL code based on the underlying hardware constructs. In other words, simple VHDL models are better but the simplicity is generally obtained by proper partitioning and description of the model. So try to fight off the urge to impress your friends with the world's shortest VHDL model; your hardware friends will know better.
 \section{Summary}
@@ -540,19 +540,19 @@ e) $F(A,B,C,D) = \displaystyle\sum(1,2) $
 
 \usetikzlibrary{er}
 \begin{tikzpicture}[minimum height=9mm]
-%\node[draw, not gate US] at (-2.5,0.05) (D) {D}; 
-\node[draw, and gate US] at (0,0.2) (C) {C}; 
-\node[draw, not gate US] at ([xshift=-1.95cm]C.input 2) (D) {D}; 
-\node[draw, or gate US] at (0,1.3) (B) {B}; 
-\node[draw, and gate US] at (0,2.4) (A) {A}; 
-\node[draw, or gate US] at (2.5,1.3) (E) {E}; 
+%\node[draw, not gate US] at (-2.5,0.05) (D) {D};
+\node[draw, and gate US] at (0,0.2) (C) {C};
+\node[draw, not gate US] at ([xshift=-1.95cm]C.input 2) (D) {D};
+\node[draw, or gate US] at (0,1.3) (B) {B};
+\node[draw, and gate US] at (0,2.4) (A) {A};
+\node[draw, or gate US] at (2.5,1.3) (E) {E};
 \draw (D.output) -- (C.input 2);
 \draw (A.output) -- +(0.7,0) |- (E.input 1);
 \draw (C.output) -- +(0.7,0) |- (E.input 2);
 \draw (B.output) -- (E.west);
 \draw (E.output) -- ([xshift=0.5cm]E.output) node [right] {E\_out} ;
-\draw (A.input 1) -- ([xshift=-3.cm]A.input 1) node [pos=1.1] {A\_1} ; 
-\draw (A.input 2) -- ([xshift=-3.cm]A.input 2) node [pos=1.1] {A\_2} ; 
+\draw (A.input 1) -- ([xshift=-3.cm]A.input 1) node [pos=1.1] {A\_1} ;
+\draw (A.input 2) -- ([xshift=-3.cm]A.input 2) node [pos=1.1] {A\_2} ;
 \draw (B.input 1) -- ([xshift=-3.1cm]B.input 1) node [pos=1.1] {B\_1} ;
 \draw (B.input 2) -- ([xshift=-3.1cm]B.input 2) node [pos=1.1] {B\_2} ;
 \draw (D.input) -- ([xshift=-1.9cm]D.output) node [left] {D\_1} ;
@@ -567,4 +567,3 @@ e) $F(A,B,C,D) = \displaystyle\sum(1,2) $
 \item Provide a VHDL model of an 8:1 MUX using a process statement. Include a model that uses \texttt{if} statements and \texttt{case} statements (two separate models).
 \item Provide a VHDL model of a 3:8 decoder using a process statement. Include a model that uses \texttt{if} statements and \texttt{case} statements (two separate models). Consider the outputs to be active low.
 \end{my_num_list}
-
