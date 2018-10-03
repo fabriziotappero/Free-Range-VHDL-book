@@ -1,8 +1,8 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -48,7 +48,7 @@ constant       &  is        &  package  &  sll       &              \\
 \chapter{Standard VHDL Packages}
 After years of development by the US Department of Defense, in February 1986 all VHDL rights were transferred to the Institute of Electrical and Electronics Engineers (IEEE) which since then has carried on the process of standardization of the language.
 
-After three main language standardization steps that took place in 1987, 1993 and in 2002, VHDL now includes a large set of packages that, once included in your code, give you the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
+After several language standardization steps that took place in 1987, 1993, 2000, 2002, and 2008, VHDL now includes a large set of packages that, once included in your code, give you the possibility of using several mathematical constants, numerical functions, overloaded operators, type conversion functions, enhanced signal types and much more.
 
 The main VHDL language library packages that you will probably need to use in your career as an engineer can be included in your code via the following statements:
 
@@ -133,13 +133,15 @@ Alternatively, the same VHDL libraries can be browsed and downloaded from the GH
 \url{http://ghdl.free.fr}
 
 \noindent
-Finally, the software development tool (e.g. Xilinx ISE) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from:
+Finally, the software development tool (e.g. Xilinx Vivado) that you use for the synthesis of your VHDL code will include these libraries. A quick look at the source code will give you a pretty good idea of what is available to you and how to use it. For instance, a quick look at the \texttt{math\_real.vhdl} library, available from:
 
 \noindent
 \url{http://standards.ieee.org}
 
 \noindent
-will show you that the constant of type real \texttt{MATH\_PI = 3.1415926} is available to you as soon as you include the \texttt{"use IEEE.math\_real.all;"} line. The square root function \texttt{SQRT()} is just another example.
+will show you that the constant of type real \texttt{MATH\_PI = 3.1415926} is available to you as soon as you include the \\
+\texttt{use IEEE.math\_real.all;} \\
+line. The square root function \texttt{SQRT()} is just another example.
 
 \section{IEEE Standard Libraries}
 In VHDL, basic arithmetics is defined for the \texttt{integer} data type and for the \texttt{natural} data type. In order to have more control during synthesis over the various data formats, other libraries were developed and included into the IEEE standard.
@@ -170,33 +172,37 @@ Hereafter you can find two sets of very useful VHDL reference cards made by Qual
 http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf
 http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
 \end{verbatim}
+% links no longer working - error 404. Revision 2.2 PDF versions found on other sites
 
 \newpage\clearpage
 \thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,10mm)
-%\textblockcolour{red}
-\includegraphics[width=145mm]{ref_cards/qr1.pdf}
-\end{textblock*}
-\null\newpage
-
+\includepdf[pages=-,angle=90]{pics/ref_cards/vhdlqrc.pdf}
+\includepdf[pages=-,angle=90]{pics/ref_cards/1164qrc.pdf}
 \thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,10mm)
-%\textblockcolour{red}
-\includegraphics[width=145mm]{ref_cards/qr2.pdf}
-\end{textblock*}
 \null\newpage
 
-\thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,10mm)
+%\begin{textblock*}{148mm}(1mm,10mm)
 %\textblockcolour{red}
-\includegraphics[width=145mm]{ref_cards/qr3.pdf}
-\end{textblock*}
-\null\newpage
+%\includegraphics[width=145mm]{ref_cards/qr1.pdf}
+%\end{textblock*}
+%\null\newpage
 
-\thispagestyle{empty}
-\begin{textblock*}{148mm}(1mm,10mm)
+%\thispagestyle{empty}
+%\begin{textblock*}{148mm}(1mm,10mm)
 %\textblockcolour{red}
-\includegraphics[width=145mm]{ref_cards/qr4.pdf}
-\end{textblock*}
-\null\newpage
+%\includegraphics[width=145mm]{ref_cards/qr2.pdf}
+%\end{textblock*}
+%\null\newpage
 
+%\thispagestyle{empty}
+%\begin{textblock*}{148mm}(1mm,10mm)
+%\textblockcolour{red}
+%\includegraphics[width=145mm]{ref_cards/qr3.pdf}
+%\end{textblock*}
+%\null\newpage
+
+%\thispagestyle{empty}
+%\begin{textblock*}{148mm}(1mm,10mm)
+%\textblockcolour{red}
+%\includegraphics[width=145mm]{ref_cards/qr4.pdf}
+%\end{textblock*}

@@ -1,8 +1,8 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -72,7 +72,7 @@ As you will soon find out, the VHDL language contains \texttt{if}, \texttt{case}
 \item Each \texttt{case} statement is terminated with an \texttt{end case;}
 \item Each \texttt{loop} statement has a corresponding \texttt{end loop;} statement
 \end{my_list}
-In general, you should not worry too much about memorizing code syntax as chances are you will use an editor sophisticated enough to have code snippets (namely Gedit\footnote{Gedit, the official Linux GNOME text editor. {\footnotesize\url{http://projects.gnome.org/gedit}}}). A good programmer distinguishes himself by other means than perfectly remembering code syntax.
+In general, you should not worry too much about memorizing code syntax as chances are you will use an editor sophisticated enough to have code snippets (namely Gedit\footnote{Gedit, the official Linux GNOME text editor: {\scriptsize\url{http://projects.gnome.org/gedit}}}). A good programmer distinguishes himself by other means than perfectly remembering code syntax.
 
 \section{Identifiers}
 An identifier refers to the name given to various items in VHDL. Examples of identifiers in higher-level languages include variable names and function names. Examples of identifiers in VHDL include variable names, signal names and port names (all of which will be discussed soon). Listed below are the hard and soft rules (i.e. you must follow them or you should follow them), regarding VHDL identifiers.
@@ -91,7 +91,7 @@ Remember, intelligent choices for identifiers make your VHDL code more readable,
 \noindent
 \begin{minipage}[lt]{0.49\linewidth}
 \vspace{5pt}
-\begin{lstlisting}[label=valid_identif, caption=Valid identifies.]
+\begin{lstlisting}[label=valid_identif, caption=Valid identifiers.]
 data_bus	--descriptive name
 WE			--classic write enable
 div_flag	--real winner
@@ -109,7 +109,7 @@ mem_read_data
 \begin{minipage}[tr]{0.49\linewidth}
 \vspace{5pt}
 \begin{flushright}
-\begin{lstlisting}[label=invalid_identif, caption=Invalid identifies.]
+\begin{lstlisting}[label=invalid_identif, caption=Invalid identifiers.]
 3Bus_val -- begins with a number
 DDD      -- not self commenting
 mid_$num -- illegal character
@@ -155,6 +155,3 @@ Instead of stating here a bunch of rules for you to follow as to how your code s
 \end{my_list}
 \null\newpage
 \thispagestyle{empty}
-
-
-

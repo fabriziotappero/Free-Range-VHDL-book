@@ -1,8 +1,8 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -31,42 +31,42 @@ end my_entity; -- do not forget this semicolon either
 When you attempt to write fairly complicated VHDL code, you will need to split your code into different files, functions and packages constructors which will help you better deal with your code. In this scenario, the entity body will not only host the port definition statements but, most likely, other procedures as well. We will talk about this later in the book.
 
 \noindent
-\begin{minipage}{0.51\linewidth}
-\vspace{5pt}
-\begin{lstlisting}[label=entity_2, caption=VHDL entity declaration.]
+\begin{minipage}{0.5\linewidth}
+	\vspace{5pt}
+	\begin{lstlisting}[label=entity_2, caption=VHDL entity declaration.]
 ------------------------------
 --  interface description   --
 --  of killer_ckt           --
 ------------------------------
 entity killer_ckt is
 port (
-life_in1       : in  std_logic;
-life_in2       : in  std_logic;
-crtl_a, ctrl_b : in  std_logic;
-kill_a         : out std_logic;
-kill_b, kill_c : out std_logic);
+   life_in1       : in  std_logic;
+   life_in2       : in  std_logic;
+   ctrl_a, ctrl_b : in  std_logic;
+   kill_a         : out std_logic;
+   kill_b, kill_c : out std_logic);
 end killer_ckt;
-\end{lstlisting}
+	\end{lstlisting}
 \end{minipage}
 \begin{minipage}{0.49\linewidth}
-\begin{flushright}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,0) rectangle (37,35) node[midway]{killer\_ckt};
-% INPUTS
-\small
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{life\_in1};
-\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{life\_in2};
-\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{ctrl\_a};
-\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_b};
-% OUTPUTS
-\draw [-latex] ($(a)+(17,25)$) -- ++(10,0) node[right]{kill\_a};
-\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{kill\_b};
-\draw [-latex] ($(a)+(17,15)$) -- ++(10,0) node[right]{kill\_c};
-\end{tikzpicture}
-\end{flushright}
+	\begin{flushright}
+		\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+			%\draw[help lines] (0,0) grid (50,50);
+			% BOX
+			\draw (20,0) rectangle (37,35) node[midway]{killer\_ckt};
+			% INPUTS
+			\small
+			\node (a) at (20,-2.5) {}; % this is the reference point
+			\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{life\_in1};
+			\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{life\_in2};
+			\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{ctrl\_a};
+			\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_b};
+			% OUTPUTS
+			\draw [-latex] ($(a)+(17,25)$) -- ++(10,0) node[right]{kill\_a};
+			\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{kill\_b};
+			\draw [-latex] ($(a)+(17,15)$) -- ++(10,0) node[right]{kill\_c};
+		\end{tikzpicture}
+	\end{flushright}
 \end{minipage}
 
 Listing~\ref{entity_2} shows an example of a black box and the VHDL code used to describe it. Listed below are a few points to note about the code in Listing~\ref{entity_2}. Most of the points deal with the readability and understandability of the VHDL code.
@@ -75,7 +75,7 @@ Listing~\ref{entity_2} shows an example of a black box and the VHDL code used to
 \item Each port name is unique and has an associated mode and data type. This is a requirement.
 \item The VHDL compiler allows several port names to be included on a single line. Port names are separated by commas. Always strive for readability.
 \item Port names are somewhat lined up in a feeble attempt to increase readability. This is not a requirement but you should always be striving for readability. Remember that white spaces are ignored by the compiler.
-\item A comment, which tells us what this this entity does, is included.
+\item A comment, which tells us what this entity does, is included.
 \item A black-box diagram of the circuit is also provided. Once again, drawing some type of diagram helps with any VHDL code that you may be writing. Remember: do not be scared, draw a picture.
 \end{my_list}
 
@@ -83,7 +83,7 @@ Hopefully, you are not finding these entity specifications too challenging. In f
 
 Bundles are easily described in the VHDL entity. All that is needed is a new data type and a special notation to indicate when a signal is a bundle or not. A few examples are shown in Listing~\ref{entity_3}. In these examples note that the mode remains the same but the type has changed. The \texttt{std\_logic} data type has now been replaced by the word \texttt{std\_logic\_vector} to indicate that each signal name contains more than one signal. There are ways to reference individual members of each bundle, but we will get to those details later.
 
-As you can see by examining Listing~\ref{entity_3}, there are two possible methods to describe the signals in a bundle. These two methods are shown in the argument lists that follow the data type declaration. The signals in the bus can be listed in one of two orders which are specified by the \textbf{to} and \textbf{downto} keywords. If you want the most significant bit of your bundle to be on the the first bit on the left you use \textbf{downto} keyword. Be sure not to forget the orientation of signals when you are using this notation in your VHDL model.
+As you can see by examining Listing~\ref{entity_3}, there are two possible methods to describe the signals in a bundle. These two methods are shown in the argument lists that follow the data type declaration. The signals in the bundle can be listed in one of two orders which are specified by the \textbf{to} and \textbf{downto} keywords. If you want the most significant bit of your bundle to be the first bit on the left you use the \textbf{downto} keyword. Be sure not to forget the orientation of signals when you are using this notation in your VHDL model.
 
 In the black box of Listing~\ref{entity_3} you can see the formal notation for a bundle. Note that the black box uses a slash-and-number notation. The slash across the signal line indicates the signal is a bundle and the associated number specifies the number of signals in the bundle. Worthy of mention regarding the black box relative to Listing~\ref{entity_3} is that the input lines \texttt{sel1} and \texttt{sel0} could have been made into one bundle containing the two signals.
 
@@ -123,7 +123,7 @@ port (  a_data    : in     std_logic_vector(0 to 7);
         c_data    : in     std_logic_vector(0 to 7);
         d_data    : in     std_logic_vector(0 to 7);
         sel1,sel0 : in     std_logic;
-        data_out  : out    std_logic_vector(0 to 7));
+        data_out  : out    std_logic_vector(7 downto 0));
 end mux4;
 \end{lstlisting}
 \end{minipage}
@@ -132,7 +132,7 @@ The data type \texttt{std\_logic} and the data type \texttt{std\_logic\_vector} 
 
 The data type \texttt{std\_logic} becomes available to you soon after the declaration \texttt{library IEEE; use IEEE.std\_logic\_1164.all;} at the beginning of your code.
 
-The reason for all these values is the desire for modeling three-state drivers, pull-up and pull-down outputs, high impedance state and a few others types of inputs/outputs. For more details refer to the IEEE 1164 Standard\footnote{IEEE 1164 Standard \footnotesize\url{http://en.wikipedia.org/wiki/IEEE_1164}}.
+The reason for all these values is the desire for modeling three-state drivers, pull-up and pull-down outputs, high impedance state and a few others types of inputs/outputs. For more details refer to the IEEE 1164 Standard\footnote{IEEE 1164 Standard: \footnotesize\url{http://en.wikipedia.org/wiki/IEEE_1164}}.
 
 Alternatively to the \texttt{std\_logic} data type, VHDL programmers sometimes use the much simpler data type \texttt{bit} which has only the logic values \texttt{1} and \texttt{0}.
 
@@ -178,7 +178,7 @@ end my_arch;
 \end{lstlisting}
 \end{minipage}
 
-Once these packages have been included, you will have access to a very large set of goodies: several data types, overloaded operators, various conversion functions, math functions and so on. For instance, the inclusion of the package \texttt{numeric\_std.all} will give you the possibility of using the \texttt{unsigned} data type and the function \texttt{to\_unsigned} shown in Listing~\ref{main_vhdl_lib}. For a detailed description of what these libraries include, refer to the \texttt{Language Templates} of your favorite synthesis software tool (e.g. the yellow light bulb in the top panel of the Xilinx ISE software tool).
+Once these packages have been included, you will have access to a very large set of goodies: several data types, overloaded operators, various conversion functions, math functions and so on. For instance, the inclusion of the package \texttt{numeric\_std.all} will give you the possibility of using the \texttt{unsigned} data type and the function \texttt{to\_unsigned} shown in Listing~\ref{main_vhdl_lib}. For a detailed description of what these libraries include, refer to the \texttt{Language Templates} of your favorite synthesis software tool.
 
 For more information on VHDL standard libraries refer to the Appendix.
 
@@ -199,32 +199,32 @@ use ieee.std_logic_1164.all;
 
 -- the ENTITY
 entity circuit1 is
-port (
-    A,B,C   : in  std_logic;
-    F, G    : out std_logic);
+	port (A,B,C : in  std_logic;
+	      F,G   : out std_logic);
 end circuit1;
 
 -- the ARCHITECTURE
 architecture circuit1_arc of circuit1 is
-	signal sig_1 : std_logic;             -- signal definition
+	signal sig_1 : std_logic;            -- signal definition
 begin
-    process (a,b,c)
-        variable var_1 : integer;         -- variable definition
-    begin
-        F <= not (A and B and C);         -- signal assignment
-	    sig_1 <= A;                       -- another signal assignment
-	    var_1 := 34;                      -- variable assignment
-    end process;
-    G <= not (A and B);                   -- concurrent assignment
+	process (a,b,c)
+	    variable var_1 : integer;        -- variable definition
+	begin
+	    F <= not (A and B and C);        -- signal assignment
+	    sig_1 <= A;                      -- another signal assignment
+	    var_1 := 34;                     -- variable assignment
+	end process;
+
+	G <= not (A and B);                  -- concurrent assignment
 end circuit1_arc;
 \end{lstlisting}
 
 \section{Signal and Variable Assignments}
 In VHDL there are several object types. Among the most frequently used we will mention the \textbf{signal} object type, the \textbf{variable} object type and the \textbf{constant} object type. The signal type is the software representation of a wire. The variable type, like in C or Java, is used to store local information. The constant is like a variable object type, the value of which cannot be changed. A signal object can be of different types; we saw before, for example, that a signal object can be of type \texttt{std\_logic} or of other types like integer, custom types, etc. The same applies for variable objects.
 
-Before using any signal or variable, it is mandatory to declare them. Signals are declared at the top of the architecture body, just before the keyword \texttt{begin}. Variables must be declared inside the \textit{process construct} and are local. An example is shown in line 15 and 18 of Listing~\ref{architecture_1}.
+Before using any signal or variable, it is mandatory to declare them. Signals are declared at the top of the architecture body, just before the keyword \texttt{begin}. Variables must be declared inside the \textit{process construct} and are local. An example is shown in line 14 and 17 of Listing~\ref{architecture_1}.
 
-As seen in line 20 and line 21 of Listing~\ref{architecture_1} when you want to assign a new value to an object of type signal you use the operator ``$<=$''. Alternatively, when you want to assign a new value to an object of type variable you will use the operator ``$:=$'', shown in line 22.
+As seen in line 19 and line 20 of Listing~\ref{architecture_1} when you want to assign a new value to an object of type signal you use the operator ``$<=$''. Alternatively, when you want to assign a new value to an object of type variable you will use the operator ``$:=$'', shown in line 21.
 
 It is important to understand the difference between variables and signals, specifically when their value changes. A variable changes its value soon after the variable assignment is executed. Instead, a signal changes its value ``some time'' after the signal assignment expression is evaluated. This has important consequences for the updated values of variables and signals. This means that you should never assume that a signal assignment can happen instantly and it also means that you can take advantage of variables every time you need to implement a counter or to store values when inside a process.
 
@@ -252,43 +252,43 @@ As a final note, let us to remind that the type \texttt{std\_logic} only exists 
 
 \noindent
 \begin{minipage}{0.5\linewidth}
-\vspace{5pt}
-a)\\
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,5) rectangle (37,25) node[midway]{sys1};
-% INPUTS
-\small
-\node (hide) at (0,30) {}; % just to expand background
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{a\_in1};
-\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{b\_in2};
-\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{clk};
-\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_int};
-% OUTPUTS
-\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{out\_b};
-\end{tikzpicture}
+	\vspace{5pt}
+	a)\\
+	\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+		%\draw[help lines] (0,0) grid (50,50);
+		% BOX
+		\draw (20,5) rectangle (37,25) node[midway]{sys1};
+		% INPUTS
+		\small
+		\node (hide) at (0,30) {}; % just to expand background
+		\node (a) at (20,-2.5) {}; % this is the reference point
+		\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{a\_in1};
+		\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{b\_in2};
+		\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{clk};
+		\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{ctrl\_int};
+		% OUTPUTS
+		\draw [-latex] ($(a)+(17,20)$) -- ++(10,0) node[right]{out\_b};
+	\end{tikzpicture}
 \end{minipage}
-\begin{minipage}{0.5\linewidth}
-\vspace{5pt}
-b)\\
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,0) rectangle (37,25) node[midway]{sys2};
-% INPUTS
-\small
-\node (hide) at (0,30) {}; % just to expand background
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,24)$) -- ++(-10,0) node[left]{input\_w};
-\draw [latex-] ($(a)+(0,18)$) -- ++(-10,0) node[left]{a\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
-\draw [latex-] ($(a)+(0,11)$) -- ++(-10,0) node[left]{b\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
-\draw [latex-] ($(a)+(0, 5)$) -- ++(-10,0) node[left]{clk};
-% OUTPUTS
-\draw [-latex] ($(a)+(17,19)$) -- ++(10,0) node[right]{dat\_4} node[pos=0.6,above]{8} node[pos=0.4]{/};
-\draw [-latex] ($(a)+(17,10)$) -- ++(10,0) node[right]{dat\_5} node[pos=0.6,above]{3} node[pos=0.4]{/};
-\end{tikzpicture}
+\begin{minipage}{0.49\linewidth}
+	\vspace{5pt}
+	b)\\
+	\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+		%\draw[help lines] (0,0) grid (50,50);
+		% BOX
+		\draw (20,0) rectangle (37,25) node[midway]{sys2};
+		% INPUTS
+		\small
+		\node (hide) at (0,30) {}; % just to expand background
+		\node (a) at (20,-2.5) {}; % this is the reference point
+		\draw [latex-] ($(a)+(0,24)$) -- ++(-10,0) node[left]{input\_w};
+		\draw [latex-] ($(a)+(0,18)$) -- ++(-10,0) node[left]{a\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,11)$) -- ++(-10,0) node[left]{b\_data} node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0, 5)$) -- ++(-10,0) node[left]{clk};
+		% OUTPUTS
+		\draw [-latex] ($(a)+(17,19)$) -- ++(10,0) node[right]{dat\_4} node[pos=0.6,above]{8} node[pos=0.4]{/};
+		\draw [-latex] ($(a)+(17,10)$) -- ++(10,0) node[right]{dat\_5} node[pos=0.6,above]{3} node[pos=0.4]{/};
+	\end{tikzpicture}
 \end{minipage}
 
 \item Provide black-box diagrams that are defined by the following VHDL entity declarations:
@@ -353,5 +353,3 @@ end ckt_b;
 \end{lstlisting}
 \end{minipage}
 \end{my_num_list}
-
-

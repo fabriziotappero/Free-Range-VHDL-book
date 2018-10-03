@@ -1,384 +1,317 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
-\chapter{Data Objects}
+\chapter{Registers and Register Transfer Level}
+The concept of a register in VHDL and its subsequent use in digital circuit design is probably one of the more straightforward concepts in VHDL. A register in VHDL is simply a vector version of a D~flip-flop in which all operations on the flip-flops occur simultaneously. The ``register transfer level'', or RTL, is a flavor of design that is primarily concerned with how and when data is transferred between the various registers in a digital system. RTL-level design in often associated with "data-path" designs which require the careful control and timing of the data that is being transferred between registers. The controls associated with even simple registers are sufficient to ensure that some outside entity has adequate control over the "sequencing" of data through the circuit associated with the data-path. In these cases, the proper sequencing of data transfers is controlled by a FSM.
 
-Many of the concepts presented so far have been implicitly presented in the context of example problems. In this way, you have probably been able to generate quality VHDL code but were constrained to use the VHDL style presented in these examples. In this section, we will present some of the underlying details and theories that surround VHDL as a backdoor approach for presenting tools that will allow you to use VHDL for describing the behavior of more complex digital circuits.
+The study of RTL-level design is best accomplished in the context of a data-path design. The design of data-paths is best accomplished in the context of a digital circuit that has some purpose such as an arithmetic logic unit design. Both of these topics are beyond what needs to be mentioned here. The good news is that the simplicity of the registers makes for a quick introduction to the matter. Major circuit implementations are saved for some other time.
 
-In order to move into more sophisticated VHDL, a good place to start is with the definition of VHDL objects (e.g. data types). An object is an item in VHDL that has both a name (associated identifier) and a specific type. There are four types of objects and many different data types in VHDL. Up to this point, we have only used \texttt{signal} data objects and \texttt{std\_logic} data types. Two new data objects and several new data types are introduced and discussed in this section.
-
-\section{Types of Data Objects}
-There are four types of data objects in VHDL: \textbf{signals}, \textbf{variables}, \textbf{constants} and \textbf{files}. One of the purposes of this section is to present some background information regarding variables which will be used later in this tutorial. The idea of constants will also be briefly mentioned since they are generally straightforward to understand and use once the concepts of signals and variables are understood. File data objects, exclusively used in simulations, are not discussed in this chapter.
-
-Mind that VHDL is a vast language that goes well beyond the VHDL code that is used to program an FPGA or a CPLD. In fact the actual VHDL that can be translated into an FPGA/CPLD bit-stream is called RTL VHDL and represents only a small subset of what is included in the current VHDL standard. The file  data objects are an example of a data object that cannot be implemented in a silicon device.
-
-Just as side note, it is interesting to point out that it is also possible to compile VHDL code into an executable file that can be executed, generally for simulation purposes, with any general purpose Intel PC. For more details refer to the open-source work of T. Gingold available at:
-
-\noindent
-\url{http://ghdl.free.fr}.
-
-\section{Data Object Declarations}
-
-The first thing to note about data objects is the similarity in their declarations. The forms for the three data objects we will be discussing are listed in Table \ref{vhdl_data_objs}. For each of these declarations, the bold-face font is used to indicate VHDL keywords. The form for the signal object should seem familiar since we have used it extensively up to this point.
-
-\begin{table}[!h]
-\centering
-\footnotesize\textsf{\begin{tabular}{ l l }
-\hline
-\rowcolor{gray} \textbf{VHDL data object} & \textbf{Declaration form}\\
-\hline
-\rowcolor{light-gray} Signal & \texttt{{\bf signal} sig\_name : sig\_type:=initial\_value;} \\
-\hline
-Variable & \texttt{{\bf variable} var\_name : var\_type:=initial\_value;} \\
-\hline
-\rowcolor{light-gray} Constant & \texttt{{\bf constant} const\_name : const\_type:=initial\_value;} \\
-\hline
-\end{tabular}}
-\caption{Data object declaration forms.}
-\label{vhdl_data_objs}
-\end{table}
-
-Note that each of the data objects can optionally be assigned initial values. Signal declarations do not usually include initial values as opposed to constants which generally do.
-
-Initial values for signals are in fact not implementable on silicon by the synthesizing tools but are taken into consideration by VHDL simulation tools. Example declarations for these three flavors of data objects are provided in Table \ref{vhdl_data_objs_ex}. These examples include several new data types which will be discussed in the next section.
-
-\begin{table}[!h]
-\centering
-\footnotesize\textsf{\begin{tabular}{ l l }
-\hline
-\rowcolor{gray} \textbf{Data object} & \textbf{Declaration form}\\
-\hline
-Signal & \texttt{{\bf signal} sig\_var1 : std\_logic := '0';} \\
-& \texttt{{\bf signal} tmp\_bus : std\_logic\_vector(3 downto 0):="0011";} \\
-& \texttt{{\bf signal} tmp\_int : integer range -128 to 127 := 0;}  \\
-& \texttt{{\bf signal} my\_int  : integer;}\\
-\hline
-Variable &\texttt{{\bf variable} my\_var1, my\_var2 : std\_logic;} \\
-&\texttt{{\bf variable} index\_a : integer range (0 to 255) := 0;} \\
-&\texttt{{\bf variable} index\_b : integer := -34;} \\
-\hline
-Constant & \texttt{{\bf constant} sel\_val : std\_logic\_vector(2 downto 0):="001";} \\
-&\texttt{{\bf constant} max\_cnt : integer := 12;} \\
-\hline
-\end{tabular}}
-\caption{Example declarations for signal, variable and constant data objects.}
-\label{vhdl_data_objs_ex}
-\end{table}
-
-\section{Variables and Assignment Operator ``\texttt{:=}''}
-Although variables are similar to signals, variables are not as functional for the several reasons mentioned in this section. Variables can only be declared and used inside of processes, functions and procedures (functions and procedures will not be discussed here). Implied in this statement is the sequential nature of variable assignment statements in that all statements appearing in the body of a process are sequential. One of the early mistakes made by VHDL programmers is attempting to use variables outside of processes.
-
-The signal assignment operator, $<=$, was used to transfer the value of one signal to another while dealing with signal data objects. When working with variables, the assignment operator $:=$ is used to transfer the value of one variable data object to another. As you can see from Table \ref{vhdl_data_objs_ex}, the assignment operator is overloaded which allows it to be used to assign initial values to the three listed forms of data objects.
-
-\section{Signals vs. Variables}
-The use of signals and variables can be somewhat confusing because of their similarities. Generally speaking, a signal can be thought of as representing a wire or some type of physical connection in a design. Signals thus represent a means to interface VHDL modules which include connections to the outside world. In terms of circuit simulation, signals can be scheduled to take on multiple values at specific times in the simulation. The specifics of simulating circuits using VHDL are not covered here so the last statement may not carry much meaning to you. The important difference here is that events can be scheduled for signals while for variables, they cannot. The assignment of variables is considered to happen immediately and cannot have a list of scheduled events.
-
-With relatively simple circuits, signal objects are generally sufficient. As your digital designs become more complex, there is a greater chance that you will need more control of your models than signals alone can provide. The main characteristic of signals that leave them somewhat limited in complex designs is when and how they are scheduled. More specifically, \textbf{assignments made to signals inside a process are actually only scheduled when the same process is completed. The actual assignment is not made until after the process terminates}. This is why multiple signal assignments can be made to the same signal during the execution of a process without generating any type of synthesis error. In the case of multiple signal assignments inside the process, only the most recent assignment to the signal during process execution is assigned. The important thing here is that the signal assignment is not made until after the process terminates. The potential problem that you might face is that the new result (the new value assigned to the signal) is not available to use inside the process.
-
-Variable assignment within processes is different. When a variable is assigned a value inside of a process, the assignment is immediate and the newly assigned value can be used immediately inside of the process. In other words, the variable assignment is not scheduled as it was for the signal. This is a giant difference and has very important ramifications in both the circuit simulation and synthesis realm.
-
-Variables cannot always be modeled as wires in a circuit. They also have no concept of memory since they cannot store events. With all this in mind, you may wonder what is the appropriate place to use variables. The answer is variables should only be used as iteration counters in loops or as temporary values when executing an algorithm that performs some type of calculation. It is possible to use variables outside of these areas, but it should be avoided.
-
-Even though instructions inside a process are executed consecutively, this should not fool you in thinking that a process environment is similar to a segment of C code. Remember that while lines of C code require some tens of clock cycles each to be executed, VHDL instructions require very little time to be executed, less than one clock cycle. The price to pay for this enormously fast execution time is that any signal assignment inside a process only takes place at the end of the process. It is therefore advisable that your processes are short and simple.
-
-\section{Standard Data Types}
-Not only does VHDL have many defined data types but VHDL also allows you to define your own types. Here however we will only deal with few of the most widely used types. Among the most popular VHDL data type we would like to mention the following data types:\\
-
-\noindent
-\texttt{bit}: It is a two-value enumerated type. Replaced by the \texttt{std\_logic} type.\\
-\texttt{bit\_vector}: Replaced by the more powerful \texttt{std\_logic\_vector} type.\\
-\texttt{boolean}: As expected, it is a two-value enumerated type.\\
-\texttt{boolean vector}: It is the vector form of a \texttt{boolean} type.\\
-\texttt{integer}: Refer to the Integer Types section.\\
-\texttt{natural}: It is a subtype of \texttt{integer} because it is a non-negative integer.\\
-\texttt{positive}: It is a subtype of \texttt{integer} because it is a positive integer.\\
-\texttt{integer\_vector}: It is the vector form of an \texttt{integer} type.\\
-\texttt{character}: A 256-symbol enumerated type.\\
-\texttt{string}: It is the vector form of a \texttt{character} type.\\
-
-In the following sections, a few more popular and useful types are introduced.
-
-\section{User-Defined Types}
-VHDL allows you to define your own data type. A typical example of a custom integer type is:
-
-\noindent
-\texttt{type my\_type is range 0 to 100;}\\
-\texttt{constant my\_const : my\_type := 31;}
-
-\noindent
-Obviously it is possible to define more complex data structures. For instance it is a common practice to use a custom data type when you want to implement a ROM (read-only memory) in VHDL.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}
-
--- typical custom data type for a 20-byte ROM
-type memory is array (0 to 19 of std_logic_vector(7 downto 0);
-constant my_rom : memory := (
-        1 => "11111111"
-        2 => "11110111"
-        5 => "11001111"
-       12 => "10110101"
-       18 => "10001101"
-   others => "00000000");
-\end{lstlisting}
-\end{minipage}
-
-\section{Commonly Used Types}
-The types already introduced in previous chapters as well as two new types are listed in Table \ref{vhdl_data_types}. The \texttt{std\_logic} and \texttt{std\_logic\_vector} types have been extensively used so far. These types are more complex than has been previously stated and will be discussed further in this chapter. The \texttt{enumerated} type was used during the previous discussion of finite state machines. The \texttt{integer} type was cryptically mentioned before but it will be discussed further along with the \texttt{boolean} type in this chapter.
-
-\begin{table}[!h]
-\centering
-\footnotesize\textsf{\begin{tabular}{ l l l}
-\hline
-\rowcolor{gray} \textbf{Type} & \textbf{Example} & \textbf{Usage} \\
-\hline
-\rowcolor{light-gray} std\_logic & \texttt{{\bf signal} my\_sig : {\bf std\_logic};} & all examples \\
-\hline
-std\_logic\_vectors & \texttt{{\bf signal} busA : {\bf std\_logic\_vector}(3 downto 0)}; & all examples \\
-\hline
-\rowcolor{light-gray} enumerated &  \texttt{{\bf type} state\_type {\bf is} (ST0,ST1,ST2,ST3);} & Example~18\\
-\hline
-boolean & \texttt{{\bf variable} my\_test : {\bf boolean} := {\bf false};} & None \\
-\hline
-\rowcolor{light-gray} integer & \texttt{{\bf signal} iter\_cnt : {\bf integer} := 0;}  & Example~26 \\
-\hline
-\end{tabular}}
-\caption{Some popular data types already introduced in previous chapters.}
-\label{vhdl_data_types}
-\end{table}
-
-\section{Integer Types}
-The use of integer types aids in the design of algorithmic-type VHDL code. This type of coding allows VHDL to describe the behaviour of complex digital circuits. As you progress in your digital studies, you will soon find yourself in need of more complex descriptive VHDL tools. Data types such as integers partially fill that desire. This section briefly looks at integer types as well as the definition of user-specified integer types.
-
-The range of the integer type is (-2,147,483,648 to 2,147,483,647). These numbers should seem familiar since they represent the standard 32-bit range for a signed number: from $-(2^{31})$ to $+(2^{31}-1)$. Other types similar to integers include natural and positive types. These types are basically integers with shifted ranges. For example, the natural and positive types range from 0 and 1 to the full 31-bit range, respectively. Examples of integer declarations are shown in the following listing.
-\vspace{8pt}
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}
-
--- integer declarations
-signal   my_int     : integer range 0 to 255 := 0;
-variable max_range  : integer := 255;
-constant start_addr : integer := 512;
-\end{lstlisting}
-\end{minipage}
-
-Although it could be possible to use only basic integer declarations in your code, as we have seen before, VHDL allows you to define your own data types with their own personalized range constraints. These special types should be used wherever possible to make your code more readable. The custom integer-type definition uses the type \texttt{range} construct and the \texttt{to} or the \texttt{downto} keywords for the definition. Some examples of integer-type declarations are provided in the following listing.
-\vspace{8pt}
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}
-
--- integer type declarations
-type scores  is range 0 to 100;
-type years   is range -3000 to 3000;
-type apples  is range 0 to 15;
-type oranges is range 0 to 15;
-\end{lstlisting}
-\end{minipage}
-
-Although each of the types listed in the previous listing are basically integers, they are still considered different types and cannot be assigned to each other. In addition to this, any worthy VHDL synthesizer will do range checks on your integer types. In the context of the definitions previously presented, each of the statements in the following listing is illegal.
-\vspace{8pt}
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}
-
--- Illegal assignment statements
-signal score1    : scores  := 100;
-signal my_apple  : apples  := 0;
-signal my_orange : oranges := 0;
-
-my_apple  <= my_orange;  -- different types
-my_orange <= 24;         -- out of range
-my_score  <= 110;        -- out of range
-\end{lstlisting}
-\end{minipage}
-
-\section{\texttt{signed} and \texttt{unsigned} Types}
-\texttt{signed} and \texttt{unsigned} data types are available once you declare the standard IEEE \texttt{ieee.numeric\_std} package. Mind that these two data types are also defined in the non-standard \texttt{std\_logic\_arith} package. The use of non-standard libraries is however highly discouraged.
-
-A \texttt{signed} value ranges from $-2^{N-1}$ to $2^{N-1}-1$ and an \texttt{unsigned} value ranges from $0$ to $2^N-1$ where $N$ is the number of bits.
-
-\texttt{signed} and \texttt{unsigned} types can be conveniently used for internal variables as well as for entity ports. Additionally the \texttt{ieee.numeric\_signed} library and the \texttt{ieee.numeric\_unsigned} library offer arithmetic and type conversion for both types.
-
-\texttt{signed} and \texttt{unsigned} types, in a way, look like \texttt{std\_logic\_vector} types, especially in how they are declared and so the question that you might have is:
-\begin{quotation}\ttfamily
-Why would I need to use a \textbf{\color{gray}signed} or \textbf{\color{gray}unsigned} type in place of a \textbf{\color{gray}std\_logic\_vector} type?
-\end{quotation}
-The answer to this question is in Listing~\ref{my_sum}, specifically in line 17 and in line 18. The \texttt{std\_logic\_vector} type should not be used to define a numerically meaningful\footnote{Numerically meaningful signal: a signal that looks and behave like a number.} signal or variable. The \texttt{std\_logic\_vector} type should be only employed for defining ``bags of bits''.
-
-The use of \texttt{signed/unsigned} types is desirable any time your bags of bits (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[numbers=left, label=my_sum, caption= Use of unsigned types in your code.]
--- library declaration
-library IEEE;
-    use IEEE.std_logic_1164.all; -- defines std_logic_vector type
-    use IEEE.numeric_std.all;    -- defines signed and unsigned types
--- entity
-entity double_sum is
-    Port (
-        in1       : in  std_logic_vector (7 downto 0);
-        in2       : in  std_logic_vector (7 downto 0);
-        out1      : out std_logic_vector (7 downto 0));
-        unsig_in  : in  unsigned(7 downto 0);
-        unsig_out : out unsigned(7 downto 0));
-    end double_sum;
--- architecture
-architecture arch of sum is
-    begin
-        out1 <= in1 + 1;  -- ILLEGAL OPERATION, 1 is an integer
-        out1 <= in1 + in2;-- ILLEGAL OPERATION, addition is not defined
-        unsig_out <= unsig_in + 1;                  -- legal operation
-        unsig_out <= unsigned(in1) + 1;             -- legal operation
-        out1 <= std_logic_vector(unsigned(in1) + 1);-- legal operation
-    end arch;
-\end{lstlisting}
-\end{minipage}
-
-As final note, we should mention that the inclusion of the non-standard \texttt{std\_logic\_arith} library could have given us the possibility of doing \texttt{out1 <= in1 + 1;} in line 17 of Listing~\ref{my_sum}, making things much simpler. However, once again, the use of non-standard library is highly discouraged.
-
-\section{\texttt{std\_logic} Types}
-For the representation of digital signals so far in this book, we have used the \texttt{std\_logic} type. However, one of the data types, similar to \texttt{std\_logic}, neither used nor endorsed in this book is the \texttt{bit} type. This type can take on only the values of \texttt{'1'} or \texttt{'0'}. While this set of values seems appropriate for designing digital circuits, it is actually somewhat limited. Due to its versatility and a more complete range of possible values, the \texttt{std\_logic} type is preferred over \texttt{bit} types. The \texttt{std\_logic} type is defined in the VHDL package \texttt{ieee.std\_logic\_1164} and provides a common standard that can be used by all VHDL programmers.
-
-The \texttt{std\_logic} type is officially defined as an \texttt{enumerated} type. Two of the possible enumerations of course include \texttt{'1'} and \texttt{'0'}. The actual definition is shown in the Listing~\ref{logic_type}. The \texttt{std\_logic} type is a resolved version of the \texttt{std\_ulogic} type. Resolved means that unlike for \texttt{std\_ulogic} types, when you use \texttt{std\_logic} type signals, you can use multiple assignments to the same signal without having the compile to complain about it.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=logic_type, caption=Declaration of the \texttt{std\_logic} enumerated type.]
-
-type std_logic is  ( 'U', -- uninitialised
-                     'X', -- forcing unknown
-                     '0', -- forcing 0
-                     '1', -- forcing 1
-                     'Z', -- high impedance
-                     'W', -- weak unknown
-                     'L', -- weak 0
-                     'H', -- weak 1
-                     '-'  -- unspecified (do not care)
-                   );
-\end{lstlisting}
-\end{minipage}
-
-The \texttt{std\_logic} type uses the VHDL character type in its definition. Although there are nine values in the definition shown in Listing~\ref{logic_type}, this book only deals with \texttt{'0'},  \texttt{'1'},  \texttt{'Z'} and  \texttt{'-'}. The  \texttt{'Z'} is generally used when dealing with bus structures. This allows a signal or set of signals (a bus) to have the possibility of being driven by multiple sources without the need to generate resolution functions. When a signal is driven to its high-impedance state, the signal is not driven from that source and is effectively removed from the circuit. Finally, since the characters used in the \texttt{std\_logic} type are part of the definition, they must be used as listed. Mind the use of lower-case letters will generate an error.
 \begin{leftbar}
 \begin{minipage}[t]{0.52\textwidth}
 \vspace{10pt}
 \noindent
-\textbf{EXAMPLE 26.}
-Design a clock divider circuit that reduces the frequency of the input signal by a factor of 64. The circuit has two inputs as shown in the diagram. The  \texttt{div\_en} input allows the  \texttt{clk} signal to be divided when asserted and the  \texttt{sclk} output will exhibit a frequency 1/64 that of the  \texttt{clk} signal. When  \texttt{div\_en} is not asserted, the  \texttt{sclk} output remains low. Frequency division resets when the  \texttt{div\_en} signal is reasserted.
+\textbf{EXAMPLE 23.}
+Use VHDL behavioral modeling to design the 8-bit register that has a synchronous active high parallel load signal LD. Consider the load of the register to be synchronized to rising edges of the clock.
 \end{minipage}
-\begin{minipage}[t]{0.4\linewidth}
-\vspace{10pt}
-\begin{flushright}
-\begin{tikzpicture}
-[x=1mm,y=1mm,line width=0.8pt,scale=1,framed]
-% BOX
-\draw (20,5) rectangle (35,20) node[midway]{$clk\_div$};
-% INPUTS
-\small
-\node (b) at (0,-2) {}; % this is to extend the pink area
-\node (b) at (20,22.5) {}; % this is to extend the pink area
-\node (a) at (20,2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{clk};
-\draw [latex-] ($(a)+(0,5)$) -- ++(-10,0) node[above]{div\_en};
-% OUTPUTS
-\draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{sclk};
-\end{tikzpicture}
-\end{flushright}
+\begin{minipage}[t]{0.45\textwidth}
+\vspace{0pt}\raggedright
+    \centering
+	\includegraphics[width=\textwidth]{r_rtl/ex23.png}
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} As usual for more complex concepts and circuits, there are a seemingly infinite number of solutions. A solution that uses several of the concepts discussed in this section is presented in Listing~\ref{ex26_code}. Some of the more important issues in this solution are listed below.
-
+\textbf{SOLUTION.} The solution for the 8-bit register looks amazingly similar to a model of a D~flip-flop. The full solution to Example~23 is shown in Listing~\ref{ex23_code}. As usual, there are a couple of things worth noting in this solution.
 \begin{my_list}
-\item The type declaration for  \texttt{my\_count} appears in the architecture body before the \texttt{begin} statement.
+\item Note that there is an \texttt{if} statement that does not contain a corresponding \texttt{else} which is what generates the memory element. For this example, there are considered to be eight bit-sized memory elements (flip-flops). For this example the flip flops are considered to be D-type flip-flops. The storage elements are associated with the \texttt{REG\_OUT} bundle. The ease in using VHDL code to generate D~flip-flops in this manner makes D flip-flops the most widely used type of flip-flop in digital design.
 
-\item A constant is used for the  \texttt{max\_count} variable. This allows for quick adjustments in the clock frequency. In this example, this concept is somewhat trivial because the  \texttt{max\_count} variable is used only once.
+\item The code uses a bundle signal for both the input and output. The assignment of the bundles to other bundles is straightforward in VHDL as is shown in the code. In many cases, such as the one in this example, there is no need to use a bundle access operator in the VHDL model.
 
-\item The variable is declared inside of the process, after the process \texttt{begin} line.
+\item The assignment of the input to the output is based on characteristics of both the clock edge and the state of the LD signal. The approach taken in the VHDL model shown in Listing~\ref{ex23_code} is to provide a separate \texttt{if} clause for both the LD and CLK signals. Only one \texttt{if} statement could have been used by making both conditions associated with the single \texttt{if} clause but this is not considered good VHDL programming practice when dealing with synchronized elements. In other words, you should always strive to keep special conditions associated with the clocking signal separate from all other conditions associated with the action in question. Clock signals are somewhat special in the VHDL land; you should get into the habit of treating them gently.
+
+\item Since signals \texttt{REG\_IN} and \texttt{LD} are required to be synchronous they do not appear inside the process sensitivity list.
 \end{my_list}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[numbers=left,label=ex26_code, caption=Solution to Example~26.]
-
+\begin{lstlisting}[label=ex23_code, caption=Solution to Example~23.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
-use IEEE.numeric_std.all;
-
 -- entity
-entity clk_div is
-Port (
-    clk    : in  std_logic;
-    div_en : in  std_logic;
-    sclk   : out std_logic);
-end clk_div;
-
+entity reg8 is
+    Port ( REG_IN  :  in std_logic_vector(7 downto 0);
+           LD,CLK  :  in std_logic;
+           REG_OUT : out std_logic_vector(7 downto 0));
+end reg8;
 -- architecture
-architecture my_clk_div of clk_div is
-    type my_count is range 0 to 100;     -- user-defined type
-    constant max_count : my_count := 31; -- user-defined constant
-    signal tmp_sclk : std_logic;         -- intermediate signal
-    begin
-        my_div: process (clk,div_en)
-        variable div_count : my_count := 0;
-        begin
-            if (div_en = '0') then
-                div_count := 0;
-                tmp_sclk <= '0';
-            elsif (rising_edge(clk)) then
-                    -- divider enabled
-                    if (div_count = max_count) then
-                        tmp_sclk <= not tmp_sclk;   -- toggle output
-                        div_count := 0;             -- reset count
-                    else
-                        div_count := div_count + 1; -- count
-                    end if;
-            end if;
-        end process my_div;
-        sclk <= tmp_sclk;                          -- final assignment
-end my_clk_div;
+architecture reg8 of reg8 is
+begin
+   reg: process(CLK)
+   begin
+      if (rising_edge(CLK)) then
+         if (LD = '1') then
+            REG_OUT <= REG_IN;
+         end if;
+      end if;
+   end process;
+end reg8;
 \end{lstlisting}
 \end{minipage}
 
-The VHDL implementation of frequency divider that takes a certain clock signal and generates a second clock signal of higher or lower frequency is quite common practise in VHDL. Such an implementation is normally done using clock management blocks built in the FPGA fabric specifically for this purpose. Digital Clock Managers (DCM), Mixed Mode Clock Managers (MMCM) or Phase Locked Loops (PLL) are just some examples.
+The circuit in the following example is slightly more complex than most of the examples seen so far. Additionally, remember that there are many different solutions to the same problem. This is a common occurrence in VHDL; in fact, many times there is no best method for implementing a given circuit. The following examples are essentially the same problem solved using two different but functionally equivalent solutions.
 
-The use of clock management blocks will guarantee your design meets timing requirements or clock phase noise constraints that will make your job a lot easier in the long run. Try to remember this.
+\begin{leftbar}
+\begin{minipage}[t]{0.5\textwidth}
+\vspace{10pt}
+\noindent
+\textbf{EXAMPLE 24.}
+Use VHDL behavioral modeling to design the circuit shown on the right. Consider both the loading signals to be active high. Consider the circuit to be synchronized to the rising edge of the clock signal.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+    \centering
+	\includegraphics[width=\textwidth]{r_rtl/ex24.png}
+\end{minipage}
+\end{leftbar}
+\noindent
+\textbf{SOLUTION.} The circuit shown in Example~24 includes two 8-bit registers and a 2:1 MUX. This is an example of a bus-based data transfer in the output of the MUX that is connected to the inputs of the two registers. Each of the two registers has its own independent load control input. The solution to Example~24 is shown in Listing~\ref{ex23_code}. And as we have grown to expect, there are a couple of things worth noting about this solution.
+\begin{my_list}
+\item There are three concurrent statements in this solution: two behavioral models and one data-flow model.
+
+\item There is a separate process for each of the two registers. Although it would have been possible to represent both registers using one process, it would have been somewhat complicated and somewhat hard to understand. The better approach in VHDL is always to break tasks down into their logically separate functions and use the various VHDL modeling techniques as tools to keep the tasks separate and simple. The reality is that the synthesizer becomes your friend if you provide it with simple models. The quantity of VHDL code describing a certain design is immaterial; the complexity of any given model is determined by the most complex piece of code in the model. Simple is always better in VHDL.
+
+\item All of the signals shown in the Example~24 have external linkage except for the output of the MUX. The MUX output is connected to the inputs of both registers. The final approach taken in this solution is typical in VHDL: many processes that communicate with each other through shared signals. In this example, there is only one shared signal but this is a fairly simple program. The same inter-process communication model is used in more complicated circuits.
+
+\item The model for the 2:1 MUX uses the terminology \texttt{(others => '0')}. This is a short-hand terminology for assigning all of the outputs to '0'. The real nice part about this instruction is that you do not need to know how many 0’s you need to write. This is a nice feature in that if the width of the associated bundle were to change, this particular line of code would not need to be modified.
+\end{my_list}
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=ex24_code, caption=Solution to Example~24.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity ckt_rtl is
+   port (D1_IN,D2_IN : in  std_logic_vector(7 downto 0);
+             CLK,SEL : in  std_logic;
+             LDA,LDB : in  std_logic;
+         REG_A,REG_B : out std_logic_vector(7 downto 0));
+end ckt_rtl;
+-- architecture
+architecture rtl_behavioral of ckt_rtl is
+   -- intermediate signal declaration ---------------
+   signal s_mux_result : std_logic_vector(7 downto 0);
+begin
+
+   ra: process(CLK) -- process
+   begin
+      if (rising_edge(CLK)) then
+         if (LDA = '1') then
+            REG_A <= s_mux_result;
+         end if;
+      end if;
+   end process;
+
+   rb: process(CLK) -- process
+   begin
+      if (rising_edge(CLK)) then
+         if (LDB = '1') then
+            REG_B <= s_mux_result;
+         end if;
+      end if;
+   end process;
+
+   with SEL select
+   s_mux_result <= D1_IN when '1',
+                   D2_IN when '0',
+                   (others => '0') when others;
+end rtl_behavioral;
+\end{lstlisting}
+\end{minipage}
+
+\begin{leftbar}
+\begin{minipage}[t]{0.5\textwidth}
+\vspace{10pt}
+\noindent
+\textbf{EXAMPLE 25.}
+Use VHDL structural modeling to design the circuit shown on the right. Consider both of the loading signals to be active high. Consider the circuit to be synchronized to the rising edge of the clock signal.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+    \centering
+	\includegraphics[width=\textwidth]{r_rtl/ex25.png}
+\end{minipage}
+\end{leftbar}
+\noindent
+\textbf{SOLUTION.} The solution to Example~25 is shown in Listing~\ref{ex25_code}. There is not too much interesting to note here. This is a more realistic example of a structural model compared to the example presented in the section on structural modeling. There are only a few new and wonderful things to note about this solution.
+
+\begin{my_list}
+\item The very important thing to note about the solution in Listing~\ref{ex25_code} is to not be intimidated by the sheer quantity of code listed. The code is well structured; if you are able to recognize this structure, you will be more apt to understand the solution. And better yet, you will be more on your way to being able to write your own amazing chunks of VHDL code.
+
+\item The VHDL source code shown in Listing~\ref{ex25_code} is nicely formatted. In particular, the code is nicely indented. Properly indented code is highly desirable in that it nicely presents information based on the indentation. No surprise here but properly formatted code is easier to understand. Better yet, good looking code leads people who may or may not know otherwise into thinking your code is actually as good as it looks. In this busy world of ours, a quick glance is just about all the time people (bosses and teachers) have to dedicate to perusing your VHDL source code.
+\end{my_list}
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=ex25_code, caption=Solution to Example~25 using a structural modeling approach.]
+entity mux2t1 is                                    --- ENTITY
+   port (  A,B : in  std_logic_vector(7 downto 0);
+           SEL : in  std_logic;
+         M_OUT : out std_logic_vector(7 downto 0));
+end mux2t1;
+architecture my_mux of mux2t1 is                    --- ARCHITECTURE
+begin
+   with SEL select
+   M_OUT <= A when '1',
+            B when '0',
+            (others => '0') when others;
+end my_mux;
+entity reg8 is                                      --- ENTITY
+    Port (  REG_IN : in  std_logic_vector(7 downto 0);
+            LD,CLK : in  std_logic;
+           REG_OUT : out std_logic_vector(7 downto 0));
+end reg8;
+architecture reg8 of reg8 is                       --- ARCHITECTURE
+begin
+   reg: process(CLK)
+   begin
+      if (rising_edge(CLK)) then
+         if (LD = '1') then
+            REG_OUT <= REG_IN;
+         end if;
+      end if;
+   end process;
+end reg8;
+entity ckt_rtl is                                    --- ENTITY
+   port (D1_IN,D2_IN : in  std_logic_vector(7 downto 0);
+             CLK,SEL : in  std_logic;
+             LDA,LDB : in  std_logic;
+         REG_A,REG_B : out std_logic_vector(7 downto 0));
+end ckt_rtl;
+architecture rtl_structural of ckt_rtl is           --- ARCHITECTURE
+   -- component declaration
+   component mux2t1
+      port (  A,B : in  std_logic_vector(7 downto 0);
+              SEL : in  std_logic;
+            M_OUT : out std_logic_vector(7 downto 0));
+   end component;
+   component reg8
+       Port (  REG_IN : in  std_logic_vector(7 downto 0);
+               LD,CLK : in  std_logic;
+              REG_OUT : out std_logic_vector(7 downto 0));
+   end component;
+   -- intermediate signal declaration
+   signal s_mux_result : std_logic_vector(7 downto 0);
+begin
+   ra: reg8
+   port map ( REG_IN => s_mux_result,
+                  LD => LDA,
+                 CLK => CLK,
+             REG_OUT => REG_A );
+   rb: reg8
+   port map ( REG_IN => s_mux_result,
+                  LD => LDB,
+                 CLK => CLK,
+             REG_OUT => REG_B );
+   m1: mux2t1
+   port map (   A => D1_IN,
+                B => D2_IN,
+              SEL => SEL,
+            M_OUT => s_mux_result);
+end rtl_structural;
+\end{lstlisting}
+\end{minipage}
 
 \section{Important Points}
 
 \begin{my_list}
-\item The use of \texttt{signed/unsigned} types is desirable any time your ``bags of bits'' (signals, variables or constants) stop being ``bags'' and become numbers of type signed, unsigned or even integers. A typical example is the variable used for a counter for which there is really no reason to use a \texttt{std\_logic\_vector} type for. Refer to line 17, 22 and 33 of Listing~\ref{ex26_code}.
+\item VHDL can be used to easily implement circuits at the register transfer level. The corresponding VHDL models can be implemented in either structural or full behavioral format.
 
-\item The standard IEEE library \texttt{numeric\_std} is needed when you want to use \texttt{signed} and/or \texttt{unsigned} types. The standard IEEE library \texttt{numeric\_std} is almost always preferred over the non-standard\\ \texttt{std\_logic\_arith} library.
-\item Any use of the non-standard Synopsys libraries: \texttt{std\_logic\_signed}, \texttt{std\_logic\_unsigned} and \texttt{std\_logic\_arith} is highly discouraged.
-\item You cannot increment a \texttt{std\_logic\_vector} type signal, you need to first convert it into an unsigned, a signed or an integer:
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}
-
-library IEEE;
-use IEEE.std_logic_1164.all;
-use ieee.numeric_std.all
-
-signal val1, val2 : std_logic_vector( 31 downto 0 );
-val2 <= val1 + 1;     -- ILLEGAL OPERATION
-val2 <= std_logic_vector( unsigned(val1) + 1 );
-\end{lstlisting}
-\end{minipage}
-
+\item RTL level VHDL models should strive for simplicity in their designs. If the behavioral models in the RTL design become complicated, the chances that your circuit works correctly greatly diminish due to the synthesis of the complicated circuit.
 \end{my_list}
 
+\section{Exercises: Register Transfer Level Circuits}
+
+%%%%%% EXERCISE 1 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{EXERCISE 1.}
+Provide a VHDL model that can be used to implement the following circuit.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+\centering
+\includegraphics[width=\textwidth]{r_rtl/ex1.png}
+\end{minipage}
+
+%%%%%% EXERCISE 2 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{EXERCISE 2.}
+Provide a VHDL model that can be used to implement the following circuit.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+\centering
+\includegraphics[width=\textwidth]{r_rtl/ex2.png}
+\end{minipage}
+
+%%%%%% EXERCISE 3 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{EXERCISE 3.}
+Provide a VHDL model that can be used to implement the following circuit.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+\centering
+\includegraphics[width=\textwidth]{r_rtl/ex3.png}
+\end{minipage}
+
+%%%%%% EXERCISE 4 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{EXERCISE 4.}
+Provide a VHDL model that can be used to implement the following circuit.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+\centering
+\includegraphics[width=\textwidth]{r_rtl/ex4.png}
+\end{minipage}
+
+%%%%%% EXERCISE 5 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{EXERCISE 5.}
+Provide a VHDL model that can be used to implement the following circuit.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+\centering
+\includegraphics[width=\textwidth]{r_rtl/ex5.png}
+\end{minipage}
+
+%%%%%% EXERCISE 6 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+\textbf{EXERCISE 6.}
+Provide a VHDL model that can be used to implement the following circuit.
+\end{minipage}
+\begin{minipage}[t]{0.47\textwidth}
+\vspace{0pt}\raggedright
+\centering
+\includegraphics[width=\textwidth]{r_rtl/ex6.png}
+\end{minipage}

@@ -1,20 +1,20 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
 \chapter{VHDL Programming Paradigm}
 The previous chapter introduced the idea of the basic design units of VHDL: the entity and the architecture. Most of the time was spent describing the entity simply because there is so much less involved compared to the architecture. Remember, the entity declaration is used to describe the interface of a circuit to the outside world. The architecture is used to describe how the circuit is intended to function.
 
-Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realizing this is very important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is a not a good idea. 
+Before we get into the details of architecture specification, we must step back for a moment and remember what it is we are trying to do with VHDL. We are, for one reason or another, describing a digital circuit. Realizing this is very important. The tendency for young VHDL programmers with computer programming backgrounds is to view VHDL as just another programming language they want or have to learn. Although many university students have used this approach to pass the basic digital classes, this is not a good idea.
 
-When viewed correctly, VHDL represents a completely different approach to programming while still having many similarities to other programming languages. The main similarity is that they both use a syntactical and rule-based language to describe something abstract. But, the difference is that they are describing two different things. Most programming languages are used to implement functionalities in a sequential manner, one instruction at a time. VHDL however describes hardware and so instructions are executed in a concurrent manner\footnote{In VHDL there are actually ways to obtain sequential execution as well.}, meaning that all instructions are executed at once. Realizing this fact will help you to truly understand the VHDL programming paradigm and language.
+When viewed correctly, VHDL represents a completely different approach to programming while still having many similarities to other programming languages. The main similarity is that they both use a syntactical and rule-based language to describe something abstract. But, the difference is that they are describing two different things. Most programming languages are used to implement functionalities in a sequential manner, one instruction at a time. VHDL however describes hardware and so instructions are executed in a concurrent manner\footnote{In VHDL, there are ways to obtain sequential execution as well.}, meaning that all instructions are executed at once. Realizing this fact will help you to truly understand the VHDL programming paradigm and language.
 
 \section{Concurrent Statements}
-At the heart of most programming languages are the statements that form a majority of the associated source code. These statements represent finite quantities of actions to be taken. A statement in an algorithmic programming language such as C or Java represents an action to be taken by the processor. Once the processor finishes one action, it moves onto the next action specified somewhere in the associated source code. This makes sense and is comfortable to us as humans because just like the processor, we are generally only capable of doing one thing at a time. This description lays the foundation for an algorithmic method where the processor does a great job of following a set of rules which are essentially the direction provided by the source code. When the rules are meaningful, the processor can do amazing things. 
+At the heart of most programming languages are the statements that form a majority of the associated source code. These statements represent finite quantities of actions to be taken. A statement in an algorithmic programming language such as C or Java represents an action to be taken by the processor. Once the processor finishes one action, it moves onto the next action specified somewhere in the associated source code. This makes sense and is comfortable to us as humans because just like the processor, we are generally only capable of doing one thing at a time. This description lays the foundation for an algorithmic method where the processor does a great job of following a set of rules which are essentially the direction provided by the source code. When the rules are meaningful, the processor can do amazing things.
 
 VHDL programming is significantly different. Whereas a processor steps one by one through a set of statements, VHDL has the ability to execute a virtually unlimited number of statements at the same time and in a concurrent manner (in other words, in parallel). Once again, the key thing to remember here is that we are designing hardware. Parallelism, or things happening concurrently, in the context of hardware is a much more straightforward concept than it is in the world of software. If you have had any introduction to basic digital hardware, you are most likely already both familiar and comfortable with the concept of parallelism, albeit not within a programming language.
 
@@ -22,18 +22,18 @@ VHDL programming is significantly different. Whereas a processor steps one by on
 \centering
 \usetikzlibrary{er}
 \begin{tikzpicture}[minimum height=9mm,scale=0.9]
-\node[draw, and gate US] at (0,0.2) (C) {C}; 
-\node[draw, not gate US] at ([xshift=-1.95cm]C.input 2) (D) {D}; 
-\node[draw, or gate US] at (0,1.3) (B) {B}; 
-\node[draw, and gate US] at (0,2.4) (A) {A}; 
-\node[draw, or gate US] at (2.5,1.3) (E) {E}; 
+\node[draw, and gate US] at (0,0.2) (C) {C};
+\node[draw, not gate US] at ([xshift=-1.95cm]C.input 2) (D) {D};
+\node[draw, or gate US] at (0,1.3) (B) {B};
+\node[draw, and gate US] at (0,2.4) (A) {A};
+\node[draw, or gate US] at (2.5,1.3) (E) {E};
 \draw (D.output) -- (C.input 2);
 \draw (A.output) -- +(0.7,0) |- (E.input 1);
 \draw (C.output) -- +(0.7,0) |- (E.input 2);
 \draw (B.output) -- (E.west);
 \draw (E.output) -- ([xshift=1cm]E.output) node [pos=1.6] {E\_out} ;
-\draw (A.input 1) -- ([xshift=-4.cm]A.input 1) node [pos=1.1] {A\_1} ; 
-\draw (A.input 2) -- ([xshift=-4.cm]A.input 2) node [pos=1.1] {A\_2} ; 
+\draw (A.input 1) -- ([xshift=-4.cm]A.input 1) node [pos=1.1] {A\_1} ;
+\draw (A.input 2) -- ([xshift=-4.cm]A.input 2) node [pos=1.1] {A\_2} ;
 \draw (B.input 1) -- ([xshift=-4.1cm]B.input 1) node [pos=1.1] {B\_1} ;
 \draw (B.input 2) -- ([xshift=-4.1cm]B.input 2) node [pos=1.1] {B\_2} ;
 \draw (D.input) -- ([xshift=-2.9cm]D.output) node [pos=1.25] {D\_1} ;
@@ -47,7 +47,7 @@ VHDL programming is significantly different. Whereas a processor steps one by on
 
 Figure~\ref{concurrent_circuit} shows a simple example of a circuit that operates in parallel. As you know, the output of the gates are a function of the gate inputs. Any time that any gate input changes, there is a possibility that, after an opportune delay, the gate output will change. This is true of all the gates in Figure~\ref{concurrent_circuit} or in any digital circuit in general. Once changes to the gate inputs occur, the circuit status is re-evaluated and the gate outputs may change accordingly. Although the circuit in Figure~\ref{concurrent_circuit} only shows a few gates, this idea of concurrent operation of all the elements in the circuit is the same in all digital circuits no matter how large or complex they are.
 
-Since most of us are human, we are only capable of reading one line of text at a time and in a sequential manner. We have the same limitation when we try to write some text, not to mention enter some text into a computer. So how then are we going to use text to describe a circuit that is inherently parallel? We did not have this problem when discussing something inherently sequential such as standard algorithmic programming. When writing code using an algorithmic programming language, there is generally only one processing element to focus on at each given time. Everything more or less follows up in a sequential manner, which fits nicely with our basic limitation as humans. 
+Since most of us are human, we are only capable of reading one line of text at a time and in a sequential manner. We have the same limitation when we try to write some text, not to mention enter some text into a computer. So how then are we going to use text to describe a circuit that is inherently parallel? We did not have this problem when discussing something inherently sequential such as standard algorithmic programming. When writing code using an algorithmic programming language, there is generally only one processing element to focus on at each given time. Everything more or less follows up in a sequential manner, which fits nicely with our basic limitation as humans.
 
 The VHDL programming paradigm is built around the concept of expression parallelism and concurrency with textual descriptions of circuits. The heart of VHDL programming is the concurrent statement. These are statements that look a lot like the statements in algorithmic languages but they are significantly different because the VHDL statements, by definition, express concurrency of execution.
 
@@ -58,48 +58,48 @@ use IEEE.std_logic_1164.all;
 
 -- entity
 entity my_circuit is
-port ( A_1,A_2,B_1,B_2,D_1	: in  std_logic;
-       E_out				: out std_logic);
+	port ( A_1,A_2,B_1,B_2,D_1 : in  std_logic;
+	       E_out               : out std_logic);
 end my_circuit;
 
 -- architecture
 architecture my_circuit_arc of my_circuit is
 	signal A_out, B_out, C_out : std_logic;
 begin
-	A_out <= A_1 and A_2;   
-	B_out <= B_1 or B_2; 
-	C_out <= (not D_1) and B_2; 
+	A_out <= A_1 and A_2;
+	B_out <= B_1 or B_2;
+	C_out <= (not D_1) and B_2;
 	E_out <= A_out or B_out or C_out;
 end my_circuit_arc;
 \end{lstlisting}
 
-Listing~\ref{parallel_code} shows the code that implements the circuit shown in Figure~\ref{concurrent_circuit}. This code shows four concurrent signal assignment statements. As seen before, the ``$<=$'' construct refers to the signal assignment operator. It is true that we cannot write these four statements at the same time but we can interpret these statements as actions that occur concurrently. Remember to keep in mind that the concept of concurrency is a key concept in VHDL. If you feel that the algorithmic style of thought is creeping into your soul, try to snap out of it quickly. The concurrent signal assignment is discussed in greater detail in the next section. 
+Listing~\ref{parallel_code} shows the code that implements the circuit shown in Figure~\ref{concurrent_circuit}. This code shows four concurrent signal assignment statements. As seen before, the ``$<=$'' construct refers to the signal assignment operator. It is true that we cannot write these four statements at the same time but we can interpret these statements as actions that occur concurrently. Remember to keep in mind that the concept of concurrency is a key concept in VHDL. If you feel that the algorithmic style of thought is creeping into your soul, try to snap out of it quickly. The concurrent signal assignment is discussed in greater detail in the next section.
 
 As a consequence of the concurrent nature of VHDL statements, the three chunks of code appearing below are 100\% equivalent to the code shown in Listing~\ref{parallel_code}. Once again, since the statements are interpreted as occurring concurrently: the order that these statements appear in your VHDL source code makes no difference. Generally speaking, it would be a better idea to describe the circuit as shown in Listing~\ref{parallel_code} since it somewhat reflects the natural organization of statements.
 
 \noindent
 \begin{minipage}{0.99\linewidth}
 \begin{lstlisting}[label=parallel_code_2, caption=Equivalent VHDL code for the circuit of Figure 4.1. ]
-C_out <= (not D_1) and B_2; 
-A_out <= A_1 and A_2;   
-B_out <= B_1 or B_2; 
+C_out <= (not D_1) and B_2;
+A_out <= A_1 and A_2;
+B_out <= B_1 or B_2;
 E_out <= A_out or B_out or C_out;
 \end{lstlisting}
 \begin{lstlisting}[label=parallel_code_3, caption=Equivalent VHDL code for the circuit of Figure 4.1.]
-A_out <= A_1 and A_2;   
+A_out <= A_1 and A_2;
 E_out <= A_out or B_out or C_out;
-B_out <= B_1 or B_2; 
-C_out <= (not D_1) and B_2; 
+B_out <= B_1 or B_2;
+C_out <= (not D_1) and B_2;
 \end{lstlisting}
 \begin{lstlisting}[label=parallel_code_4, caption=Equivalent VHDL code for the circuit of Figure 4.1.]
-B_out <= B_1 or B_2; 
-A_out <= A_1 and A_2;   
+B_out <= B_1 or B_2;
+A_out <= A_1 and A_2;
 E_out <= A_out or B_out or C_out;
-C_out <= (not D_1) and B_2; 
+C_out <= (not D_1) and B_2;
 \end{lstlisting}
 \end{minipage}
 
-\section{Signal Assignment Operator ``$<=$''}
+\section{Signal Assignment Operator \texorpdfstring{``$<=$''}{<=}}
 Algorithmic programming languages always have some type of assignment operator. In C or Java, this is the well-known ``='' sign. In these languages, the assignment operator signifies a transfer of data from the right-hand side of the operator to the left-hand side. VHDL uses two consecutive characters to represent the assignment operator: ``\texttt{$<=$}''. This combination was chosen because it is different from the assignment operators in most other common algorithmic programming languages. The operator is officially known as a signal assignment operator to highlight its true purpose. The signal assignment operator specifies a relationship between signals. In other words, the signal on the left-hand side of the signal assignment operator is dependent upon the signals on the right-hand side of the operator.
 
 With these new insights into VHDL, you should be able to understand the code of Listing~\ref{parallel_code} and its relationship to its schematic shown in Figure~\ref{concurrent_circuit}. The statement ``\texttt{G~$<=$~A~AND~B;}'' indicates that the value of the signal named \texttt{G} represents an AND logic operation between the signals \texttt{A} and \texttt{B}.
@@ -121,7 +121,7 @@ The general form of a concurrent signal assignment statement is shown in Listing
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 1.}
-Write the VHDL code that implements a three-input NAND gate. The three input signals are named A, B and C and the output signal name is F. 
+Write the VHDL code that implements a three-input NAND gate. The three input signals are named A, B and C and the output signal name is F.
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} It is good practice to always draw a diagram of the circuit you are designing. Furthermore, although we could draw a diagram showing the familiar symbol for the NAND gate, we will choose to keep the diagram general and take the black-box approach instead. Remember, the black box is a nice aid when it comes to writing the entity declaration. The solution to Example~1 is provided in Listing~\ref{example_1}.
@@ -180,20 +180,20 @@ Write the VHDL code to implement the function expressed by the following logic e
 \textbf{SOLUTION.} The black box diagram and associated VHDL code is shown in Listing~\ref{example_2}.
 
 \noindent
-\begin{minipage}{0.57\linewidth}
+\begin{minipage}{0.6\linewidth}
 \begin{lstlisting}[label=example_2, caption=Solution of Example~2.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
-port ( L,M,N : in  std_logic;
-       F3    : out std_logic);
+   port ( L,M,N : in  std_logic;
+          F3    : out std_logic);
 end my_ckt_f3;
 -- architecture
 architecture f3_2 of my_ckt_f3 is
 begin
-F3<=((NOT L)AND(NOT M)AND N)OR(L AND M);
+   F3<=((NOT L)AND(NOT M)AND N)OR(L AND M);
 end f3_2;
 \end{lstlisting}
 \end{minipage}
@@ -218,7 +218,7 @@ end f3_2;
 
 This example shows a one-line implementation of the given logic equation.
 
-An alternative solution to Example~2 is provided in Figure~\ref{example_2_bis}. This example represents an important concept in VHDL. The solution shown in Listing~\ref{example_2_bis} uses some special statements in order to implement the circuit. These special statements are used to provide what is often referred to as intermediate results. This approach is equivalent to declaring extra variables in an algorithmic programming language to be used for storing intermediate results. The need for intermediate results is accompanied by the declaration of extra signal values, which are often referred to intermediate signals. Note in Listing~\ref{example_2_bis} that the declaration of intermediate signals is similar to the port declarations appearing in the entity declaration, except that the mode specification (\texttt{in}, \texttt{out} or \texttt{inout}) is missing. 
+An alternative solution to Example~2 is provided in Listing~\ref{example_2_bis}. This example represents an important concept in VHDL. The solution shown in Listing~\ref{example_2_bis} uses some special statements in order to implement the circuit. These special statements are used to provide what is often referred to as intermediate results. This approach is equivalent to declaring extra variables in an algorithmic programming language to be used for storing intermediate results. The need for intermediate results is accompanied by the declaration of extra signal values, which are often referred to as intermediate signals. Note in Listing~\ref{example_2_bis} that the declaration of intermediate signals is similar to the port declarations appearing in the entity declaration, except that the mode specification (\texttt{in}, \texttt{out} or \texttt{inout}) is missing.
 
 The intermediate signals must be declared within the body of the architecture because they have no link to the outside world and thus do not appear in the entity declaration. Note that the intermediate signals are declared in the architecture body but appear before the \texttt{begin} statement.
 
@@ -228,8 +228,8 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
-port ( L,M,N : in  std_logic;
-       F3    : out std_logic);
+	port ( L,M,N : in  std_logic;
+	       F3    : out std_logic);
 end my_ckt_f3;
 -- architecture
 architecture f3_1 of my_ckt_f3 is
@@ -266,7 +266,7 @@ The conditional signal assignment statement is probably easiest to understand in
 \begin{leftbar}
 \noindent
 \textbf{EXAMPLE 3.}
-Write the VHDL code to implement the function expressed in Example~2. Use only conditional signal assignment statements in your VHDL code. 
+Write the VHDL code to implement the function expressed in Example~2. Use only conditional signal assignment statements in your VHDL code.
 \end{leftbar}
 \noindent
 \textbf{SOLUTION.} The entity declaration does not change from Example~2 so the solution only needs a new architecture description. By reconsidering the same logic equation of Example~2, $F3=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$, the solution to Example~3 is shown in Listing~\ref{example_3}.
@@ -276,9 +276,9 @@ Write the VHDL code to implement the function expressed in Example~2. Use only c
 \begin{lstlisting}[label=example_3, caption=Solution of Example~3.]
 architecture f3_3 of my_ckt_f3 is
 begin
-F3 <= '1' when (L= '0' AND M = '0' AND N = '1') else
-      '1' when (L= '1' AND M = '1') else
-      '0';
+	F3 <= '1' when (L = '0' AND M = '0' AND N = '1') else
+	      '1' when (L = '1' AND M = '1') else
+	      '0';
 end f3_3;
 \end{lstlisting}
 \end{minipage}
@@ -301,16 +301,16 @@ Write the VHDL code that implements a 4:1 MUX using a single conditional signal 
 \textbf{SOLUTION.} For this example we need to start from scratch. This of course includes the now famous black-box diagram and the associated entity statement. The VHDL portion of the solution is shown in Listing~\ref{example_4}.
 
 \noindent
-\begin{minipage}{0.62\linewidth}
-\begin{lstlisting}[label=example_4, caption=Solution of Example~4.]
+\begin{minipage}{0.69\linewidth}
+	\begin{lstlisting}[label=example_4, caption=Solution of Example~4.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
-port(D3,D2,D1,D0 : in std_logic;
-     SEL: in std_logic_vector(1 downto 0);
-     MX_OUT	: out std_logic);
+	port(D3,D2,D1,D0 : in std_logic;
+	     SEL : in std_logic_vector(1 downto 0);
+	     MX_OUT : out std_logic);
 end my_4t1_mux;
 -- architecture
 architecture mux4t1 of my_4t1_mux is
@@ -321,28 +321,27 @@ begin
 	          D0 when (SEL = "00") else
 	          '0';
 end mux4t1;
-
-\end{lstlisting}
+	\end{lstlisting}
 \end{minipage}
-\begin{minipage}{0.2\linewidth}
-\begin{flushright}
-\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
-%\draw[help lines] (0,0) grid (50,50);
-% BOX
-\draw (20,0) rectangle (30,25) node[above]{my\_4to1\_mux};
-% INPUTS
-\small
-\node (b) at (20,25) {}; % this is to extend the pink area
-\node (a) at (20,-2.5) {}; % this is the reference point
-\draw [latex-] ($(a)+(0,25)$) -- ++(-5,0) node[left]{D3};
-\draw [latex-] ($(a)+(0,20)$) -- ++(-5,0) node[left]{D2};
-\draw [latex-] ($(a)+(0,15)$) -- ++(-5,0) node[left]{D1};
-\draw [latex-] ($(a)+(0,10)$) -- ++(-5,0) node[left]{D0};
-\draw [latex-] ($(a)+(0,5)$) -- ++(-5,0) node[left]{SEL} node[pos=0.7,above]{2} node[pos=0.6]{/};
-% OUTPUTS
-\draw [-latex] ($(a)+(10,15)$) -- ++(5,0) node[above, pos=1.6]{MX\_OUT};
-\end{tikzpicture}
-\end{flushright}
+\begin{minipage}{0.3\linewidth}
+	\begin{flushright}
+		\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+			%\draw[help lines] (0,0) grid (50,50);
+			% BOX
+			\draw (20,0) rectangle (30,25) node[above]{my\_4to1\_mux};
+			% INPUTS
+			\small
+			\node (b) at (20,25) {}; % this is to extend the pink area
+			\node (a) at (20,-2.5) {}; % this is the reference point
+			\draw [latex-] ($(a)+(0,25)$) -- ++(-5,0) node[left]{D3};
+			\draw [latex-] ($(a)+(0,20)$) -- ++(-5,0) node[left]{D2};
+			\draw [latex-] ($(a)+(0,15)$) -- ++(-5,0) node[left]{D1};
+			\draw [latex-] ($(a)+(0,10)$) -- ++(-5,0) node[left]{D0};
+			\draw [latex-] ($(a)+(0,5)$) -- ++(-5,0) node[left]{SEL} node[pos=0.7,above]{2} node[pos=0.6]{/};
+			% OUTPUTS
+			\draw [-latex] ($(a)+(10,15)$) -- ++(5,0) node[above, pos=1.6]{MX\_OUT};
+		\end{tikzpicture}
+	\end{flushright}
 \end{minipage}
 
 There are a couple of things to note in the solution provided in Listing~\ref{example_4}.
@@ -355,7 +354,7 @@ Remember, a conditional signal assignment is a type of concurrent statement. In 
 
 \begin{lstlisting}[float, label=example_4_bis, caption=Alternative solution to Example~4 accessing individual signals.]
 -----------------------------------------------------------------
--- entity and architecture of 4:1 Multiplexor implemented using
+-- entity and architecture of 4:1 Multiplexer implemented using
 -- conditional signal assignment. The conditions access the
 -- individual signals of the SEL bundle in this model.
 -----------------------------------------------------------------
@@ -364,9 +363,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
-port	(D3,D2,D1,D0   : in  std_logic;
-         SEL           : in  std_logic_vector(1 downto 0);
-         MX_OUT        : out std_logic);
+	port (D3,D2,D1,D0 : in  std_logic;
+	      SEL         : in  std_logic_vector(1 downto 0);
+	      MX_OUT      : out std_logic);
 end my_4t1_mux;
 -- architecture
 architecture mux4t1 of my_4t1_mux is
@@ -381,7 +380,7 @@ end mux4t1;
 
 Though it is still early in the VHDL learning game, you have been exposed to a lot of concepts and syntax. The conditional signal assignment is maybe a bit less intuitive than the concurrent signal assignment. There is however an alternative way to make sense of it. If you think about it, the conditional signal assignment statement is similar in function to the \texttt{if-else }constructs in algorithmic programming languages. We will touch more upon this relationship once we start talking about sequential statements.
 
-The concept of working with bundles is very important in VHDL. Generally speaking, if you can use a bundle as opposed to individual signals, you should. You will often need to access individual signals within a bundle. When this is the case, a special syntax is used (e.g. \texttt{SEL(1)}). Be sure to note that the code shown in Listing~\ref{example_4_bis} is equivalent to but probably not as clear as the code shown in Listing~\ref{example_4}. Be sure to note the similarities and differences.
+The concept of working with bundles is very important in VHDL. Generally speaking, if you can use a bundle as opposed to individual signals, you should. You will often need to access individual signals within a bundle. When this is the case, a special syntax is used (e.g. \texttt{SEL(1)}). Note that the code shown in Listing~\ref{example_4_bis} is equivalent to but probably not as clear as the code shown in Listing~\ref{example_4}. Be sure to note the similarities and differences.
 
 \section{Selected Signal Assignment \texttt{with select}}
 Selected signal assignment statements are the third type of signal assignment that we will examine. As with conditional signal assignment statements, selected signal assignment statements only have one assignment operator. Selected signal assignment statements differ from conditional assignment statements in that assignments are based upon the evaluation of one expression. The syntax for the selected signal assignment statement is shown in Listing~\ref{sel_sig_assig}.
@@ -409,10 +408,10 @@ Write VHDL code to implement the function expressed by the following logic equat
 -- yet another solution to the previous example
 architecture f3_4 of my_ckt_f3 is
 begin
-   with ((L ='0' and M ='0'and N ='1')or(L='1' and M='1')) select
-	F3 <= '1' when '1',
-	      '0' when '0',
-	      '0' when others;
+   with ((L ='0' and M ='0' and N ='1') or (L ='1' and M ='1')) select
+      F3 <= '1' when '1',
+            '0' when '0',
+            '0' when others;
 end f3_4;
 \end{lstlisting}
 \end{minipage}
@@ -432,19 +431,19 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_4t1_mux is
-port (D3,D2,D1,D0 : in  std_logic;
-      SEL         : in  std_logic_vector(1 downto 0);
-      MX_OUT      : out std_logic);
+	port (D3,D2,D1,D0 : in  std_logic;
+	      SEL         : in  std_logic_vector(1 downto 0);
+	      MX_OUT      : out std_logic);
 end my_4t1_mux;
 -- architecture
 architecture mux4t1_2 of my_4t1_mux is
 begin
-with SEL select
-	MX_OUT <= D3  when "11",
-	          D2  when "10",
-	          D1  when "01",
-	          D0  when "00",
-	          '0' when others;
+	with SEL select
+		MX_OUT <= D3  when "11",
+		          D2  when "10",
+		          D1  when "01",
+		          D0  when "00",
+		          '0' when others;
 end mux4t1_2;
 \end{lstlisting}
 
@@ -457,7 +456,7 @@ Once again, there are a few things of interest in the solution for Example~6 whi
 
 \begin{leftbar}
 \noindent
-\textbf{EXAMPLE 7.} Write the VHDL code that implements the following circuit. The circuit contains an input bundle of four signals and an output bundle of three signals. The input bundle, D\_IN, represents a 4-bit binary number. The output bus, SZ\_OUT, is used to indicate the magnitude of the 4-bit binary input number. The relationship between the input and output is shown in the table below. Use a selected signal assignment statement in the solution.
+\textbf{EXAMPLE 7.} Write the VHDL code that implements the following circuit. The circuit contains an input bundle of four signals and an output bundle of three signals. The input bundle, D\_IN, represents a 4-bit binary number. The output bundle, SZ\_OUT, is used to indicate the magnitude of the 4-bit binary input number. The relationship between the input and output is shown in the table below. Use a selected signal assignment statement in the solution.
 
 \centering\vspace{5pt}
 \begin{tabular}{c*{2}{c}r}
@@ -499,24 +498,24 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_sz_ckt is
-    port ( D_IN   : in  std_logic_vector(3 downto 0);
-           SX_OUT : out std_logic_vector(2 downto 0)); 
+	port ( D_IN   : in  std_logic_vector(3 downto 0);
+	       SZ_OUT : out std_logic_vector(2 downto 0));
 end my_sz_ckt;
 -- architecture
 architecture spec_dec of my_sz_ckt is
 begin
-   with D_IN select
-SX_OUT <= "100" when "0000"|"0001"|"0010"|"0011", 
-          "010" when "0100"|"0101"|"0110"|"0111"|"1000"|"1001", 
-          "001" when "1010"|"1011"|"1100"|"1101"|"1110"|"1111", 
-          "000" when others;  
+	with D_IN select
+		SZ_OUT <= "100" when "0000"|"0001"|"0010"|"0011",
+		          "010" when "0100"|"0101"|"0110"|"0111"|"1000"|"1001",
+		          "001" when "1010"|"1011"|"1100"|"1101"|"1110"|"1111",
+		          "000" when others;
 end spec_dec;
 \end{lstlisting}
 \end{minipage}
 
 The only comment for the solution of Example~7 is that the vertical bar is used as a selection character in the choices section of the selected signal assignment statement. This increases the readability of the code as do the similar constructs in algorithmic programming languages.
 
-Once again, the selected signal assignment statement is one form of a concurrent statement. This is verified by the fact that there is only one signal assignment statement in the body of the selected signal assignment statement. The selected signal assignment statement is evaluated each time there is a change in the \textit{chooser\_expression} listed in the first line of the selected signal assignment statement.
+Once again, the selected signal assignment statement is one form of a concurrent statement. This is verified by the fact that there is only one signal assignment statement in the body of the selected signal assignment statement. The selected signal assignment statement is evaluated each time there is a change in the \textit{chooser\_expression} listed in the first line of the selected signal assignment statement. Re-evaluation also occurs every time there is a change in a conditional signal on the right-hand side of the signal assignment operator.
 
 The final comment regarding the selected signal assignment is similar to the final comment regarding conditional signal assignment. You should recognize the general form of the selected signal assignment statement as being similar to the \textit{switch} statements in algorithmic programming languages such as C and Java. Once again, this relationship is examined in much more depth once we are ready to talk about sequential statements.
 
@@ -526,7 +525,7 @@ The final comment regarding the selected signal assignment is similar to the fin
 Write VHDL code to implement the function expressed by the following logic equation: $F3=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$.
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$ and its Karnaugh map is shown below. The solution of Example~8 in shown in Listing~\ref{example_8}.\\
+\textbf{SOLUTION.} This is the same problem examined before. The problem with the previous solutions to this example is that they required the user to somehow reduce the function before it was implemented. In this modern day of digital circuit design, you score the most points when you allow the VHDL synthesizer to do the work for you. The solution to this example hopefully absolves you from ever again having to use a Karnaugh map, or God forbid, boolean algebra, to reduce a function. The equivalent expression for $F3(L,M,N)=\overline{L} \cdot \overline{M} \cdot N+L \cdot M$ and its Karnaugh map is shown below. The solution of Example~8 is shown in Listing~\ref{example_8}.\\
 \vspace{5pt}
 
 \noindent
@@ -563,27 +562,27 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
 entity my_ckt_f3 is
-port ( L,M,N : in  std_logic;
-       F3    : out std_logic);
+	port ( L,M,N : in  std_logic;
+	       F3    : out std_logic);
 end my_ckt_f3;
 -- architecture
 architecture f3_8 of my_ckt_f3 is
-signal t_sig : std_logic_vector(2 downto 0); -- local bundle
+	signal t_sig : std_logic_vector(2 downto 0); -- local bundle
 begin
-t_sig <= (L & M & N); -- concatenation operator
+	t_sig <= (L & M & N); -- concatenation operator
 
-with (t_sig) select
-    F3 <= '1' when "001" | "110" | "111",
-          '0' when others;
+	with (t_sig) select
+	    F3 <= '1' when "001" | "110" | "111",
+	          '0' when others;
 end f3_8;
 \end{lstlisting}
 
 \section{Process Statement}
-The process statement is the final signal assignment type we will look at. Before we do that, however, we need to take a few steps back and explore a few other VHDL principles and definitions that we have excluded up to now. Remember, there are a thousand ways to learn things. This is especially true when learning programming languages, where there are usually many different and varied solutions to the same problem. This is highlighted by the many different and varied approaches that appear in VHDL books and by the many tutorials. 
+The process statement is the final signal assignment type we will look at. Before we do that, however, we need to take a few steps back and explore a few other VHDL principles and definitions that we have excluded up to now. Remember, there are a thousand ways to learn things. This is especially true when learning programming languages, where there are usually many different and varied solutions to the same problem. This is highlighted by the many different and varied approaches that appear in VHDL books and by the many tutorials.
 
 So, now is not the time to learn about the process statement. We will do that right after we pick up a few more VHDL concepts. Now just remember that the process statement is a statement which contains a certain number of instructions that, when the process statement is executed, are executed sequentially. In other words, the process statement is a tool that you can use any time you want to execute a certain number of instructions in a sequential manner (one instruction after the other, from top to bottom). Do not forget, however, that the process statement in itself is a concurrent statement and therefore will be executed together with the other concurrent statements in the body of the architecture where it sits.
 
-\section{Summary} 
+\section{Summary}
 \begin{my_list}
 \item The entity/architecture pair is the interface description and behavior description of how a digital circuit operates.
 \item The main design consideration in VHDL modeling supports the fact that digital circuits operate in parallel. In other words, the various design units in a digital design process and store information independently of each other. This is the major difference between VHDL and higher-level computer programming languages.

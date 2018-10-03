@@ -1,509 +1,1279 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
-\chapter{Structural Modeling In VHDL}
-As was mentioned earlier, there are generally three approaches to writing VHDL code: data-flow modeling, behavioral modeling and structural modeling.
+\chapter{Finite State Machine Design Using VHDL}
+Finite state machines (FSMs) are mathematical abstractions that are used to solve a large variety of problems, among which are electronic design automation, communication protocol design, parsing and other engineering applications. At this point in your digital design career, you have probably designed several state machines on paper. You are now at the point where you can implement and test them using actual hardware. The first step in this process is to learn how to model FSMs using VHDL.
 
-Up to this point, this book has only dealt with data-flow and behavioral models. This section presents an introduction to structural modeling.
+As you will see in the next section, simple FSM designs are just a step beyond the sequential circuit design described in the previous section. The techniques you learn in this section will allow you to quickly and easily design relatively complex FSMs which can be useful in a number of ways.
 
-As digital designs become more complex, it becomes less likely that any one design can be implemented with any one of the three types of VHDL models. We have already seen this property in dealings with FSMs where we mixed process statements (behavioral modeling) with selective signal assignment statements (data-flow modeling). The result was a hybrid VHDL model. By its very nature, structural modeling is likewise a hybrid VHDL model. Most complex designs could be considered structural models, i.e. if they are implemented using sound coding procedures.
+\begin{figure}
+    \centering
+	\includegraphics[width=\textwidth]{fsm/fsm.png}
+	\caption{Block diagram for a Moore-type FSM.}
+	\label{fsm}
+\end{figure}
 
-The design of complex digital circuits using VHDL should closely resemble the structure of complex computer programs. Many of the techniques and practices used to construct large and well structured computer programs written in higher-level languages should also be applied when using VHDL. This common structure we are referring to is the ever so popular modular approach to coding. The term structural modeling is the terminology that VHDL uses for the modular design. The VHDL modular design approach directly supports hierarchical design which is essentially employed when attempting to understand complex digital designs.
+A block diagram for a standard Moore-type FSM is shown in Fig.~\ref{fsm}. This diagram is fairly typical but different names are used for some of the blocks in the design. The \texttt{Next State Decoder} is a block of combinatorial logic that uses the current external inputs and the current state to decide upon the next state of the FSM. In other words, the inputs to the \texttt{Next State Decoder} block are decoded to produce an output that represents the next state of the FSM. The circuitry in the \texttt{Next State Decoder} is generally the excitation equations for the storage elements (flip-flops) in the \texttt{State Register} block. The next state becomes the present state of the FSM when the clock input to the state registers block becomes active. The state registers block is a storage element that stores the present state of the machine. The inputs to the \texttt{Output Decoder} are used to generate the desired external outputs. The inputs are decoded via combinatorial logic to produce the external outputs. Because the external outputs are only dependent upon the current state of the machine, this FSM is classified as a Moore-type FSM.
 
-The benefits of modular design to VHDL are similar to the benefits that modular design or object-oriented design provides for higher-level computer languages. Modular designs promote understandability by packing low-level functionality into modules. These modules can be easily reused in other designs thus saving the designer time by removing the need to reinvent and re-test the wheel. The hierarchical approach extends beyond code written on file level. VHDL modules can be placed in appropriately named files and libraries in the same way as higher-level languages. Moreover, there are often libraries out there that contain useful modules that can only be accessed using a structural-modeling approach. Having access to these libraries and being fluent in their use will serve to increase your perception as a VHDL guru.
+The FSM model shown in Fig.~\ref{fsm} is the most common model for describing a Moore-type FSM. This is probably because students are often asked to generate the combinatorial logic required to implement the \texttt{Next State Decoder} and the \texttt{Output Decoder}; however here we want to think about FSMs in the context of VHDL. The true power of VHDL starts to emerge in dealing with FSMs. As you will see, the versatility of VHDL behavioral modeling removes the need for large paper designs of endless K-maps and endless combinatorial logic elements.
 
-After all the commentary regarding complex designs, we present a few simple examples. Though the structural approach is most appropriately used in complex digital designs, the examples presented in this section are rather simplistic in nature. These examples show the essential details of VHDL structural modeling. It is up to the designer to conjure up digital designs where a structural modeling approach would be more appropriate. Keep in mind that your first exposure to structural modeling may be somewhat rough. Although there is some new syntax to become familiar with, once you complete a few structural designs, this new syntax becomes ingrained in your brain and it becomes second nature to apply where required.
+\begin{figure}[t]
+    \centering
+	\includegraphics[width=12cm]{fsm/fsm_imp.png}
+	\caption{Model for VHDL implementations of FSMs.}
+	\label{fsm_imp}
+\end{figure}
 
-The tendency at this juncture in your VHDL programming career is to use some type of schematic capture software instead of learning the structural modeling approach. The fact is that no one of consequence uses the schematic capture software except for tired old university professors who are more interested in selling books than they are in teaching modern approach to VHDL modeling. The funny part about this entire process is that the schematic capture software is a tool that allows you to visually represent circuits but in the end generates VHDL code (the only thing the synthesizer understands is VHDL code).
+There are several different approaches used to model FSMs in VHDL. The various approaches are a result of the general versatility of VHDL as a language. What we will describe in this section is probably the clearest approach for FSM implementation. A block diagram of the approach we will use in the implementation of FSMs is shown in Fig.~\ref{fsm_imp}.
 
-\section{VHDL Modularity with Components}
-The main tool for modularity in higher-level languages such as C is the function. In other computer languages, similar modularity is accomplished through the use of methods, procedures and subroutines. The approach used in C is to 1) name the function interface you plan on writing (the function declaration), 2) code what the function will do (the function body), 3) let the program know it exists and is available to be called (the prototype) and 4) call the function from the main portion of the code. In VDHL modularity is achieved via the use of \textbf{packages}, \textbf{components} and \textbf{functions}. In the following sections we are going to see how to use \texttt{components}.
+Although it does not look that much clearer, you will soon find the FSM model shown in Fig.~\ref{fsm_imp} to be a straightforward method for implementing FSMs. The approach we will use divides the FSM into two VHDL processes. One process, referred to as the \texttt{Synchronous Process} handles all the matters regarding clocking and other controls associated with the storage element. The other process, the \texttt{Combinatorial Process}, handles all the matters associated with the \texttt{Next State Decoder} and the \texttt{Output Decoder} of Fig.~\ref{fsm}. Note that the two blocks in Fig.~\ref{fsm} are both made solely of combinatorial logic.
 
-The approach to use a \texttt{component} in VHDL  is: 1) name the module you plan to describe (the entity), 2) describe what the module will do (the architecture), 3) let the program know the module exists and can be used (component declaration) and 4) use the module in your code (component instantiation, or mapping). The similarities between these two approaches are listed in Table \ref{vhdl_c_comp}.
 
-\begin{table}[!b]
-\centering
-\footnotesize\textsf{\begin{tabular}{ l l }
-\hline
-\rowcolor{gray} \textbf{C programming language} & \textbf{VHDL}\\
-\hline
-\rowcolor{light-gray} Describe function interface & The entity\\
-\hline
-Describe what the function does (coding) & The architecture \\
-\hline
-\rowcolor{light-gray} Provide a function prototype to main program & Component declaration \\
-\hline
-Call the function from main program & Component instantiation or mapping \\
-\hline
-\end{tabular}}
-\caption{Similarities between modules in C and VHDL.}
-\label{vhdl_c_comp}
-\end{table}
+Some new lingo is used to describe the signals in Fig.~\ref{fsm_imp}, as outlined and described below:
+\begin{my_list}
+\item The inputs labelled \texttt{Parallel Inputs} are used to signify inputs that act in parallel on each of the storage elements. These inputs include enables, presets, clears, etc.
 
-Let us now use these principles in a practical example. Our approach is to describe a template-type approach to VHDL structural design using a simple and well-known combinational circuit.
+\item The inputs labelled \texttt{State Transition Inputs} include external inputs that control the state transitions. These inputs also include external inputs used to decode Mealy-type external outputs.
+
+\item The \texttt{Present State} signals are used by the \texttt{Combinatorial \\ Process} box for both next state decoding and output decoding. The diagram of Fig.~\ref{fsm_imp} also shows that the \texttt{Present State} variables can also be provided as outputs to the FSM but they are not required.
+\end{my_list}
+
+One final comment before we begin. There are many different methods that can be used to describe FSMs using VHDL. Once you understand the method presented here, learning any other style of FSM implementation is relatively painless. More information on the other FSM coding styles may be found in various VHDL texts or on the web.
+
+\section{VHDL Behavioral Representation of FSMs}
 
 \begin{leftbar}
-\begin{minipage}[t]{0.52\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \vspace{10pt}
 \noindent
-\textbf{EXAMPLE 22.}
-Design a 3-bit comparator using a VHDL structural modeling. The interface to this circuit is described in the diagram below.
+\textbf{EXAMPLE 18.}
+Write the VHDL code that implements the FSM shown on the right.
+\end{minipage}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+  \centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		%states
+	  \node[initial,state with output,initial text=CLR] (ST0)   {ST0 \nodepart{lower} 0};
+  	\node[state with output]  (ST1) [below of=ST0] {ST1  \nodepart{lower} 1};
+
+		% FSM workings
+		\path[->]          (ST0)  edge [loop above] node (helper) {\NOTT{TOG\_EN}} (ST0);
+		\path[->]          (ST1)  edge [loop below] node {\NOTT{TOG\_EN}} (ST1);
+		\path[->]  (ST0)  		edge[bend left]    node {TOG\_EN} (ST1);
+		\path[->]  (ST1)  		edge[bend left]    node {TOG\_EN} (ST0);
+		% legend
+		\node[state with output]  (legend) [right = of helper,font=\scriptsize] {state \nodepart{lower} Z1};
+		\node[below =.1cm of legend,font=\scriptsize] (S) {legend};
+	\end{tikzpicture}
+\end{minipage}
+\end{leftbar}
+\noindent
+\textbf{SOLUTION.} This problem represents a basic FSM implementation. It is instructive to show the black-box diagram which is an aid in writing the entity description. Starting FSM problems with the drawing of a black box diagram is a healthy approach particularly when dealing with FSMs. Oftentimes with FSM problems, it becomes challenging to discern the FSM inputs from the outputs. Drawing a diagram alleviates this problem. The black box diagram and the code for the solution of Example~18 is shown in Listing~\ref{exe_18_code}.
+
+\begin{figure}[!h]
+    \centering
+	\includegraphics[width=5cm]{fsm/ex18_sol.png}
+\end{figure}
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=exe_18_code, caption=Solution to Example~18.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity my_fsm1 is
+    port (  TOG_EN  : in  std_logic;
+            CLK,CLR : in  std_logic;
+                 Z1 : out std_logic);
+end my_fsm1;
+-- architecture
+architecture fsm1 of my_fsm1 is
+   type state_type is (ST0,ST1);
+   signal PS,NS : state_type;
+begin
+   sync_proc: process(CLK,NS,CLR)
+   begin
+     -- take care of the asynchronous input
+     if (CLR = '1') then
+        PS <= ST0;
+     elsif (rising_edge(CLK)) then
+        PS <= NS;
+     end if;
+   end process sync_proc;
+
+   comb_proc: process(PS,TOG_EN)
+   begin
+      Z1 <= '0';        -- pre-assign output
+      case PS is
+         when ST0 =>    -- items regarding state ST0
+            Z1 <= '0';  -- Moore output
+            if (TOG_EN = '1') then NS <= ST1;
+            else  NS <= ST0;
+            end if;
+         when ST1 =>    -- items regarding state ST1
+            Z1 <= '1';  -- Moore output
+            if (TOG_EN = '1') then NS <= ST0;
+            else  NS <= ST1;
+            end if;
+         when others => -- the catch-all condition
+            Z1 <= '0';  -- arbitrary; it should never
+            NS <= ST0;  -- make it to these two statements
+      end case;
+   end process comb_proc;
+end fsm1;
+\end{lstlisting}
+\end{minipage}
+
+And of course, this solution has many things worth noting in it. The more interesting things are listed below.
+
+\begin{my_list}
+\item We have declared a special VHDL type named \texttt{state\_type} to represent the states in this FSM. This is an example of how enumeration types are used in VHDL. As with enumerated types in other higher-level computer languages, there are internal numerical representations for the listed state types, but we only deal with the more expressive symbolic equivalent. In this case, the type we have created is called a \texttt{state\_type} and we have declared two variables of this type: PS and NS. The key thing to note here is that a \texttt{state\_type} is something we have created and is not a native VHDL type.
+
+\item The synchronous process is equal in form and function to the simple D~flip-flops we examined in the section about sequential circuits. The only difference is that we have substituted PS and NS for D and Q, respectively. Something to note here is that the storage element is associated with the PS signal only. Note that PS is not specified for every possible combination of inputs.
+
+\item Even though this example is of the simplest FSM you could hope for, the code looks somewhat complicated. But if you examine it closely, you can see that everything is nicely compartmentalized in the solution. There are two processes; the synchronous process handles the asynchronous reset and the assignment of a new state upon the arrival of the system clock. Additionally, the combinatorial process handles the outputs not handled in the synchronous process.
+
+\item Because the two processes operate concurrently, they can be considered as working in a lock-step manner. Changes to the NS signal that are generated in the combinatorial process force an evaluation of the synchronous process. When the changes are actually instituted in the synchronous process on the next clock edge, the changes in the PS signal causes the combinatorial process to be evaluated. And so on and so forth.
+
+\item The case statement in the combinatorial process provides a \texttt{when} clause for each state of the FSM. A \texttt{when others} clause has also been used. The signal assignments that are part of this catch-all clause are arbitrary since the code should never actually make it there. This statement is provided for a sense of completeness and represents good VHDL coding practice.
+
+\item The Moore output is a function of only the present state. This is expressed by the fact that the assignment of the Z1 output is unconditionally evaluated in each \texttt{when} clause of the case statement in the combinatorial process. In other words, the Z1 variable is inside the \texttt{when} clause but outside of the \texttt{if} statement in the \texttt{when} clause. This is of course because the Moore outputs are only a function of the states and not the external inputs. Note that it is the external input that controls which state the FSM transitions to from any given state. You will see later that Mealy outputs, due their general nature, are assigned inside the \texttt{if} statement.
+
+\item The Z1 output is pre-assigned as the first step in the combinatorial process. Pre-assigning it in this fashion prevents the unexpected latch generation for the Z1 signal. When dealing with FSMs, there is a natural tendency for the FSM designer to forget to specify an output for the Z1 variable in each of the states. Pre-assigning it prevents latches from being generated and can arguably clean up the source code. The pre-assignment makes no difference to the VHDL code because if multiple assignments are made within the code, only the final assignment takes effect. In other words, only the final assignment is considered once the process terminates.
+\end{my_list}
+
+There is one final thing to note about Example~18. In an effort to keep the example simple, we disregarded the digital values of the state variables. This is indicated in the black-box diagram of Listing~\ref{exe_18_code} by the fact that the only output of the FSM is the signal Z1. This is reasonable if only one signal is required to control some other device or circuit. The state variable is represented internally and its precise representation is not important since the state variable is not provided as an output.
+
+In some FSM designs, the state variables are provided as outputs. To show this situation, we will provide a solution to Example~18 with the state variables as outputs. The black-box diagram and the VHDL code of this solution is shown in Listing~\ref{exe_18_code_alt}.
+\begin{figure}[!h]
+    \centering
+	\includegraphics[width=5cm]{fsm/ex18_sol_alt.png}
+\end{figure}
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=exe_18_code_alt, caption=Solution to Example~18 that include state variable as output.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity my_fsm2 is
+   port (   TOG_EN : in  std_logic;
+           CLK,CLR : in  std_logic;
+              Y,Z1 : out std_logic);
+end my_fsm2;
+-- architecture
+architecture fsm2 of my_fsm2 is
+   type state_type is (ST0,ST1);
+   signal PS,NS : state_type;
+begin
+   sync_proc: process(CLK,NS,CLR)
+   begin
+      if (CLR = '1') then
+         PS <= ST0;
+      elsif (rising_edge(CLK)) then
+         PS <= NS;
+      end if;
+   end process sync_proc;
+
+   comb_proc: process(PS,TOG_EN)
+   begin
+      Z1 <= '0';
+      case PS is
+         when ST0 =>        -- items regarding state ST0
+            Z1 <= '0';      -- Moore output
+            if (TOG_EN = '1') then NS <= ST1;
+            else  NS <= ST0;
+            end if;
+         when ST1 =>        -- items regarding state ST1
+            Z1 <= '1';      -- Moore output
+            if (TOG_EN = '1') then NS <= ST0;
+            else  NS <= ST1;
+            end if;
+         when others =>     -- the catch-all condition
+            Z1 <= '0';      -- arbitrary; it should never
+            NS <= ST0;      -- make it to these two statements
+      end case;
+   end process comb_proc;
+
+   -- assign values representing the state variables
+   with PS select
+      Y <= '0' when ST0,
+           '1' when ST1,
+           '0' when others;
+end fsm2;
+\end{lstlisting}
+\end{minipage}
+
+Note that the VHDL code shown in Listing~\ref{exe_18_code_alt} differs in only two areas from the code shown in Listing~\ref{exe_18_code}. The first area is the modification of the entity declaration to account for the state variable output Y. The second area is the inclusion of the selective signal assignment statement which assigns a value of state variable output Y based on the condition of the state variable. The selective signal assignment statement is evaluated each time a change in signal PS is detected. Once again, since we have declared an enumeration type for the state variables, we have no way of knowing exactly how the synthesizer will decide to represent the state variable. The selective signal assignment statement in the code of Listing~\ref{exe_18_code_alt} only makes it appear like there is one state variable and the states are represented with a '1' and a '0'. In reality, there are methods we can use to control how the state variables are represented and we will deal with those soon.
+
+Lastly, there are three concurrent statements in the VHDL code shown in Listing~\ref{exe_18_code_alt}: two process statements and a selective signal assignment statement.
+
+\begin{leftbar}
+\begin{minipage}[t]{0.5\textwidth}
+\vspace{10pt}
+\noindent
+\textbf{EXAMPLE 19.}
+Write the VHDL code that implements the FSM shown on the right. Consider the state variables as outputs of the FSM.
 \end{minipage}
 \begin{minipage}[t]{0.47\textwidth}
 \vspace{0pt}\raggedright
+\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.5cm]
+		% states
+		\node[state] (ST0)      {00};
+  	\node[state]  (ST1) [below of=ST0] {10};
+	  \node[initial,initial text=SET,state]  (ST2) [below of=ST1] {11};
+
+		% legend
+		\node[state]  (legend) [right = of ST0.north,font=\scriptsize] {State};
+		\node[below = of legend.east,font=\scriptsize] (S) {input(x)/output(Z2)};
+
+		% state changes
+		\path[->]          (ST0)  edge [loop above] node {0/0} (ST0);
+		\path[->]          (ST2)  edge [loop below] node {1/1} (ST2);
+		\path[->]  (ST0)  		edge[bend left]    node {1/0} (ST1);
+		\path[->]  (ST1)  		edge[bend left]    node (variables) {1/0} (ST2);
+		\path[->]  (ST1)  		edge[bend left=10]    node {0/0} (ST0);
+		\path[->]  (ST2)  		edge[bend left=65]    node {0/0} (ST0);
+		\path[->]  (S)  			edge[bend left] (variables);
+	\end{tikzpicture}
+\end{minipage}
+\end{leftbar}
+\noindent
+\textbf{SOLUTION.} The state diagram shown in this problem indicates that this is a three-state FSM with one Mealy-type external output and one external input. Since there are three states, the solution requires at least two state variables to handle the three states. The black-box diagram of the solution is shown in Listing~\ref{exe_19_code}. Note that the two state variables are handled as a bundled signal.
+
+
+\begin{figure}[!h]
     \centering
-	\includegraphics[width=5.2cm]{smu_vhdl/ex22.png}
+	\includegraphics[width=5cm]{fsm/ex19_sol.png}
+\end{figure}
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=exe_19_code, caption=Solution to Example~19.]
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity my_fsm3 is
+    port ( X,CLK,SET : in  std_logic;
+                   Y : out std_logic_vector(1 downto 0);
+                  Z2 : out std_logic);
+end my_fsm3;
+-- architecture
+architecture fsm3 of my_fsm3 is
+   type state_type is (ST0,ST1,ST2);
+   signal PS,NS : state_type;
+begin
+   sync_proc: process(CLK,NS,SET)
+   begin
+      if (SET = '1') then
+         PS <= ST2;
+      elsif (rising_edge(CLK)) then
+         PS <= NS;
+      end if;
+   end process sync_proc;
+
+   comb_proc: process(PS,X)
+   begin
+      Z2 <= '0';           -- pre-assign FSM outputs
+      case PS is
+         when ST0 =>       -- items regarding state ST0
+            Z2 <= '0';     -- Mealy output always 0
+            if (X = '0') then NS <= ST0;
+            else  NS <= ST1;
+            end if;
+         when ST1 =>       -- items regarding state ST1
+            Z2 <= '0';     -- Mealy output always 0
+            if (X = '0') then NS <= ST0;
+            else  NS <= ST2;
+            end if;
+         when ST2 =>       -- items regarding state ST2
+            -- Mealy output handled in the if statement
+            if (X = '0') then NS <= ST0; Z2 <= '0';
+            else  NS <= ST2;  Z2 <= '1';
+            end if;
+         when others =>    -- the catch all condition
+            Z2 <= '1'; NS <= ST0;
+      end case;
+   end process comb_proc;
+
+   -- faking some state variable outputs
+   with PS select
+      Y <= "00" when ST0,
+           "10" when ST1,
+           "11" when ST2,
+           "00" when others;
+end fsm3;
+\end{lstlisting}
+\end{minipage}
+
+As usual, there are a couple of fun things to point out about the solution for Example~19. Most importantly, you should note the similarities between this solution and the previous solution.
+
+\begin{my_list}
+\item The FSM has one Mealy-type output. The solution essentially treats this output as a Moore-type output in the first two \texttt{when} clauses of the \texttt{case} statement. In the final \texttt{when} clause, the Z2 output appears in both sections of the \texttt{if} statement. The fact that the Z2 output is different in the context of state ST2 makes it a Mealy-type output and therefore a Mealy-type FSM.
+
+\item When faking the state variable outputs (keeping in mind that the actual state variables are represented with enumeration types), two signals are required since the state diagram contains more than two states (and less than five states). The solution opted is to represent these outputs as a bundle which has the effect of slightly changing the form of the selected signal assignment statement appearing at the end of the architecture description.
+\end{my_list}
+
+\begin{leftbar}
+\begin{minipage}[t]{0.4\textwidth}
+\vspace{10pt}
+\noindent
+\textbf{EXAMPLE 20.}
+Write the VHDL code that implements the FSM shown on the right. Consider the listed state variables as output.
+\end{minipage}
+\begin{minipage}[t]{0.57\textwidth}
+\vspace{0pt}\raggedright
+\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.5cm]
+		% states
+		\node[initial,initial text=RESET,state with output] (ST0) {00 \nodepart{lower} 1};
+  	\node[state with output]  (ST1) [below of=ST0] {01 \nodepart{lower} 1};
+	  \node[state with output]  (ST2) [below of=ST1] {10 \nodepart{lower} 0};
+  	\node[state with output]  (ST3) [below of=ST2] {11 \nodepart{lower} 1};
+
+		%legend
+		\node[state with output]  (legend) [right = of ST0.north,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[below = of legend.east,font=\scriptsize] (S) {input(x)/output(Z2)};
+
+		% state connections
+		\path[->]  (ST0)  edge [loop right] node[above,pos=0.2] {1/1} (ST0);
+		\path[->]  (ST1)  edge [loop left] node[above,pos=0.8] {1/1} (ST1);
+		\path[->]  (ST2)  edge [loop left] node[above,pos=0.8] {1/1} (ST2);
+		\path[->]  (ST3)  edge [loop right] node[below,pos=0.8] {1/1} (ST3);
+		\path[->]  (ST0) 	edge [bend left]    node {0/0} (ST1);
+		\path[->]  (ST1)  edge [bend left]    node (variables) {0/0} (ST2);
+		\path[->]  (ST2)  edge [bend left]    node {0/0} (ST3);
+		\path[->]  (ST3)  edge [bend left=75]    node {0/0} (ST0);
+		\path[->]  (S)  	edge [bend left] (variables);
+	\end{tikzpicture}
 \end{minipage}
 \end{leftbar}
 
 \noindent
-\textbf{SOLUTION.} A comparator is one of the classic combinatorial circuits that every digital design engineer must derive at some point in his career. The solution presented here implements the discrete gate version of the circuit which is shown in Fig.~\ref{ex22_comp}. Once again, the solution presented here is primarily an example of a VHDL structural model and does not represent the most efficient method to represent a comparator using VHDL.
-
-The approach of this solution is to model each of the discrete gates as individual blocks. In this case, they are actually simple gates but the interfacing requirements of the VHDL structural approach are the same regardless of whether the circuit elements are simple gates or complex digital subsystems.
-
-The circuit shown in Fig.~\ref{ex22_comp} contains some extra information that relates to its VHDL structural implementation. First, the dashed line represents the boundary of the top-level VHDL entity; therefore signals that cross this boundary must appear in the entity declaration for this implementation. Second, each of the internal signals is given a name. In this case, internal signals are defined to be signals that do not cross the dashed entity boundary. This is a requirement for VHDL structural implementations as these signals must be assigned to the various sub-modules in the interior of the design (somewhere in the architecture).
-
+\textbf{SOLUTION.} The state diagram indicates that its implementation will contain four states, one external input and two external outputs. This is a hybrid FSM in that the if contains both a Mealy and Moore-type output but in this case, the FSM would be considered a Mealy-type FSM. The black-box diagram and the VHDL code of the solution is shown in Listing~\ref{exe_20_code}.
 \begin{figure}[!h]
     \centering
-	\includegraphics[width=7cm]{smu_vhdl/ex22_comp.png}
-	\caption{Discrete gate implementation of a 3-bit comparator.}
-	\label{ex22_comp}
+	\includegraphics[width=5cm]{fsm/ex20_sol.png}
 \end{figure}
 
-The first part of the solution is to provide entity and architecture implementations for the individual gates shown in Fig.~\ref{ex22_comp}. We need to provide at least one definition of an XNOR gate and a 3-input AND gate. We only need to provide one definition of the XNOR gate despite the fact that actually three are shown in the diagram. The modular VHDL approach allows us to reuse circuit definitions and we take advantage of this feature. These definitions are shown in Listing~\ref{ex22_code}.
-
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ex22_code, caption=Entity and Architecture definitions for discrete gates.]
-----------------------------------
--- Description of XNOR function --
-----------------------------------
-entity big_xnor is
-    Port ( A,B : in  std_logic;
-             F : out std_logic);
-end big_xnor;
-
-architecture ckt1 of big_xnor is
-begin
-      F <= not ( (A and (not B)) or ( (not A) and B) );
-end ckt1;
------------------------------------------
--- Description of 3-input AND function --
------------------------------------------
-entity big_and3 is
-    Port ( A,B,C : in std_logic;
-               F : out std_logic);
-end big_and3;
-
-architecture ckt1 of big_and3 is
-begin
-      F <= ( A and B and C );
-end ckt1;
-\end{lstlisting}
-\end{minipage}
-
-The implementations shown in Listing~\ref{ex22_code} present no new VHDL details. The new information is contained in how the circuit elements listed in Fig.~\ref{ex22_comp} are used as components in a larger circuit. The procedures for implementing a structural VHDL design can be summarized in the following steps. These steps assume that the entity declarations for the interior modules already exist.
-
-\noindent
-\textbf{Step 1.} Generate the top-level entity declaration.\\
-\textbf{Step 2.} Declare the lower-level design units used in design.\\
-\textbf{Step 3.} Declare required internal signals used to connect the design units.\\
-\textbf{Step 4.} Instantiate the design units.
-
-This is how you therefore proceed:
-
-\noindent
-\textbf{Step One:} The first step in a structural implementation is identical to the standard approach we have used for the implementing other VHDL circuits: the \texttt{entity}. The entity declaration is derived directly from dashed box in Fig.~\ref{ex22_comp} and is shown in Listing~\ref{ex22_code_ent}. In other words, signals that intersect the dashed lines are signals that are known to the outside world and must be included in the entity declaration.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ex22_code_ent, caption=Entity declaration for 3-bit comparator.]
------------------------------------------------
--- Interface description of 3-bit comparator --
------------------------------------------------
-entity my_compare is
-    Port ( A_IN   : in  std_logic_vector(2 downto 0);
-           B_IN   : in  std_logic_vector(2 downto 0);
-           EQ_OUT : out std_logic);
-end my_compare;
-\end{lstlisting}
-\end{minipage}
-
-\noindent
-\textbf{Step Two:} The next step is to declare the design units that are used in the circuit. In VHDL lingo, declaration refers to the act of making a particular design unit available for use in a particular design. Note that the act of declaring a design unit, by definition, transforms your circuit into a hierarchical design. The declaration of a design unit makes the unit available to be placed into the design hierarchy. Design units are essentially modules that reside in the lower levels of the design. For our design, we need to declare two separate design units: the XOR gate and a 3-input AND gate.
-
-There are two factors involved in declaring a design unit: 1) how to do it and, 2) where to place it. A component declaration can be viewed as a modification of the associated entity declaration. The difference is that the word \texttt{entity} is replaced with the word \texttt{component} and the word \texttt{component} must also be followed by the word \texttt{end component} to terminate the declaration. The best way to do this is by copying, pasting and modifying the original entity declaration. The resulting component declaration is placed in the architecture declaration after the \texttt{architecture} line and before the \texttt{begin} line. The two component declarations and their associated entity declarations are shown in the next listing. Listing~\ref{ex22_code_final} shows the component declarations as they appear in working VHDL code.
-
-\noindent
-\begin{minipage}[t]{0.48\textwidth}
-\vspace{0pt}
-\noindent
-\begin{lstlisting}[]
-
-entity big_xnor is
-    Port ( A,B : in  std_logic;
-             F : out std_logic);
-end big_xnor;
-\end{lstlisting}
-\begin{lstlisting}[]
-
-entity big_and3 is
-    Port ( A,B,C : in  std_logic;
-               F : out std_logic);
-end big_and3;
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}[t]{0.48\textwidth}
-\vspace{0pt}\raggedright
-\begin{lstlisting}[]
-
-component big_xnor
-   Port ( A,B : in  std_logic;
-            F : out std_logic);
-end component;
-\end{lstlisting}
-\begin{lstlisting}[]
-
-component big_and3
-   Port ( A,B,C : in  std_logic;
-              F : out std_logic);
-end component;
-\end{lstlisting}
-\end{minipage}
-
-\noindent
-\textbf{Step Three:} The next step is to declare internal signals used by your design. The required internal signals for this design are the signals that are not intersected by the dashed line shown in Fig.~\ref{ex22_comp}. These three signals are similar to local variables used in higher-level programming languages in that they must be declared before they can be used in the design. These signals effectively provide an interface between the various design units that are instantiated in the final design. For this design, three signals are required and used as outputs of the XOR gates and as inputs to the AND gate. Internal signal declarations such as these appear with the component declarations in the architecture declaration after the  \texttt{architecture} line and before the  \texttt{begin} line. Note that the declaration of intermediate signals is similar to the signal declaration contained in the entity body. The only difference is that the intermediate signal declaration does not contain the mode specifier. We have previously dealt with intermediate signals in other sections of this book. Signal declarations are included as part of the final solution shown in Listing~\ref{ex22_code_final}.
-
-\noindent
-\textbf{Step Four:} The final step is to create instances of the required modules and map the instances of the various components in the architecture body. Technically speaking, as the word instantiation implies, the appearance of instances of design units is the main part of the instantiation process. In some texts, the process of instantiation includes what we have referred to as component declaration but we have opted not to do this here. The approach presented here is to have the declaration refer to the component declarations before the \texttt{begin} line while instantiation refers to the creation of individual instances after the \texttt{begin} line. The mapping process is therefore included in our definition of component instantiation.
-
-The process of mapping provides the interface requirements for the individual components in the design. This mapping step associates external connections from each of the components to signals in the next step upwards in the design hierarchy. Each of the signals associated with individual components maps to either an internal or external signal in the higher-level design. Each of the individual mappings includes a unique name for the particular instance as well as the name of the original entity. The actual mapping information follows the VHDL key words of \texttt{port map}. All of this information appears in the final solution shown in Listing~\ref{ex22_code_final}.
-
-One key point to note in the instantiation process is the inclusion of labels for all instantiated design units. Labels should always be used as part of design unit instantiation because the use of appropriate labels increases the understandability of your VHDL model. In other words, the proper choice of labels increases the self-describing nature of your design and is considered a good VHDL programming approach.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ex22_code_final, caption=VHDL code for the design hierarchy for the 3-bit comparator.]
+\begin{lstlisting}[label=exe_20_code, caption=Solution to Example~20.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity my_compare is
-    Port ( A_IN   : in  std_logic_vector(2 downto 0);
-           B_IN   : in  std_logic_vector(2 downto 0);
-           EQ_OUT : out std_logic);
-end my_compare;
+entity my_fsm4 is
+    port ( X,CLK,RESET : in  std_logic;
+                     Y : out std_logic_vector(1 downto 0);
+                 Z1,Z2 : out std_logic);
+end my_fsm4;
 -- architecture
-architecture ckt1 of my_compare is
-
-   -- XNOR gate --------------------
-   component big_xnor is
-      Port ( A,B : in  std_logic;
-               F : out std_logic);
-   end component;
-
-   -- 3-input AND gate -------------
-   component big_and3 is
-      Port ( A,B,C : in  std_logic;
-                 F : out std_logic);
-   end component;
-
-   -- intermediate signal declaration
-   signal p1_out,p2_out,p3_out : std_logic;
-
+architecture fsm4 of my_fsm4 is
+   type state_type is (ST0,ST1,ST2,ST3);
+   signal PS,NS : state_type;
 begin
-   x1: big_xnor port map (A => A_IN(2),
-                          B => B_IN(2),
-                          F => p1_out);
+   sync_proc: process(CLK,NS,RESET)
+   begin
+     if (RESET = '1') then  PS <= ST0;
+     elsif (rising_edge(CLK)) then  PS <= NS;
+     end if;
+   end process sync_proc;
 
-   x2: big_xnor port map (A => A_IN(1),
-                          B => B_IN(1),
-                          F => p2_out);
+   comb_proc: process(PS,X)
+   begin
+      -- Z1: the Moore output; Z2: the Mealy output
+      Z1 <= '0';   Z2 <= '0'; -- pre-assign the outputs
+      case PS is
+         when ST0 =>    -- items regarding state ST0
+            Z1 <= '1';  -- Moore output
+            if (X = '0') then NS <= ST1; Z2 <= '0';
+            else  NS <= ST0; Z2 <= '1';
+            end if;
+         when ST1 =>    -- items regarding state ST1
+            Z1 <= '1';  -- Moore output
+            if (X = '0') then NS <= ST2; Z2 <= '0';
+            else  NS <= ST1; Z2 <= '1';
+            end if;
+         when ST2 =>    -- items regarding state ST2
+            Z1 <= '0';  -- Moore output
+            if (X = '0') then NS <= ST3; Z2 <= '0';
+            else  NS <= ST2; Z2 <= '1';
+            end if;
+         when ST3 =>    -- items regarding state ST3
+            Z1 <= '1';  -- Moore output
+            if (X = '0') then NS <= ST0; Z2 <= '0';
+            else  NS <= ST3;  Z2 <= '1';
+            end if;
+         when others => -- the catch all condition
+            Z1 <= '1';  Z2 <= '0';  NS <= ST0;
+      end case;
+   end process comb_proc;
 
-   x3: big_xnor port map (A => A_IN(0),
-                          B => B_IN(0),
-                          F => p3_out);
-
-   a1: big_and3 port map (A => p1_out,
-                          B => p2_out,
-                          C => p3_out,
-                          F => EQ_OUT);
-end ckt1;
+   with PS select
+      Y <= "00" when ST0,
+           "01" when ST1,
+           "10" when ST2,
+           "11" when ST3,
+           "00" when others;
+end fsm4;
 \end{lstlisting}
 \end{minipage}
 
-It is worth noting that the solution shown in Listing~\ref{ex22_code_final} is not the only approach to use for the mapping process. The approach shown in Listing~\ref{ex22_code_final} uses what is referred to as a \texttt{direct mapping} of components. In this manner, each of the signals in the interface of the design units are listed and are directly associated with the signals they connect to in the higher-level design by use of the $=>$ operator. This approach has several potential advantages: it is explicit, complete, orderly and allows signals to be listed in any order. The only possible downside of this approach is that it uses up more space in your VHDL source code.
+If you haven't noticed by now, implementing FSMs using the VHDL behavioral model is remarkably straightforward. In reality, I rarely code a FSM from scratch; I usually opt to grab some previous FSM I have coded and start from there. Keep in mind that real engineering is rarely based on a cookbook. For FSM problems, the engineering is in the testing and creation of the state diagram. Do not get too comfortable with behavioral modeling of FSMs; the real fun is actually generating a FSM that solves a given problem.
 
-The alternative approach to mapping is to use \texttt{implied mapping}. In this approach, connections between external signals from the design units are associated with signals in the design unit by order of their appearance in the mapping statement. This differs from direct mapping because only signals from the higher-level design appear in the mapping statement instead. The association between signals in the design units and the higher-level design are implied by the ordering of the signal as they appear in the component or entity declaration. This approach uses less space in the source code but requires signals to be placed in the proper order. An alternative but equivalent architecture for the previous example using implied mapping is shown in Listing~\ref{ex22_code_final_alt}.
+\section{One-Hot Encoding for FSMs}
+Truth be told, there are many different methods that can be used to encode state variables\footnote{In this case, encoding refers to the act of assigning a unique pattern of  1's and 0's to each of the states in order to make them unambiguous from other states.}. If the exact form of the representation used is important to you, then you will need to take the necessary steps in order to control how the state variables are represented by the synthesizer. There are two approaches to control state variable representation. The first approach is to allow the synthesizing tool to handle the details. Since every FSM we have seen up to this point has used enumeration types to represent the state variables, the synthesizer could choose to actually represent them with an encoding scheme of its own choosing. The reality is that the tools generally have an option to select the desired encoding scheme. The downside of this approach is that you are denied the learning experience associated with implementing the VHDL code that explicitly induces your desired encoding scheme. After all, you may have some special encoding scheme you need to use but is not supported by the development tools. The second approach to encoding the state variables is to specify them directly in VHDL. The approach of specifying the state variables in the VHDL code is presented in this section.
 
-To successfully simulate and synthesize the design shown in Listing~\ref{ex22_code_final}, the code of Listing~\ref{ex22_code} needs to be included in your VHDL project as well. It is normal practice to keep the two listings in two distinctive files. The same is true for the implementation of Listing~\ref{ex22_code_final_alt}.
+One-hot encoding uses one bit in the state register for each state of the FSM. For a one-hot encoding FSM with 16 states, 16 flip flops are required. However only four flip flops are required if the same FSM is implemented using a binary encoding. One-hot encoding simplifies the logic and the interconnections between overall logic. Despite looking quite wasteful in terms of employed logic, one-hot encoding often results in smaller and faster FSMs.
+
+The approach taken in the previous FSM examples was to pretend we were using full encoding for the state variables of the FSM. The full encoding approach minimizes the number of storage elements (flip-flops) used to store the state variables. The closed form equation describing the number of flip-flops required for a given FSM as a function of the number of states is shown in equation \ref{eq1}. The bracket-like symbols used in equation \ref{eq1} indicate a ceiling function\footnote{The ceiling function $y=\lceil x \rceil$ assigns $y$ to the smallest integer that is greater or equal to $x$.}. The binary nature expressed by this equation is so apparent that this encoding is often referred to as binary encoding.
+
+\begin{equation}\label{eq1}
+ \#(flip\_flops) = \lceil \log_2(\#states) \rceil
+\end{equation}
+
+For one-hot encoded FSMs, only one flip-flop is asserted at any given time. This requires that each distinct state be represented by one flip-flop. In one-hot encoding, the number of flip-flops required to implement a FSM is therefore equal to the number of states in the FSM. The closed form of this relationship is shown in equation \ref{eq2}.
+
+\begin{equation}\label{eq2}
+ \#(flip\_flops) = \#(states)
+\end{equation}
+
+The question naturally arises as to how VHDL can be used to implement one-hot encoded FSMs. If you want total control of the process, you will need to grab control away from the synthesizer. And since we are concerned with learning VHDL, we need to look at the process of explicitly encoding one-hot FSMs.
+
+The modular approach we used to implement FSMs expedites the conversion process from using enumeration types to actually specifying how the state variables are represented. The changes from our previous approach are limited to how the outputs are assigned to the state variables and how the state variables are forced to be represented by certain bit patterns. Modifications to the fully encoded approach are thus limited to the entity declaration (you will need more variables to represent the states), the declaration of the state variables (you will need to explicitly declare the bit patterns associated with each state) and the assignment of the state variables to the outputs (in this case, we are actually not faking it like we were in other examples).
+
+\begin{leftbar}
+\begin{minipage}[t]{0.4\textwidth}
+\vspace{10pt}
+\noindent
+\textbf{EXAMPLE 21.}
+Write the VHDL code that implements the FSM shown on the right. Consider the listed state variables as output. Use one-hot encoding for the state variables. This problem is Example~20 all over again but uses true one-hot encoding for the state variables.
+\vspace{50px}
+\end{minipage}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+  \centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.6cm]
+		% states
+		\node[initial,initial text=RESET,state with output] (ST0)      {1000 \nodepart{lower} 1};
+  	\node[state with output]  (ST1) [below of=ST0] {0100 \nodepart{lower} 1};
+	  \node[state with output]  (ST2) [below of=ST1] {0010 \nodepart{lower} 0};
+  	\node[state with output]  (ST3) [below of=ST2] {0001 \nodepart{lower} 1};
+
+		%legend
+		\node[state with output]  (legend) [right = of ST0.north,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[right =5mm of ST1,font=\scriptsize] (S) {input(x)/output(Z2)};
+
+		% connections
+		\path[->]  (ST0)  edge [loop right] node[above,pos=0.2] {1/1} (ST0);
+		\path[->]  (ST1)  edge [loop left] node[above,pos=0.8] {1/1} (ST1);
+		\path[->]  (ST2)  edge [loop left] node[above,pos=0.8] {1/1} (ST2);
+		\path[->]  (ST3)  edge [loop right] node[below,pos=0.8] {1/1} (ST3);
+		\path[->]  (ST0) 	edge [bend left]    node {0/0} (ST1);
+		\path[->]  (ST1)  edge [bend left]    node (variables) {0/0} (ST2);
+		\path[->]  (ST2)  edge [bend left]    node {0/0} (ST3);
+		\path[->]  (ST3)  edge [bend left=75]    node {0/0} (ST0);
+		\path[->]  (S)  	edge [bend left] (variables);
+	\end{tikzpicture}
+\end{minipage}
+\end{leftbar}
+\noindent
+\textbf{SOLUTION.} The state diagram shows four states, one external input X, two external outputs Z1 and Z2 with the Z2 output being a Mealy output. This is a Mealy machine that indicates one-hot encoding should be used to encode the state variables. We will approach the implementation of this FSM one piece at the time.
+
+Listing~\ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example~20 to a pseudo one-hot encoding. Listing~\ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in Listing~\ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesizer to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in Listing~\ref{exe_21_code_3} that the default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in Listing~\ref{exe_21_code_4}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ex22_code_final_alt, caption=Alternative architecture for Example~22 using implied mapping.]
+\begin{lstlisting}[label=exe_21_code_1, caption=Modifications to convert Example~20 to one-hot encoding.]
+-- full encoded approach
+entity my_fsm4 is
+    port ( X,CLK,RESET : in  std_logic;
+                     Y : out std_logic_vector(1 downto 0);
+                 Z1,Z2 : out std_logic);
+end my_fsm4;
+----------------------------------------------------------------------
+-- one-hot encoding approach
+entity my_fsm4 is
+    port ( X,CLK,RESET : in  std_logic;
+                     Y : out std_logic_vector(3 downto 0);
+                 Z1,Z2 : out std_logic);
+end my_fsm4;
+\end{lstlisting}
+
+\begin{lstlisting}[label=exe_21_code_2, caption=Modifications to convert state variables to use one-hot encoding.]
+-- the approach for enumeration types
+type state_type is (ST0,ST1,ST2,ST3);
+signal PS,NS : state_type;
+----------------------------------------------------------------------
+-- the approach used for explicitly specifying state bit patterns
+type state_type is (ST0,ST1,ST2,ST3);
+attribute ENUM_ENCODING: STRING;
+attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
+signal PS,NS : state_type;
+\end{lstlisting}
+\end{minipage}
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=exe_21_code_3, caption=Modifications to convert state output to pseudo one-hot encoding.]
+-- fake full encoded approach
+with PS select
+   Y <= "00" when ST0,
+        "01" when ST1,
+        "10" when ST2,
+        "11" when ST3,
+        "00" when others;
+end fsm4;
+----------------------------------------------------------------------
+-- one-hot encoded approach
+with PS select
+   Y <= "1000" when ST0,
+        "0100" when ST1,
+        "0010" when ST2,
+        "0001" when ST3,
+        "1000" when others;
+end fsm4;
+\end{lstlisting}
+\end{minipage}
+
+\noindent
+\begin{minipage}{0.99\linewidth}
+\begin{lstlisting}[label=exe_21_code_4, caption=The final solution to Example~21.]
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity my_compare is
-    Port ( A_IN   : in  std_logic_vector(2 downto 0);
-           B_IN   : in  std_logic_vector(2 downto 0);
-           EQ_OUT : out std_logic);
-end my_compare;
--- architecture
-architecture ckt2 of my_compare is
-   component big_xnor is
-      Port ( A,B : in  std_logic;
-               F : out std_logic);
-   end component;
-
-   component big_and3 is
-      Port ( A,B,C : in  std_logic;
-                 F : out std_logic);
-   end component;
-   signal p1_out,p2_out,p3_out : std_logic;
-
+entity my_fsm4_oh is
+    port ( X,CLK,RESET : in  std_logic;
+                     Y : out std_logic_vector(3 downto 0);
+                 Z1,Z2 : out std_logic);
+end my_fsm4_oh;
+-- architeture
+architecture fsm4_oh of my_fsm4_oh is
+  type state_type is (ST0,ST1,ST2,ST3);
+  attribute ENUM_ENCODING: STRING;
+  attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
+  signal PS,NS : state_type;
 begin
-   x1: big_xnor port map (A_IN(2),B_IN(2),p1_out);
-   x2: big_xnor port map (A_IN(1),B_IN(1),p2_out);
-   x3: big_xnor port map (A_IN(0),B_IN(0),p3_out);
-   a1: big_and3 port map (p1_out,p2_out,p3_out,EQ_OUT);
-end ckt2;
+   sync_proc: process(CLK,NS,RESET)
+   begin
+     if (RESET = '1') then  PS <= ST0;
+     elsif (rising_edge(CLK)) then  PS <= NS;
+     end if;
+   end process sync_proc;
+
+   comb_proc: process(PS,X)
+   begin
+      -- Z1: the Moore output; Z2: the Mealy output
+      Z1 <= '0';   Z2 <= '0'; -- pre-assign the outputs
+      case PS is
+         when ST0 =>    -- items regarding state ST0
+            Z1 <= '1';  -- Moore output
+            if (X = '0') then NS <= ST1; Z2 <= '0';
+            else  NS <= ST0; Z2 <= '1';
+            end if;
+         when ST1 =>    -- items regarding state ST1
+            Z1 <= '1';  -- Moore output
+            if (X = '0') then NS <= ST2; Z2 <= '0';
+            else  NS <= ST1; Z2 <= '1';
+            end if;
+         when ST2 =>    -- items regarding state ST2
+            Z1 <= '0';  -- Moore output
+            if (X = '0') then NS <= ST3; Z2 <= '0';
+            else  NS <= ST2; Z2 <= '1';
+            end if;
+         when ST3 =>    -- items regarding state ST3
+            Z1 <= '1';  -- Moore output
+            if (X = '0') then NS <= ST0; Z2 <= '0';
+            else  NS <= ST3;  Z2 <= '1';
+            end if;
+         when others => -- the catch all condition
+            Z1 <= '1';  Z2 <= '0';  NS <= ST0;
+      end case;
+   end process comb_proc;
+
+   -- one-hot encoded approach
+   with PS select
+      Y <= "1000" when ST0,
+           "0100" when ST1,
+           "0010" when ST2,
+           "0001" when ST3,
+           "1000" when others;
+
+end fsm4_oh;
 \end{lstlisting}
 \end{minipage}
-
-Due to the fact that this design was relatively simple, it was possible to bypass one of the interesting issues that arises when using structural modeling. Often when dealing with structural designs, different levels of the design will contain the same signal name. The question arises as to whether the synthesizer is able to differentiate between the signal names across the hierarchy. VHDL synthesizers, like compilers for higher-level languages, are able to handle such instances. Signals with the same names are mapped according to the mapping presented in the component instantiation statement. Probably the most common occurrence of this is with clock signals. In this case, a component instantiation such as the one shown in Listing~\ref{ex22_code_same_sig} is both valid and commonly seen in designs containing a system clock. Name collision does not occur because the signal name on the left-hand side of the $=>$ operator is understood to be internal to the component while the signal on the right-hand side is understood to reside in the next level up in the hierarchy.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=ex22_code_same_sig, caption=Example of the same signal name crossing hierarchical boundaries.]
-x5: some_component port map (CLK => CLK,
-                              CS => CS);
-\end{lstlisting}
-\end{minipage}
-
-
-\section{Generic Map}
-As we have seen in the previous section, the use of the keyword \texttt{component} allows us to declare a VHDL module for further instantiation.
-
-Often it is desirable to write code that is generic. For instance a routine that perform a certain task on an input array of a generic size. Let us suppose that we want to implement a piece of code of a parity check routine that returns \texttt{'1'} when the input N-size array is an even number and \texttt{'0'} when the input N-size array is an odd number. The Listing~\ref{gen_parity_check} shows such an implementation.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[numbers=left, label=gen_parity_check, caption= Parity check implementation with generic input array size.]
--- library declarations
-library IEEE;
-use IEEE.std_logic_1164.all;
--- entity
-entity gen_parity_check is
-    generic ( n: positive);
-    port    ( x: in  std_logic_vector(n-1 downto 0);
-              y: out std_logic);
-end gen_parity_check;
--- architecture
-architecture arch of gen_parity_check is
-    begin
-        process(x)
-            variable temp: std_logic;
-        begin
-            temp:='0';
-            for i in x'range loop
-                temp := temp XOR x(i);
-            end loop;
-            y <= temp;
-        end process;
-end arch;
-\end{lstlisting}
-\end{minipage}
-
-Listing~\ref{gen_map} shows how the code above can be declared and instantiated in your own code via the already see \texttt{component} method. Specifically, In Listing~\ref{gen_map} the above generic parity check module is used to create a 4-bit parity check module.
-
-To achieve the mentioned modularity the keyword \texttt{generic} was used inside the \texttt{entity} field in the code above and again inside the \texttt{component} field during its declaration in the code below. The \texttt{generic} field it is used to allow you to control all generic variables.
-
-Notice how during instantiation, Listing~\ref{gen_map} line 20, the keyword \texttt{generic map} was used in conjunction with the keyword \texttt{port map} to define the generic variables.
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[numbers=left, label=gen_map, caption=Use of \texttt{generic} for the construct of a generic parity check code.]
--- library declaration
-library IEEE;
-use IEEE.std_logic_1164.all;
--- entity
-entity my_parity_chk is
-    Port ( input   : in  std_logic_vector(3 downto 0);
-           output  : out std_logic);
-end my_parity_chk;
-
--- architecture
-architecture arch of my_parity_chk is
-   --------------- component declaration --------------------
-   component gen_parity_check is
-      generic ( std_logic : positive);
-      port    ( input     : in  std_logic_vector(N-1 downto 0);
-                output    : out std_logic);
-   end component;
-begin
-   -------------- component instantiation -------------------
-   cp1: my_parity_chk generic map (4) port map (input, output);
-end arch;
-
-\end{lstlisting}
-\end{minipage}
-
-Once again, to successfully simulate and synthesize the design shown in Listing~\ref{gen_map}, the code of Listing~\ref{gen_parity_check} needs to be included in your VHDL project as well.
 
 \section{Important Points}
+
 \begin{my_list}
-\item Structural modeling in VHDL supports hierarchical design concepts. The ability to abstract digital circuits to higher levels is the key to understanding and designing complex digital circuits.
+\item Modeling FSMs from a state diagram is a straightforward process using VHDL behavioral modeling. The process is so straightforward that it is often considered cookie cutter. The real engineering involved in implementing FSM is in the generation of the state diagram that solved the problem at hand.
 
-\item Digital design using schematic capture is an outdated approach: you should resist the inclination and/or directive at all costs.
+\item Due to the general versatility of VHDL, there are many approaches that can be used to model FSMs using VHDL. The approach used here details only one of those styles but is generally considered the most straightforward of all styles.
 
-\item The VHDL structural model supports the reuse of design units. This includes units you have previously designed as well as the ability to use predefined module libraries.
-
-\item If you use one FPGA software development tool from one of the major FPGA players in the market, you will be able to use digital blocks already developed once you declare them. In this case the entity declaration is not the one of Listing~\ref{ex22_code_ent} but instead a simple library inclusion in your VHDL code that looks like:
-
-\vspace*{5pt}
-\noindent
-\begin{minipage}{0.99\textwidth}
-\texttt{library UNISIM;}\\
-\texttt{use UNISIM.VComponents.all;}\\
-\end{minipage}
-All digital blocks available from this library package are described in the documentation of the FPGA software development tool (e.g. Xilinx ISE).
+\item The actual encoding of the FSM's state variables when enumeration types are used is left up to the synthesis tool. If a preferred method of variable encoding is desired, using the attribute approach detailed in this section is a simple but viable alternative.
 \end{my_list}
 
-\section{Exercises: Structural Modeling}
+\section{Exercises: Behavioral Modeling of FSMs}
 
 %%%%%% EXERCISE 1 %%%%%%
 \vspace{20pt}
 \noindent
 \begin{minipage}{1\textwidth}
 \textbf{EXERCISE 1.}
-Draw a block diagram of the circuit represented by the VHDL code listed below. Be sure to completely label the final diagram.
-\vspace{10pt}
-
+Draw the state diagram associated with the following VHDL code. Be sure to provide a legend and completely label everything.
+\end{minipage}
+\begin{minipage}{0.66\textwidth}
+\vspace{10px}
 \begin{lstlisting}
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity ckt1 is
-    Port ( EN1, EN2 : in  std_logic;
-                CLK : in  std_logic;
-                  Z : out std_logic);
-end ckt1;
+entity fsm is
+   port (  X,CLK : in  std_logic;
+           RESET : in  std_logic;
+           Z1,Z2 : out std_logic;
+end fsm;
 -- architecture
-architecture arch of ckt1 is
-
-    component T_FF
-        port ( T,CLK : in  std_logic;
-                   Q : out std_logic);
-    end component;
-
-    signal t_in, t1_s, t2_s : std_logic;
+architecture fsm of fsm is
+   type state_type is (A,B,C);
+   signal PS,NS : state_type;
 begin
-    t1 : T_FF
-    port map (T => t_in,
-            CLK => CLK,
-              Q => t1_s );
-    t2 : T_FF
-    port map (T => t1_s,
-            CLK => CLK,
-              Q => t2_s );
+   sync_proc: process(CLK,NS,RESET)
+   begin
+      if (RESET = '0') then PS <= C;
+      elsif (rising_edge(CLK)) then PS <= NS;
+      end if;
+   end process sync_proc;
 
-       Z <= t2_s OR t1_s;
-    t_in <= EN1 AND EN2;
-end arch;
+   comb_proc: process(PS,X)
+   begin
+      case PS is
+         Z1 <= '0';    Z2 <= '0';
+         when A =>
+            Z1 <= '0';
+            if (X='0') then NS<=A; Z2<='1';
+            else  NS <= B; Z2 <= '0';
+            end if;
+         when B =>
+            Z1 <= '1';
+            if (X='0') then NS<=A; Z2<='0';
+            else  NS <= C; Z2 <= '1';
+            end if;
+         when C =>
+            Z1 <= '1';
+            if (X='0') then NS<=B; Z2<='1';
+            else  NS <= A; Z2 <= '0';
+            end if;
+         when others =>
+            Z1 <= '1'; NS<=A; Z2<='0';
+      end case;
+   end process comb_proc;
+end fsm;
 \end{lstlisting}
+\end{minipage}
+\begin{minipage}{0.33\textwidth}
+\includegraphics[width=\textwidth]{fsm/sm_ex1.png}
+\vspace{250px}
 \end{minipage}
 
 %%%%%% EXERCISE 2 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}{1\textwidth}
+\begin{minipage}[t]{0.4\textwidth}
 \textbf{EXERCISE 2.}
-Draw a block diagram of the circuit represented by the VHDL code listed below. Be sure to completely label the final diagram.
+Write a VHDL behavioral model that could be used to implement the state diagram as shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+\end{minipage}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.7cm]
+		%FSM states
+		\node[state] (ST0)      {10};
+  	\node[state]  (ST1) [below right = of ST0] {01};
+		\node[state]  (ST2) [below left = of ST0] {11};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above] node (helper) {\NOTT{X1}/\NOTT{Z}} (ST0);
+		\path[->]  (ST2)  edge [loop left]  node {X2/\NOTT{Z}} (ST2);
+		\path[->]  (ST0) 	edge [bend left=18]    node {X1/\NOTT{Z}} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]    node {X2/\NOTT{Z}} (ST2);
+		\path[->]  (ST1)  edge [bend left=18]    node {\NOTT{X2}/Z} (ST0);
+		\path[->]  (ST2)  edge [bend left=18]    node[pos=0.3] {\NOTT{X2}/Z} (ST0);
+
+		% additional tags
+		\node [right=1mm of ST0.north east] {(a)};
+		\node [right=1mm of ST1.north east] {(c)};
+		\node [right=1mm of ST2.north east] {(b)};
+
+		% legend
+		\node[state]  (legend) [left =of helper.north,font=\scriptsize] {Y1 Y0};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {legend:\\Z (output)\\ X1, X2 (inputs)};
+	\end{tikzpicture}
+\end{minipage}
+
+%%%%%% EXERCISE 3 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}{1\textwidth}
+\textbf{EXERCISE 3.}
+Draw the state diagram associated with the following VHDL code. Be sure to provide a legend and remember to label everything.
+\end{minipage}
+\begin{minipage}{0.66\textwidth}
+\vspace{10px}
+\begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity fsmx is
+    Port ( BUM1,BUM2 : in  std_logic;
+                 CLK : in   std_logic;
+            TOUT,CTA : out std_logic);
+end fsmx;
+-- architecture
+architecture my_fsmx of fsmx is
+   type state_type is (S1,S2,S3);
+	signal PS,NS : state_type;
+begin
+   sync_p: process (CLK,NS)
+   begin
+      if (rising_edge(CLK)) then
+         PS <= NS;
+      end if;
+   end process sync_p;
+
+   comb_p: process (CLK,BUM1,BUM2)
+   begin
+      case PS is
+
+         when S1 =>
+            CTA <= '0';
+            if (BUM1 = '0')  then
+               TOUT <= '0';
+               NS <= S1;
+            elsif (BUM1 = '1') then
+               TOUT <= '1';
+               NS <= S2;
+            end if;
+
+         when S2 =>
+            CTA <= '0';
+            TOUT <= '0';
+            NS <= S3;
+
+         when S3 =>
+            CTA <= '1';
+            TOUT <= '0';
+            if (BUM2 = '1')  then
+               NS <= S1;
+            elsif (BUM2 = '0') then
+               NS <= S2;
+            end if;
+
+         when others =>   CTA <= '0';
+                         TOUT <= '0';
+                           NS <= S1;
+      end case;
+   end process comb_p;
+end my_fsmx;
+\end{lstlisting}
+\end{minipage}
+\begin{minipage}{0.33\textwidth}
+\includegraphics[width=\textwidth]{fsm/sm_ex3.png}
+\vspace{250px}
+\end{minipage}
+
+%%%%%% EXERCISE 4 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.25\textwidth}
+\textbf{EXERCISE 4.}
+Write the VHDL behavioral model code that could be used to implement the state diagram shown on the right.
+\end{minipage}
+\begin{minipage}[t]{0.74\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2.8cm,remember picture]
+		\newcommand{\bendAngle}{15}
+
+		%FSM states
+		\node[state with output, initial, initial text=INIT] (ST0) {(a) \nodepart{lower} 0};
+		\node[state with output] (ST1) [below right= of ST0] {(b) \nodepart{lower} 1};
+		\node[state with output] (ST2) [below left= of ST0] {(c) \nodepart{lower} 1};
+
+		% FSM state changes/variables
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {X1/Z2} (ST1);
+		\path[->]  (ST1)  edge [bend left=\bendAngle]   node[below,anchor=east,pos=0.7] {X2/\NOTT{Z2}} (ST0);
+		\path[->]  (ST1)  edge [bend right=\bendAngle] 	node {\NOTT{X2}/Z2} (ST2);
+		\path[->]  (ST2)  edge [bend right=\bendAngle] 	node[below] {X1/Z2} (ST1);
+		\path[->]  (ST2)  edge [bend right=\bendAngle]   node[below=0.1cm,anchor=west,pos=0.4] {\NOTT{X1}/Z2} (ST0);
+		\path[->]  (ST0)  edge [bend right=\bendAngle]   node[above,anchor=east,pos=0.8] {\subnode{X1_ex4}{\NOTT{X1}}/\subnode{Z2_ex4}{\NOTT{Z2}}} (ST2);
+
+		% legend
+		\node[state with output]  (legend) [left =of ST0,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {\subnode{input_ex4}{input}/output\subnode{output_ex4}{(Z2)}};
+		\path[->] (input_ex4) edge [bend right] (X1_ex4);
+		\path[->] (output_ex4) edge [bend left] (Z2_ex4);
+	\end{tikzpicture}
+\end{minipage}
+
+%%%%%% EXERCISE 5 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}{1\textwidth}
+\textbf{EXERCISE 5.}
+Draw the state diagram associated with the following VHDL code. Consider the outputs \texttt{Y} to be representative of the state variables. Be sure to provide a legend. Indicate the states with both state variables and their symbolic equivalents.
+\end{minipage}
+\begin{minipage}{1\textwidth}
+\vspace{10px}
+\begin{lstlisting}
+-- library declaration
+library IEEE;
+use IEEE.std_logic_1164.all;
+-- entity
+entity fsm is
+port (     X,CLK : in  std_logic;
+           RESET : in  std_logic;
+           Z1,Z2 : out std_logic;
+               Y : out std_logic_vector(2 downto 0));
+end fsm;
+-- architecture
+architecture my_fsm of fsm is
+   type state_type is (A,B,C);
+   attribute ENUM_ENCODING: STRING;
+   attribute ENUM_ENCODING of state_type: type is "001 010 100";
+   signal PS,NS : state_type;
+begin
+
+sync_proc: process(CLK,NS,RESET) -- process
+   begin
+     if (RESET = '0') then PS <= C;
+     elsif (rising_edge(CLK)) then PS <= NS;
+     end if;
+   end process sync_proc;
+
+comb_proc: process(PS,X) -- process
+   begin
+      case PS is
+         when A =>
+            Z1 <= '0';
+            if (X = '0') then NS <= A; Z2 <= '1';
+            else  NS <= B; Z2 <= '0';
+            end if;
+         when B =>
+            Z1 <= '1';
+            if (X = '0') then NS <= A; Z2 <= '0';
+            else  NS <= C; Z2 <= '1';
+            end if;
+         when C =>
+            Z1 <= '1';
+            if (X = '0') then NS <= B; Z2 <= '1';
+            else  NS <= A; Z2 <= '0';
+            end if;
+         when others =>
+            Z1 <= '1'; NS <= A; Z2 <= '0';
+      end case;
+   end process comb_proc;
+
+with PS select
+   Y <= "001" when A,
+        "010" when B,
+        "100" when C,
+        "001" when others;
+end my_fsm;
+\end{lstlisting}
+\end{minipage}
+
+%%%%%% EXERCISE 6 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.35\textwidth}
+	\textbf{EXERCISE 6.}
+	Write a VHDL behavioral model code that can be used to implement the state diagram shown on the right. All state variables should be encoded as listed and also provided as outputs of the FSM.
+\end{minipage}
+\begin{minipage}[t]{0.64\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		\newcommand{\bendAngle}{20}
+
+		%FSM states
+		\node[state with output] (ST0) {00 \nodepart{lower} 1};
+		\node[state with output] (ST1) [below= of ST0] {10 \nodepart{lower} 1};
+		\node[state with output] (ST2) [right= of ST0] {01 \nodepart{lower} 0};
+		\node[state with output] (ST3) [right= of ST1] {11 \nodepart{lower} 0};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above]  node {1/0} (ST0);
+		\path[->]  (ST2)  edge [loop above]  node {1/0} (ST2);
+		\path[->]  (ST0) 	edge [bend right=\bendAngle]  	node[left] {0/0} (ST1);
+		\path[->]  (ST1)  edge [bend right=\bendAngle]   node[right] {1/0} (ST0);
+		\path[->]  (ST1)  edge [bend right=\bendAngle] 	node[below,pos=0.3,anchor=north west] {0/0} (ST2);
+		\path[->]  (ST2) 	edge [bend left=\bendAngle]  	node {0/0} (ST3);
+		\path[->]  (ST3)  edge [bend left=\bendAngle]   node[right] {1/0} (ST2);
+		\path[->]  (ST3)  edge [bend right=\bendAngle]   node[right,pos=0.7,anchor=south west] {0/1} (ST0);
+
+		% legend
+		\node[state with output]  (legend) [left =of ST0.east,font=\scriptsize] {State \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(X)/output(Z2)};
+	\end{tikzpicture}
+\end{minipage}
+
+%%%%%% EXERCISE 7 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}{1\textwidth}
+\textbf{EXERCISE 7.}
+Draw the state diagram that corresponds to the following VHDL model and state whether the FSM is a Mealy machine or a Moore machine. Be sure to label everything.
 \vspace{10pt}
+\end{minipage}
+\begin{minipage}{0.66\textwidth}
 
 \begin{lstlisting}
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity ckt is
-    port ( A,B : in  std_logic;
-             C : out std_logic);
-end ckt;
+entity fsm is
+    Port ( CLK,CLR,SET,X1,X2 : in  std_logic;
+                       Z1,Z2 : out std_logic);
+end fsm;
 -- architecture
-architecture my_ckt of ckt is
-
-    component bb1
-        port (D,E : in  std_logic;
-            F,G,H : out std_logic);
-end component;
-
-    component bb2
-        port ( L,M,N : in  std_logic;
-                   P : out std_logic);
-end component;
-
-    signal x1,x2,x3 : std_logic;
+architecture my_fsm of fsm is
+   type state_type is (sA,sB,sC,sD);
+   attribute ENUM_ENCODING: STRING;
+   attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
+   signal PS,NS : state_type;
 begin
-    b1: bb1
-    port map ( D => A, E => B, F => x1, G => x2, H => x3);
+   sync_p: process (CLK,NS,CLR,SET) -- process
+   begin
+      if (CLR = '1' and SET = '0') then
+         PS <= sA;
+	  elsif (CLR = '0' and SET = '1') then
+	     PS <= sD;
+      elsif (rising_edge(CLK)) then
+         PS <= NS;
+      end if;
+   end process sync_p;
 
-    b2: bb2
-    port map ( L => x1, M => x2, N => x3, P => C);
-
-end my_ckt;
+   comb_p: process (X1,X2,PS) -- process
+   begin
+      case PS is
+         when sA =>
+            if ( X1 = '1')  then
+               Z1 <= '0'; Z2 <= '0';
+               NS <= sA;
+            else
+               Z1 <= '0'; Z2 <= '0';
+               NS <= sB;
+            end if;
+         when sB =>
+            if ( X2 = '1')  then
+               Z1 <= '1'; Z2 <= '1';
+               NS <= sC;
+            else
+               Z1 <= '1'; Z2 <= '0';
+               NS <= sB;
+            end if;
+         when sC =>
+            if ( X2 = '1')  then
+               Z1 <= '0'; Z2 <= '0';
+               NS <= sB;
+            else
+               Z1 <= '0'; Z2 <= '1';
+               NS <= sC;
+            end if;
+         when sD =>
+            if ( X1 = '1')  then
+               Z1 <= '1'; Z2 <= '1';
+               NS <= sD;
+            else
+               Z1 <= '1'; Z2 <= '1';
+               NS <= sC;
+            end if;
+      end case;
+   end process comb_p;
+end my_fsm;
 \end{lstlisting}
 \end{minipage}
+\begin{minipage}{0.33\textwidth}
+\includegraphics[width=\textwidth]{fsm/sm_ex7.png}
+\vspace{250px}
+\end{minipage}
 
-%%%%%% EXERCISE 3 %%%%%%
+%%%%%% EXERCISE 8 %%%%%%
 \vspace{20pt}
 \noindent
-\begin{minipage}{\textwidth}
-\textbf{EXERCISE 3.}
-Provide the VHDL structural models for the circuits listed below.
-
-\vspace{7pt}
-\begin{minipage}[b]{0.45\linewidth}
-\centering
-a)
-\includegraphics[width=0.8\textwidth]{smu_vhdl/ex3a.png}
+\begin{minipage}[t]{0.3\textwidth}
+\textbf{EXERCISE 8.}
+Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
-\hspace{0.2cm}
-\begin{minipage}[b]{0.5\linewidth}
-\centering
-b)
-\includegraphics[width=0.5\textwidth]{smu_vhdl/ex3b.png}
-\end{minipage}\\
+\begin{minipage}[t]{0.69\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.3cm,remember picture]
+		\newcommand{\bendAngle}{20}
 
-\vspace{7pt}
-\begin{minipage}[b]{0.45\linewidth}
-\centering
-c)
-\includegraphics[width=0.8\textwidth]{smu_vhdl/ex3c.png}
+		%FSM states
+		\node[state with output] (ST0) {000 \nodepart{lower} 00};
+		\node[state with output] (ST1) [below= of ST0] {001 \nodepart{lower} 00};
+		\node[state with output] (ST2) [below= of ST1] {010 \nodepart{lower} 00};
+		\node[state with output] (ST3) [below= of ST2] {011 \nodepart{lower} 10};
+		\node[state with output] (ST4) [below= of ST3] {100 \nodepart{lower} 01};
+		\node[state with output] (ST5) [right=2cm of ST0] {101 \nodepart{lower} 11};
+		\node[state with output] (ST6) [below= of ST5] {110 \nodepart{lower} 11};
+		\node[state with output] (ST7) [below= of ST6] {111 \nodepart{lower} 11};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above]  node {0} (ST0);
+		\path[->]  (ST1)  edge [loop above]  node {0} (ST1);
+		\path[->]  (ST2)  edge [loop above]  node {0} (ST2);
+		\path[->]  (ST3)  edge [loop above]  node {0} (ST3);
+		\path[->]  (ST5)  edge [loop above]  node {0} (ST5);
+		\path[->]  (ST6)  edge [loop above]  node {0} (ST6);
+		\path[->]  (ST7)  edge [loop above]  node {0} (ST7);
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {1} (ST1);
+		\path[->]  (ST1)  edge [bend left=\bendAngle] 	node {1} (ST2);
+		\path[->]  (ST2) 	edge [bend left=\bendAngle]  	node {1} (ST3);
+		\path[->]  (ST3) 	edge [bend right=\bendAngle]  	node {1} (ST4);
+		\path[->]  (ST4) 	edge [bend left=0]  	node[pos=0.9] {1} (ST5);
+		\path[->]  (ST4) 	edge [bend left]  	node {0} (ST0);
+		\path[->]  (ST5) 	edge [bend left=\bendAngle]  	node (input_ex8) {1} (ST6);
+		\path[->]  (ST6) 	edge [bend left=\bendAngle]  	node {1} (ST7);
+		\path[->]  (ST7) 	edge [bend left=0]  	node[near end,above,anchor=south west] {1} (ST0);
+
+		% legend
+		\node[state with output]  (legend) [right =5mm of ST5,font=\scriptsize] {State \nodepart{lower} Z1 Z2};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(\subnode{X_ex8}{X})};
+		\path[->] (X_ex8) edge [bend left] (input_ex8);
+	\end{tikzpicture}
 \end{minipage}
-\hspace{0.2cm}
-\begin{minipage}[b]{0.5\linewidth}
-\centering
-d)
-\includegraphics[width=0.8\textwidth]{smu_vhdl/ex3d.png}
+
+%%%%%% EXERCISE 9 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.35\textwidth}
+\textbf{EXERCISE 9.}
+Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
 \end{minipage}
+\begin{minipage}[t]{0.64\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1cm,remember picture]
+		\newcommand{\bendAngle}{20}
+
+		%FSM states
+		\node[state with output] (ST0) {00 \nodepart{lower} 0};
+		\node[state with output] (ST1) [below= of ST0] {01 \nodepart{lower} 0};
+		\node[state with output] (ST2) [below= of ST1] {10 \nodepart{lower} 0};
+		\node[state with output] (ST3) [below= of ST2] {11 \nodepart{lower} 1};
+
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above]  node {0/0} (ST0);
+		\path[->]  (ST3)  edge [loop below]  node {1/1} (ST3);
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {1/0} (ST1);
+		\path[->]  (ST1) 	edge [bend left=\bendAngle]  	node[pos=0.3] {0/0} (ST0);
+		\path[->]  (ST1)  edge [bend left=\bendAngle] 	node (XZ2_var_ex9) {1/0} (ST2);
+		\path[->]  (ST2) 	edge [bend left=\bendAngle]  	node {1/0} (ST3);
+		\path[->]  (ST2) 	edge [bend left=50]  	node[pos=0.2] {0/0} (ST0);
+		\path[->]  (ST3) 	edge [bend left=60]  	node[pos=0.2] {0/0} (ST0);
+
+		% legend
+		\node[state with output]  (legend) [right=1.5cm of ST0,font=\scriptsize] {State \nodepart{lower} Z1 Z2};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(X)\subnode{XZ2_ex9}{/}output(Z2)};
+		\path[->] (XZ2_ex9) edge [bend left] (XZ2_var_ex9);
+	\end{tikzpicture}
 \end{minipage}
 
+%%%%%% EXERCISE 10 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.4\textwidth}
+\textbf{EXERCISE 10.}
+Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+\end{minipage}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=1.5cm]
+		%FSM states
+		\node[state] (ST0)      {100};
+  	\node[state]  (ST1) [below right = of ST0] {010};
+		\node[state]  (ST2) [below left = of ST0] {001};
 
+		% FSM state changes/variables
+		\path[->]  (ST0) 	edge [bend left=18]    node {-/Z} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]    node {X/\NOTT{Z}} (ST2);
+		\path[->]  (ST1)  edge [bend left=18]    node {X/\NOTT{Z}} (ST0);
+		\path[->]  (ST2)  edge [bend left=18]    node (XZvarex10) {-/Z} (ST0);
 
+		% additional tags
+		\node [right=1mm of ST0.north east] {(a)};
+		\node [right=1mm of ST1.north east] {(b)};
+		\node [right=1mm of ST2.north east] {(c)};
 
+		% legend
+		\node[state]  (legend) [left =of helper.north,font=\scriptsize] {Y1 Y2 Y3};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input(X)/output(Z)};
+  	\draw[->] (S) -- (XZvarex10);
+	\end{tikzpicture}
+\end{minipage}
 
+%%%%%% EXERCISE 11 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.4\textwidth}
+\textbf{EXERCISE 11.}
+Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+\end{minipage}
+\begin{minipage}[t]{0.57\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		%FSM states
+		\node[state] (ST0)      {001};
+  	\node[state]  (ST1) [below right = of ST0] {100};
+		\node[state]  (ST2) [below left = of ST0] {010};
 
+		% FSM state changes/variables
+		\path[->]  (ST1)  edge [loop below]  node {X2/Z} (ST1);
+		\path[->]  (ST2)  edge [loop below]  node {X1/\NOTT{Z}} (ST2);
+		\path[->]  (ST0) 	edge [bend right=18]    node[left] {X1/Z} (ST1);
+		\path[->]  (ST0)  edge [bend right=18]    node[left,pos=0.4] {\NOTT{X1}/Z} (ST2);
+		\path[->]  (ST1)  edge [bend right=18]    node[right,pos=0.3] {\NOTT{X2}/\NOTT{Z}} (ST0);
+		\path[->]  (ST2)  edge [bend right=18]    node[below] {\NOTT{X1}/\NOTT{Z}} (ST1);
 
+		% additional tags
+		\node [right=1mm of ST0.north east] {(a)};
+		\node [right=1mm of ST1.north east] {(c)};
+		\node [right=1mm of ST2.north east] {(b)};
 
+		% legend
+		\node[state]  (legend) [left =of helper.north,font=\scriptsize] {Y2 Y1 Y0};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {Z (output)\\ X1,X2 (outputs)};
+	\end{tikzpicture}
+\end{minipage}
 
+%%%%%% EXERCISE 12 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{1\textwidth}
+\textbf{EXERCISE 12.}
+Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+\end{minipage}
+\begin{minipage}[t]{1\textwidth}
+	\vspace{10pt}
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm, remember picture]
+		%FSM states
+		\node[state with output] 	(ST0) {11 \nodepart{lower} 1};
+  	\node[state with output]  (ST1) [right = of ST0] {01 \nodepart{lower} 0};
+		\node[state with output]  (ST2) [right = of ST1] {00 \nodepart{lower} 1};
 
+		% legend
+		\node[state with output]  (legend) [left =of ST0,font=\scriptsize] {Y2 Y1 \nodepart{lower} Z2};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {inputs: X1, X2\\outputs: \subnode{Z1}{Z1}, Z2};
 
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop left]   node (variables) {\NOTT{X1}/0} (ST0);
+		\path[->]  (ST2)  edge [loop below]  node {X2/1} (ST2);
+		\path[->]  (ST0) 	edge [bend left=18]   node {X1/1} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]   node {X2/0} (ST0);
+		\path[->]  (ST1)  edge [bend left=18]   node {\NOTT{X2}/1} (ST2);
+		\path[->]  (ST2)  edge [bend left=50]   node[left,pos=0.88] {\NOTT{X2}/\subnode{outputZ1}{0} } (ST0);
+		\path[->]  (Z1) 	edge [bend right=50] (outputZ1);
+
+		% additional tags
+		\node [above=0.5mm of ST0.north east] {(a)};
+		\node [above=0.5mm of ST1.north east] {(b)};
+		\node [above=0.5mm of ST2.north east] {(c)};
+	\end{tikzpicture}
+\end{minipage}
+
+%%%%%% EXERCISE 13 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.3\textwidth}
+\textbf{EXERCISE 13.}
+Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+\end{minipage}
+\begin{minipage}[t]{0.69\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm,remember picture]
+		%FSM states
+		\node[state] (ST0)      {001};
+  	\node[state]  (ST1) [below right = of ST0] {010};
+		\node[state]  (ST2) [below left = of ST0] {100};
+
+		% FSM state changes/variables
+		\path[->]  (ST2)  edge [loop left]  node {X2/\NOTT{CS},RD} (ST2);
+		\path[->]  (ST0) 	edge [bend left=18]    	node {\NOTT{X1}/\NOTT{CS},RD} (ST1);
+		\path[->]  (ST0)  edge [bend right=18]    node[anchor=east] {\subnode{input}{X1}/\subnode{output}{CS,\NOTT{RD}}}  (ST2);
+		\path[->]  (ST2)  edge [bend right=18]  node[anchor=west] {\NOTT{X2}/\NOTT{CS},\NOTT{RD}}  (ST0);
+		\path[->]  (ST1)  edge [bend left=18]    node[below] {-/CS,RD} (ST2);
+
+		% additional tags
+		\node (helper) [above=1mm of ST0] {(a)};
+		\node [below=1mm of ST1] {(b)};
+		\node [below=1mm of ST2] {(c)};
+
+		% legend
+		\node[state]  (legend) [left =3cm of helper.north,font=\scriptsize] {Y3 Y2 Y1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {\subnode{inLabel}{input}/\subnode{outLabel}{outputs(CS,RD)}};
+		\path[->]  (inLabel)  edge [bend right]   (input);
+		\path[->]  (outLabel)  edge [bend left]  (output);
+	\end{tikzpicture}
+\end{minipage}
+
+%%%%%% EXERCISE 14 %%%%%%
+\vspace{20pt}
+\noindent
+\begin{minipage}[t]{0.3\textwidth}
+\textbf{EXERCISE 14.}
+Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+\end{minipage}
+\begin{minipage}[t]{0.69\textwidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=3cm, remember picture]
+		\newcommand{\bendAngle}{20}
+
+		%FSM states
+		\node[state with output] (ST0) {001 \nodepart{lower} 0};
+		\node[state with output] (ST1) [below right= of ST0] {010 \nodepart{lower} 1};
+		\node[state with output] (ST2) [below left= of ST0] {100 \nodepart{lower} 1};
+
+		% FSM state changes/variables
+		\path[->]  (ST0) 	edge [bend left=\bendAngle]  	node {X1/Z2} (ST1);
+		\path[->]  (ST1)  edge [bend left=\bendAngle]   node[anchor=east,pos=0.6] {X2/\NOTT{Z2}} (ST0);
+		\path[->]  (ST1)  edge [bend right=\bendAngle] 	node {\NOTT{X2}/Z2} (ST2);
+		\path[->]  (ST2)  edge [bend right=\bendAngle] 	node[below] {X1/Z2} (ST1);
+		\path[->]  (ST2)  edge [bend right=\bendAngle]   node[pos=0.7,anchor=east] {\NOTT{X1}/Z2} (ST0);
+		\path[->]  (ST0)  edge [bend right=\bendAngle]   node[pos=0.8,anchor=east] {\subnode{input14}{\NOTT{X1}}/\subnode{output14}{\NOTT{Z2}}} (ST2);
+
+		% additional tags
+		\node (helper) [above=1mm of ST0] {(a)};
+		\node [below=1mm of ST1] {(b)};
+		\node [below=1mm of ST2] {(c)};
+
+		% legend
+		\node[state with output]  (legend) [left =2cm of helper.north,font=\scriptsize] {Y3 Y2 Y1 \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {\subnode{inLabel14}{input}/\subnode{outLabel14}{output(Z2)}};
+		\path[->]  (inLabel14)  edge [bend right]   (input14);
+		\path[->]  (outLabel14)  edge [bend left]  (output14);
+	\end{tikzpicture}
+\end{minipage}

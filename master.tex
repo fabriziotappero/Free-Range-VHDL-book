@@ -1,8 +1,8 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2015 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
@@ -19,14 +19,14 @@
 \begin{document}
 
 	\pagenumbering{alph} % for pageslts package to get page numbering correctly
-	
+
 	% front cover
 	\thispagestyle{empty}
 	\begin{textblock*}{160mm}(-3mm,0mm)
 	%\textblockcolour{red}
-    \includegraphics[width=160mm]{pics/cover.png}  % full-page picture for 160x240 format
+	\noindent\makebox[\textwidth]{\includegraphics[width=\paperwidth]{pics/cover.png}}  % full-page picture for 160x240 format
 	\end{textblock*}
-	\null\newpage % latex might neglect \newpage because the page is empty, 
+	\null\newpage % latex might neglect \newpage because the page is empty,
 
 	% blank page
 	\thispagestyle{empty}
@@ -61,7 +61,6 @@
 	\null\newpage
 
 	% table of contents page %
-	\setcounter{page}{5}
 	\renewcommand\contentsname{Table of Contents} % rename title
 	\pagenumbering{roman}
 	\tableofcontents
@@ -92,6 +91,7 @@
 	\include{chapter10}
 	\include{chapter11}
 	\include{chapter12}
+	\include{chapter13}
     \begin{appendices}
 	    \include{appendix}
 	    \include{authors}
@@ -107,4 +107,3 @@
 
 \end{document}
 %%%%%% DOCUMENT END  %%%%%%
-

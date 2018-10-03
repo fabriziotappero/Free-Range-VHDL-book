@@ -1,971 +1,506 @@
 % Free range VHDL
 % Authors: Bryan Mealy, Fabrizio Tappero
-% Date: May, 2012
+% Date: January, 2018
 % URL: freerangefactory.org
-% (C) 2013 B. Mealy, F. Tappero
+% (C) 2018 B. Mealy, F. Tappero
 %
 % !TEX root = master.tex
 %
-\chapter{Finite State Machine Design Using VHDL}
-Finite state machines (FSMs) are mathematical abstractions that are used to solve a large variety of problems, among which are electronic design automation, communication protocol design, parsing and other engineering applications. At this point in your digital design career, you might have probably designed quite a few state machines on paper. You are now at the point where you can implement and test them using actual hardware if you so choose. The first step in this process is to learn how to model FSMs using VHDL. 
+\chapter{Using VHDL for Sequential Circuits}
+All the circuits we have examined up until now have been combinatorial logic circuits. In other words, none of the circuits we have examined so far are actually able to store information. This section shows some of the various methods used to describe sequential circuits. We limit our discussion to VHDL behavioral models for several different flavors of D~flip-flops. It is possible and in some cases desirable to use data-flow models to describe storage elements in VHDL, but it is much easier to use behavior models.
 
-As you will see in the next section, simple FSM designs are just a step beyond the sequential circuit design described in the previous section. The techniques you learn in this section will allow you to quickly and easily design relatively complex FSMs which can be very useful in many number of ways.
+The few approaches for designing flip-flops shown in the next section cover just about all the possible functionality you could imagine when you make use of a D~flip-flop. Once you understand these basics, you will be on your way to understand how to use VHDL to design Finite State Machines (FSMs). This book will examine FSMs in a later chapter.
 
-\begin{figure}
-    \centering
-	\includegraphics[width=13cm]{fsm/fsm.png}
-	\caption{Block diagram for a Moore-type FSM.}
-	\label{fsm}
-\end{figure}
+\section{Simple Storage Elements Using VHDL}
+The general approach for learning how to implement storage elements in digital design is to study the properties of a basic cross-coupled cell. The cross coupled cell forms what is referred to as \textbf{a latch}. The concept of a clocking signal is added to the device in order to enhance its controllability. Finally, some type of pulse narrowing circuitry is added to the clocking signal to get to the flip-flop. The flip-flop is nothing more than an edge-sensitive bit-storage device.
 
-A block diagram for a standard Moore-type FSM is shown in Fig.~\ref{fsm}. This diagram looks fairly typical but different names are used for some of the blocks in the design. The \texttt{Next State Decoder} is a block of combinatorial logic that uses the current external inputs and the current state to decide upon the next state of the FSM. In other words, the inputs to the \texttt{Next State Decoder} block are decoded to produce an output that represents the next state of the FSM. The circuitry in \texttt{Next State Decoder} is generally the excitation equations for the storage elements (flip-flops) in the \texttt{State Register} block. The next state becomes the present state of the FSM when the clock input to the state registers block becomes active. The state registers block is a storage element that stores the present state of the machine. The inputs to the \texttt{Output Decoder} are used to generate the desired external outputs. The inputs are decoded via combinatorial logic to produce the external outputs. Because the external outputs are only dependent upon the current state of the machine, this FSM is classified as a Moore-type FSM.
-
-The FSM model shown in Fig.~\ref{fsm} is probably the most common model for describing a Moore-type FSM. That is most likely because students are often asked to generate the combinatorial logic required to implement the \texttt{Next State Decoder} and the \texttt{Output Decoder}; however here we want to think about FSMs in the context of VHDL. The true power of VHDL starts to emerge in its dealings with FSMs. As you will see, the versatility of VHDL behavioral modeling removes the need for large paper designs of endless K-maps and endless combinatorial logic elements.
-
-\begin{figure}[t]
-    \centering
-	\includegraphics[width=12cm]{fsm/fsm_imp.png}
-	\caption{Model for VHDL implementations of FSMs.}
-	\label{fsm_imp}
-\end{figure}
-
-There are several different approaches used to model FSMs using VHDL. The many different possible approaches are a result of the general versatility of VHDL as a language. What we will describe in this section is probably the clearest approach for FSM implementation. A block diagram of the approach we will use in the implementation of FSMs is shown in Fig.~\ref{fsm_imp}.
-
-Although it does not look that much clearer, you will soon be finding the FSM model shown in Fig.~\ref{fsm_imp} to be a straightforward method to implement FSMs. The approach we will use divides the FSM into two VHDL processes. One process, referred to as the \texttt{Synchronous Process} handles all the matters regarding clocking and other controls associated with the storage element. The other process, the \texttt{Combinatorial Process}, handles all the matters associated with the \texttt{Next State Decoder} and the \texttt{Output Decoder} of Fig.~\ref{fsm}. Note that the two blocks in Fig.~\ref{fsm} are both made solely of combinatorial logic.
-
-
-There is some new lingo used in the description of signals used in Fig.~\ref{fsm_imp}; this description is outlined and described below: 
+The study of a VHDL implementation of storage elements starts with the edge-triggered D~flip-flop. The VHDL examples presented are the basic edge-triggered D~flip-flop with an assortment of added functionality.
+\begin{leftbar}
+\begin{minipage}{0.5\linewidth}
+\noindent
+\textbf{EXAMPLE 14.}
+Write the VHDL code that describes a D~flip-flop shown on the right. Use a behavioral model in your description.
+\end{minipage}
+\begin{minipage}{0.47\linewidth}
+\begin{flushright}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+%\draw[help lines] (0,0) grid (50,50);
+% BOX
+\draw (20,5) rectangle (35,20) node[midway]{$d\_ff$};
+% INPUTS
+\small
+\node (b) at (0,-2) {}; % this is to extend the pink area
+\node (b) at (20,22.5) {}; % this is to extend the pink area
+\node (a) at (20,2.5) {}; % this is the reference point
+\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{D};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{Q};
+\end{tikzpicture}
+\end{flushright}
+\end{minipage}
+\end{leftbar}
+\noindent
+\textbf{SOLUTION.} The solution to Example~14 is shown in Listing~\ref{exe_14}. Listed below are a few interesting things to note about the solution.
 \begin{my_list}
-\item The inputs labelled \texttt{Parallel Inputs} are used to signify inputs that act in parallel to each of the storage elements. These inputs would include enables, presets, clears, etc. 
-
-\item The inputs labelled \texttt{State Transition Inputs} include external inputs that control the state transitions. These inputs also include external inputs used to decode Mealy-type external outputs. 
-
-\item The \texttt{Present State} signals are used by the \texttt{Combinatorial \\ Process} box for both next state decoding and output decoding. The diagram of Fig.~\ref{fsm_imp} also shows that the \texttt{Present State} variables can also be provided as outputs to the FSM but they are not required.
+\item The given architecture body describes the \texttt{my\_d\_ff} version of the \texttt{d\_ff} entity.
+\item Because this example requires the use of a behavioral model, the architecture body includes primarily a process statement. The statements within the process are executed sequentially. The process is executed each time a change is detected in any of the signals in the process' sensitivity list.  In this case, the statements within the process are executed each time there is a change in logic level of the \texttt{CLK} signal.
+\item The \texttt{rising\_edge()} construct is used in the \texttt{if} statement to indicate that changes in the circuit output happen only on the rising edge of the \texttt{CLK} input. The \texttt{rising\_edge()} construct is actually an example of a VHDL function which has been defined in one of the included libraries. The way the VHDL code has been written makes the whole circuit synchronous; in fact, changes in the circuit's output are synchronized with the rising edge of the clock signal. In this case, the action is a transfer of the logic level on the \texttt{D} input to the \texttt{Q} output.
+\item The functionality of \texttt{rising\_edge(CLK)} can be achieved using the quite popular VHDL ``\texttt{event}'' attribute via the construct:\\
+\texttt{CLK'event and CLK='1'}.\\
+Please keep this in mind.
+\item The process has the label \texttt{dff}. This is not required by the VHDL language but the addition of process labels promotes a self-describing nature of the code and increases its readability and understandability.
 \end{my_list}
 
-One final comment before we begin. Although there are many different methods that can be used to described FSMs using VHDL, two of the more common approaches are the dependent and independent PS/NS styles. This book only covers the dependent style because it is clearer than the independent PS/NS style. The model shown in Fig.~\ref{fsm_imp} is actually a model of the dependent PS/NS style of FSMs. Once you understand the VHDL modeling of the dependent PS/NS style of FSM, the understanding of the independent PS/NS style or any other style is relatively painless. More information on the other FSM coding styles is found in various VHDL texts or on the web.
-
-\section{VHDL Behavioral Representation of FSMs}
-
-\begin{leftbar}
-\begin{minipage}[t]{0.5\textwidth}
-\vspace{10pt}
-\noindent
-\textbf{EXAMPLE 18.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-    \centering
-	\includegraphics[width=5.3cm]{fsm/ex18.png}
-\end{minipage}
-\end{leftbar}
-\noindent
-\textbf{SOLUTION.} This problem represents a basic FSM implementation. It is somewhat instructive to show the black-box diagram which is an aid in writing the entity description. Starting FSM problems with the drawing of a black box diagram is always a healthy approach particularly when dealing with FSMs. Oftentimes with FSM problems, it becomes challenging to discern the FSM inputs from the outputs. Drawing a diagram partially alleviates this problem. The black box diagram and the code for the solution of Example~18 is shown in Listing~\ref{exe_18_code}.
-
-\begin{figure}[!h]
-    \centering
-	\includegraphics[width=5cm]{fsm/ex18_sol.png}
-\end{figure}
-
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_18_code, caption=Solution to Example~18.]
+\begin{lstlisting}[label=exe_14, caption=Solution to Example~14.]
+-----------------------------------
+-- Model of a simple D Flip-Flop --
+-----------------------------------
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity my_fsm1 is 
-    port (  TOG_EN  : in  std_logic; 
-            CLK,CLR : in  std_logic; 
-                 Z1 : out std_logic); 
-end my_fsm1;
+entity d_ff is
+	port ( D, CLK : in  std_logic;
+		   Q :      out std_logic);
+end d_ff;
 -- architecture
-architecture fsm1 of my_fsm1 is
-   type state_type is (ST0,ST1); 
-   signal PS,NS : state_type; 
+architecture my_d_ff of d_ff is
 begin
-   sync_proc: process(CLK,NS,CLR)
-   begin
-     -- take care of the asynchronous input
-     if (CLR = '1') then 
-        PS <= ST0;  
-     elsif (rising_edge(CLK)) then 
-        PS <= NS; 
-     end if; 
-   end process sync_proc; 
-
-   comb_proc: process(PS,TOG_EN)
-   begin
-      Z1 <= '0';        -- pre-assign output
-      case PS is 
-         when ST0 =>    -- items regarding state ST0
-            Z1 <= '0';  -- Moore output
-            if (TOG_EN = '1') then NS <= ST1; 
-            else  NS <= ST0; 
-            end if; 
-         when ST1 =>    -- items regarding state ST1
-            Z1 <= '1';  -- Moore output
-            if (TOG_EN = '1') then NS <= ST0; 
-            else  NS <= ST1; 
-            end if; 
-         when others => -- the catch-all condition
-            Z1 <= '0';  -- arbitrary; it should never 
-            NS <= ST0;  -- make it to these two statements
-      end case; 
-   end process comb_proc; 
-end fsm1;
+	dff:  process(CLK)
+	begin
+		if (rising_edge(CLK))      then
+--or    if (CLK'event and CLK='1') then
+			Q <= D;
+		end if;
+	end process dff;
+end my_d_ff;
 \end{lstlisting}
 \end{minipage}
 
-And of course, this solution has many things worth noting in it. The more interesting things are listed below. 
+The D~flip-flop is best known and loved for its ability to store (save, remember) a single bit. The way that the VHDL code in Listing~\ref{exe_14} is able to store a bit is not however obvious. The bit-storage capability in VHDL is implied by the way the VHDL code is interpreted. The implied storage capability comes about as a result of not providing a condition that indicates what should happen if the listed \texttt{if} condition is not met. In other words, if the \texttt{if} condition is not met, the device does not change the value of \texttt{Q} and therefore it must remember the current value. The memory feature of the current value, or state, constitutes the famous bit storage quality of a flip-flop. If you have not specified what the output should be for every possible set of input conditions, the option taken by VHDL is to not change the current output. By definition, if the input changes to an unspecified state, the output remains unchanged. In this case, the output associated with the previous set of input can be thought of as being remembered. It is this mechanism, as strange and interesting as it is, that is used to induce memory in the VHDL code.
 
+In terms of the D flip-flop shown in Example~14, the only time the output is specified is for that delta time associated with the rising edge of the clock. The typical method used to provide a catch-all condition in case the if condition is not met is with an \texttt{else} clause. Generally speaking, a quick way to tell if you have induced a memory element is to look for the presence of an \texttt{else} clause associated with the \texttt{if} statement.
+
+The previous two paragraphs are vastly important for understanding VHDL; the concept of inducing memory in VHDL is very important to digital circuit design. The design of sequential circuits is dependent on this concept. This somewhat cryptic method used by VHDL to induce memory elements is a byproduct of behavioral modeling based solely on the interpretation of the VHDL source code. Even if you will only be using VHDL to design combinatorial circuits, you will most likely be faced with the comprehension of these concepts. One of the classic warnings generated by the VHDL synthesizer is the notification that your VHDL code has generated a \texttt{latch}. Despite the fact that this is only a warning, if you did not intend to generate a latch, you should strive to modify your VHDL code in such a way as to remove this warning. Assuming you did not intend to generate a latch, the cause of your problem is that you have not explicitly provided an output state for all the possible input conditions. Because of this, your circuit will need to remember the previous output state so that it can provide an output in the case where you have not explicitly listed the current input condition.
+
+\begin{leftbar}
+\begin{minipage}{0.5\linewidth}
+\noindent
+\textbf{EXAMPLE 15.}
+Write the VHDL code that describes a D~flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{S} input to be an active-low, synchronous input that sets the \texttt{D}~flip-flop outputs when asserted.
+\end{minipage}
+\begin{minipage}{0.47\linewidth}
+\begin{flushright}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+%\draw[help lines] (0,0) grid (50,50);
+% BOX
+\draw (20,5) rectangle (35,20) node[midway]{$d\_ff\_ns$};
+% INPUTS
+\small
+\node (b) at (0,-2) {}; % this is to extend the pink area
+\node (b) at (20,22.5) {}; % this is to extend the pink area
+\node (a) at (20,2.5) {}; % this is the reference point
+\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{D};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw [latex-] ($(a)+(8.5,1.5)$) |- ++(-19,-5) node[above]{S};
+\draw ($(a)+(8.5,1.8)$) circle (2pt);
+% OUTPUTS
+\draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{Q};
+\end{tikzpicture}
+\end{flushright}
+\end{minipage}
+\end{leftbar}
+\noindent
+\textbf{SOLUTION.} The solution to Example~15 is shown in Listing~\ref{exe_15}. There are a few things of interest regarding this solution.
 \begin{my_list}
-\item We have declared a special VHDL type named \texttt{state\_type} to represent the states in this FSM. This is an example of how enumeration types are used in VHDL. As with enumeration types in other higher-level computer languages, there are internal numerical representations for the listed state types but we only deal with the more expressive symbolic equivalent. In this case, the type we have created is called a \texttt{state\_type} and we have declared two variables of this type: PS and NS. The key thing to note here is that a \texttt{state\_type} is something we have created and is not a native VHDL type.
-
-\item The synchronous process is equal in form and function to the simple D~flip-flops we examined in the section about sequential circuits. The only difference is that we have substituted PS and NS for D and Q, respectively. Something to note here is that the storage element is associated with the PS signal only. Note that PS is not specified for every possible combination of inputs. 
-
-\item Even though this example is of the simplest FSM you could hope for, the code looks somewhat complicated. But if you examine it closely, you can see that everything is nicely compartmentalized in the solution. There are two processes; the synchronous process handles the asynchronous reset and the assignment of a new state upon the arrival of the system clock. Additionally, the combinational process handles the outputs not handled in the synchronous process. 
-
-\item Because the two processes operate concurrently, they can be considered as working in a lock-step manner. Changes to the NS signal that are generated in the combinatorial process force an evaluation of the synchronous process. When the changes are actually instituted in the synchronous process on the next clock edge, the changes in the PS signal causes the combinatorial process to be evaluated. And so on and so forth. 
-
-\item The case statement in the combinatorial process provides a \texttt{when} clause for each state of the FSM. This is the standard approach for the dependent PS/NS coding style. A \texttt{when others} clause has also been used. The signal assignments that are part this catch-all clause are arbitrary since the code should never actually make it there. This statement is provided for a sense of completeness and represents good VHDL coding practice. 
-
-\item The Moore output is a function of only the present state. This is expressed by the fact that the assignment of the Z1 output is unconditionally evaluated in each when clause of the case statement in the combinatorial process. In other words, the Z1 variable is inside the \texttt{when} clause but outside of the \texttt{if} statement in the \texttt{when} clause. This is of course because the Moore outputs are only a function of the states and not the external inputs. Note that it is the external input that controls the \texttt{which} state the FSM transitions to from any given state. You will see later that Mealy outputs, due their general nature, are assigned inside the \texttt{if} statement.
-
-\item The Z1 output is pre-assigned as the first step in the combinatorial process. Pre-assigning it in this fashion prevents the unexpected latch generation for the Z1 signal. When dealing with FSMs, there is a natural tendency for the FSM designer to forget to specify an output for the Z1 variable in each of the states. Pre-assigning it prevents latches from being generated and can arguably clean up the source code. The pre-assignment makes no difference to the VHDL code because if multiple assignments are made within the code, only the final assignment takes effect. In other words, only the final assignment is considered once the process terminates. 
+\item The \texttt{S} input to the flip-flop is made synchronous by only allowing it to affect the operation of the flip-flop on the rising edge of the system clock.
+\item On the rising edge of the clock, the \texttt{S} input takes precedence over the \texttt{D} input because the state of the \texttt{S} input is checked prior to examining the state of the \texttt{D} input. In an \texttt{if-else} statement, once one condition evaluates as true, none of the other conditions is checked. In other words, the \texttt{D} input is transferred to the output only on the rising edge of the clock and only if the \texttt{S} input is not asserted.
 \end{my_list}
 
-There is one final thing to note about Example~18. In an effort to keep the example simple, we disregarded the digital values of the state variables. This is indicated in the black-box diagram of Listing~\ref{exe_18_code} by the fact that the only output of the FSM is the signal Z1. This is reasonable in that it could be considered that only one output was required in order to control some other device or circuit. The state variable is represented internally and its precise representation is not important since the state variable is not provided as an output. 
-
-In some FSM designs, the state variables are provided as outputs. To show this situation, we will provide a solution to Example~18 with the state variables as outputs. The black-box diagram and the VHDL code of this solution is shown in Listing~\ref{exe_18_code_alt}.
-\begin{figure}[!h]
-    \centering
-	\includegraphics[width=5cm]{fsm/ex18_sol_alt.png}
-\end{figure}
-
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_18_code_alt, caption=Solution to Example~18 that include state variable as output.]
+\begin{lstlisting}[label=exe_15, caption=Solution to Example~15.]
+------------------------------------------------------------------
+-- RET D Flip-flop model with active-low synchronous set input. --
+------------------------------------------------------------------
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity my_fsm2 is 
-   port (   TOG_EN : in  std_logic; 
-           CLK,CLR : in  std_logic; 
-              Y,Z1 : out std_logic); 
-end my_fsm2;
+entity d_ff_ns is
+    port (  D,S :  in  std_logic;
+            CLK :  in  std_logic;
+              Q :  out std_logic);
+end d_ff_ns;
 -- architecture
-architecture fsm2 of my_fsm2 is
-   type state_type is (ST0,ST1); 
-   signal PS,NS : state_type; 
+architecture my_d_ff_ns of d_ff_ns is
 begin
-   sync_proc: process(CLK,NS,CLR)
+   dff:  process (CLK)
    begin
-      if (CLR = '1') then 
-         PS <= ST0; 
-      elsif (rising_edge(CLK)) then 
-         PS <= NS; 
-      end if; 
-   end process sync_proc; 
-
-   comb_proc: process(PS,TOG_EN)
-   begin
-      Z1 <= '0';
-      case PS is    
-         when ST0 =>        -- items regarding state ST0
-            Z1 <= '0';      -- Moore output
-            if (TOG_EN = '1') then NS <= ST1; 
-            else  NS <= ST0; 
-            end if; 
-         when ST1 =>        -- items regarding state ST1
-            Z1 <= '1';      -- Moore output
-            if (TOG_EN = '1') then NS <= ST0; 
-            else  NS <= ST1; 
-            end if; 
-         when others =>     -- the catch-all condition
-            Z1 <= '0';      -- arbitrary; it should never 
-            NS <= ST0;      -- make it to these two statements
-      end case; 
-   end process comb_proc; 
- 
-   -- assign values representing the state variables
-   with PS select
-      Y <= '0' when ST0, 
-           '1' when ST1, 
-           '0' when others; 
-end fsm2;
+      if (rising_edge(CLK)) then
+         if (S = '0') then
+            Q <= '1';
+         else
+            Q <= D;
+         end if;
+      end if;
+   end process dff;
+end my_d_ff_ns;
 \end{lstlisting}
 \end{minipage}
 
-Note that the VHDL code shown in Listing~\ref{exe_18_code_alt} differs in only two areas from the code shown in Listing~\ref{exe_18_code}. The first area is the modification of the entity declaration to account for the state variable output Y. The second area is the inclusion of the selective signal assignment statement which assigns a value of state variable output Y based on the condition of the state variable. The selective signal assignment statement is evaluated each time a change in signal PS is detected. Once again, since we have declared an enumeration type for the state variables, we have no way of knowing exactly how the synthesizer will decide to represent the state variable. The selective signal assignment statement in the code of Listing~\ref{exe_18_code_alt} only makes it appear like there is one state variable and the states are represented with a '1' and a '0'. In reality, there are methods we can use to control how the state variables are represented and we will deal with those soon. 
-
-Lastly, there are three concurrent statements in the VHDL code shown in Listing~\ref{exe_18_code_alt}: two process statements and a selective signal assignment statement. 
-
 \begin{leftbar}
-\begin{minipage}[t]{0.5\textwidth}
-\vspace{10pt}
+\begin{minipage}{0.5\linewidth}
 \noindent
-\textbf{EXAMPLE 19.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the state variables as outputs of the FSM.
+\textbf{EXAMPLE 16.}
+Write the VHDL code that describes a D~flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{R} input to be an active-high, asynchronous input that resets the \texttt{D}~flip-flop outputs when asserted.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5cm]{fsm/ex19.png}
+\begin{minipage}{0.47\linewidth}
+\begin{flushright}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+%\draw[help lines] (0,0) grid (50,50);
+% BOX
+\draw (20,5) rectangle (35,20) node[midway]{$d\_ff\_r$};
+% INPUTS
+\small
+\node (b) at (0,-2) {}; % this is to extend the pink area
+\node (b) at (20,22.5) {}; % this is to extend the pink area
+\node (a) at (20,2.5) {}; % this is the reference point
+\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{D};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{$\overline{CLK}$};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw [latex-] ($(a)+(8.5,2.5)$) |- ++(-19,-5) node[above]{R};
+% OUTPUTS
+\draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{Q};
+\end{tikzpicture}
+\end{flushright}
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The state diagram shown in this problem indicates that this is a three-state FSM with one Mealy-type external output and one external input. Since there are three states, the solution requires at least two state variables to handle the three states. The black-box diagram of the solution is shown in Listing~\ref{exe_19_code}. Note that the two state variables are handled as a bundled signal.
-
-
-\begin{figure}[!h]
-    \centering
-	\includegraphics[width=5cm]{fsm/ex19_sol.png}
-\end{figure}
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_19_code, caption=Solution to Example~19.]
--- library declaration
-library IEEE;
-use IEEE.std_logic_1164.all;
--- entity
-entity my_fsm3 is 
-    port ( X,CLK,SET : in  std_logic; 
-                   Y : out std_logic_vector(1 downto 0); 
-                  Z2 : out std_logic); 
-end my_fsm3;
--- architecture
-architecture fsm3 of my_fsm3 is
-   type state_type is (ST0,ST1,ST2); 
-   signal PS,NS : state_type; 
-begin
-   sync_proc: process(CLK,NS,SET)
-   begin
-      if (SET = '1') then 
-         PS <= ST2; 
-      elsif (rising_edge(CLK)) then 
-         PS <= NS; 
-      end if; 
-   end process sync_proc; 
-
-   comb_proc: process(PS,X)
-   begin
-      Z2 <= '0';           -- pre-assign FSM outputs
-      case PS is 
-         when ST0 =>       -- items regarding state ST0
-            Z2 <= '0';     -- Mealy output always 0
-            if (X = '0') then NS <= ST0;  
-            else  NS <= ST1; 
-            end if; 
-         when ST1 =>       -- items regarding state ST1
-            Z2 <= '0';     -- Mealy output always 0
-            if (X = '0') then NS <= ST0; 
-            else  NS <= ST2; 
-            end if; 
-         when ST2 =>       -- items regarding state ST2
-            -- Mealy output handled in the if statement
-            if (X = '0') then NS <= ST0; Z2 <= '0'; 
-            else  NS <= ST2;  Z2 <= '1';     
-            end if; 
-         when others =>    -- the catch all condition
-            Z2 <= '1'; NS <= ST0; 
-      end case; 
-   end process comb_proc; 
- 
-   -- faking some state variable outputs
-   with PS select
-      Y <= "00" when ST0, 
-           "10" when ST1, 
-           "11" when ST2, 
-           "00" when others; 
-end fsm3;
-\end{lstlisting}
-\end{minipage}
-
-As usual, there are a couple of fun things to point out about the solution for Example~19. Most importantly, you should note the similarities between this solution and the previous solution. 
-
+\textbf{SOLUTION.} The solution to Example~16 is shown in Listing~\ref{exe_16}. You can probably glean the most information about asynchronous input and synchronous inputs by comparing the solutions to Example~15 and Example~16. A couple of interesting points are listed below.
 \begin{my_list}
-\item The FSM has one Mealy-type output. The solution essentially treats this output as a Moore-type output in the first two \texttt{when} clauses of the \texttt{case} statement. In the final \texttt{when} clause, the Z2 output appears in both sections of the \texttt{if} statement. The fact the Z2 output is different in the context of state ST2 that makes it a Mealy-type output and therefore a Mealy-type FSM. 
-
-\item When faking the state variable outputs (keeping in mind that the actual state variables are represented with enumeration types), two signals are required since the state diagram contains more than two states (and less than five states). The solution opted is to represent these outputs as a bundle which has the effect of slightly changing the form of the selected signal assignment statement appearing at the end of the architecture description. 
+\item The reset input is independent of the clock and takes priority over the clock. This prioritization is done by making the reset condition the first condition in the \texttt{if} statement. Evaluation of the other conditions continues if the \texttt{R} input does not evaluate to a '1'.
+\item The \texttt{falling\_edge()} function is used to make the D~flip-flop falling-edge-triggered. Once again, this function is defined in one of the included libraries.
 \end{my_list}
 
-\begin{leftbar}
-\begin{minipage}[t]{0.5\textwidth}
-\vspace{10pt}
-\noindent
-\textbf{EXAMPLE 20.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the listed state variables as output.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5.2cm]{fsm/ex20.png}
-\end{minipage}
-\end{leftbar}
-
-\noindent
-\textbf{SOLUTION.} The state diagram indicates that its implementation will contain four states, one external input and two external outputs. This is a hybrid FSM in that the if contains both a Mealy and Moore-type output but in this case, the FSM would be considered a Mealy-type FSM. The black-box diagram and the actual solution for the solution is shown in Listing~\ref{exe_20_code}. 
-\begin{figure}[!h]
-    \centering
-	\includegraphics[width=5cm]{fsm/ex20_sol.png}
-\end{figure}
-
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_20_code, caption=Solution to Example~20.]
+\begin{lstlisting}[label=exe_16, caption=Solution to Example~16.]
+----------------------------------------------------------------------
+-- FET D Flip-flop model with active-high asynchronous reset input. --
+----------------------------------------------------------------------
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity my_fsm4 is 
-    port ( X,CLK,RESET : in  std_logic; 
-                     Y : out std_logic_vector(1 downto 0); 
-                 Z1,Z2 : out std_logic);  
-end my_fsm4;
+entity d_ff_r is
+    port (   D,R :  in  std_logic;
+             CLK :  in  std_logic;
+               Q :  out std_logic);
+end d_ff_r;
 -- architecture
-architecture fsm4 of my_fsm4 is
-   type state_type is (ST0,ST1,ST2,ST3); 
-   signal PS,NS : state_type; 
+architecture my_d_ff_r of d_ff_r is
 begin
-   sync_proc: process(CLK,NS,RESET)
+   dff:  process (R,CLK)
    begin
-     if (RESET = '1') then  PS <= ST0; 
-     elsif (rising_edge(CLK)) then  PS <= NS; 
-     end if; 
-   end process sync_proc; 
-
-   comb_proc: process(PS,X)
-   begin
-      -- Z1: the Moore output; Z2: the Mealy output
-      Z1 <= '0';   Z2 <= '0'; -- pre-assign the outputs
-      case PS is 
-         when ST0 =>    -- items regarding state ST0
-            Z1 <= '1';  -- Moore output 
-            if (X = '0') then NS <= ST1; Z2 <= '0';   
-            else  NS <= ST0; Z2 <= '1';
-            end if; 
-         when ST1 =>    -- items regarding state ST1
-            Z1 <= '1';  -- Moore output 
-            if (X = '0') then NS <= ST2; Z2 <= '0';  
-            else  NS <= ST1; Z2 <= '1'; 
-            end if; 
-         when ST2 =>    -- items regarding state ST2
-            Z1 <= '0';  -- Moore output 
-            if (X = '0') then NS <= ST3; Z2 <= '0'; 
-            else  NS <= ST2; Z2 <= '1'; 
-            end if; 
-         when ST3 =>    -- items regarding state ST3
-            Z1 <= '1';  -- Moore output 
-            if (X = '0') then NS <= ST0; Z2 <= '0'; 
-            else  NS <= ST3;  Z2 <= '1';     
-            end if; 
-         when others => -- the catch all condition
-            Z1 <= '1';  Z2 <= '0';  NS <= ST0; 
-      end case; 
-   end process comb_proc; 
- 
-   with PS select
-      Y <= "00" when ST0, 
-           "01" when ST1, 
-           "10" when ST2, 
-           "11" when ST3, 
-           "00" when others; 
-end fsm4;
+      if (R = '1') then
+         Q <= '0';
+      elsif (falling_edge(CLK)) then
+         Q <= D;
+      end if;
+   end process dff;
+end my_d_ff_r;
 \end{lstlisting}
 \end{minipage}
 
-If you haven't noticed by now, implementing FSMs using the VHDL behavioral model is remarkably straightforward. In reality, I rarely code a FSM from scratch; I usually opt to grab some previous FSM I have coded and start from there. Keep in mind that real engineering is rarely based on a cookbook. For FSM problems, the engineering is in the testing and creation of the state diagram. Do not get too comfortable with behavioral modeling of FSMs; the real fun is actually generating a FSM that solves a given problem. 
-
-\section{One-Hot Encoding for FSMs}
-Truth told, there are many different methods that can be used to encode state variables\footnote{In this case, encoding refers to the act of assigning a unique pattern of  1's and 0's to each of the state in order to make them unambiguous from other states.}. If the exact form of the representation used is important to you, then you will need to take the necessary steps in order to control how the state variables are represented by the synthesizer. There are two approaches to control state variable representation. The first approach is to allow the synthesizing tool to handle the details. Since every FSM we have seen up to this point has used enumeration types to represent the state variables, the synthesizer could choose to actually represent them with an encoding scheme of its own choosing. The reality is that the tools generally have an option to select the desired encoding scheme. The downside of this approach is that you are denied the learning experience associated with implementing the VHDL code that explicitly induces your desired encoding scheme. After all, you may have some special encoding scheme you need to use but is not supported by the development tools. The second approach to encoding the state variables is to specify them directly in VHDL. The approach of specifying the state variables in the VHDL code is presented in this section. 
-
-One-hot encoding uses one bit in the state register for each state of the FSM. For a one-hot encoding FSM with 16 states, 16 flip flops are required. However only four flip flops are required if the same FSM is implemented using a binary encoding. One-hot encoding simplifies the logic and the interconnections between overall logic. Despite looking quite wasteful in terms of employed logic, one-hot encoding often results in smaller and faster FSMs.
-
-The approach taken in the previous FSM examples was to pretend we were using full encoding for the state variables of the FSM. The full encoding approach minimizes the number of storage elements (flip-flops) used to store the state variables. The closed form equation describing the number of flip-flops required for a given FSM as a function of the number of states is shown in equation \ref{eq1}. The bracket-like symbols used in equation \ref{eq1} indicate a ceiling function\footnote{The ceiling function $y=\lceil x \rceil$ assigns $y$ to the smallest integer that is greater or equal to $x$.}. The binary nature expressed by this equation is so apparent that this encoding is often referred to as binary encoding.
-
-\begin{equation}\label{eq1}
- \#(flip\_flops) = \lceil \log_2(\#states) \rceil
-\end{equation}
-
-For one-hot encoded FSMs, only one flip-flop is asserted at any given time. This requires that each distinct state be represented by one flip-flop. In one-hot encoding, the number of flip-flops required to implement a FSM is therefore equal to the number of states in the FSM. The closed form of this relationship is shown in equation \ref{eq2}. 
-
-\begin{equation}\label{eq2}
- \#(flip\_flops) = \lceil \#(states) \rceil
-\end{equation}
-
-The question naturally arises as to how VHDL can be used to implement one-hot encoded FSMs. If you want total control of the process, you will need to grab control away from the synthesizer. And since we are concerned with learning VHDL, we need to look at the process of explicitly encoding one-hot FSMs. 
-
-The modular approach we used to implement FSMs expedites the conversion process from using enumeration types to actually specifying how the state variables are represented. The changes from our previous approach are limited to how the outputs are assigned to the state variables and how the state variables are forced to be represented by certain bit patterns. Modifications to the fully encoded approach are thus limited to the entity declaration (you will need more variables to represent the states), the declaration of the state variables (you will need to explicitly declare the bit patterns associated with each state) and the assignment of the state variables to the outputs (in this case, we are actually not faking it like we were in other examples). 
+The solutions of Example~15 and Example~16 represent what can be considered the standard VHDL approaches to handling synchronous and asynchronous inputs, respectively. The general forms of these solutions are actually considered templates for synchronous and asynchronous inputs by several VHDL references. As you will see later, these solutions form the foundation to finite state machine design using VHDL.
 
 \begin{leftbar}
-\begin{minipage}[t]{0.5\textwidth}
-\vspace{10pt}
+\begin{minipage}{0.5\linewidth}
 \noindent
-\textbf{EXAMPLE 21.}
-Write the VHDL code that implements the FSM shown on the right. Use a dependent PS/NS coding style in your implementation. Consider the listed state variables as output. Use one-hot encoding for the state variables. This problem is Example~20 all over again but uses true one-hot encoding for the state variables. 
-\vspace{50px}
+\textbf{EXAMPLE 17.}
+Write the VHDL code that describes a T~flip-flop shown on the right. Use a behavioral model in your description. Consider the \texttt{S} input to be an active-low, asynchronous input that sets the T~flip-flop outputs when asserted.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-    \centering
-	\includegraphics[width=5cm]{fsm/ex21.png}
+\begin{minipage}{0.47\linewidth}
+\begin{flushright}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.9,framed]
+% BOX
+\draw (20,5) rectangle (35,20) node[midway]{$t\_ff\_s$};
+% INPUTS
+\small
+\node (b) at (0,-2) {}; % this is to extend the pink area
+\node (b) at (20,22.5) {}; % this is to extend the pink area
+\node (a) at (20,2.5) {}; % this is the reference point
+\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[above]{T};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw [latex-] ($(a)+(8.5,1.0)$) |- ++(-19,-5) node[above]{S};
+\draw ($(a)+(8.5,1.8)$) circle (2pt);
+% OUTPUTS
+\draw [-latex] ($(a)+(15,10)$) -- ++(10,0) node[above]{Q};
+\end{tikzpicture}
+\end{flushright}
 \end{minipage}
 \end{leftbar}
 \noindent
-\textbf{SOLUTION.} The state diagram shows four states, one external input X, two external outputs Z1 and Z2 with the Z2 output being a Mealy output. This is a Mealy machine that indicates one-hot encoding should be used to encode the state variables. We will approach the implementation of this FSM one piece at the time.
+\textbf{SOLUTION.} The solution to Example~17 is shown in Listing~\ref{exe_17}. This example has some very important techniques associated with it that are well worth mentioning below.
+\begin{my_list}
+\item A unique quality of the D~flip-flop is demonstrated in this implementation of a T~flip-flop. The output of a D~flip-flop is only dependent upon the \texttt{D} input and is not a function of the present output of the flip-flop. The output of a T~flip-flop is dependent upon both the \texttt{T} input and the current output of the flip-flop. This adds a certain amount of extra complexity to the T~flip-flop model as compared to the D~flip-flop as is shown in Listing~\ref{exe_17}. The T~flip-flop model in Listing~\ref{exe_17} uses a temporary signal in order to use the current state of the flip-flop as an input. In other words, since \texttt{Q} appears as a port to the entity it must be assigned a mode specifier and in this case, it has been assigned a mode specifier of ``out''. \textbf{Signals that are declared as outputs can therefore not appear on the right-hand side of a signal assignment operator}. The standard approach to bypassing this apparent limitation in VHDL is to \textbf{use intermediate signals} which, as opposed to port signals, do not have mode specifications and can thus be used as either inputs or outputs (can appear on both sides of the signal assignment operator) in the body of the architecture. The approach is to manipulate the intermediate signal in the body of the architecture but to also use a concurrent signal assignment statement to assign the intermediate signal to the appropriate output. Note that in the key statement in the solution shown in \ref{exe_17} that the intermediate signal appears on both sides of the signal assignment operator. This is a widely used approach in VHDL: please take time to understand and absorb it. And lastly on this note, there are other mode specifications that would allow you a different approach to bypassing this problem (namely, the use of the ``buffer'' mode specification), but you should never use these in VHDL. The approach presented here is considered a good use of VHDL.
 
-Listing~\ref{exe_21_code_1} shows the modifications to the entity declaration required to convert the full encoding used in Example~20 to a pseudo one-hot encoding. Listing~\ref{exe_21_code_2} shows the required modifications to the state variable output assignment in order to move from enumeration types to a special form of assigned types. Forcing the state variables to be truly encoded using one-hot encoding requires these two extra lines of code as is shown in Listing~\ref{exe_21_code_2}. These two lines of code essentially force the VHDL synthesizer to represent each state of the FSM with its own storage element. In other words, each state is represented by the "string" modifier as listed. This forces four bits per state to be remembered by the FSM implementation which essentially requires four flip-flops. Note in Listing~\ref{exe_21_code_3} that the default case is assigned a valid one-hot state instead of the customary all zero state. You should strongly consider comparing these three figures. The total solution is shown in Listing~\ref{exe_21_code_4} 
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_21_code_1, caption=Modifications to convert Example~20 to one-hot encoding.]
--- full encoded approach
-entity my_fsm4 is 
-    port ( X,CLK,RESET : in  std_logic; 
-                     Y : out std_logic_vector(1 downto 0); 
-                 Z1,Z2 : out std_logic);  
-end my_fsm4;
-----------------------------------------------------------------------
--- one-hot encoding approach
-entity my_fsm4 is 
-    port ( X,CLK,RESET : in  std_logic; 
-                     Y : out std_logic_vector(3 downto 0); 
-                 Z1,Z2 : out std_logic);  
-end my_fsm4;
-\end{lstlisting}
-
-\begin{lstlisting}[label=exe_21_code_2, caption=Modifications to convert state variables to use one-hot encoding.]
--- the approach for enumeration types   
-type state_type is (ST0,ST1,ST2,ST3); 
-signal PS,NS : state_type; 
-----------------------------------------------------------------------
--- the approach used for explicitly specifying state bit patterns
-type state_type is (ST0,ST1,ST2,ST3); 
-attribute ENUM_ENCODING: STRING; 
-attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
-signal PS,NS : state_type;
-\end{lstlisting}
-\end{minipage}
+\item This code uses the characteristics equation of a T~flip-flop in its implementation. We technically used a characteristic equation when we implemented the D~flip-flop but since the characteristic equation of a D~flip-flop is relatively trivial, you may not have been aware of it.
+\item There are certain advantages to using T~flip-flops in some conditions, D~flip-flops are generally the storage element of choice using VHDL. If you do not have a specific reason for using some type of flip-flop other than a D~flip-flop, you probably should not.
+\end{my_list}
 
 \noindent
 \begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_21_code_3, caption=Modifications to convert state output to pseudo one-hot encoding.]
--- fake full encoded approach 
-with PS select
-   Y <= "00" when ST0, 
-        "01" when ST1, 
-        "10" when ST2, 
-        "11" when ST3, 
-        "00" when others; 
-end fsm4;
-----------------------------------------------------------------------
--- one-hot encoded approach 
-with PS select
-   Y <= "1000" when ST0, 
-        "0100" when ST1, 
-        "0010" when ST2, 
-        "0001" when ST3, 
-        "1000" when others; 
-end fsm4;
-\end{lstlisting}
-\end{minipage}
-
-\noindent
-\begin{minipage}{0.99\linewidth}
-\begin{lstlisting}[label=exe_21_code_4, caption=The final solution to Example~21.]
+\begin{lstlisting}[label=exe_17, caption=Solution to Example~17.]
+-------------------------------------------------------------------
+-- RET T Flip-flop model with active-low asynchronous set input. --
+-------------------------------------------------------------------
 -- library declaration
 library IEEE;
 use IEEE.std_logic_1164.all;
 -- entity
-entity my_fsm4_oh is 
-    port ( X,CLK,RESET : in  std_logic; 
-                     Y : out std_logic_vector(3 downto 0); 
-                 Z1,Z2 : out std_logic);  
-end my_fsm4_oh;
--- architeture
-architecture fsm4_oh of my_fsm4_oh is
-  type state_type is (ST0,ST1,ST2,ST3);
-  attribute ENUM_ENCODING: STRING; 
-  attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
-  signal PS,NS : state_type; 
+entity t_ff_s is
+    port ( T,S,CLK :  in  std_logic;
+                 Q :  out std_logic);
+end t_ff_s;
+-- entity
+architecture my_t_ff_s of t_ff_s is
+   signal t_tmp : std_logic; -- intermediate signal declaration
 begin
-   sync_proc: process(CLK,NS,RESET)
+   tff:  process (S,CLK)
    begin
-     if (RESET = '1') then  PS <= ST0; 
-     elsif (rising_edge(CLK)) then  PS <= NS; 
-     end if; 
-   end process sync_proc; 
+      if (S = '0') then
+         t_tmp <= '1';
+      elsif (rising_edge(CLK)) then
+         t_tmp <= T XOR t_tmp; -- temp output assignment
+      end if;
+   end process tff;
 
-   comb_proc: process(PS,X)
-   begin
-      -- Z1: the Moore output; Z2: the Mealy output
-      Z1 <= '0';   Z2 <= '0'; -- pre-assign the outputs
-      case PS is 
-         when ST0 =>    -- items regarding state ST0
-            Z1 <= '1';  -- Moore output 
-            if (X = '0') then NS <= ST1; Z2 <= '0';   
-            else  NS <= ST0; Z2 <= '1';
-            end if; 
-         when ST1 =>    -- items regarding state ST1
-            Z1 <= '1';  -- Moore output 
-            if (X = '0') then NS <= ST2; Z2 <= '0';  
-            else  NS <= ST1; Z2 <= '1'; 
-            end if; 
-         when ST2 =>    -- items regarding state ST2
-            Z1 <= '0';  -- Moore output 
-            if (X = '0') then NS <= ST3; Z2 <= '0'; 
-            else  NS <= ST2; Z2 <= '1'; 
-            end if; 
-         when ST3 =>    -- items regarding state ST3
-            Z1 <= '1';  -- Moore output 
-            if (X = '0') then NS <= ST0; Z2 <= '0'; 
-            else  NS <= ST3;  Z2 <= '1';     
-            end if; 
-         when others => -- the catch all condition
-            Z1 <= '1';  Z2 <= '0';  NS <= ST0; 
-      end case; 
-   end process comb_proc; 
- 
-   -- one-hot encoded approach 
-   with PS select
-      Y <= "1000" when ST0, 
-           "0100" when ST1, 
-           "0010" when ST2, 
-           "0001" when ST3, 
-           "1000" when others; 
-
-end fsm4_oh;
+   Q <= t_tmp; -- final output assignment
+end my_t_ff_s;
 \end{lstlisting}
 \end{minipage}
+
+\section{Inducing Memory: Data-flow vs. Behavioral Modeling}
+A major portion of digital design deals with sequential circuits. Generally speaking, most sequential circuit design is about synchronizing events to a clock edge. In other words, output changes only occur on a clock edge. The introduction to memory elements in VHDL presented in this section may lead the reader to think that memory in VHDL is only associated with behavioral modeling, but this is not the case. The same concept of inducing memory holds for data-flow modeling as well: not explicitly specifying an output for every possible input condition generates a latch (a storage element). And on this note, checking for unintended memory element generation is one of the duties of the digital designer. As you would imagine, memory elements add an element of needless complexity to the synthesized circuit.
+
+One common approach for learning the syntax and mechanics of new computer languages is to implement the same task in as many different ways as possible. This approach utilizes the flexibility of the language and is arguably a valid approach to learning a new language. This is also the case in VHDL. But, probably more so in VHDL than other languages, there are specific ways of doing things and these things should always be done in these specific ways. Although it would be possible to generate flip-flops using data-flow models, most knowledgeable people examining your VHDL code would not initially be clear as to what exactly you are doing. As far as generating synchronous memory elements go, the methods outlined in this section are simply the optimal method of choice. This is one area not to be clever with.
 
 \section{Important Points}
-
 \begin{my_list}
-\item Modeling FSMs from a state diagram is a straightforward process using VHDL behavioral modeling. The process is so straightforward that it is often considered cookie cutter. The real engineering involved in implementing FSM is in the generation of the state diagram that solved the problem at hand.
+\item Storage elements in VHDL are induced by not specifying output conditions for every possible input condition.
 
-\item Due to the general versatility of VHDL, there are many approaches that can be used to model FSMs using VHDL. The approach used here details only one of those styles but is generally considered the most straightforward of all styles. 
+\item Unintended generation of storage elements is generally listed by the synthesizer as latch generation. Once again, latches are generated when there is an existing input condition to a circuit that does not have a corresponding output specification.
 
-\item The actual encoding of the FSM's state variables when enumeration types are used is left up to the synthesis tool. If a preferred method of variable encoding is desired, using the attribute approach detail in this section is a simple but viable alternative. 
+\item Memory elements can be induced by both data-flow and behavioral models.
+
+\item If a signal declared in the entity declaration has a mode specifier of out, that signal cannot appear on the right-hand side of a signal assignment operator. This limitation is bypassed by using intermediate signals for any functional assignments and later assigning the intermediate signal to the output signal using a concurrent signal assignment statement.
+
+\item The mode specification of \texttt{buffer} should be avoided in favor of intermediate signals.
 \end{my_list}
 
-\section{Exercises: Behavioral Modeling of FSMs}
+\section{Exercises: Basic Memory Elements}
 
+\vspace{15pt}
+\noindent
 %%%%%% EXERCISE 1 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}{1\textwidth}
+\begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 1.}
-Draw the state diagram associated with the following VHDL code. Be sure to provide a legend and completely label everything.
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.
 \end{minipage}
-\begin{minipage}{0.66\textwidth}
-\vspace{10px}
-\begin{lstlisting}
--- library declaration
-library IEEE;
-use IEEE.std_logic_1164.all;
--- entity
-entity fsm is 
-   port (  X,CLK : in  std_logic; 
-           RESET : in  std_logic; 
-           Z1,Z2 : out std_logic;  
-end fsm;
--- architecture
-architecture fsm of fsm is
-   type state_type is (A,B,C);
-   signal PS,NS : state_type;
-begin
-   sync_proc: process(CLK,NS,RESET)
-   begin
-      if (RESET = '0') then PS <= C; 
-      elsif (rising_edge(CLK)) then PS <= NS; 
-      end if; 
-   end process sync_proc; 
-
-   comb_proc: process(PS,X)
-   begin
-      case PS is 
-         Z1 <= '0';    Z2 <= '0'; 
-         when A =>    
-            Z1 <= '0';  
-            if (X='0') then NS<=A; Z2<='1';   
-            else  NS <= B; Z2 <= '0';
-            end if; 
-         when B =>    
-            Z1 <= '1';  
-            if (X='0') then NS<=A; Z2<='0';  
-            else  NS <= C; Z2 <= '1'; 
-            end if; 
-         when C =>    
-            Z1 <= '1';  
-            if (X='0') then NS<=B; Z2<='1'; 
-            else  NS <= A; Z2 <= '0'; 
-            end if; 
-         when others =>    
-            Z1 <= '1'; NS<=A; Z2<='0'; 
-      end case; 
-   end process comb_proc; 
-end fsm;
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}{0.29\textwidth}
-\includegraphics[width=4cm]{fsm/sm_ex1.png}
-\vspace{250px}
+\begin{minipage}{0.39\linewidth}
+\begin{flushleft}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+% GRID
+% \draw[help lines] (0,0) grid (50,30);
+% BOX
+\draw (15,5) rectangle (30,25);
+% INPUTS
+\small
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
+%\draw[red] ($(a)) circle (1pt);
+\draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
+\draw ($(a)+(8.5,23.2)$) circle (2pt);
+\draw ($(a)+(0,20)$) -- ++(-10,0) node[above]{D};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw ($(a)+(8.5,1.1)$) |- ++(-19,-3) node[above]{R};
+\draw ($(a)+(8.5,1.6)$) circle (2pt);
+% OUTPUTS
+\draw ($(a)+(15,20)$) -- ++(10,0) node[above]{Q};
+\draw ($(a)+(16.5,5)$) -- ++(8.5,0) node[above]{Q};
+\draw ($(a)+(16,5)$) circle (2pt);
+\end{tikzpicture}
+\end{flushleft}
 \end{minipage}
 
+\vspace{15pt}
+\noindent
 %%%%%% EXERCISE 2 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 2.}
-Write a VHDL behavioral model that could be used to implement the state diagram as shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume the \texttt{S} input takes precedence over the \texttt{R} input in the case where both are asserted simultaneously.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5.3cm]{fsm/sm_ex2.png}
+\begin{minipage}{0.39\linewidth}
+\begin{flushleft}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+% GRID
+%\draw[help lines] (0,0) grid (50,30);
+% BOX
+\draw (15,5) rectangle (30,25);
+% INPUTS
+\small
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
+%\draw[red] ($(a)) circle (1pt);
+\draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
+\draw ($(a)+(8.5,23.2)$) circle (2pt);
+\draw ($(a)+(0,20)$) -- ++(-10,0) node[above]{D};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw ($(a)+(8.5,1.1)$) |- ++(-19,-3) node[above]{R};
+\draw ($(a)+(8.5,1.6)$) circle (2pt);
+% OUTPUTS
+\draw ($(a)+(15,20)$) -- ++(10,0) node[above]{Q};
+\draw ($(a)+(16.5,5)$) -- ++(8.5,0) node[above]{Q};
+\draw ($(a)+(16,5)$) circle (2pt);
+\end{tikzpicture}
+\end{flushleft}
 \end{minipage}
 
+\vspace{15pt}
+\noindent
 %%%%%% EXERCISE 3 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}{1\textwidth}
+\begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 3.}
-Draw the state diagram associated with the following VHDL code. Be sure to provide a legend and remember to label everything.
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are synchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.
 \end{minipage}
-\begin{minipage}{0.66\textwidth}
-\vspace{10px}
-\begin{lstlisting}
--- library declaration
-library IEEE;
-use IEEE.std_logic_1164.all;
--- entity
-entity fsmx is
-    Port ( BUM1,BUM2 : in  std_logic;
-                 CLK : in   std_logic;
-            TOUT,CTA : out std_logic);
-end fsmx;
--- architecture
-architecture my_fsmx of fsmx is
-   type state_type is (S1,S2,S3); 
-	signal PS,NS : state_type; 
-begin
-   sync_p: process (CLK,NS)
-   begin
-      if (rising_edge(CLK)) then   
-         PS <= NS; 
-      end if; 
-   end process sync_p; 
-
-   comb_p: process (CLK,BUM1,BUM2)
-   begin
-      case PS is 
-
-         when S1 => 
-            CTA <= '0'; 
-            if (BUM1 = '0')  then 
-               TOUT <= '0'; 
-               NS <= S1; 
-            elsif (BUM1 = '1') then 
-               TOUT <= '1';  
-               NS <= S2; 
-            end if; 
-
-         when S2 =>
-            CTA <= '0'; 
-            TOUT <= '0'; 
-            NS <= S3;   
-
-         when S3 =>
-            CTA <= '1'; 
-            TOUT <= '0';   
-            if (BUM2 = '1')  then 
-               NS <= S1; 
-            elsif (BUM2 = '0') then 
-               NS <= S2; 
-            end if; 
-      
-         when others =>   CTA <= '0'; 
-                         TOUT <= '0';
-                           NS <= S1;
-      end case; 
-   end process comb_p; 
-end my_fsmx;
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}{0.29\textwidth}
-\includegraphics[width=4cm]{fsm/sm_ex3.png}
-\vspace{250px}
+\begin{minipage}{0.39\linewidth}
+\begin{flushleft}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+% GRID
+%\draw[help lines] (0,0) grid (50,30);
+% BOX
+\draw (15,5) rectangle (30,25);
+% INPUTS
+\small
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
+%\draw[red] ($(a)) circle (1pt);
+\draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
+\draw ($(a)+(8.5,23.2)$) circle (2pt);
+\draw ($(a)+(0,20)$) -- ++(-10,0) node[above]{D};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw ($(a)+(8.5,1.1)$) |- ++(-19,-3) node[above]{R};
+\draw ($(a)+(8.5,1.6)$) circle (2pt);
+% OUTPUTS
+\draw ($(a)+(15,20)$) -- ++(10,0) node[above]{Q};
+\draw ($(a)+(16.5,5)$) -- ++(8.5,0) node[above]{Q};
+\draw ($(a)+(16,5)$) circle (2pt);
+\end{tikzpicture}
+\end{flushleft}
 \end{minipage}
 
+\vspace{15pt}
+\noindent
 %%%%%% EXERCISE 4 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 4.}
-Write the VHDL behavioral model code that could be used to implement the state diagram on shown in the right.
+Provide a VHDL behavioral model of the D~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. If both the \texttt{S} and \texttt{R} inputs are asserted simultaneously, the output of the flip-flop will toggle.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5.7cm]{fsm/sm_ex4.png}
+\begin{minipage}{0.39\linewidth}
+\begin{flushleft}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+% GRID
+%\draw[help lines] (0,0) grid (50,30);
+% BOX
+\draw (15,5) rectangle (30,25);
+% INPUTS
+\small
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
+%\draw[red] ($(a)) circle (1pt);
+\draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
+\draw ($(a)+(8.5,23.2)$) circle (2pt);
+\draw ($(a)+(0,20)$) -- ++(-10,0) node[above]{D};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw ($(a)+(8.5,1.1)$) |- ++(-19,-3) node[above]{R};
+\draw ($(a)+(8.5,1.6)$) circle (2pt);
+% OUTPUTS
+\draw ($(a)+(15,20)$) -- ++(10,0) node[above]{Q};
+\draw ($(a)+(16.5,5)$) -- ++(8.5,0) node[above]{Q};
+\draw ($(a)+(16,5)$) circle (2pt);
+\end{tikzpicture}
+\end{flushleft}
 \end{minipage}
 
+\vspace{15pt}
+\noindent
 %%%%%% EXERCISE 5 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}{1\textwidth}
+\begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 5.}
-Draw the state diagram associated with the following VHDL code. Consider the outputs \texttt{Y} to be representative of the state variables. Be sure to provide a legend. Indicate the states with both state variables and their symbolic equivalents.
+Provide a VHDL behavioral model of the T~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously. Implement this flip-flop first using an equation description of the outputs and then using a behavioral description of the outputs.
 \end{minipage}
-\begin{minipage}{1\textwidth}
-\vspace{10px}
-\begin{lstlisting}
--- library declaration
-library IEEE;
-use IEEE.std_logic_1164.all;
--- entity
-entity fsm is 
-port (     X,CLK : in  std_logic; 
-           RESET : in  std_logic; 
-           Z1,Z2 : out std_logic;  
-               Y : out std_logic_vector(2 downto 0)); 
-end fsm;
--- architecture
-architecture my_fsm of fsm is
-   type state_type is (A,B,C);
-   attribute ENUM_ENCODING: STRING; 
-   attribute ENUM_ENCODING of state_type: type is "001 010 100";
-   signal PS,NS : state_type;
-begin
-
-sync_proc: process(CLK,NS,RESET) -- process
-   begin
-     if (RESET = '0') then PS <= C; 
-     elsif (rising_edge(CLK)) then PS <= NS; 
-     end if; 
-   end process sync_proc; 
-
-comb_proc: process(PS,X) -- process
-   begin
-      case PS is 
-         when A =>    
-            Z1 <= '0';  
-            if (X = '0') then NS <= A; Z2 <= '1';   
-            else  NS <= B; Z2 <= '0';
-            end if; 
-         when B =>    
-            Z1 <= '1';  
-            if (X = '0') then NS <= A; Z2 <= '0';  
-            else  NS <= C; Z2 <= '1'; 
-            end if; 
-         when C =>    
-            Z1 <= '1';  
-            if (X = '0') then NS <= B; Z2 <= '1'; 
-            else  NS <= A; Z2 <= '0'; 
-            end if; 
-         when others =>    
-            Z1 <= '1'; NS <= A; Z2 <= '0';  
-      end case; 
-   end process comb_proc; 
- 
-with PS select
-   Y <= "001" when A, 
-        "010" when B, 
-        "100" when C, 
-        "001" when others; 
-end my_fsm;
-\end{lstlisting}
+\begin{minipage}{0.39\linewidth}
+\begin{flushleft}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+% GRID
+%\draw[help lines] (0,0) grid (50,30);
+% BOX
+\draw (15,5) rectangle (30,25);
+% INPUTS
+\small
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
+%\draw[red] ($(a)) circle (1pt);
+\draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
+\draw ($(a)+(8.5,23.2)$) circle (2pt);
+\draw ($(a)+(0,20)$) -- ++(-10,0) node[above]{T};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw ($(a)+(8.5,1.1)$) |- ++(-19,-3) node[above]{R};
+\draw ($(a)+(8.5,1.6)$) circle (2pt);
+% OUTPUTS
+\draw ($(a)+(15,20)$) -- ++(10,0) node[above]{Q};
+\draw ($(a)+(16.5,5)$) -- ++(8.5,0) node[above]{Q};
+\draw ($(a)+(16,5)$) circle (2pt);
+\end{tikzpicture}
+\end{flushleft}
 \end{minipage}
 
+\vspace{15pt}
+\noindent
 %%%%%% EXERCISE 6 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
+\begin{minipage}{0.6\linewidth}
 \textbf{EXERCISE 6.}
-Write a VHDL behavioral model code that can be used to implement the state diagram shown on the right. All state variables should be encoded as listed and also provided as outputs of the FSM.
+Provide a VHDL behavioral model of the T~flip-flop shown on the right. The \texttt{S} and \texttt{R} inputs are an active low asynchronous preset and clear. Assume both the \texttt{S} and \texttt{R} inputs will never be asserted simultaneously.
 \end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{fsm/sm_ex6.png}
+\begin{minipage}{0.39\linewidth}
+\begin{flushleft}
+\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+% GRID
+%\draw[help lines] (0,0) grid (50,30);
+% BOX
+\draw (15,5) rectangle (30,25);
+% INPUTS
+\small
+\node (a) at (15,2.5) {} circle (40pt); % this is the reference point
+%\draw[red] ($(a)) circle (1pt);
+\draw ($(a)+(8.5,24)$) |- ++(-19,3) node[above]{S};
+\draw ($(a)+(8.5,23.2)$) circle (2pt);
+\draw ($(a)+(0,20)$) -- ++(-10,0) node[above]{T};
+\draw ($(a)+(0,5)$) -- ++(-10,0) node[above]{CLK};
+\draw ($(a)+(0,6)$) -- ++(1.5,-1) -- ++(-1.5,-1); % CLK triangle
+\draw ($(a)+(8.5,1.1)$) |- ++(-19,-3) node[above]{R};
+\draw ($(a)+(8.5,1.6)$) circle (2pt);
+% OUTPUTS
+\draw ($(a)+(15,20)$) -- ++(10,0) node[above]{Q};
+\draw ($(a)+(16.5,5)$) -- ++(8.5,0) node[above]{Q};
+\draw ($(a)+(16,5)$) circle (2pt);
+\end{tikzpicture}
+\end{flushleft}
 \end{minipage}
-
-%%%%%% EXERCISE 7 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}{1\textwidth}
-\textbf{EXERCISE 7.}
-Draw the state diagram that corresponds to the following VHDL model and state whether the FSM is a Mealy machine or a Moore machine. Be sure to label everything.
-\vspace{10pt}
-\end{minipage}
-\begin{minipage}{0.66\textwidth}
-
-\begin{lstlisting}
--- library declaration
-library IEEE;
-use IEEE.std_logic_1164.all;
--- entity
-entity fsm is
-    Port ( CLK,CLR,SET,X1,X2 : in  std_logic;
-                       Z1,Z2 : out std_logic);
-end fsm;
--- architecture
-architecture my_fsm of fsm is
-   type state_type is (sA,sB,sC,sD); 
-   attribute ENUM_ENCODING: STRING; 
-   attribute ENUM_ENCODING of state_type: type is "1000 0100 0010 0001";
-   signal PS,NS : state_type; 
-begin
-   sync_p: process (CLK,NS,CLR,SET) -- process
-   begin
-      if (CLR = '1' and SET = '0') then 
-         PS <= sA; 
-	  elsif (CLR = '0' and SET = '1') then 
-	     PS <= sD;
-      elsif (rising_edge(CLK)) then   
-         PS <= NS; 
-      end if; 
-   end process sync_p; 
-
-   comb_p: process (X1,X2,PS) -- process
-   begin
-      case PS is 
-         when sA =>  
-            if ( X1 = '1')  then 
-               Z1 <= '0'; Z2 <= '0';   
-               NS <= sA; 
-            else  
-               Z1 <= '0'; Z2 <= '0';   
-               NS <= sB; 
-            end if; 
-         when sB =>
-            if ( X2 = '1')  then 
-               Z1 <= '1'; Z2 <= '1';   
-               NS <= sC; 
-            else  
-               Z1 <= '1'; Z2 <= '0';   
-               NS <= sB; 
-            end if;				
-         when sC =>
-            if ( X2 = '1')  then 
-               Z1 <= '0'; Z2 <= '0';   
-               NS <= sB; 
-            else  
-               Z1 <= '0'; Z2 <= '1';   
-               NS <= sC; 
-            end if;
-         when sD =>
-            if ( X1 = '1')  then 
-               Z1 <= '1'; Z2 <= '1';   
-               NS <= sD; 
-            else  
-               Z1 <= '1'; Z2 <= '1';   
-               NS <= sC; 
-            end if;				
-      end case; 
-   end process comb_p; 
-end my_fsm;
-\end{lstlisting}
-\end{minipage}
-\begin{minipage}{0.29\textwidth}
-\includegraphics[width=4cm]{fsm/sm_ex7.png}
-\vspace{250px}
-\end{minipage}
-
-%%%%%% EXERCISE 8 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 8.}
-Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=5.3cm]{fsm/sm_ex8.png}
-\end{minipage}
-
-%%%%%% EXERCISE 9 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 9.}
-Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=4.2cm]{fsm/sm_ex9.png}
-\end{minipage}
-
-%%%%%% EXERCISE 10 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 10.}
-Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{fsm/sm_ex10.png}
-\end{minipage}
-
-%%%%%% EXERCISE 11 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 11.}
-Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6.4cm]{fsm/sm_ex11.png}
-\end{minipage}
-
-%%%%%% EXERCISE 12 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{1\textwidth}
-\textbf{EXERCISE 12.}
-Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
-\end{minipage}
-\begin{minipage}[t]{1\textwidth}
-\vspace{10pt}
-\centering
-\includegraphics[width=11cm]{fsm/sm_ex12.png}
-\end{minipage}
-
-%%%%%% EXERCISE 13 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 13.}
-Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{fsm/sm_ex13.png}
-\end{minipage}
-
-%%%%%% EXERCISE 14 %%%%%%
-\vspace{20pt}
-\noindent
-\begin{minipage}[t]{0.5\textwidth}
-\textbf{EXERCISE 14.}
-Write the VHDL behavioral model code that can be used to implement the state diagram shown on the right. The state variables should be encoded as listed and also provided as outputs of the FSM.
-\end{minipage}
-\begin{minipage}[t]{0.47\textwidth}
-\vspace{0pt}\raggedright
-\centering
-\includegraphics[width=6cm]{fsm/sm_ex14.png}
-\end{minipage}
-
-
-
