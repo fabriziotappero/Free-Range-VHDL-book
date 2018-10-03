@@ -263,7 +263,7 @@ begin
       when "01" => MUX_OUT <= B;
       when "10" => MUX_OUT <= C;
       when "11" => MUX_OUT <= D;
-      when others => (others => '0');
+      when others => MUX_OUT <= (others => '0');
    end case;
 end process;
 --
