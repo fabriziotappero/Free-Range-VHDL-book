@@ -1,4 +1,128 @@
 \chapter{Exercise Solutions}
 \stoptocwriting
 
+\setcounter{section}{3}
+\section*{Chapter 3}
+\begin{enumerate}
+	\item A "bundle" refers to a series of signal which are related to each other. It is often referred to as a "bus", but is referred to by a different name to prevent confusion.
+	
+	\item A bundle is often shown in black box diagrams as a wire with a slash on it and a number above it indicating the number of signals contained in the bundle.
+	
+	\item It is considered good practice to draw a black-box diagram of components before implementing them in VHDL as this helps provide a visual representation of each component. In addition, it helps eliminate confusion from having many logic gates inside and allows for the reuse of components elsewhere in your code.
+	
+	\item The given black-box drawings can be represented with the following VHDL code.
+	
+	\noindent
+	\begin{minipage}{1\linewidth}
+		a)
+		\begin{lstlisting}[]		
+ENTITY sys1 IS
+	PORT (
+		a_in1		:	IN	STD_LOGIC;
+		b_in2		:	IN	STD_LOGIC;
+		clk			:	IN	STD_LOGIC;
+		ctrl_int	:	IN	STD_LOGIC;
+		out_b		:	OUT STD_LOGIC);
+END sys1;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		b)
+		\begin{lstlisting}[]
+ENTITY sys2 IS
+	PORT (
+		input_w	:	IN	STD_LOGIC;
+		a_data	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		b_data	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		clk		:	IN	STD_LOGIC;
+		dat_4	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		dat_5	:	OUT	STD_LOGIC_VECTOR(2 DOWNTO 0));
+END sys2;
+		\end{lstlisting}
+	\end{minipage}
+
+	\item The black-box figures are shown below.
+	
+	\begin{minipage}{1\linewidth}
+		\vspace{5pt}
+		a)\\
+		\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+		%\draw[help lines] (0,0) grid (50,50);
+		% BOX
+		\draw (20,-5) rectangle (37,25) node[midway]{ckt\_c};
+		% INPUTS
+		\small
+		\node (hide) at (0,30) {}; % just to expand background
+		\node (a) at (20,-2.5) {}; % this is the reference point
+		\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{bun\_a}
+		node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{bun\_b}
+		node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{bun\_c}
+		node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{lda};
+		\draw [latex-] ($(a)+(0,5)$) -- ++(-10,0) node[left]{ldb};
+		\draw [latex-] ($(a)+(0,0)$) -- ++(-10,0) node[left]{ldc};
+		% OUTPUTS
+		\draw [-latex] ($(a)+(17,19)$) -- ++(10,0) node[right]{reg\_a} node[pos=0.6,above]{8} node[pos=0.4]{/};
+		\draw [-latex] ($(a)+(17,12)$) -- ++(10,0) node[right]{reg\_b} node[pos=0.6,above]{8} node[pos=0.4]{/};
+		\draw [-latex] ($(a)+(17,5)$) -- ++(10,0) node[right]{reg\_c} node[pos=0.6,above]{8} node[pos=0.4]{/};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		\vspace{5pt}
+		b)\\
+		\begin{tikzpicture}[x=1mm,y=1mm,line width=0.8pt,scale=0.8,framed]
+		%\draw[help lines] (0,0) grid (50,50);
+		% BOX
+		\draw (20,-10) rectangle (37,25) node[midway]{ckt\_e};
+		% INPUTS
+		\small
+		\node (hide) at (0,30) {}; % just to expand background
+		\node (a) at (20,-2.5) {}; % this is the reference point
+		\draw [latex-] ($(a)+(0,25)$) -- ++(-10,0) node[left]{RAM\_CS};
+		\draw [latex-] ($(a)+(0,20)$) -- ++(-10,0) node[left]{RAM\_WE};
+		\draw [latex-] ($(a)+(0,15)$) -- ++(-10,0) node[left]{RAM\_OE};
+		\draw [latex-] ($(a)+(0,10)$) -- ++(-10,0) node[left]{SEL\_OP1}
+		node[pos=0.4,above]{4} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,5)$) -- ++(-10,0) node[left]{SEL\_OP2}
+		node[pos=0.4,above]{4} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,0)$) -- ++(-10,0) node[left]{RAM\_DATA\_IN}
+		node[pos=0.4,above]{8} node[pos=0.7]{/};
+		\draw [latex-] ($(a)+(0,-5)$) -- ++(-10,0) node[left]{RAM\_ADDR\_IN}
+		node[pos=0.4,above]{10} node[pos=0.7]{/};
+		% OUTPUTS
+		\draw [-latex] ($(a)+(17,10)$) -- ++(10,0) node[right]{RAM\_DATA\_OUT} node[pos=0.6,above]{8} node[pos=0.4]{/};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\item a) Line 4 is missing a semicolon, and the semicolon in line 5 should be outside of the parenthesis. Correction:
+	
+	\begin{minipage}{1\linewidth}
+		\begin{lstlisting}[]
+ENTITY ckt_a IS
+	PORT (
+		J,K	:	IN	STD_LOGIC;
+		CLK	:	IN	STD_LOGIC;
+		Q	:	OUT	STD_LOGIC);
+END ckt_a;
+		\end{lstlisting}
+	\end{minipage}
+		
+	b) Line 5 should have double parentheses before the semicolon. \mbox{Correction:}
+	
+	\begin{minipage}{1\linewidth}
+		\begin{lstlisting}[]
+ENTITY ckt_b IS
+	PORT (
+		mr_fluffy	:	IN	STD_LOGIC_VECTOR(15 DOWNTO 0);
+		mux_ctrl	:	IN	STD_LOGIC_VECTOR(3 DOWNTO 0);
+		byte_out	:	OUT	STD_LOGIC_VECTOR(3 DOWNTO 0));
+END ckt_b;
+		\end{lstlisting}
+	\end{minipage}
+	
+\end{enumerate}
 \resumetocwriting
