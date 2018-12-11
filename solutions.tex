@@ -125,4 +125,466 @@ END ckt_b;
 	\end{minipage}
 	
 \end{enumerate}
+
+\section*{Chapter 4}
+\begin{enumerate}
+	\begin{minipage}{1\linewidth}
+	\item a)
+		\begin{lstlisting}[]
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_a IS
+	PORT (
+		A,B	:	IN	STD_LOGIC;
+		F	:	OUT	STD_LOGIC);
+END ckt_a;
+
+ARCHITECTURE ckt_a_arc OF ckt_a IS
+BEGIN
+	F <= (NOT A AND B) OR A OR (A AND NOT B);
+END ckt_a_arc;
+		\end{lstlisting}
+	\end{minipage}
+	
+	\begin{minipage}{1\linewidth}
+		
+		b)
+		\begin{lstlisting}[]
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_b IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_b;
+
+ARCHITECTURE ckt_b_arc OF ckt_b IS
+BEGIN
+	F <= (NOT A AND C AND NOT D) OR (NOT B AND C) OR (B AND C AND NOT D);
+END ckt_b_arc;
+		\end{lstlisting}
+	\end{minipage}
+	
+	\begin{minipage}{1\linewidth}
+		c)
+		\begin{lstlisting}[]
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_c IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_c;
+
+ARCHITECTURE ckt_c_arc OF ckt_c IS
+	SIGNAL AND1,AND2,AND3	:	STD_LOGIC;
+BEGIN
+	AND1 <= NOT A OR B;
+	AND2 <= NOT B OR C OR NOT D;
+	AND3 <= NOT A OR D;
+	F <= AND1 AND AND2 AND AND3;
+END ckt_c_arc;
+		\end{lstlisting}
+	\end{minipage}
+	
+	\begin{minipage}{1\linewidth}
+		d)
+		\begin{lstlisting}[]
+LIBRARY IEEE;
+USE IEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_d IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_d;
+
+ARCHITECTURE ckt_d_arc OF ckt_d IS
+	SIGNAL AND1,AND2	:	STD_LOGIC;
+BEGIN
+	AND1 <= A OR B OR NOT C OR NOT D;
+	AND2 <= A OR B OR C OR NOT D;
+	F <= AND1 AND AND2;
+END ckt_d_arc;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		e)
+		\begin{lstlisting}[]
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_e IS
+	PORT(
+		A,B,C	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_e;
+
+ARCHITECTURE ckt_e_arc OF ckt_e IS
+	SIGNAL AND1,AND2,AND3,AND4	:	STD_LOGIC;
+BEGIN
+	AND1 <= NOT C OR B OR NOT A;
+	AND2 <= C OR B OR NOT A;
+	AND3 <= NOT C OR B OR A;
+	AND4 <= C OR NOT B OR NOT A;
+	F <= AND1 AND AND2 AND AND3 AND AND4;
+END ckt_e_arc;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		f)
+		\begin{lstlisting}[]
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_f IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_f;
+
+ARCHITECTURE ckt_f_arc OF ckt_f IS
+	SIGNAL OR1,OR2	:	STD_LOGIC;
+BEGIN
+	OR1 <= NOT A AND NOT B AND NOT C AND D;
+	OR2 <= NOT A AND NOT B AND C AND NOT D;
+	F <= OR1 OR OR2;
+END ckt_f_arc;
+		\end{lstlisting}
+	\end{minipage}
+	
+	\begin{minipage}{1\linewidth}
+	\item a)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_a IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_a;
+
+ARCHITECTURE ckt_a_conditional OF ckt_a IS
+BEGIN
+	F <=
+		'1' WHEN( A = '0' AND C = '1' AND D = '0' ) ELSE
+		'1' WHEN( B = '0' AND C = '1') ELSE
+		'1' WHEN( B = '1' AND C = '1' AND D = '0' ) ELSE
+		'0';
+END ckt_a_conditional;
+
+ARCHITECTURE ckt_a_selected OF ckt_a IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins <= A & B & C & D;
+	WITH ins SELECT
+		F <=
+			'1' WHEN "0010"|"0110",
+			'1' WHEN "0010"|"0011"|"1010"|"1011",
+			'1' WHEN "0110"|"1110",
+			'0' WHEN OTHERS;			
+END ckt_a_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		b)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_b IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_b;
+
+ARCHITECTURE ckt_b_conditional OF ckt_b IS
+BEGIN
+	F <=
+		'1' WHEN( ( A = '0' OR B = '1') AND ( B = '1' OR C = '1' OR D = '0' ) AND ( A = '0' OR D = '1') ) ELSE
+		'0';
+END ckt_b_conditional;
+
+ARCHITECTURE ckt_b_selected OF ckt_b IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins <= A & B & C & D;
+	WITH ins SELECT
+		F <=
+		'1' WHEN "0000"|"0001"|"0010"|"0011"|"0100",
+		'1' WHEN "0110"|"0111",
+		'1' WHEN "1111",
+		'0' WHEN OTHERS;
+END ckt_b_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		c)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_c IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_c;
+
+ARCHITECTURE ckt_c_conditional OF ckt_c IS
+BEGIN
+	F <=
+		'1' WHEN( ( A = '1' OR B = '0' OR C = '0' OR D = '0') AND ( A = '1' OR B = '1' OR C = '1' OR D = '0' ) ) ELSE
+		'0';
+END ckt_c_conditional;
+
+ARCHITECTURE ckt_c_selected OF ckt_c IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins <= A & B & C & D;
+	WITH ins SELECT
+		F <=
+			'0' WHEN "0001"|"0011",
+			'1' WHEN OTHERS;
+END ckt_c_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		d)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_d IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_d;
+
+ARCHITECTURE ckt_d_conditional OF ckt_d IS
+BEGIN
+	F <=
+		'1' WHEN( ( A = '0' AND B = '0' AND C = '0' AND D = '1') OR ( A = '0' AND B = '0' AND C = '1' AND D = '0' ) ) ELSE
+		'0';
+END ckt_d_conditional;
+
+ARCHITECTURE ckt_d_selected OF ckt_d IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins <= A & B & C & D;
+	WITH ins SELECT
+		F <=
+			'1' WHEN "0001"|"0010",
+			'0' WHEN OTHERS;
+END ckt_d_selected;
+		\end{lstlisting}
+	\end{minipage}
+	
+	\begin{minipage}{1\linewidth}
+		\item
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY and8 IS
+	PORT(
+		in0,in1,in2,in3,in4,in5,in6,in7	:	IN	STD_LOGIC;
+		out1							:	OUT	STD_LOGIC);
+END and8;
+
+ARCHITECTURE and8_concurrent OF and8 IS
+BEGIN
+	out1 <= in0 AND in1 AND in2 AND in3 AND in4 AND in5 AND in6 AND in7;
+END and8_concurrent;
+
+ARCHITECTURE and8_conditional OF and8 IS
+BEGIN
+	out1 <= '1' WHEN (in0 = '1' AND in1 = '1' AND in2 = '1' AND in3 = '1' AND in4 = '1' AND in5 = '1' AND in6 = '1' AND in7 = '1') ELSE
+	'0';
+END and8_conditional;
+
+ARCHITECTURE and8_selected OF and8 IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 7);
+BEGIN
+	ins <= in0 & in1 & in2 & in3 & in4 & in5 & in6 & in7;
+	WITH ins SELECT
+		out1 <=
+			'1' WHEN "11111111",
+			'0' WHEN OTHERS;
+END and8_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		\item
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE_STD_LOGIC_1164.ALL;
+
+ENTITY or8 IS
+	PORT(
+		ins		:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		out1	:	OUT	STD_LOGIC);
+END or8;
+
+ARCHITECTURE or8_concurrent OF or8 IS
+BEGIN
+	out1 <= ins(1) OR ins(2) OR ins(3) OR ins(4) OR ins(5) OR ins(6) OR ins(7);
+END or8_concurrent;
+
+ARCHITECTURE or8_conditional OF or8 IS
+BEGIN
+	out1 <= '1' WHEN (ins(1) = '1' OR ins(2) = '1' OR ins(3) = '1' OR ins(4) = '1' OR ins(5) = '1' OR ins(6) = '1' OR ins(7) = '1') ELSE
+	'0';
+END or8_conditional;
+
+ARCHITECTURE or8_selected OF or8 IS
+BEGIN
+	WITH ins SELECT
+		out1 <=
+			'0' WHEN "00000000",
+			'1' WHEN OTHERS;
+END or8_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		\item 
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY mux8to1 IS
+	PORT(
+		inputs	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);		
+		sel		:	IN	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		output	:	OUT	STD_LOGIC);
+END mux8to1;
+
+ARCHITECTURE mux8to1_conditional OF mux8to1 IS
+BEGIN
+	output <=
+		inputs(0) WHEN (sel = "000") ELSE
+		inputs(1) WHEN (sel = "001") ELSE
+		inputs(2) WHEN (sel = "010") ELSE
+		inputs(3) WHEN (sel = "011") ELSE
+		inputs(4) WHEN (sel = "100") ELSE
+		inputs(5) WHEN (sel = "101") ELSE
+		inputs(6) WHEN (sel = "110") ELSE
+		inputs(7) WHEN (sel = "111") ELSE
+		'0';
+END mux8to1_conditional;
+
+ARCHITECTURE mux8to1_selected OF mu8to1 IS
+BEGIN
+	WITH sel SELECT
+		output <=
+			inputs(0) WHEN "000",
+			inputs(1) WHEN "001",
+			inputs(2) WHEN "010",
+			inputs(3) WHEN "011",
+			inputs(4) WHEN "100",
+			inputs(5) WHEN "101",
+			inputs(6) WHEN "110",
+			inputs(7) WHEN "111",
+			'0' WHEN OTHERS;
+END mux8to1_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		\item
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY dec3to8_ActiveHigh IS
+	PORT (
+		inputs	:	IN	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		outputs	:	OUT	STD_LOGIC_VECTOR(0 TO 7));
+END dec3to8_ActiveHigh;
+
+ARCHITECTURE dec3to8_ActiveHigh_conditional OF dec3to8_ActiveHigh IS
+BEGIN
+	outputs <=
+		"10000000" WHEN (inputs = "000") ELSE
+		"01000000" WHEN (inputs = "001") ELSE
+		"00100000" WHEN (inputs = "010") ELSE
+		"00010000" WHEN (inputs = "011") ELSE
+		"00001000" WHEN (inputs = "100") ELSE
+		"00000100" WHEN (inputs = "101") ELSE
+		"00000010" WHEN (inputs = "110") ELSE
+		"00000001" WHEN (inputs = "111") ELSE
+		"00000000";
+END dec3to8_ActiveHigh_conditional;
+
+ARCHITECTURE dec3to8_ActiveHigh_selected OF dec3to8_ActiveHigh IS
+BEGIN
+	WITH inputs SELECT
+		outputs <=
+			"10000000" WHEN "000",
+			"01000000" WHEN "001",
+			"00100000" WHEN "010",
+			"00010000" WHEN "011",
+			"00001000" WHEN "100",
+			"00000100" WHEN "101",
+			"00000010" WHEN "110",
+			"00000001" WHEN "111",
+			"00000000" WHEN OTHERS;
+END dec3to8_ActiveHigh_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+	\begin{minipage}{1\linewidth}
+		\item 
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY dec3to8_ActiveLow IS
+	PORT (
+		inputs	:	IN	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		outputs	:	OUT	STD_LOGIC_VECTOR(0 TO 7));
+END dec3to8_ActiveLow;
+
+ARCHITECTURE dec3to8_ActiveLow_conditional OF dec3to8_ActiveLow IS
+BEGIN
+	outputs <=
+		"01111111" WHEN (inputs = "000") ELSE
+		"10111111" WHEN (inputs = "001") ELSE
+		"11011111" WHEN (inputs = "010") ELSE
+		"11101111" WHEN (inputs = "011") ELSE
+		"11110111" WHEN (inputs = "100") ELSE
+		"11111011" WHEN (inputs = "101") ELSE
+		"11111101" WHEN (inputs = "110") ELSE
+		"11111110" WHEN (inputs = "111") ELSE
+		"11111111";
+END dec3to8_ActiveLow_conditional;
+
+ARCHITECTURE dec3to8_ActiveLow_selected OF dec3to8_ActiveLow IS
+BEGIN
+	WITH inputs SELECT
+		outputs <=
+			"01111111" WHEN "000",
+			"10111111" WHEN "001",
+			"11011111" WHEN "010",
+			"11101111" WHEN "011",
+			"11110111" WHEN "100",
+			"11111011" WHEN "101",
+			"11111101" WHEN "110",
+			"11111110" WHEN "111",
+			"11111111" WHEN OTHERS;
+END dec3to8_ActiveLow_selected;
+		\end{lstlisting}
+	\end{minipage}
+
+\end{enumerate}
 \resumetocwriting
