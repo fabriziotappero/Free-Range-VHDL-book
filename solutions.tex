@@ -585,6 +585,545 @@ BEGIN
 END dec3to8_ActiveLow_selected;
 		\end{lstlisting}
 	\end{minipage}
+\end{enumerate}
 
+\section*{Chapter 5}
+\begin{enumerate}
+	\item a)
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_a IS
+	PORT(
+		A,B	:	IN	STD_LOGIC;
+		F	:	OUT	STD_LOGIC);
+END ckt_a;
+
+ARCHITECTURE ckt_a_case OF ckt_a IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 1);
+BEGIN
+	ins <= A & B;
+	logic_process: PROCESS(ins)
+	BEGIN
+		CASE (ins) IS
+			WHEN "01" =>
+				F	<=	'1';
+			WHEN "10" =>
+				F	<=	'1';
+			WHEN "11" =>
+				F	<=	'1';
+			WHEN OTHERS =>
+				F	<=	'0';
+		END CASE;
+	END PROCESS logic_process;
+END ckt_a_case;
+
+ARCHITECTURE ckt_a_if OF ckt_a IS
+BEGIN
+	logic_process: PROCESS(A,B)
+	BEGIN
+		IF (A = '0' AND B = '1') THEN
+			F	<=	'1';
+		ELSIF (A = '1') THEN
+			F	<=	'1';
+		ELSE
+			F	<=	'0';
+		END IF;
+	END PROCESS logic_process;
+END ckt_a_if;
+	\end{lstlisting}
+
+		b)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_b IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_b;
+
+ARCHITECTURE ckt_b_case OF ckt_b IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins <= A & B & C & D;
+	logic_process:	PROCESS(ins)
+	BEGIN
+		CASE (ins) IS
+			WHEN "0010" =>
+				F	<=	'1';
+			WHEN "0110" =>
+				F	<=	'1';
+			WHEN "0011" =>
+				F	<=	'1';
+			WHEN "1010" =>
+				F	<=	'1';
+			WHEN "1011" =>
+				F	<=	'1';
+			WHEN "1110" =>
+				F	<=	'1';
+			WHEN OTHERS =>
+				F	<= '0';
+		END CASE;
+	END PROCESS logic_process;
+END ckt_b_case;
+
+ARCHITECTURE ckt_b_if OF ckt_b IS
+BEGIN
+	logic_process:	PROCESS(A,B,C,D)
+	BEGIN
+		IF ( A = '0' AND C = '1' AND D = '1' ) THEN
+			F	<=	'1';
+		ELSIF ( B = '0' AND C = '1' ) THEN
+			F	<= '1';
+		ELSIF ( B = '1' AND C = '1' AND D = '0' ) THEN
+			F	<=	'1';
+		ELSE
+			F	<=	'0';
+		END IF;
+	END PROCESS logic_process;
+END ckt_b_if;
+		\end{lstlisting}
+
+		c)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_c IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_c;
+
+ARCHITECTURE ckt_c_case OF ckt_c IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins	<=	A & B & C & D;
+	logic_process:	PROCESS(ins)
+	BEGIN
+		CASE (ins) IS
+			WHEN "0000" =>
+				F	<=	'1';
+			WHEN "0001" =>
+				F	<=	'1';
+			WHEN "0010" =>
+				F	<=	'1';
+			WHEN "0011" =>
+				F	<=	'1';
+			WHEN "0100" =>
+				F	<=	'1';
+			WHEN "0110" =>
+				F	<=	'1';
+			WHEN "0111" =>
+				F	<=	'1';
+			WHEN "1111" =>
+				F	<=	'1';
+			WHEN OTHERS =>
+				F	<=	'0';
+		END CASE;
+	END PROCESS logic_process;
+END ckt_c_case;
+
+ARCHITECTURE ckt_c_if OF ckt_c IS
+BEGIN
+	logic_process:	PROCESS(A,B,C,D)
+	BEGIN
+		IF ( ( A = '0' OR B = '1' ) AND ( B = '0' OR C = '1' OR D = '0' ) AND ( A = '0' OR D = '1' ) ) THEN
+			F	<=	'1';
+		ELSE
+			F	<=	'0';
+		END IF;
+	END PROCESS logic_process;
+END ckt_c_if;
+		\end{lstlisting}	
+
+		d)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_d IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_d;
+
+ARCHITECTURE ckt_d_case OF ckt_d IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins	<=	A & B & C & D;
+	logic_process:	PROCESS(ins)
+	BEGIN
+		CASE (ins) IS
+			WHEN "0001" =>
+				F	<=	'0';
+			WHEN "0011" =>
+				F	<=	'0';
+			WHEN "0100" =>
+				F	<=	'0';
+			WHEN "0101" =>
+				F	<=	'0';
+			WHEN OTHERS =>
+				F	<=	'1';
+		END CASE;
+	END PROCESS logic_process;
+END ckt_d_case;
+
+ARCHITECTURE ckt_d_if OF ckt_d IS
+BEGIN
+	logic_process:	PROCESS(A,B,C,D)
+	BEGIN
+		IF ( A = '0' AND B = '0' AND C = '0' AND D = '1' ) THEN
+			F	<=	'0';
+		ELSIF ( A = '1' AND B = '1' AND C = '1' AND D = '1' ) THEN
+			F	<=	'0';
+		ELSIF ( A = '0' AND B = '1' AND C = '0' AND D = '0' ) THEN
+			F	<=	'0';
+		ELSIF ( A = '0' AND B = '1' AND C = '0' AND D = '1' ) THEN
+			F	<=	'0';
+		ELSE
+			F	<=	'1';
+		END IF;
+	END PROCESS logic_process;
+END ckt_d_if;
+		\end{lstlisting}
+
+		e)
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY ckt_e IS
+	PORT(
+		A,B,C,D	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END ckt_e;
+
+ARCHITECTURE ckt_e_case OF ckt_e IS
+	SIGNAL ins	:	STD_LOGIC_VECTOR(0 TO 3);
+BEGIN
+	ins	<=	A & B & C & D;
+	logic_process:	PROCESS(ins)
+	BEGIN
+		CASE (ins) IS
+			WHEN "0001" =>
+				F	<=	'1';
+			WHEN "0010" =>
+				F	<=	'1';
+			WHEN OTHERS =>
+				F	<=	'0';
+		END CASE;
+	END PROCESS logic_process;
+END ckt_e_case;
+
+ARCHITECTURE ckt_e_if OF ckt_e IS
+BEGIN
+	logic_process:	PROCESS(A,B,C,D)
+	BEGIN
+		IF ( A = '0' AND B = '0' AND C = '0' AND D = '1' ) THEN
+			F	<=	'1';
+		ELSIF ( A = '0' AND B = '0' AND C = '1' AND D = '0' ) THEN
+			F	<=	'1';
+		ELSE
+			F	<=	'0';
+		END IF;
+	END PROCESS logic_process;
+END ckt_e_if;
+		\end{lstlisting}
+
+	\item
+		\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_5_2 IS
+	PORT(
+		A,B		:	IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+		D		:	IN	STD_LOGIC;
+		E_out	:	OUT	STD_LOGIC);
+END Exercise_5_2;
+
+ARCHITECTURE Exercise_5_2_case OF Exercise_5_2 IS
+	SIGNAL	Aout,Bout,Cout,Dout	:	STD_LOGIC;
+	SIGNAL	Cin					:	STD_LOGIC_VECTOR(0 TO 1);
+	SIGNAL	Ein					:	STD_LOGIC_VECTOR(0 TO 2);
+BEGIN
+	
+	Cin	<=	B(2) & Dout;
+	Ein	<=	Aout & Bout & Cout;
+	
+	devA:	PROCESS(A)
+	BEGIN
+		CASE (A) IS
+			WHEN "00"|"01"|"10" =>
+				Aout	<=	'0';
+			WHEN "11" =>
+				Aout	<=	'1';
+		END CASE;
+	END PROCESS devA;
+	
+	devB:	PROCESS(B)
+	BEGIN
+		CASE(B) IS
+			WHEN "00" =>
+				Bout	<=	'0';
+			WHEN "01"|"10"|"11" =>
+				Bout	<=	'1';
+		END CASE;
+	END PROCESS devB;
+	
+	devC:	PROCESS(Cin)
+	BEGIN
+		CASE(Cin) IS
+			WHEN "00"|"01"|"10" =>
+				Cout	<=	'0';
+			WHEN "11" =>
+				Cout	<=	'1';
+		END CASE;
+	END PROCESS devC;
+	
+	devD:	PROCESS(D)
+	BEGIN
+		CASE(D) IS
+			WHEN '0' =>
+				Dout	<=	'1';
+			WHEN '1' =>
+				Dout	<=	'0';
+		END CASE;
+	END PROCESS devD;
+	
+	devE:	PROCESS(Ein) IS
+	BEGIN
+		CASE (Ein) IS
+			WHEN "000" =>
+				E_out	<=	'0';
+			WHEN OTHERS =>
+				E_out	<=	'1';
+		END CASE;
+	END PROCESS devE;
+		
+END Exercise_5_2_case;
+
+ARCHITECTURE Exercise_5_2_if OF Exercise_5_2 IS
+BEGIN
+	logic_process:	PROCESS(A,B,D) IS
+	BEGIN
+		IF ( A = "11") THEN
+			E_out	<=	'1';
+		ELSIF ( B = "01"|"10"|"11" ) THEN
+			E_out	<=	'1';
+		ELSIF ( B(2) = '1' AND D = '0' ) THEN
+			E_out	<=	'1';
+		ELSE
+			E_out	<=	'0';
+		END IF;
+	END PROCESS logic_process;
+END Exercise_5_2_if;
+		\end{lstlisting}
+		
+	\item
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_5_3 IS
+	PORT(
+		A,B		:	IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+		D		:	IN	STD_LOGIC;
+		E_out	:	OUT	STD_LOGIC);
+END Exercise_5_3;
+
+ARCHITECTURE Exercise_5_3_arc OF Exercise_5_3 IS
+	SIGNAL Aout,Bout,Cout,Dout	:	STD_LOGIC;
+BEGIN
+	Aout	<=	A(1) AND A(2);
+	Bout	<=	B(1) OR B(2);
+	Cout	<=	B(2) AND Dout;
+	Dout	<=	NOT D;
+	E_out	<=	Aout OR Bout OR Cout;
+END Exercise_5_3_arc;
+	\end{lstlisting}
+	
+	\item 
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY and8 IS
+	PORT(
+		ins		:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		out1	:	OUT	STD_LOGIC);
+END and8;
+
+ARCHITECTURE and8_arc OF and8 IS
+BEGIN
+	logic_process:	PROCESS(ins)
+	BEGIN
+		IF ( ins = "11111111" ) THEN
+			out1	<=	'1';
+		ELSE
+			out1	<=	'0';
+		END IF;
+	END PROCESS logic_process;
+END and8_arc;
+	\end{lstlisting}
+	
+	\item
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY or8 IS
+	PORT(
+		ins		:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		out1	:	OUT	STD_LOGIC);
+END or8;
+
+ARCHITECTURE or8_arc OF or8 IS
+BEGIN
+	logic_process:	PROCESS(ins)
+	BEGIN
+		IF ( ins = "00000000" ) THEN
+			out1	<=	'0';
+		ELSE
+			out1	<=	'1';
+		END IF;
+	END PROCESS logic_process;
+END or8_arc;
+	\end{lstlisting}
+	
+	\item 
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY mux8to1 IS
+	PORT(
+		ins		:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		sel		:	IN	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		out1	:	OUT	STD_LOGIC);
+END mux8to1;
+
+ARCHITECTURE mux8to1_if OF mux8to1 IS
+BEGIN
+	logic_process:	PROCESS(ins,sel) IS
+	BEGIN
+		IF ( sel = "000" ) THEN
+			out1	<=	ins(0);
+		ELSIF ( sel = "001" ) THEN
+			out1	<=	ins(1);
+		ELSIF ( sel = "010" ) THEN
+			out1	<=	ins(2);
+		ELSIF ( sel = "011" ) THEN
+			out1	<=	ins(3);
+		ELSIF ( sel = "100" ) THEN
+			out1	<=	ins(4);
+		ELSIF ( sel = "101" ) THEN
+			out1	<=	ins(5);
+		ELSIF ( sel = "110" ) THEN
+			out1	<=	ins(6);
+		ELSIF ( sel = "111" ) THEN
+			out1	<=	ins(7);
+		ELSE
+			out1	<=	'0';
+		END IF;			
+	END PROCESS logic_process;
+END mux8to1_if;
+
+ARCHITECTURE mux8to1_cases OF mux8to1 IS
+BEGIN
+	logic_process:	PROCESS(ins,sel) IS
+	BEGIN
+		CASE (sel) IS
+			WHEN "000" =>
+				out1	<= ins(0);
+			WHEN "001" =>
+				out1	<= ins(1);
+			WHEN "010" =>
+				out1	<= ins(2);
+			WHEN "011" =>
+				out1	<= ins(3);
+			WHEN "100" =>
+				out1	<= ins(4);
+			WHEN "101" =>
+				out1	<= ins(5);
+			WHEN "110" =>
+				out1	<= ins(6);
+			WHEN "111" =>
+				out1	<= ins(7);
+			WHEN OTHERS =>
+				out1	<=	'0';
+		END CASE;
+	END PROCESS logic_process;
+END mux8to1_cases;
+	\end{lstlisting}
+	
+	\item
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY dec3to8_ActiveLow IS
+	PORT(
+		ins		:	IN	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		outs	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END dec3to8_ActiveLow;
+
+ARCHITECTURE dec3to8_ActiveLow_if OF dec3to8_ActiveLow IS
+BEGIN
+	logic_process:	PROCESS(ins) IS
+	BEGIN
+		IF ( ins = "000" ) THEN
+			outs	<=	"01111111";
+		ELSIF ( ins = "001" ) THEN
+			outs	<=	"10111111";
+		ELSIF ( ins = "010" ) THEN
+			outs	<=	"11011111";
+		ELSIF ( ins = "011" ) THEN
+			outs	<=	"11101111";
+		ELSIF ( ins = "100" ) THEN
+			outs	<=	"11110111";
+		ELSIF ( ins = "101" ) THEN
+			outs	<=	"11111011";
+		ELSIF ( ins = "110" ) THEN
+			outs	<=	"11111101";
+		ELSIF ( ins = "111" ) THEN
+			outs	<=	"11111110";
+		ELSE
+			outs	<=	"11111111";
+		END IF;
+	END PROCESS logic_process;
+END dec3to8_ActiveLow_if;
+
+ARCHITECTURE dec3to8_ActiveLow_cases OF dec3to8_ActiveLow IS
+BEGIN
+	logic_process:	PROCESS(ins) IS
+	BEGIN
+		CASE (ins) IS
+			WHEN "000" =>
+				outs	<=	"01111111";
+			WHEN "001" =>
+				outs	<=	"10111111";
+			WHEN "010" =>
+				outs	<=	"11011111";
+			WHEN "011" =>
+				outs	<=	"11101111";
+			WHEN "100" =>
+				outs	<=	"11110111";
+			WHEN "101" =>
+				outs	<=	"11111011";
+			WHEN "110" =>
+				outs	<=	"11111101";
+			WHEN "111" =>
+				outs	<=	"11111110";
+			WHEN OTHERS =>
+				outs	<=	"11111111";
+		END CASE;
+	END PROCESS logic_process;
+END dec3to8_ActiveLow_cases;
+	\end{lstlisting}
 \end{enumerate}
 \resumetocwriting
