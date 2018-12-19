@@ -1126,4 +1126,151 @@ BEGIN
 END dec3to8_ActiveLow_cases;
 	\end{lstlisting}
 \end{enumerate}
+
+\section*{Chapter 7}
+\begin{enumerate}
+	\item 
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE ieee.std_logic_1164.all;
+
+ENTITY dff_1 IS
+	PORT(
+		S,D,CLK,R	:	IN	STD_LOGIC;
+		Q,NOTQ		:	OUT	STD_LOGIC);
+END dff_1;
+
+ARCHITECTURE dff_1_arc OF dff_1 IS
+	SIGNAL q_temp	:	STD_LOGIC;
+BEGIN
+	dff_process: PROCESS(CLK,S,R) IS
+	BEGIN
+		IF (S = '0') THEN
+			q_temp <= '1';
+		ELSIF (R = '0') THEN
+			q_temp <= '0';
+		ELSIF (RISING_EDGE(CLK)) THEN
+			q_temp <= D;
+		END IF;
+	END PROCESS dff_process;
+	
+	Q <= q_temp;
+	NOTQ <= NOT q_temp;
+END dff_1_arc;
+	\end{lstlisting}
+	\item See solution to Exercise 1, as the given solution works in both cases.
+	
+	\item 
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY dff_3 IS
+	PORT(
+		S,D,CLK,R	:	IN	STD_LOGIC;
+		Q,NOTQ		:	OUT	STD_LOGIC);
+END dff_3;
+
+ARCHITECTURE dff_3_arc OF dff_3 IS
+	SIGNAL q_temp	:	STD_LOGIC;
+BEGIN
+	dff_process: PROCESS(CLK,S,R) IS
+	BEGIN
+		IF (RISING_EDGE(CLK)) THEN
+			IF (S = '0') THEN
+				q_temp <= '1';
+			ELSIF (R = '0') THEN
+				q_temp <= '0';
+			ELSE
+				q_temp <= D;
+			END IF;
+		END IF;
+	END PROCESS dff_process;
+	
+	Q <= q_temp;
+	NOTQ <= NOT q_temp;
+END dff_3_arc;
+	\end{lstlisting}
+	
+	\item 
+	\begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY dff_4 IS
+	PORT(
+		S,D,CLK,R	:	IN	STD_LOGIC;
+		Q,NOTQ		:	OUT	STD_LOGIC);
+END dff_4;
+
+ARCHITECTURE dff_4_arc OF dff_4 IS
+	SIGNAL q_temp	:	STD_LOGIC;
+BEGIN
+	dff_process: PROCESS(CLK,S,R) IS
+	BEGIN
+		IF (S = '0' AND R = '0') THEN
+			q_temp <= NOT q_temp;
+		ELSIF (S = '0') THEN
+			q_temp <= '1';
+		ELSIF (R = '0') THEN
+			q_temp <= '0';
+		ELSIF (RISING_EDGE(CLK)) THEN
+			q_temp <= D;
+		END IF;
+	END PROCESS dff_process;
+	
+	Q <= q_temp;
+	NOTQ <= NOT q_temp;
+END dff_4_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY tff IS
+	PORT(
+		S,T,CLK,R	:	IN	STD_LOGIC;
+		Q,NOTQ		:	OUT	STD_LOGIC);
+END tff;
+
+ARCHITECTURE tff_equation OF tff IS
+	SIGNAL q_temp	:	STD_LOGIC;
+BEGIN
+	tff_process:	PROCESS(S,R,CLK) IS
+	BEGIN
+		IF ( S = '0' ) THEN
+			q_temp	<=	'1';
+		ELSIF ( R = '0' ) THEN
+			q_temp	<=	'0';
+		ELSIF ( RISING_EDGE(CLK) ) THEN
+			q_temp	<=	q_temp XOR T;
+		END IF;
+	END PROCESS tff_process;
+	
+	Q		<=	q_temp;
+	NOTQ	<=	NOT q_temp;
+END tff_equation;
+
+ARCHITECTURE tff_behavioral OF tff IS
+	SIGNAL q_temp	:	STD_LOGIC;
+BEGIN
+	tff_process:	PROCESS(S,R,CLK) IS
+	BEGIN
+		IF ( S = '0' ) THEN
+			q_temp	<=	'1';
+		ELSIF ( R = '0' ) THEN
+			q_temp	<=	'0';
+		ELSIF ( RISING_EDGE(CLK) AND T = '1' ) THEN
+			q_temp	<=	NOT q_temp;
+		END IF;
+	END PROCESS tff_process;
+	
+	Q		<=	q_temp;
+	NOTQ	<=	NOT q_temp;
+END tff_behavioral;
+	\end{lstlisting}
+	
+	\item See the second architecture of the previous solution (tff\_behavioral).
+\end{enumerate}
 \resumetocwriting
