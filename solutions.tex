@@ -1127,6 +1127,7 @@ END dec3to8_ActiveLow_cases;
 	\end{lstlisting}
 \end{enumerate}
 
+\setcounter{section}{7}
 \section*{Chapter 7}
 \begin{enumerate}
 	\item 
@@ -1272,5 +1273,809 @@ END tff_behavioral;
 	\end{lstlisting}
 	
 	\item See the second architecture of the previous solution (tff\_behavioral).
+\end{enumerate}
+
+\section*{Chapter 8}
+\begin{enumerate}
+	\item \begin{minipage}[t]{0.75\textwidth}
+		\vspace{0pt}\raggedright
+		\centering
+		\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		%FSM states
+		\node[state with output] (ST0) {A \nodepart{lower} 0};
+		\node[state with output] (ST1) [below right= of ST0] {B \nodepart{lower} 1};
+		\node[state with output, initial, initial text=RESET] (ST2) [below left= of ST0] {C \nodepart{lower} 1};
+		
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above] node (helper) {\NOTT{X}/Z2} (ST0);
+		\path[->]  (ST0)  edge [bend left=18]    node {X/\NOTT{Z2}} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]    node {X/Z2} (ST2);
+		\path[->]  (ST1)  edge [bend left=18]    node[pos=0.85] {\NOTT{X}/\NOTT{Z2}} (ST0);
+		\path[->]  (ST2)  edge [bend left=18]    node {X/\NOTT{Z2}} (ST0);
+		\path[->]  (ST2)  edge [bend left=18]	 node[below] {\NOTT{X}/Z2} (ST1);
+		
+		% legend
+		\node[state with output]  (legend) [left =of helper.north] {State \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left] (S) {input/outut(Z2)};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_2 IS
+	PORT(
+		CLK	:	IN	STD_LOGIC;
+		X	:	IN	STD_LOGIC_VECTOR(1 TO 2);
+		Y	:	OUT	STD_LOGIC_VECTOR(1 DOWNTO 0);
+		Z	:	OUT	STD_LOGIC);
+END Exercise_8_2;
+
+ARCHITECTURE Exercise_8_2_arc OF Exercise_8_2 IS
+	TYPE STATE_TYPE IS (ST10,ST01,ST11);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	'0';
+		CASE (PS) IS
+			WHEN ST10 =>
+				IF ( X(1) = '0' ) THEN
+					NS	<=	ST10;
+					Z	<=	'0';
+				ELSIF ( X(1) = '1' ) THEN
+					NS	<=	ST01;
+					Z	<=	'0';
+				END IF;
+			WHEN ST01 =>
+				IF ( X(2) = '0' ) THEN
+					NS	<=	ST10;
+					Z	<=	'1';
+				ELSIF ( X(2) = '1' ) THEN
+					NS	<=	ST11;
+					Z	<=	'0';
+				END IF;
+			WHEN ST11 =>
+				IF ( X(2) = '0' ) THEN
+					NS	<=	ST10;
+					Z	<=	'1';
+				ELSIF ( X(2) = '1' ) THEN
+					NS	<=	ST11;
+					Z	<=	'0';
+				END IF;
+			WHEN OTHERS =>
+				NS	<=	ST10;
+				Z	<=	'0';
+		END CASE;
+	END PROCESS comb_process;
+	
+		WITH PS SELECT
+	Y	<=	"01" WHEN ST01,
+			"10" WHEN ST10,
+			"11" WHEN ST11,
+			"00" WHEN OTHERS;
+END Exercise_8_2_arc;
+	\end{lstlisting}
+	
+	\item \begin{minipage}[t]{0.75\textwidth}
+		\vspace{0pt}\raggedright
+		\centering
+		\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		% FSM states
+		\node[state with output] (ST1) {S1 \nodepart{lower} 0};
+		\node[state with output] (ST2) [below right= of ST1] {S2 \nodepart{lower} 0};
+		\node[state with output] (ST3) [below left= of ST1] {S3 \nodepart{lower} 1};
+		
+		% FSM state changes/variables
+		\path[->]  (ST1)  edge [loop above] node (helper) {\NOTT{BUM1}/\NOTT{TOUT}} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]    node {BUM1/TOUT} (ST2);
+		\path[->]  (ST2)  edge [bend left=18]    node {TOUT} (ST3);
+		\path[->]  (ST3)  edge [bend left=18]    node {\NOTT{BUM2}/\NOTT{TOUT}} (ST2);
+		\path[->]  (ST3)  edge [bend left=18]    node {BUM2/\NOTT{TOUT}} (ST1);
+		
+		% legend
+		\node[state with output]  (legend) [left =of helper.north] {State \nodepart{lower} CTA};
+		\node[below =.1cm of legend, align=left] (S) {input/outut};
+		\node[below = .5cm of legend, align=left] (S) {output};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_4 IS
+	PORT(
+		CLK	:	IN	STD_LOGIC;
+		X	:	IN	STD_LOGIC_VECTOR(1 TO 2);
+		Z	:	OUT	STD_LOGIC_VECTOR(1 TO 2));
+END Exercise_8_4;
+
+ARCHITECTURE Exercise_8_4_arc OF Exercise_8_4 IS
+	TYPE STATE_TYPE IS (ST00,ST01,ST10);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	"00";
+		CASE (PS) IS
+			WHEN ST00 =>
+				Z(1)	<=	'0';
+				IF ( X(1) = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST10;
+				ELSIF ( X(1) = '1' ) THEN
+					Z(2)	<=	'1';
+					NS		<=	ST01;
+				END IF;
+			WHEN ST01 =>
+				Z(1)	<=	'1';
+				IF ( X(2) = '0' ) THEN
+					Z(2)	<=	'1';
+					NS		<=	ST10;
+				ELSIF ( X(2) = '1' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST00;
+				END IF;
+			WHEN ST10 =>
+				Z(1)	<=	'1';
+				IF ( X(1) = '0' ) THEN
+					Z(2)	<=	'1';
+					NS		<=	ST00;
+				ELSIF ( X(1) = '1' ) THEN
+					Z(2)	<=	'1';
+					NS		<=	ST01;
+				END IF;
+			WHEN OTHERS =>
+				Z	<=	"00";
+				NS	<=	ST00;
+		END CASE;
+	END PROCESS comb_process;
+END Exercise_8_4_arc;
+	\end{lstlisting}
+	
+	\item \begin{minipage}[t]{0.75\textwidth}
+		\vspace{0pt}\raggedright
+		\centering
+		\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		% FSM states
+		\node[state with output] (ST1) {A/001 \nodepart{lower} 0};
+		\node[state with output] (ST2) [below right= of ST1] {B/010 \nodepart{lower} 1};
+		\node[state with output, initial, initial text=RESET] (ST3) [below left= of ST1] {C/100 \nodepart{lower} 1};
+		
+		% FSM state changes/variables
+		\path[->]  (ST1)  edge [loop above] node (helper) {0/1} (ST1);
+		\path[->]  (ST1)  edge [bend left=18]    node {1/0} (ST2);
+		\path[->]  (ST2)  edge [bend left=18]    node[pos=0.8] {0/0} (ST1);
+		\path[->]  (ST2)  edge [bend left=18]    node {1/1} (ST3);
+		\path[->]  (ST3)  edge [bend left=18]    node[below] {0/1} (ST2);
+		\path[->]  (ST3)  edge [bend left=18]    node {1/0} (ST1);
+		
+		% legend
+		\node[state with output]  (legend) [left =of helper.north] {State \nodepart{lower} Z1};
+		\node[below =.1cm of legend, align=left] (S) {X/Z2};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_6 IS
+	PORT(
+		CLK,X	:	IN	STD_LOGIC;
+		Y		:	OUT	STD_LOGIC_VECTOR(1 DOWNTO 0);
+		Z		:	OUT	STD_LOGIC_VECTOR(1 TO 2));
+END Exercise_8_6;
+
+ARCHITECTURE Exercise_8_6_arc OF Exercise_8_6 IS
+	TYPE STATE_TYPE IS (ST00,ST01,ST10,ST11);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	"00";
+		CASE (PS) IS
+			WHEN ST00 =>
+				Z(1)	<=	'1';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST10;
+				ELSIF ( X = '1' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST00;
+				END IF;
+			WHEN ST01 =>
+				Z(1)	<=	'0';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST11;
+				ELSIF ( X = '1' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST01;
+				END IF;
+			WHEN ST10 =>
+				Z(1)	<=	'1';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST01;
+				ELSIF ( X = '1' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST00;
+				END IF;
+			WHEN ST11 =>
+				Z(1)	<=	'0';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'1';
+					NS		<=	ST00;
+				ELSIF ( x = '1' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST01;
+				END IF;
+			WHEN OTHERS =>
+				Z	<=	"00";
+				NS	<=	ST00;
+		END CASE;
+	END PROCESS comb_process;
+	
+	WITH PS SELECT
+		Y	<=	"00" WHEN ST00,
+				"01" WHEN ST01,
+				"10" WHEN ST10,
+				"11" WHEN ST11,
+				"00" WHEN OTHERS;
+END Exercise_8_6_arc;
+	\end{lstlisting}
+	
+	\item The state machine is of Mealy type.
+	
+	\begin{minipage}[t]{0.64\textwidth}
+		\vspace{0pt}\raggedright
+		\centering
+		\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=2cm]
+		
+		%FSM states
+		\node[state, initial, initial text=SET] (ST0) {A};
+		\node[state, initial, initial text=CLR] (ST3) [below= of ST0] {D};
+		\node[state] (ST1) [right= of ST0] {B};
+		\node[state] (ST2) [right= of ST3] {C};
+		
+		% FSM state changes/variables
+		\path[->]  (ST0)  edge [loop above]  node {X1/\NOTT{Z1}/\NOTT{Z2}} (ST0);
+		\path[->]  (ST1)  edge [loop above]  node {\NOTT{X2}/Z1/\NOTT{Z2}} (ST1);
+		\path[->]  (ST2)  edge [loop below]  node {\NOTT{X2}/\NOTT{Z1}/Z2} (ST2);
+		\path[->]  (ST3)  edge [loop below]  node {X1/Z1/Z2} (ST3);
+		\path[->]  (ST0) 	edge [bend left=18]  	node {\NOTT{X1}/\NOTT{Z1}/\NOTT{Z2}} (ST1);
+		\path[->]  (ST1)    edge [bend left=18]     node {X2/Z1/Z2} (ST2);
+		\path[->]  (ST2)    edge [bend left=18]     node {X2/\NOTT{Z1}/\NOTT{Z2}} (ST1);
+		\path[->]  (ST3)    edge [bend right=18]    node[below] {\NOTT{X1}/Z1/Z2} (ST2);
+		
+		% legend
+		\node[state]  (legend) [below left = 1 cm and 2 cm of ST0.east,font=\scriptsize] {State};
+		\node[below =.1cm of legend, align=left, font=\scriptsize] (S) {input/Z1/Z2};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_8 IS
+	PORT(
+		CLK,X	:	IN	STD_LOGIC;
+		Y		:	OUT	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		Z		:	OUT	STD_LOGIC_VECTOR(1 TO 2));
+END Exercise_8_8;
+
+ARCHITECTURE Exercise_8_8_arc OF Exercise_8_8 IS
+	TYPE STATE_TYPE IS (ST000,ST001,ST010,ST011,ST100,ST101,ST110,ST111);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	"00";
+		CASE (PS) IS
+			WHEN ST000 =>
+				Z	<=	"00";
+				IF ( X = '0' ) THEN
+					NS	<=	ST000;
+				ELSIF ( X = '1' ) THEN
+					NS	<=	ST001;
+				END IF;
+			WHEN ST001 =>
+				Z	<=	"00";
+				IF ( X = '0' ) THEN
+					NS	<=	ST001;
+				ELSIF ( X = '1' ) THEN
+					NS	<=	ST010;
+				END IF;
+			WHEN ST010 =>
+				Z	<=	"00";
+				IF ( X = '0' ) THEN
+					NS	<=	ST010;
+				ELSIF ( X = '1' ) THEN
+					NS	<=	ST011;
+				END IF;
+			WHEN ST011 =>
+				Z	<=	"10";
+				IF ( X = '0' ) THEN
+					NS	<=	ST011;
+				ELSIF ( X = '1' ) THEN
+					NS	<= ST100;
+				END IF;
+			WHEN ST100 =>
+				Z	<=	"01";
+				If ( X = '0' ) THEN
+					NS	<=	ST000;
+				ELSIF ( X = '1' ) THEN
+					NS	<=	ST101;
+				END IF;
+			WHEN ST101 =>
+				Z	<=	"11";
+				IF ( X = '0' ) THEN
+					NS	<=	ST101;
+				ELSIF ( X = '1' ) THEN
+					NS	<=	ST110;
+				END IF;
+			WHEN ST110 =>
+				Z	<=	"11";
+				IF ( X = '0' ) THEN
+					NS	<=	ST110;
+				ELSIF ( X = '1' ) THEN
+					NS	<=	ST111;
+				END IF;
+			WHEN ST111 =>
+				Z	<=	"11";
+				IF ( X = '0' ) THEN
+					NS	<=	ST111;
+				ELSIF ( X = '1' ) THEN
+					NS	<=	ST000;
+				END IF;
+			WHEN OTHERS =>
+				Z	<=	"00";
+				NS	<=	ST000;
+		END CASE;
+	END PROCESS comb_process;
+	
+		WITH PS SELECT
+		Y	<=	"000" WHEN ST000,
+				"001" WHEN ST001,
+				"010" WHEN ST010,
+				"011" WHEN ST011,
+				"100" WHEN ST100,
+				"101" WHEN ST101,
+				"110" WHEN ST110,
+				"111" WHEN ST111,
+				"000" WHEN OTHERS;
+END Exercise_8_8_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_9 IS
+	PORT(
+		CLK,X	:	IN	STD_LOGIC;
+		Y		:	OUT	STD_LOGIC_VECTOR(1 DOWNTO 0);
+		Z		:	OUT	STD_LOGIC_VECTOR(1 TO 2));
+END Exercise_8_9;
+
+ARCHITECTURE Exercise_8_9_arc OF Exercise_8_9 IS
+	TYPE STATE_TYPE IS (ST00,ST01,ST10,ST11);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	"00";
+		CASE (PS) IS
+			WHEN ST00 =>
+				Z(1)	<=	'0';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST00;
+				ELSIF ( X = '1' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST01;
+				END IF;
+			WHEN ST01 =>
+				Z(1)	<=	'0';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST00;
+				ELSIF ( X = '1' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST10;
+				END IF;
+			WHEN ST10 =>
+				Z(1)	<=	'0';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST00;
+				ELSIF ( x = '1' ) THEN
+					Z(2)	<=	'1';
+					NS		<=	ST11;
+				END IF;
+			WHEN ST11 =>
+				Z(1)	<=	'1';
+				IF ( X = '0' ) THEN
+					Z(2)	<=	'0';
+					NS		<=	ST00;
+				ELSIF ( X = '1' ) THEN
+					Z(2)	<=	'1';
+					NS		<=	ST11;
+				END IF;
+			WHEN OTHERS =>
+				Z	<=	"00";
+				NS	<=	ST00;
+		END CASE;
+	END PROCESS comb_process;
+	
+	WITH PS SELECT
+		Y	<=	"00" WHEN ST00,
+				"01" WHEN ST01,
+				"10" WHEN ST10,
+				"11" WHEN ST11,
+				"00" WHEN OTHERS;
+END Exercise_8_9_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_10 IS
+	PORT(
+		X,CLK	:	IN	STD_LOGIC;
+		Y		:	OUT	STD_LOGIC_VECTOR(1 TO 3);
+		Z		:	OUT	STD_LOGIC);
+END Exercise_8_10;
+
+ARCHITECTURE Exercise_8_10_arc OF Exercise_8_10 IS
+	TYPE STATE_TYPE IS (ST001,ST010,ST100);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	'0';
+		CASE (PS) IS
+			WHEN ST100 =>
+				Z	<=	'1';
+				NS	<=	ST010;
+			WHEN ST010 =>
+				IF ( X = '0' ) THEN
+					Z	<=	'0';
+					NS	<=	ST100;
+				ELSIF ( X = '1' ) THEN
+					Z	<=	'0';
+					NS	<=	ST001;
+				END IF;
+			WHEN ST001 =>
+				Z	<=	'1';
+				NS	<=	ST100;
+			WHEN OTHERS =>
+				Z	<=	'0';
+				NS	<=	ST100;
+		END CASE;				
+	END PROCESS comb_process;
+	
+	WITH PS SELECT
+		Y	<=	"100" WHEN ST100,
+				"010" WHEN ST010,
+				"001" WHEN ST001,
+				"100" WHEN OTHERS;
+END Exercise_8_10_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_10 IS
+	PORT(
+		X		:	IN	STD_LOGIC_VECTOR(1 TO 2);
+		CLK		:	IN	STD_LOGIC;
+		Y		:	OUT	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		Z		:	OUT	STD_LOGIC);
+END Exercise_8_10;
+
+ARCHITECTURE Exercise_8_10_arc OF Exercise_8_10 IS
+	TYPE STATE_TYPE IS (ST001,ST010,ST100);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	'0';
+		CASE (PS) IS
+			WHEN ST001 =>
+				IF ( X(1) = '0' ) THEN
+					Z	<=	'1';
+					NS	<=	ST010;
+				ELSIF ( X(1) = '1' ) THEN
+					Z	<=	'1';
+					NS	<=	ST100;
+				END IF;
+			WHEN ST010 =>
+				IF ( X(1) = '0' ) THEN
+					Z	<=	'0';
+					NS	<=	ST100;
+				ELSIF ( X(1) = '1' ) THEN
+					Z	<=	'0';
+					NS	<=	ST010;
+				END IF;
+			WHEN ST100 =>
+				IF ( X(2) = '0' ) THEN
+					Z	<=	'0';
+					NS	<=	ST001;
+				ELSIF ( X(2) = '1' ) THEN
+					Z	<=	'1';
+					NS	<=	ST100;
+				END IF;
+			WHEN OTHERS =>
+				Z	<=	'0';
+				NS	<=	ST100;
+		END CASE;				
+	END PROCESS comb_process;
+	
+	WITH PS SELECT
+		Y	<=	"100" WHEN ST100,
+				"010" WHEN ST010,
+				"001" WHEN ST001,
+				"100" WHEN OTHERS;
+END Exercise_8_10_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_12 IS
+	PORT(
+		CLK	:	IN	STD_LOGIC;
+		X	:	IN	STD_LOGIC_VECTOR(1 TO 2);
+		Y	:	OUT	STD_LOGIC_VECTOR(2 DOWNTO 1);
+		Z	:	OUT	STD_LOGIC_VECTOR(1 TO 2));
+END Exercise_8_12;
+
+ARCHITECTURE Exercise_8_12_arc OF Exercise_8_12 IS
+	TYPE STATE_TYPE IS (ST00,ST01,ST11);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	"00";
+		CASE (PS) IS
+			WHEN ST00 =>
+				Z(2)	<=	'1';
+				IF ( X(2) = '0' ) THEN
+					Z(1)	<=	'0';
+					NS		<=	ST11;
+				ELSIF ( X(2) = '1' ) THEN
+					Z(1)	<=	'1';
+					NS		<=	ST00;
+				END IF;
+			WHEN ST01 =>
+				Z(2)	<=	'0';
+				IF ( X(2) = '0' ) THEN
+					Z(1)	<=	'1';
+					NS		<=	ST00;
+				ELSIF ( X(2) = '1' ) THEN
+					Z(1)	<=	'0';
+					NS		<=	ST11;
+				END IF;
+			WHEN ST11 =>
+				Z(2)	<=	'1';
+				IF ( X(1) = '0' ) THEN
+					Z(1)	<=	'0';
+					NS		<=	ST11;
+				ELSIF ( X(1) = '1' ) THEN
+					Z(1)	<=	'1';
+					NS		<=	ST01;
+				END IF;
+			WHEN OTHERS =>
+				Z	<=	"00";
+				NS	<=	ST00;
+		END CASE;
+	END PROCESS comb_process;
+	
+	WITH PS SELECT
+		Y	<=	"00" WHEN ST00,
+				"01" WHEN ST01,
+				"11" WHEN ST11,
+				"00" WHEN OTHERS;
+END Exercise_8_12_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_13 IS
+	PORT(
+		X			:	IN	STD_LOGIC_VECTOR(1 TO 2);
+		CLK			:	IN	STD_LOGIC;
+		Y			:	OUT	STD_LOGIC_VECTOR(3 DOWNTO 1);
+		CS,RD		:	OUT	STD_LOGIC);
+END Exercise_8_13;
+
+ARCHITECTURE Exercise_8_13_arc OF Exercise_8_13 IS
+	TYPE STATE_TYPE IS (ST001,ST010,ST100);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		CS	<=	'0';
+		RD	<=	'0';
+		CASE (PS) IS
+			WHEN ST001 =>
+				IF ( X(1) = '0' ) THEN
+					CS	<=	'0';
+					RD	<=	'1';
+					NS	<=	ST010;
+				ELSIF ( X(1) = '1' ) THEN
+					CS	<=	'1';
+					RD	<=	'0';
+					NS	<=	ST100;
+				END IF;
+			WHEN ST010 =>
+				CS	<=	'1';
+				RD	<=	'1';
+				NS	<=	ST100;
+			WHEN ST100 =>
+				IF ( X(2) = '0' ) THEN
+					CS	<=	'0';
+					RD	<=	'0';
+					NS	<=	ST001;
+				ELSIF ( X(2) = '1' ) THEN
+					CS	<=	'0';
+					RD	<=	'1';
+					NS	<=	ST100;
+				END IF;
+			WHEN OTHERS =>
+				CS	<=	'0';
+				RD	<=	'0';
+				NS	<=	ST100;
+		END CASE;				
+	END PROCESS comb_process;
+	
+	WITH PS SELECT
+		Y	<=	"100" WHEN ST100,
+				"010" WHEN ST010,
+				"001" WHEN ST001,
+				"100" WHEN OTHERS;
+END Exercise_8_13_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_8_14 IS
+	PORT(
+		X		:	IN	STD_LOGIC_VECTOR(1 TO 2);
+		CLK		:	IN	STD_LOGIC;
+		Y		:	OUT	STD_LOGIC_VECTOR(3 DOWNTO 1);
+		Z		:	OUT	STD_LOGIC_VECTOR(1 TO 2));
+END Exercise_8_14;
+
+ARCHITECTURE Exercise_8_14_arc OF Exercise_8_14 IS
+	TYPE STATE_TYPE IS (ST001,ST010,ST100);
+	SIGNAL PS,NS	:	STATE_TYPE;
+BEGIN
+	sync_process:	PROCESS(CLK) IS
+	BEGIN
+		IF(RISING_EDGE(CLK)) THEN
+			PS	<=	NS;
+		END IF;
+	END PROCESS sync_process;
+	
+	comb_process:	PROCESS(X,PS) IS
+	BEGIN
+		Z	<=	"00";
+		CASE (PS) IS
+			WHEN ST001 =>
+				Z(1)	<=	'0';
+				IF ( X(1) = '0' ) THEN
+					Z(2)	<=	'0';
+					NS	<=	ST100;
+				ELSIF ( X(1) = '1' ) THEN
+					Z(2)	<=	'1';
+					NS	<=	ST010;
+				END IF;
+			WHEN ST010 =>
+				Z(1)	<=	'1';
+				IF ( X(2) = '0' ) THEN
+					Z(2)	<=	'1';
+					NS	<=	ST100;
+				ELSIF ( X(2) = '1' ) THEN
+					Z(2)	<=	'0';
+					NS	<=	ST001;
+				END IF;
+			WHEN ST100 =>
+				Z(1)	<=	'1';
+				IF ( X(1) = '0' ) THEN
+					Z(2)	<=	'1';
+					NS	<=	ST001;
+				ELSIF ( X(1) = '1' ) THEN
+					Z(2)	<=	'1';
+					NS	<=	ST010;
+				END IF;
+			WHEN OTHERS =>
+				Z	<=	"00";
+				NS	<=	ST010;
+		END CASE;				
+	END PROCESS comb_process;
+	
+	WITH PS SELECT
+		Y	<=	"100" WHEN ST100,
+				"010" WHEN ST010,
+				"001" WHEN ST001,
+				"100" WHEN OTHERS;
+END Exercise_8_14_arc;
+	\end{lstlisting}
 \end{enumerate}
 \resumetocwriting
