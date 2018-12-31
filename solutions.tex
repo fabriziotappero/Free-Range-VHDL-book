@@ -2078,4 +2078,566 @@ BEGIN
 END Exercise_8_14_arc;
 	\end{lstlisting}
 \end{enumerate}
+
+\section*{Chapter 9}
+
+\section*{Chapter 10}
+The components used in each of the exercises are as shown below.
+\begin{lstlisting}
+----------------------
+--- 8-bit, 2:1 Mux ---
+----------------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY mux2i1o8w IS
+	PORT(
+		in1,in2	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		sel		:	IN	STD_LOGIC;
+		out1	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END mux2i1o8w;
+
+ARCHITECTURE mux2i1o8w OF mux2i1o8w IS
+BEGIN
+	WITH sel SELECT
+		out1	<=	in1 WHEN '0',
+					in2 WHEN '1',
+					(OTHERS => '0') WHEN OTHERS;
+END mux2i1o8w;
+
+----------------------
+--- 8-bit, 4:1 Mux ---
+----------------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY mux4i1o8w IS
+	PORT(
+		in0,in1,in2,in3	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		sel				:	IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+		out1			:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END mux4i1o8w;
+
+ARCHITECTURE mux4i1o8w OF mux4i1o8w IS
+BEGIN
+	WITH sel SELECT
+		out1	<=	in0 WHEN "00",
+					in1 WHEN "01",
+					in2 WHEN "10",
+					in3 WHEN "11",
+					(OTHERS => '0') WHEN OTHERS;
+END mux4i1o8w;
+
+
+
+-------------------
+--- 1:2 Decoder ---
+-------------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY decoder1to2 IS
+	PORT(
+		in1			:	IN	STD_LOGIC;
+		out0,out1	:	OUT	STD_LOGIC);
+END decoder1to2;
+
+ARCHITECTURE dec1to2 OF decoder1to2 IS
+BEGIN
+	output_process:	PROCESS (in1) IS
+	BEGIN
+		IF (in1 = '0') THEN
+			out0 <= '1';
+			out1 <= '0';
+		ELSIF (in1 = '1') THEN
+			out0 <= '0';
+			out1 <= '1';
+		ELSE
+			out0 <= '0';
+			out1 <= '0';
+		END IF;
+	END PROCESS output_process;
+END dec1to2;
+
+----------------------
+--- 8-bit Register ---
+----------------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY reg8 IS
+	PORT(
+		REG_IN	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		CLK,LD	:	IN	STD_LOGIC;
+		REG_OUT	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END reg8;
+
+ARCHITECTURE reg OF reg8 IS
+BEGIN
+	load_process: PROCESS(CLK) IS
+	BEGIN
+		IF (RISING_EDGE(CLK)) THEN
+			IF (LD = '1') THEN
+				REG_OUT <= REG_IN;
+			END IF;
+		END IF;
+	END PROCESS load_process;
+END reg;
+\end{lstlisting}
+\begin{enumerate}
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY muxreg IS
+	PORT(
+		A,B			:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		LDA,SEL,CLK	:	IN	STD_LOGIC;
+		F			:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END muxreg;
+
+ARCHITECTURE muxreg_arc OF muxreg IS
+	
+	----------------------
+	--- 8-bit Register ---
+	----------------------
+	
+	COMPONENT reg8 IS
+		PORT(
+			REG_IN	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			CLK,LD	:	IN	STD_LOGIC;
+			REG_OUT	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT reg8;
+	
+	----------------------
+	--- 8-bit, 2:1 Mux ---
+	----------------------
+	
+	COMPONENT mux2i1o8w IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			sel		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT mux2i1o8w;
+	
+	SIGNAL muxout	:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	
+BEGIN
+	
+	mux:	mux2i1o8w PORT MAP (
+							in1		=> A,
+							in2		=> B,
+							sel		=> SEL,
+							out1	=> muxout);
+								
+	reg:	reg8 PORT MAP (
+							REG_IN	=>	muxout,
+							CLK		=>	CLK,
+							LD		=>	LDA,
+							REG_OUT	=>	F);
+	
+END muxreg_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY muxdec2r IS
+	PORT(
+		X,Y,Z	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		MS		:	IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+		DS,CLK	:	IN	STD_LOGIC;
+		RB,RA	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END muxdec2r;
+
+ARCHITECTURE muxdec2r OF muxdec2r IS
+	
+	----------------------
+	--- 8-bit, 4:1 Mux ---
+	----------------------
+	
+	COMPONENT mux4i1o8w IS
+		PORT(
+		in0,in1,in2,in3	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			sel				:	IN	STD_LOGIC_VECTOR(1 DOWNTO 0);
+			out1			:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT mux4i1o8w;
+	
+	
+	-------------------
+	--- 1:2 Decoder ---
+	-------------------
+	
+	COMPONENT decoder1to2 IS
+		PORT(
+			in1			:	IN	STD_LOGIC;
+			out0,out1	:	OUT	STD_LOGIC);
+	END COMPONENT decoder1to2;
+
+	
+	----------------------
+	--- 8-bit Register ---
+	----------------------
+
+	COMPONENT reg8 IS
+		PORT(
+			REG_IN	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			CLK,LD	:	IN	STD_LOGIC;
+			REG_OUT	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT reg8;
+	
+	SIGNAL muxout,regAout,regBout	:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL decout0,decout1			:	STD_LOGIC;
+
+BEGIN
+	
+	mux:	mux4i1o8w PORT MAP (
+		in0		=>	regBout,
+		in1		=>	Z,
+		in2		=>	Y,
+		in3		=>	X,
+		sel		=>	MS,
+		out1	=> muxout);
+		
+	dec:	decoder1to2 PORT MAP (
+		in1		=>	DS,
+		out0	=>	decout0,
+		out1	=>	decout1);
+		
+	regA:	reg8 PORT MAP (
+		REG_IN	=>	muxout,
+		CLK		=>	CLK,
+		LD		=>	decout0,
+		REG_OUT	=>	regAout);
+		
+	regB:	reg8 PORT MAP (
+		REG_IN	=>	regAout,
+		CLK		=>	CLK,
+		LD		=>	decout1,
+		REG_OUT	=>	regBout);
+	
+	RA <= regAout;
+	RB <= regBout;
+	
+END muxdec2r;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY DualMuxDualReg IS
+	PORT(
+		X,Y		:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		LDA,LDB	:	IN	STD_LOGIC;
+		S0,S1	:	IN	STD_LOGIC;
+		CLK		:	IN	STD_LOGIC;
+		RB		:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END DualMuxDualReg;
+
+ARCHITECTURE DualMuxDualReg_Arc OF DualMuxDualReg IS
+	
+	----------------------
+	--- 8-bit Register ---
+	----------------------
+
+	COMPONENT reg8 IS
+		PORT(
+			REG_IN	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			CLK,LD	:	IN	STD_LOGIC;
+			REG_OUT	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT reg8;
+	
+	-------------------------------
+	--- 2-in, 1-out, 8-wide Mux ---
+	-------------------------------
+	
+	COMPONENT mux2i1o8w IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			sel		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT mux2i1o8w;
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+		
+	SIGNAL Mux1Out,Mux2Out	:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL RegAOut,RegBOut	:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	
+BEGIN
+	
+	mux1:	mux2i1o8w PORT MAP(
+		in1		=>	X,
+		in2		=>	RegBOut,
+		sel		=>	S1,
+		out1	=>	Mux1Out);
+		
+	regA:	reg8 PORT MAP(
+		REG_IN	=>	Mux1Out,
+		CLK		=>	CLK,
+		LD		=>	LDA,
+		REG_OUT	=>	RegAOut);
+		
+	mux2:	mux2i1o8w PORT MAP(
+		in1		=>	RegAOut,
+		in2		=>	Y,
+		sel		=>	S0,
+		out1	=>	Mux2Out);
+		
+	regB:	reg8 PORT MAP(
+		REG_IN	=>	Mux2Out,
+		CLK		=>	CLK,
+		LD		=>	LDB,
+		REG_OUT	=>	RegBOut);
+		
+	RB	<=	RegBOut;
+	
+END DualMuxDualReg_Arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY DualMuxDualReg IS
+	PORT(
+		LDA,LDB,S0,S1,RD,CLK	:	IN	STD_LOGIC;
+		X,Y						:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		RA,RB					:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END DualMuxDualReg;
+
+ARCHITECTURE DualMuxDualReg_arc OF DualMuxDualReg IS
+	
+	----------------------
+	--- 8-bit Register ---
+	----------------------
+
+	COMPONENT reg8 IS
+		PORT(
+			REG_IN	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			CLK,LD	:	IN	STD_LOGIC;
+			REG_OUT	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT reg8;
+	
+	-------------------------------
+	--- 2-in, 1-out, 8-wide Mux ---
+	-------------------------------
+	
+	COMPONENT mux2i1o8w IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			sel		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT mux2i1o8w;
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+		
+	SIGNAL Mux1Out,Mux2Out	:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL RegAOut,RegBOut	:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	SIGNAL And1Out,And2Out	:	STD_LOGIC;
+	
+BEGIN
+	
+	And1Out	<=	LDB AND NOT RD;
+	AND2Out	<=	LDA AND RD;
+	
+	mux1:	mux2i1o8w PORT MAP(
+		in1		=>	X,
+		in2		=>	Y,
+		sel		=>	S1,
+		out1	=>	Mux1Out);
+		
+	mux2:	mux2i1o8w PORT MAP(
+		in1		=>	X,
+		in2		=>	RegBOut,
+		sel		=>	S0,
+		out1	=>	Mux2Out);
+		
+	regA:	reg8 PORT MAP(
+		REG_IN	=>	Mux2Out,
+		CLK		=>	CLK,
+		LD		=>	And2Out,
+		REG_OUT	=>	RegAOut);
+		
+	regB:	reg8 PORT MAP(
+		REG_IN	=>	Mux1Out,
+		CLK		=>	CLK,
+		LD		=>	And1Out,
+		REG_OUT	=>	RegBOut);
+		
+	RA	<=	RegAOut;
+	RB	<=	RegBOut;
+	
+END DualMuxDualReg_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY DualRegDecMux IS
+	PORT(
+		A,B,C		:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		SL1,SL2,CLK	:	IN	STD_LOGIC;
+		RAX,RBX		:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END DualRegDecMux;
+
+ARCHITECTURE DualRegDecMux_arc OF DualRegDecMux IS
+	
+	-------------------
+	--- 1:2 Decoder ---
+	-------------------
+	
+	COMPONENT decoder1to2 IS
+		PORT(
+			in1			:	IN	STD_LOGIC;
+			out0,out1	:	OUT	STD_LOGIC);
+	END COMPONENT decoder1to2;
+	
+	----------------------
+	--- 8-bit Register ---
+	----------------------
+
+	COMPONENT reg8 IS
+		PORT(
+			REG_IN	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			CLK,LD	:	IN	STD_LOGIC;
+			REG_OUT	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT reg8;
+	
+	-------------------------------
+	--- 2-in, 1-out, 8-wide Mux ---
+	-------------------------------
+	
+	COMPONENT mux2i1o8w IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			sel		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT mux2i1o8w;
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+	
+	SIGNAL DecOut0,DecOut1	:	STD_LOGIC;
+	SIGNAL MuxOut			:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	
+BEGIN
+	
+	dec:	decoder1to2 PORT MAP (
+		in1		=>	SL1,
+		out0	=>	decout0,
+		out1	=>	decout1);
+		
+	mux:	mux2i1o8w PORT MAP(
+		in1		=>	B,
+		in2		=>	C,
+		sel		=>	SL2,
+		out1	=>	MuxOut);
+		
+	regA:	reg8 PORT MAP(
+		REG_IN	=>	A,
+		CLK		=>	CLK,
+		LD		=>	DecOut1,
+		REG_OUT	=>	RAX);
+		
+	regB:	reg8 PORT MAP(
+		REG_IN	=>	MuxOut,
+		CLK		=>	CLK,
+		LD		=>	DecOut0,
+		REG_OUT	=>	RBX);
+	
+END DualRegDecMux_arc;
+	\end{lstlisting}
+	
+	\item \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY DualRegMuxDec IS
+	PORT(
+		A,B,C			:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+		SEL1,SEL2,CLK	:	IN	STD_LOGIC;
+		RAP,RBP			:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+END DualRegMuxDec;
+
+ARCHITECTURE DualRegMuxDec_arc OF DualRegMuxDec IS
+	
+	-------------------
+	--- 1:2 Decoder ---
+	-------------------
+	
+	COMPONENT decoder1to2 IS
+		PORT(
+			in1			:	IN	STD_LOGIC;
+			out0,out1	:	OUT	STD_LOGIC);
+	END COMPONENT decoder1to2;
+	
+	----------------------
+	--- 8-bit Register ---
+	----------------------
+
+	COMPONENT reg8 IS
+		PORT(
+			REG_IN	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			CLK,LD	:	IN	STD_LOGIC;
+			REG_OUT	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT reg8;
+	
+	-------------------------------
+	--- 2-in, 1-out, 8-wide Mux ---
+	-------------------------------
+	
+	COMPONENT mux2i1o8w IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC_VECTOR(7 DOWNTO 0);
+			sel		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC_VECTOR(7 DOWNTO 0));
+	END COMPONENT mux2i1o8w;
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+	
+	SIGNAL DecOut0,DecOut1	:	STD_LOGIC;
+	SIGNAL MuxOut			:	STD_LOGIC_VECTOR(7 DOWNTO 0);
+	
+BEGIN
+	
+	mux:	mux2i1o8w PORT MAP(
+		in1		=>	A,
+		in2		=>	B,
+		sel		=>	SEL1,
+		out1	=>	MuxOut);
+		
+	dec:	decoder1to2 PORT MAP (
+		in1		=>	SEL2,
+		out0	=>	decout0,
+		out1	=>	decout1);
+		
+	regA:	reg8 PORT MAP(
+		REG_IN	=>	MuxOut,
+		CLK		=>	CLK,
+		LD		=>	DecOut1,
+		REG_OUT	=>	RAP);
+		
+	regB:	reg8 PORT MAP(
+		REG_IN	=>	C,
+		CLK		=>	CLK,
+		LD		=>	DecOut0,
+		REG_OUT	=>	RBP);
+	
+END DualRegMuxDec_arc;
+	\end{lstlisting}
+\end{enumerate}
 \resumetocwriting
