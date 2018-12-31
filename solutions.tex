@@ -2081,6 +2081,440 @@ END Exercise_8_14_arc;
 
 \section*{Chapter 9}
 
+\begin{enumerate}
+	\item 
+	\begin{minipage}[t]{1\linewidth}
+		\vspace{0pt}\raggedright
+		\centering
+		\includegraphics[width=\linewidth]{r_rtl/ex9-1.png}
+	\end{minipage}
+
+\item 
+\begin{minipage}[t]{1\linewidth}
+	\vspace{0pt}\raggedright
+	\centering
+	\includegraphics[width=\linewidth]{r_rtl/ex9-2.png}
+\end{minipage}
+\item The components for the third exercise are as follows.
+\begin{lstlisting}
+---------------
+--- Big AND ---
+---------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY big_and IS
+	PORT(
+		in1,in2	:	IN	STD_LOGIC;
+		out1	:	OUT	STD_LOGIC);
+END big_and;
+
+ARCHITECTURE big_and_arc OF big_and is
+BEGIN
+	out1	<=	in1 AND in2;
+END big_and_arc;
+
+
+---------------
+--- Big NOT ---
+---------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY big_not IS
+	PORT(
+		in1		:	IN	STD_LOGIC;
+		out1	:	OUT	STD_LOGIC);
+END big_not;
+
+ARCHITECTURE big_not_arc OF big_not IS
+BEGIN
+	out1	<=	NOT in1;
+END big_not_arc;
+
+
+--------------
+--- Big OR ---
+--------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY big_or IS
+	PORT(
+		in1,in2	:	IN	STD_LOGIC;
+		out1	:	OUT	STD_LOGIC);
+END big_or;
+
+ARCHITECTURE big_or_arc OF big_or IS
+BEGIN
+	out1	<=	in1 OR in2;
+END big_or_arc;
+
+
+-----------------------
+--- Big 4-Input AND ---
+-----------------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY big_and4 IS
+	PORT(
+		in1,in2,in3,in4	:	IN	STD_LOGIC;
+		out1			:	OUT	STD_LOGIC);
+END big_and4;
+
+ARCHITECTURE big_and4_arc OF big_and4 IS
+BEGIN
+	out1	<=	in1 AND in2 AND in3 AND in4;
+END big_and4_arc;
+
+
+-------------------
+--- 3:8 Decoder ---
+-------------------
+
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY dec3to8 IS
+	PORT(
+		ins		:	IN	STD_LOGIC_VECTOR(2 DOWNTO 0);
+		outs	:	OUT	STD_LOGIC_VECTOR(0 TO 8));
+END dec3to8;
+
+ARCHITECTURE dec3to8_arc OF dec3to8 IS
+BEGIN
+	WITH ins SELECT
+		outs	<=	"10000000" WHEN "000",
+					"01000000" WHEN "001",
+					"00100000" WHEN "010",
+					"00010000" WHEN "011",
+					"00001000" WHEN "100",
+					"00000100" WHEN "101",
+					"00000010" WHEN "110",
+					"00000001" WHEN "111",
+					"00000000" WHEN OTHERS;
+END dec3to8_arc;
+\end{lstlisting}
+
+a) \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_9_3_a IS
+	PORT(
+		A,B,C	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END Exercise_9_3_a;
+
+ARCHITECTURE Exercise_9_3_a_arc OF Exercise_9_3_a IS
+	
+	---------------
+	--- Big AND ---
+	---------------
+	
+	COMPONENT big_and IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_and;
+	
+	
+	---------------
+	--- Big NOT ---
+	---------------
+	
+	COMPONENT big_not IS
+		PORT(
+			in1		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_not;
+	
+	
+	--------------
+	--- Big OR ---
+	--------------
+	
+	COMPONENT big_or IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_or;
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+	
+	SIGNAL notA,notB,notC	:	STD_LOGIC;
+	SIGNAL and1out,and2out	:	STD_LOGIC;
+	
+BEGIN
+	
+	Anot:	big_not PORT MAP(
+		in1		=>	A,
+		out1	=>	notA);
+		
+	Bnot:	big_not PORT MAP(
+		in1		=>	B,
+		out1	=>	notB);
+	
+	Cnot:	big_not PORT MAP(
+		in1		=>	C,
+		out1	=>	notC);
+		
+	and1:	big_and PORT MAP(
+		in1		=>	A,
+		in2		=>	notB,
+		out1	=>	and1out);
+		
+	and2:	big_and PORT MAP(
+		in1		=>	notA,
+		in2		=>	notC,
+		out1	=>	and2out);
+		
+	or1:	big_or PORT MAP(
+		in1		=>	and1out,
+		in2		=>	and2out,
+		out1	=>	F);
+	
+END Exercise_9_3_a_arc;
+\end{lstlisting}
+
+b) \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_9_3_b IS
+	PORT(
+		A,B,C	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC;
+		dec_out	:	OUT	STD_LOGIC_VECTOR(0 TO 7));
+END Exercise_9_3_b;
+
+ARCHITECTURE Exercise_9_3_b_arc OF Exercise_9_3_b IS
+	
+	-------------------
+	--- 3:8 Decoder ---
+	-------------------
+	
+	COMPONENT dec3to8 IS
+		PORT(
+			ins		:	IN	STD_LOGIC_VECTOR(2 DOWNTO 0);
+			outs	:	OUT	STD_LOGIC_VECTOR(0 TO 8));
+	END COMPONENT dec3to8;
+	
+	
+	-----------------------
+	--- Big 4-Input AND ---
+	-----------------------
+	
+	COMPONENT big_and4 IS
+		PORT(
+			in1,in2,in3,in4	:	IN	STD_LOGIC;
+			out1			:	OUT	STD_LOGIC);
+	END COMPONENT big_and4;
+	
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+	
+	SIGNAL out0,out1,out3,out4	:	STD_LOGIC;
+	SIGNAL ins					:	STD_LOGIC_VECTOR(2 DOWNTO 0);
+	
+BEGIN
+	
+	dec:	dec3to8 PORT MAP(
+		ins		=>	ins,
+		outs(0)	=>	out0,
+		outs(1)	=>	out1,
+		outs(2)	=>	dec_out(2),
+		outs(3)	=>	out3,
+		outs(4)	=>	out4,
+		outs(5)	=>	dec_out(5),
+		outs(6)	=>	dec_out(6),
+		outs(7)	=>	dec_out(7));
+		
+	and4:	big_and4 PORT MAP(
+		in1		=>	out0,
+		in2		=>	out1,
+		in3		=>	out3,
+		in4		=>	out4,
+		out1	=>	F);
+		
+	dec_out(0)	<=	out0;
+	dec_out(1)	<=	out1;
+	dec_out(3)	<=	out3;
+	dec_out(4)	<=	out4;
+	
+	ins	<=	A & B & C;
+	
+END Exercise_9_3_b_arc;
+\end{lstlisting}
+
+c) \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_9_3_c IS
+	PORT(
+		A,B,C	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END Exercise_9_3_c;
+
+ARCHITECTURE Exercise_9_3_c_arc OF Exercise_9_3_c IS
+	
+	---------------
+	--- Big AND ---
+	---------------
+	
+	COMPONENT big_and IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_and;
+	
+	
+	---------------
+	--- Big NOT ---
+	---------------
+	
+	COMPONENT big_not IS
+		PORT(
+			in1		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_not;
+	
+	
+	--------------
+	--- Big OR ---
+	--------------
+	
+	COMPONENT big_or IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_or;
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+	
+	SIGNAL notB,notC		:	STD_LOGIC;
+	SIGNAL and1out,and2out	:	STD_LOGIC;
+	
+BEGIN
+		
+	Bnot:	big_not PORT MAP(
+		in1		=>	B,
+		out1	=>	notB);
+	
+	Cnot:	big_not PORT MAP(
+		in1		=>	C,
+		out1	=>	notC);
+		
+	and1:	big_and PORT MAP(
+		in1		=>	A,
+		in2		=>	C,
+		out1	=>	and1out);
+		
+	and2:	big_and PORT MAP(
+		in1		=>	notC,
+		in2		=>	notB,
+		out1	=>	and2out);
+		
+	or1:	big_or PORT MAP(
+		in1		=>	and1out,
+		in2		=>	and2out,
+		out1	=>	F);
+	
+END Exercise_9_3_c_arc;
+\end{lstlisting}
+
+d) \begin{lstlisting}
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+
+ENTITY Exercise_9_3_d IS
+	PORT(
+		A,B,C	:	IN	STD_LOGIC;
+		F		:	OUT	STD_LOGIC);
+END Exercise_9_3_d;
+
+ARCHITECTURE Exercise_9_3_d_arc OF Exercise_9_3_d IS
+	
+	---------------
+	--- Big AND ---
+	---------------
+	
+	COMPONENT big_and IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_and;
+	
+	
+	---------------
+	--- Big NOT ---
+	---------------
+	
+	COMPONENT big_not IS
+		PORT(
+			in1		:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_not;
+	
+	
+	--------------
+	--- Big OR ---
+	--------------
+	
+	COMPONENT big_or IS
+		PORT(
+			in1,in2	:	IN	STD_LOGIC;
+			out1	:	OUT	STD_LOGIC);
+	END COMPONENT big_or;
+	
+	------------------------
+	--- Internal Signals ---
+	------------------------
+	
+	SIGNAL notA,notC		:	STD_LOGIC;
+	SIGNAL and1out,and2out	:	STD_LOGIC;
+	
+BEGIN
+		
+	Anot:	big_not PORT MAP(
+		in1		=>	A,
+		out1	=>	notA);
+	
+	Cnot:	big_not PORT MAP(
+		in1		=>	C,
+		out1	=>	notC);
+		
+	and1:	big_and PORT MAP(
+		in1		=>	notA,
+		in2		=>	notC,
+		out1	=>	and1out);
+		
+	and2:	big_and PORT MAP(
+		in1		=>	A,
+		in2		=>	B,
+		out1	=>	and2out);
+		
+	or1:	big_or PORT MAP(
+		in1		=>	and1out,
+		in2		=>	and2out,
+		out1	=>	F);
+	
+END Exercise_9_3_d_arc;
+\end{lstlisting}
+\end{enumerate}
+
 \section*{Chapter 10}
 The components used in each of the exercises are as shown below.
 \begin{lstlisting}
