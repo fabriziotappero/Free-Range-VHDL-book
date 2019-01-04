@@ -11,6 +11,12 @@
 \documentclass[11pt,b5paper]{book} % generate whole document in color
 \usepackage{style}
 
+% Allow for the exercise solutions to not be listed in the ToC
+\newcommand{\stoptocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{-5}}}
+\newcommand{\resumetocwriting}{%
+	\addtocontents{toc}{\protect\setcounter{tocdepth}{\arabic{tocdepth}}}}
+
 % LINE SPACING
 \renewcommand{\baselinestretch}{1.2} % custom spacing
 %\renewcommand{\baselinestretch}{2} % double-line spacing
