@@ -7,3 +7,5 @@ copy master.pdf free_range_vhdl.pdf
 copy master.synctex.gz free_range_vhdl.synctex.gz
 del master.pdf
 del master.synctex.gz
+
+ 
