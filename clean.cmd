@@ -10,5 +10,5 @@ del *.tex~ *.sty~
 
 del -R __MACOSX
 
-del *~*
+REM del *~*
 
