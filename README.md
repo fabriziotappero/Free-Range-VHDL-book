@@ -5,7 +5,7 @@ If you want to download the generate the PDF of this book compile this LATEX pro
 If you want to contribute please have a look at the "contribute" file.
 
 <p align="center">
-  <img src="https://github.com/fabriziotappero/Free-Range-VHDL-book/blob/master/pics/cover.png?raw=true" alt=""/>
+  <img src="https://github.com/fabriziotappero/Free-Range-VHDL-book/blob/master/pics/cover.png?raw=true" width = "70%" alt="" align=center/>
 </p>
 
 # FREE RANGE VHDL
