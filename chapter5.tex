@@ -412,7 +412,7 @@ end my_soln_exam;
 \end{lstlisting}
 \end{minipage}
 
-Another similar approach to Example~12 is to use the \textit{don't care} feature built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example~12 is shown in Listing~\ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more definitive method of modeling the circuits I am dealing with.
+Another similar approach to Example~12 is to use the \textit{don't care} feature (represented by the symbol "-") built into VHDL. This allows the logic function to be implemented without having to massage the inputs. As with everything, if you have to modify the problem before you arrive at the solution, you stand a finite chance of creating an error that would not have otherwise been created if you had not taken a more clever approach. A different architecture for the solution of Example~12 is shown in Listing~\ref{exe_12_1}. One possible drawback of using a don't care feature in your VHDL code is that some synthesizers and some simulators do not handle it very well. I would avoid them at all costs and seek a more definitive method of modeling the circuits I am dealing with.
 
 \noindent
 \begin{minipage}{0.99\linewidth}

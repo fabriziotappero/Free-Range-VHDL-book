@@ -209,7 +209,7 @@ ARCHITECTURE ckt_d_arc OF ckt_d IS
 	SIGNAL AND1,AND2	:	STD_LOGIC;
 BEGIN
 	AND1 <= A OR B OR NOT C OR NOT D;
-	AND2 <= A OR B OR C OR NOT D;
+	AND2 <= A OR B OR NOT C OR D;
 	F <= AND1 AND AND2;
 END ckt_d_arc;
 		\end{lstlisting}
