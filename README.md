@@ -1,12 +1,13 @@
-Latex source files of the open-source VHDL book FREE RANGE VHDL. 
-
-If you want to download the generate the PDF of this book compile this LATEX project. If you want to buy the Free Range VHDL Paperback you can do that from [amazon.com](https://www.amazon.com/no-frills-writing-powerful-digital-implementations/dp/B015MT2IBM/ref=sr_1_1).
-
-If you want to contribute please have a look at the "contribute" file.
 
 <p align="center">
   <img src="https://github.com/fabriziotappero/Free-Range-VHDL-book/blob/master/pics/cover.png?raw=true" width = "70%" alt="" align=center/>
 </p>
+
+This repository contains the Latex source files of the open-source VHDL book FREE RANGE VHDL. 
+
+If you want to download the PDF version of this book, [here you go](https://github.com/fabriziotappero/Free-Range-VHDL-book/blob/master/free_range_vhdl.pdf). To buy the paperback version you can head to [amazon.com](https://www.amazon.com/no-frills-writing-powerful-digital-implementations/dp/B015MT2IBM/ref=sr_1_1).
+
+To contribute please have a look at the *contribute* file in the root of the repository.
 
 # FREE RANGE VHDL
 
@@ -45,3 +46,18 @@ ns-level logic events in a comfortable software environment.
 This book was written with the intention of being freely available to everybody. The formatted electronic version of
  this book is available from the Internet. Any part of this book can be copied, distributed and modified in accordance
  with the conditions of its license.
+
+## How to Compile the Book
+To compile the Latex files of this book and get the PDF first install Latex in your machine.
+
+    sudo apt-get install texlive-latex-base 
+    sudo apt-get install texlive-fonts-recommended texlive-fonts-extra 
+    sudo apt-get install texlive-latex-extra
+
+Clone this repository and run the script:
+
+    ./compile
+
+You can clean up the unnecessary files with the command:
+
+    ./clean

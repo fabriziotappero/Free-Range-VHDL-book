@@ -5,8 +5,8 @@ FREE RANGE VHDL is written in Latex. The source code is available from:
  https://github.com/fabriziotappero/Free-Range-VHDL-book
 
 To help out with the book you can point out problems or suggestions 
-by sending me an e-mail at:
-   http://freerangefactory.org/#contact
+by opning and issue at:
+   https://github.com/fabriziotappero/Free-Range-VHDL-book
 
 Alternatively, you can get the Latex source, edit it and sending me a
 patch. If you like that please keep reading.
@@ -32,8 +32,8 @@ content of this book. I personally use the Git Shell command line.
     git diff > my_patch.patch
 
 6) copy and paste the content of the patch file and an explanation of what
-   you have done in:
-    http://freerangefactory.org/#contact
+   you have done in a new issue at:
+    https://github.com/fabriziotappero/Free-Range-VHDL-book
 
 AN ALTERNATIVE AND MODERN WAY IS TO GENERATE A GITHUB PULL REQUEST.
 https://yangsu.github.io/pull-request-tutorial/
