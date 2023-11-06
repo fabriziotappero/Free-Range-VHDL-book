@@ -1,0 +1,6 @@
+name: "LaTeX processor"
+description: "LaTeX processor"
+
+runs:
+  using: "docker"
+  image: "Dockerfile"

@@ -1,0 +1,20 @@
+name: Build Book
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build_book:
+    name: Build book
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make book
+        uses: ./.github/actions/latex
+      - name: Uploadartifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: free_range_vhdl
+          path: free_range_vhdl.pdf
+          retention-days: 15
