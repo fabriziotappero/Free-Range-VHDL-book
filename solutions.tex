@@ -2157,23 +2157,23 @@ BEGIN
 END big_or_arc;
 
 
------------------------
---- Big 4-Input AND ---
------------------------
+----------------------
+--- Big 4-Input OR ---
+----------------------
 
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY big_and4 IS
+ENTITY big_or4 IS
 	PORT(
 		in1,in2,in3,in4	:	IN	STD_LOGIC;
 		out1			:	OUT	STD_LOGIC);
-END big_and4;
+END big_or4;
 
-ARCHITECTURE big_and4_arc OF big_and4 IS
+ARCHITECTURE big_or4_arc OF big_or4 IS
 BEGIN
-	out1	<=	in1 AND in2 AND in3 AND in4;
-END big_and4_arc;
+	out1	<=	in1 OR in2 OR in3 OR in4;
+END big_or4_arc;
 
 
 -------------------
@@ -2315,11 +2315,11 @@ ARCHITECTURE Exercise_9_3_b_arc OF Exercise_9_3_b IS
 	--- Big 4-Input AND ---
 	-----------------------
 
-	COMPONENT big_and4 IS
+	COMPONENT big_or4 IS
 		PORT(
 			in1,in2,in3,in4	:	IN	STD_LOGIC;
 			out1			:	OUT	STD_LOGIC);
-	END COMPONENT big_and4;
+	END COMPONENT big_or4;
 
 
 	------------------------
