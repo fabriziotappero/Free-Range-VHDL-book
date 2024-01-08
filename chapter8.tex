@@ -131,7 +131,7 @@ end fsm1;
 \end{lstlisting}
 \end{minipage}
 
-And of course, this solution has many things worth noting in it. The more interesting things are listed below.
+And of course, this solution has many things worth noting in it. The most interesting things are listed below.
 
 \begin{my_list}
 \item We have declared a special VHDL type named \texttt{state\_type} to represent the states in this FSM. This is an example of how enumeration types are used in VHDL. As with enumerated types in other higher-level computer languages, there are internal numerical representations for the listed state types, but we only deal with the more expressive symbolic equivalent. In this case, the type we have created is called a \texttt{state\_type} and we have declared two variables of this type: PS and NS. The key thing to note here is that a \texttt{state\_type} is something we have created and is not a native VHDL type.

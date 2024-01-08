@@ -113,13 +113,8 @@ end arch;
 \end{lstlisting}
 \end{minipage}
 
-As it becomes clear from the previous listing, the inclusion of the main standard libraries allows you to write very powerful VHDL code. A quite useful cheat-sheet about VHDL standard libraries and what they can offer is available from here:
-
-\noindent
-\begin{verbatim}
-http://www.vhdl.org/rassp/vhdl/guidelines/vhdlqrc.pdf
-http://www.vhdl.org/rassp/vhdl/guidelines/1164qrc.pdf
-\end{verbatim}
+As it becomes clear from the previous listing, the inclusion of the main standard libraries allows you to write very powerful VHDL code.
+A quite useful cheat-sheet about VHDL standard libraries and what they can offer can be found in Appendix \ref{ch:refcard}.
 
 The IEEE standardized libraries heavily enhance the VHDL language capability giving you a long list of functions that you can freely use in your VHDL source code. A list of these libraries cannot be included here for copyright reasons but all IEEE libraries source code is freely available to you from the following link:
 
@@ -144,9 +139,9 @@ will show you that the constant of type real \texttt{MATH\_PI = 3.1415926} is av
 line. The square root function \texttt{SQRT()} is just another example.
 
 \section{IEEE Standard Libraries}
-In VHDL, basic arithmetics is defined for the \texttt{integer} data type and for the \texttt{natural} data type. In order to have more control during synthesis over the various data formats, other libraries were developed and included into the IEEE standard.
+In VHDL, basic arithmetic is defined for the \texttt{integer} data type and for the \texttt{natural} data type. In order to have more control during synthesis over the various data formats, other libraries were developed and included into the IEEE standard.
 
-The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetics for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the Synopsys \texttt{std\_logic\_arith} library.
+The library \texttt{numeric\_std} extended the standard VHDL by adding the \texttt{signed} and the \texttt{unsigned} data types as well as the arithmetic for them. These libraries are IEEE standard packages and their behaviour is governed by the standard, therefore assuring compatibility. In this book, we highly recommend the use of the \texttt{numeric\_std} library over the Synopsys \texttt{std\_logic\_arith} library.
 
 As a natural consequence, we recommend using the types \texttt{unsigned}, \texttt{signed} and \texttt{integer} instead of the simpler \texttt{std\_logic\_vector} type for the many needs you might have. Refer to Listing~\ref{good_lib_ex} for en example of the wise use of the type \texttt{unsigned} or the type \texttt{integer} over the type \texttt{std\_logic\_vector}.
 
@@ -168,6 +163,7 @@ Despite the great advantage that these non-standard libraries seem to give you, 
 \input{solutions}
 
 \chapter{VHDL Reference Cards}
+\label{ch:refcard}
 Hereafter you can find two sets of very useful VHDL reference cards made by Qualis Design Corporation.
 
 \noindent
@@ -185,7 +181,7 @@ Alternative link:
 
 \noindent
 {\scriptsize
-\url{https://github.com/fabriziotappero/Free-Range-VHDL-book/pics/ref_cards/}
+\url{https://github.com/fabriziotappero/Free-Range-VHDL-book/tree/master/pics/ref_cards}
 }
 
 \newpage\clearpage

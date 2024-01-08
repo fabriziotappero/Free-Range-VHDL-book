@@ -18,7 +18,7 @@
 
 \chapter{FPGA Prototyping}
 Up until now we have seen how to implement fairly basic VHDL circuits useful to execute basic tasks like count, shift left few bits, implement a decoder, etc. We however all agree that the real fun starts when your software-defined hardware becomes complex enough to actually interact with the external world.
-The objective of this chapter is to present interesting real-world implementations where VHDL is in fact used to create digital circuits that have a direct application in our world. To make things even more attractive, all projects presented here will not only explained in great detail but their synthesis and implementation on affordable FPGA-based hardware will be explained.
+The objective of this chapter is to present interesting real-world implementations where VHDL is in fact used to create digital circuits that have a direct application in our world. To make things even more attractive, all projects presented here will not only be explained in great detail but their synthesis and implementation on affordable FPGA-based hardware will be explained.
 
 \section{VHDL to FPGA work flow}
 Unless you are a VHDL language lawyer (a person solely interested in VHDL as a language), there will be a point in time in which you will want to take your VHDL code, synthesize it and download it on some sort of programmable hardware. This hardware could be a complex programmable logic device (CPLD) or a more interesting and sometimes very expensive field programmable gate array (FPGA).
@@ -29,14 +29,14 @@ The process of synthesizing your VHDL code into a bitstream file which can be us
 
 \item[2 - Simulate.] Test and simulate your design in a software environment that allows you to input stimulus signals to your input pins and obtain graphical representations of your design output pins. In the simulation phase it is essential to write some kind of VHDL files called \textbf{test-bench files} that defines stimulus signals and few other simulation parameters.
 
-\item [3 - Synthesis.] Once your design is complete you can translate your VHDL code into a lower-level description of how your digital circuit is going to be. The output of this process is a hardware-independent file that uniquely describe your design. Professionals often distribute or sell their design in this format because it guarantees the irreversibility to its original VHDL source code making it a close-source distribution.
+\item [3 - Synthesis.] Once your design is complete, you can translate your VHDL code into a lower-level description of how your digital circuit is going to be. The output of this process is a hardware-independent file that uniquely describe your design. Professionals often distribute or sell their design in this format because it guarantees the irreversibility to its original VHDL source code making it a close-source distribution.
 
-\item [4 - Translate, Map and Place \& Route.] Decide which FPGA/CPLD device to use and translate your design into a bitstream file with extension \texttt{.bit}. This is the final product of your hard work and, in some how, equivalent to an executable file for a personal computer. At this stage the layout of all logic elements inside the device is decided. Via specific tools it is possible to analyze and evaluate such a layout.
+\item [4 - Translate, Map and Place \& Route.] Decide which FPGA/CPLD device to use and translate your design into a bitstream file with extension \texttt{.bit}. This is the final product of your hard work and, in somehow, equivalent to an executable file for a personal computer. At this stage the layout of all logic elements inside the device is decided. Via specific tools it is possible to analyze and evaluate such a layout.
 
 \item [5 - Upload to FPGA/CPLD.] Via the use of a software tool generally developed by the manufacturer of the FPGA/CPLD board that you use, upload the \texttt{.bit} file to your hardware board. This might mean upload it to the FPGA/CPLD itself or, alternatively, to the small flash memory connected to it. The second solution guarantees the functioning after your hardware experience a power cycle but it requires the bitstream file \texttt{.bit} to be previously converted into a PROM file. Your design can be distributed or sold to others via its bitstream file too. This file is of course device specific.
 \end{description}
 
-A lot more can be said about programming a FPGA/CPLD, this is especially true because a large amount of software solutions exists for it. The reader is encouraged to satisfy his thirst by consulting the many tutorials available on the Internet\footnote{Xilinx ISE in-depth tutorial: \scriptsize\url{http://www.xilinx.com/support/index.htm}}.
+A lot more can be said about programming a FPGA/CPLD, this is especially true because a large number of software solutions exists for it. The reader is encouraged to satisfy his thirst by consulting the many tutorials available on the Internet\footnote{Xilinx ISE in-depth tutorial: \scriptsize\url{http://www.xilinx.com/support/index.htm}}.
 
 Regarding FPGA/CPLD system, a note about time constrains deserves to be made.
 
@@ -46,18 +46,18 @@ During the process of synthesis it is possible to define
 \subsection{Intellectual propriety cores}
 Intellectually proprietary (IP) cores are complex pre-tested system-level functions that can be used to dramatically shorten development time. Some examples of IP cores are a SDRAM controller, an I2C or SPI controllers, a DVI video controller, etc.
 
-IP cores are distribiuted in a few different formats, among the most popular way we can menntione: 1) FPGA netlists, 2) encripted VHDL files ,3) VHDL open-source files.
+IP cores are distributed in a few different formats, among the most popular way we can mention: 1) FPGA netlists, 2) encrypted VHDL files ,3) VHDL open-source files.
 
 \section{Software-defined FM radio transmitter}
-This section presents the implementation of a software-define FM radio transmitter in the 87.5 MHz to 108.0 MHz bandwidth. A typical FM radio will be used as receiver.
+This section presents the implementation of a software-define FM radio transmitter in the 87.5 MHz to 108.0 MHz bandwidth. A typical FM radio will be used as a receiver.
 
 \subsection{Motivation of this project}
-When I was a young boy my parents bought be an encyclopedia for kids that kept me very much busy during those long days in which time seemed endless. I particularly remember reading about the principle of radio waves and wireless communication and, fascinated by the subject, decided to build a crystal radio receiver. After several attempts I finally succeeded and one Sunday morning I manged to actually hear the voice of the pope himself during the 11 o'clock mass ! That was the Italian national TV, channel one.
+When I was a young boy, my parents bought be an encyclopedia for kids that kept me very much busy during those long days in which time seemed endless. I particularly remember reading about the principle of radio waves and wireless communication and, fascinated by the subject, decided to build a crystal radio receiver. After several attempts I finally succeeded and one Sunday morning, I managed to actually hear the voice of the pope himself during the 11 o'clock mass ! That was the Italian national TV, channel one.
 
 \begin{figure}[!b]
     \centering
 	\includegraphics[width=8cm]{pics/fpgap/radio.jpg}
-	\caption{Schematic representation of the simplest crystal radio. This radio has no form of power supply, it can be built in few hours and, when connected to a good antenna, it can give remarkably clear headphone operation.}
+	\caption{Schematic representation of the simplest crystal radio. This radio has no form of power supply, it can be built in few hours and, when connected to a good antenna, it can give a remarkably clear headphone operation.}
 	\label{radio}
 \end{figure}
 
@@ -99,7 +99,7 @@ Fig.~\ref{fm_band} shows how the available bandwidth within a given channel is u
 It should be noted how both left and right channels are present in their mixed form at the beginning of the channel. Also, each FM channel is equipped with a small data sub-channel, called RDS, of 1,187.5 bps on a 57 kHz subcarrier.
 
 \subsection{FPGA-based FM transmitter}
-In the following sections we will present the implementation of a FM radio transmitter using VHDL and a low-cost FPGA. In order to make this project doable by all, we have simplified the design of an FM radio transmitter to its bear minimum.
+In the following sections we will present the implementation of a FM radio transmitter using VHDL and a low-cost FPGA. In order to make this project doable by all, we have simplified the design of an FM radio transmitter to its bare minimum.
 
 Fig.~\ref{sdr} shows the
 
