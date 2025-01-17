@@ -9,7 +9,7 @@
 %\documentclass[11pt,b5paper]{book} % you can set the paper size in style.sty
 %\documentclass[gray, 11pt,b5paper]{book} % generate whole document in B&W
 \documentclass[11pt,b5paper]{book} % generate whole document in color
-\usepackage{style}
+\usepackage{styles/style}
 
 % Allow for the exercise solutions to not be listed in the ToC
 \newcommand{\stoptocwriting}{%
@@ -30,7 +30,7 @@
 	\thispagestyle{empty}
 	\begin{textblock*}{160mm}(-3mm,0mm)
 	%\textblockcolour{red}
-	\noindent\makebox[\textwidth]{\includegraphics[width=\paperwidth]{pics/cover.png}}  % full-page picture for 160x240 format
+	\noindent\makebox[\textwidth]{\includegraphics[width=\paperwidth]{images/cover.png}}  % full-page picture for 160x240 format
 	\end{textblock*}
 	\null\newpage % latex might neglect \newpage because the page is empty,
 
@@ -52,7 +52,7 @@
 
 	% license page %
 	\thispagestyle{empty}
-	\include{license}
+	\input{chapters/license}
 
 	% blank page with note
 	\thispagestyle{empty}
@@ -73,7 +73,7 @@
 	%\null\newpage
 
 	% Acknowledgments, from page i
-	\include{acknowledgments}
+	\input{chapters/acknowledgments}
 
 	% blank page
 	\thispagestyle{empty}
@@ -82,25 +82,25 @@
 	% Preface, from page ii
 	\setcounter{page}{1}
 	\pagenumbering{arabic}
-	\include{introduction}
+	\input{chapters/introduction}
 
-	% from page 1 begins Chapter 1 %
-	\include{chapter1}
-	\include{chapter2}
-	\include{chapter3}
-	\include{chapter4}
-	\include{chapter5}
-	\include{chapter6}
-	\include{chapter7}
-	\include{chapter8}
-	\include{chapter9}
-	\include{chapter10}
-	\include{chapter11}
-	\include{chapter12}
-	\include{chapter13}
+	% from page 1 begins chapter 1 %
+	\input{chapters/chapter1}
+	\input{chapters/chapter2}
+	\input{chapters/chapter3}
+	\input{chapters/chapter4}
+	\input{chapters/chapter5}
+	\input{chapters/chapter6}
+	\input{chapters/chapter7}
+	\input{chapters/chapter8}
+	\input{chapters/chapter9}
+	\input{chapters/chapter10}
+	\input{chapters/chapter11}
+	\input{chapters/chapter12}
+	\input{chapters/chapter13}
     \begin{appendices}
-	    \include{appendix}
-	    \include{authors}
+	    \input{chapters/appendix}
+	    \input{chapters/authors}
     \end{appendices}
 
     % blank page
