@@ -56,8 +56,8 @@ To compile the Latex files of this book and get the PDF first install Latex in y
 
 Clone this repository and run the script:
 
-    ./compile
+    make all
 
 You can clean up the unnecessary files with the command:
 
-    ./clean
+    make clean
