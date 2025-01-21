@@ -5,9 +5,9 @@
 
 This repository contains the Latex source files of the open-source VHDL book FREE RANGE VHDL. 
 
-If you want to download the PDF version of this book, grab the 
-[last version](https://github.com/fabriziotappero/Free-Range-VHDL-book/releases) 
-and compile it. Here you can find the [PDF](https://github.com/fabriziotappero/Free-Range-VHDL-book/tree/master/free_range_vhdl.pdf). To buy the paperback version you can head to
+If you want to download the latex files of this book, grab the 
+[last release](https://github.com/fabriziotappero/Free-Range-VHDL-book/releases) 
+and compile it. Alternatively, you can download the [PDF here](https://github.com/fabriziotappero/Free-Range-VHDL-book/tree/master/free_range_vhdl.pdf). To buy the paperback version you can head to
  [amazon.com](https://www.amazon.com/no-frills-writing-powerful-digital-implementations/dp/B015MT2IBM/ref=sr_1_1).
 
 To contribute please have a look at the *contribute* file in the root of the repository.
